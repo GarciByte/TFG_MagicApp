@@ -31,12 +31,41 @@ namespace MagicApp.Controllers
             return Ok(user);
         }
 
+        // Obtener usuarios por nickname
+        [HttpGet("search")]
+        public async Task<IActionResult> SearchUsersByNicknameAsync(string nickname)
+        {
+            // Quitar tildes y convertir a minúsculas
+            string normalizedNickname = Normalize(nickname);
+
+            var allUsers = await _userService.GetAllUsersAsync();
+
+            // Filtrar usuarios
+            var filteredUsers = allUsers
+                .Where(user => Normalize(user.Nickname).Contains(normalizedNickname))
+                .ToList();
+
+            return Ok(filteredUsers);
+        }
+
         // Obtener todos los usuarios
         [HttpGet("allUsers")]
         public async Task<IActionResult> GetAllUsersAsync()
         {
             var users = await _userService.GetAllUsersAsync();
             return Ok(users);
+        }
+
+        // Método para quitar tildes y convertir a minúsculas
+        private static string Normalize(string input)
+        {
+            return input
+                .Replace("á", "a").Replace("é", "e").Replace("í", "i")
+                .Replace("ó", "o").Replace("ú", "u").Replace("ü", "u")
+                .Replace("ñ", "n").Replace("Á", "A").Replace("É", "E")
+                .Replace("Í", "I").Replace("Ó", "O").Replace("Ú", "U")
+                .Replace("Ü", "U").Replace("Ñ", "N")
+                .ToLower();
         }
     }
 }

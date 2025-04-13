@@ -8,6 +8,13 @@ public class UserRepository : Repository<User, int>
 {
     public UserRepository(MagicAppContext context) : base(context) { }
 
+    // Obtener usuario por nickname
+    public async Task<User> GetUserByNickname(string nickname)
+    {
+        return await GetQueryable()
+            .FirstOrDefaultAsync(user => user.Nickname.ToLower() == nickname.ToLower());
+    }
+
     // Obtener usuario por email
     public async Task<User> GetUserByEmail(string email)
     {

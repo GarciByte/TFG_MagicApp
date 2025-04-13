@@ -13,6 +13,7 @@ public class UserMapper
             Nickname = user.Nickname,
             Email = user.Email,
             Role = user.Role,
+            AvatarUrl = user.AvatarUrl,
             IsBanned = user.IsBanned,
         };
     }

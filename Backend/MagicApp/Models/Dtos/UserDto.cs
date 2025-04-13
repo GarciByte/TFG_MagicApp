@@ -10,5 +10,7 @@ public class UserDto
 
     public string Role { get; set; } = null!;
 
+    public string AvatarUrl { get; set; } = null!;
+
     public bool IsBanned { get; set; }
 }
