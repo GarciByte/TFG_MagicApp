@@ -48,34 +48,54 @@ public class AuthController : ControllerBase
                 return StatusCode(StatusCodes.Status403Forbidden, $"El usuario {user.Nickname} está baneado.");
             }
 
-            // Se crea el token JWT
-            var tokenDescriptor = new SecurityTokenDescriptor
+            // Access Token
+            var accessTokenDescriptor = new SecurityTokenDescriptor
             {
-                // Se añaden los datos que autorizan al usuario
                 Claims = new Dictionary<string, object>
                 {
-                    { ClaimTypes.NameIdentifier, user.Id },  // ID del usuario
-                    { ClaimTypes.Name, user.Nickname },      // Nickname del usuario
-                    { ClaimTypes.Role, user.Role }           // Rol del usuario
+                    { ClaimTypes.NameIdentifier, user.Id },
+                    { ClaimTypes.Name, user.Nickname },
+                    { ClaimTypes.Role, user.Role }
                 },
-                // Expiración del token en 5 días
-                Expires = DateTime.UtcNow.AddDays(5),
 
-                // Clave y algoritmo de firmado
+                // Expiración del token en 12 horas
+                Expires = DateTime.UtcNow.AddHours(12),
+
                 SigningCredentials = new SigningCredentials(
                     _tokenParameters.IssuerSigningKey,
                     SecurityAlgorithms.HmacSha256Signature)
             };
 
-            // Creación del token
-            var tokenHandler = new JwtSecurityTokenHandler();
-            var token = tokenHandler.CreateToken(tokenDescriptor);
-            string stringToken = tokenHandler.WriteToken(token);
+            var accessTokenHandler = new JwtSecurityTokenHandler();
+            var accessToken = accessTokenHandler.CreateToken(accessTokenDescriptor);
+            string accessTokenString = accessTokenHandler.WriteToken(accessToken);
+
+            // Refresh Token
+            var refreshTokenDescriptor = new SecurityTokenDescriptor
+            {
+                Claims = new Dictionary<string, object>
+            {
+                { ClaimTypes.NameIdentifier, user.Id },
+                { "token_type", "refresh" }
+            },
+
+                // Expiración del token en 30 días
+                Expires = DateTime.UtcNow.AddDays(30),
+
+                SigningCredentials = new SigningCredentials(
+                    _tokenParameters.IssuerSigningKey,
+                    SecurityAlgorithms.HmacSha256Signature)
+            };
+
+            var refreshTokenHandler = new JwtSecurityTokenHandler();
+            var refreshToken = refreshTokenHandler.CreateToken(refreshTokenDescriptor);
+            var refreshTokenString = refreshTokenHandler.WriteToken(refreshToken);
 
             // Se devuelve el resultado de inicio de sesión con el token y los datos del usuario
             var loginResult = new LoginResult
             {
-                AccessToken = stringToken,
+                AccessToken = accessTokenString,
+                RefreshToken = refreshTokenString,
                 User = _userMapper.UserToDto(user)
             };
 
@@ -86,6 +106,88 @@ public class AuthController : ControllerBase
         {
             // Si hay algún error, se devuelve Unauthorized
             return Unauthorized("Datos de inicio de sesión incorrectos.");
+        }
+    }
+
+    // Refrescar el token
+    [AllowAnonymous]
+    [HttpPost("refresh")]
+    public async Task<ActionResult<RefreshTokenResult>> Refresh([FromBody] RefreshTokenRequest RefreshToken)
+    {
+        try
+        {
+            // Validar el refresh token
+            var tokenHandler = new JwtSecurityTokenHandler();
+            var validationParameters = new TokenValidationParameters
+            {
+                ValidateIssuerSigningKey = true,
+                IssuerSigningKey = _tokenParameters.IssuerSigningKey,
+                ValidateIssuer = false,
+                ValidateAudience = false,
+                ValidateLifetime = true,
+                ClockSkew = TimeSpan.Zero
+            };
+            var principal = tokenHandler.ValidateToken(RefreshToken.RefreshToken, validationParameters, out _);
+            var tokenTypeClaim = principal.FindFirst("token_type")?.Value;
+
+            if (tokenTypeClaim != "refresh")
+            {
+                return Unauthorized("Token inválido");
+            }
+
+            // Obtener usuario
+            var userId = principal.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            var user = await _userService.GetUserByIdAsync(int.Parse(userId));
+
+            if (user == null || user.IsBanned)
+            {
+                return Unauthorized("Usuario no válido");
+            }
+
+            // Generar nuevo access token
+            var accessTokenDescriptor = new SecurityTokenDescriptor
+            {
+                Claims = new Dictionary<string, object>
+            {
+                { ClaimTypes.NameIdentifier, user.UserId },
+                { ClaimTypes.Name, user.Nickname },
+                { ClaimTypes.Role, user.Role }
+            },
+                Expires = DateTime.UtcNow.AddHours(12),
+                SigningCredentials = new SigningCredentials(
+                    _tokenParameters.IssuerSigningKey,
+                    SecurityAlgorithms.HmacSha256Signature)
+            };
+
+            var accessToken = tokenHandler.CreateToken(accessTokenDescriptor);
+            var newAccessToken = tokenHandler.WriteToken(accessToken);
+
+            // Generar nuevo refresh token
+            var refreshTokenDescriptor = new SecurityTokenDescriptor
+            {
+                Claims = new Dictionary<string, object>
+            {
+                { ClaimTypes.NameIdentifier, user.UserId },
+                { "token_type", "refresh" }
+            },
+                Expires = DateTime.UtcNow.AddDays(30),
+                SigningCredentials = new SigningCredentials(
+                    _tokenParameters.IssuerSigningKey,
+                    SecurityAlgorithms.HmacSha256Signature)
+            };
+
+            var refreshToken = tokenHandler.CreateToken(refreshTokenDescriptor);
+            var newRefreshToken = tokenHandler.WriteToken(refreshToken);
+
+            return Ok(new RefreshTokenResult
+            {
+                AccessToken = newAccessToken,
+                RefreshToken = newRefreshToken
+            });
+        }
+        catch (Exception)
+        {
+            return Unauthorized("Token inválido");
         }
     }
 
