@@ -1,32 +1,42 @@
 ﻿using MagicApp.Models.Mappers;
 using MagicApp.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace MagicApp.Controllers
 {
-    [ApiController]
+    [Authorize]
     [Route("api/[controller]")]
+    [ApiController]
     public class UserController : ControllerBase
     {
         private readonly UserService _userService;
         private readonly UserMapper _userMapper;
+        private readonly ILogger<UserController> _logger;
 
-        public UserController(UserService userService, UserMapper userMapper)
+        public UserController(UserService userService, UserMapper userMapper, ILogger<UserController> logger)
         {
             _userService = userService;
             _userMapper = userMapper;
+            _logger = logger;
         }
 
         // Obtener un usuario por su id
         [HttpGet("{id}")]
         public async Task<IActionResult> GetByIdAsync(int id)
         {
+            _logger.LogInformation("Se ha recibido una consulta al usuario por ID: {id}", id);
+
             var user = await _userService.GetUserByIdAsync(id);
 
             if (user == null)
             {
+                _logger.LogError("El usuario con el id {id} no ha sido encontrado.", id);
+
                 return NotFound(new { message = $"El usuario con el id '{id}' no ha sido encontrado." });
             }
+
+            _logger.LogInformation("Usuario: {@user}", user);
 
             return Ok(user);
         }
@@ -35,6 +45,8 @@ namespace MagicApp.Controllers
         [HttpGet("search")]
         public async Task<IActionResult> SearchUsersByNicknameAsync(string nickname)
         {
+            _logger.LogInformation("Se ha recibido una consulta al usuario por nickname: {nickname}", nickname);
+
             // Quitar tildes y convertir a minúsculas
             string normalizedNickname = Normalize(nickname);
 
@@ -43,7 +55,9 @@ namespace MagicApp.Controllers
             // Filtrar usuarios
             var filteredUsers = allUsers
                 .Where(user => Normalize(user.Nickname).Contains(normalizedNickname))
-                .ToList();
+            .ToList();
+
+            _logger.LogInformation("Usuarios: {@filteredUsers}", filteredUsers);
 
             return Ok(filteredUsers);
         }
@@ -52,7 +66,12 @@ namespace MagicApp.Controllers
         [HttpGet("allUsers")]
         public async Task<IActionResult> GetAllUsersAsync()
         {
+            _logger.LogInformation("Se ha recibido una consulta a todos los usuarios");
+
             var users = await _userService.GetAllUsersAsync();
+
+            _logger.LogInformation("Usuarios: {@users}", users);
+
             return Ok(users);
         }
 

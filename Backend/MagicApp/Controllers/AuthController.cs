@@ -11,6 +11,7 @@ using System.Security.Claims;
 
 namespace MagicApp.Controllers;
 
+[Authorize]
 [Route("api/[controller]")]
 [ApiController]
 public class AuthController : ControllerBase
@@ -18,12 +19,14 @@ public class AuthController : ControllerBase
     private readonly TokenValidationParameters _tokenParameters;
     private readonly UserService _userService;
     private readonly UserMapper _userMapper;
+    private readonly ILogger<AuthController> _logger;
 
-    public AuthController(UserService userService, UserMapper userMapper, IOptionsMonitor<JwtBearerOptions> jwtOptions)
+    public AuthController(UserService userService, UserMapper userMapper, IOptionsMonitor<JwtBearerOptions> jwtOptions, ILogger<AuthController> logger)
     {
         _userService = userService;
         _userMapper = userMapper;
         _tokenParameters = jwtOptions.Get(JwtBearerDefaults.AuthenticationScheme).TokenValidationParameters;
+        _logger = logger;
     }
 
     // Login
@@ -31,6 +34,8 @@ public class AuthController : ControllerBase
     [HttpPost("login")]
     public async Task<ActionResult<LoginResult>> Login([FromBody] LoginRequest model)
     {
+        _logger.LogInformation("Un usuario quiere iniciar sesión: {@model}", model);
+
         try
         {
             // Se usa el método LoginAsync para verificar el usuario y la contraseña
@@ -39,12 +44,14 @@ public class AuthController : ControllerBase
             // Si el usuario es null, se devuelve Unauthorized
             if (user == null)
             {
+                _logger.LogError("Datos de inicio de sesión incorrectos: {@model}", model);
                 return Unauthorized("Datos de inicio de sesión incorrectos.");
             }
 
             // Prohibición del usuario
             if (user.IsBanned)
             {
+                _logger.LogError("El usuario {user.Nickname} está baneado", user.Nickname);
                 return StatusCode(StatusCodes.Status403Forbidden, $"El usuario {user.Nickname} está baneado.");
             }
 
@@ -99,12 +106,14 @@ public class AuthController : ControllerBase
                 User = _userMapper.UserToDto(user)
             };
 
+            _logger.LogInformation("Usuario: {@loginResult}", loginResult);
+
             return Ok(loginResult);
         }
 
-        catch (InvalidOperationException)
+        catch (Exception ex)
         {
-            // Si hay algún error, se devuelve Unauthorized
+            _logger.LogError("Se ha producido un error en el inicio de sesión {ex}", ex);
             return Unauthorized("Datos de inicio de sesión incorrectos.");
         }
     }
@@ -114,6 +123,8 @@ public class AuthController : ControllerBase
     [HttpPost("refresh")]
     public async Task<ActionResult<RefreshTokenResult>> Refresh([FromBody] RefreshTokenRequest RefreshToken)
     {
+        _logger.LogInformation("Se va a refrescar un token: {@RefreshToken}", RefreshToken);
+
         try
         {
             // Validar el refresh token
@@ -132,6 +143,7 @@ public class AuthController : ControllerBase
 
             if (tokenTypeClaim != "refresh")
             {
+                _logger.LogError("Token inválido {RefreshToken.RefreshToken}", RefreshToken.RefreshToken);
                 return Unauthorized("Token inválido");
             }
 
@@ -141,6 +153,7 @@ public class AuthController : ControllerBase
 
             if (user == null || user.IsBanned)
             {
+                _logger.LogError("Usuario no válido {@user}", user);
                 return Unauthorized("Usuario no válido");
             }
 
@@ -179,47 +192,66 @@ public class AuthController : ControllerBase
             var refreshToken = tokenHandler.CreateToken(refreshTokenDescriptor);
             var newRefreshToken = tokenHandler.WriteToken(refreshToken);
 
+            _logger.LogInformation("Access token: {newAccessToken}, Refresh token: {newRefreshToken}", newAccessToken, newRefreshToken);
+
             return Ok(new RefreshTokenResult
             {
                 AccessToken = newAccessToken,
                 RefreshToken = newRefreshToken
             });
         }
-        catch (Exception)
+        catch (Exception ex)
         {
+            _logger.LogError("Se ha producido un error al refrescar el token {ex}", ex);
             return Unauthorized("Token inválido");
         }
     }
 
     // Registro
+    [AllowAnonymous]
     [HttpPost("Signup")]
     public async Task<ActionResult<RegisterDto>> SignUp([FromBody] RegisterDto model)
     {
-        if (!ModelState.IsValid)
+        _logger.LogInformation("Un usuario quiere registrarse: {@model}", model);
+
+        try
         {
-            return BadRequest(ModelState);
+            if (!ModelState.IsValid)
+            {
+                _logger.LogError("Registro inválido");
+                return BadRequest(ModelState);
+            }
+
+            // Verifica si ya existe un usuario con el mismo correo
+            var existingUserEmail = await _userService.GetUserByEmailAsync(model.Email);
+
+            // Verifica si ya existe un usuario con el mismo nickname
+            var existingUserNickname = await _userService.GetUserByNicknameAsync(model.Nickname);
+
+            if (existingUserEmail != null)
+            {
+                _logger.LogError("El correo electrónico ya está en uso.");
+                return Conflict("El correo electrónico ya está en uso.");
+            }
+
+            if (existingUserNickname != null)
+            {
+                _logger.LogError("El nickname ya está en uso.");
+                return Conflict("El nickname ya está en uso.");
+            }
+
+            var newUser = await _userService.RegisterAsync(model);
+
+            var userDto = _userMapper.UserToDto(newUser);
+
+            _logger.LogInformation("Usuario: {@userDto}", userDto);
+
+            return CreatedAtAction(nameof(Login), new { email = userDto.Email }, userDto);
         }
-
-        // Verifica si ya existe un usuario con el mismo correo
-        var existingUserEmail = await _userService.GetUserByEmailAsync(model.Email);
-
-        // Verifica si ya existe un usuario con el mismo nickname
-        var existingUserNickname = await _userService.GetUserByNicknameAsync(model.Nickname);
-
-        if (existingUserEmail != null)
+        catch (Exception ex)
         {
-            return Conflict("El correo electrónico ya está en uso.");
+            _logger.LogError("Se ha producido un error al registrar un usuario {ex}", ex);
+            return Unauthorized("Datos inválidos.");
         }
-
-        if (existingUserNickname != null)
-        {
-            return Conflict("El nickname ya está en uso.");
-        }
-
-        var newUser = await _userService.RegisterAsync(model);
-
-        var userDto = _userMapper.UserToDto(newUser);
-
-        return CreatedAtAction(nameof(Login), new { email = userDto.Email }, userDto);
     }
 }
