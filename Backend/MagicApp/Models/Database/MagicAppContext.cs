@@ -16,6 +16,20 @@ public class MagicAppContext : DbContext
 
     public DbSet<User> User { get; set; }
 
+    public DbSet<ChatMessage> ChatMessage { get; set; }
+
+    public DbSet<Deck> Deck { get; set; }
+
+    public DbSet<DeckCard> DeckCard { get; set; }
+
+    public DbSet<ForumThread> ForumThread { get; set; }
+
+    public DbSet<ForumComment> ForumComment { get; set; }
+
+    public DbSet<ThreadSubscription> ThreadSubscription { get; set; }
+
+    public DbSet<Report> Report { get; set; }
+
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
 #if DEBUG

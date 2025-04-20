@@ -2,7 +2,9 @@ using MagicApp.Models.Database;
 using MagicApp.Models.Database.Repositories;
 using MagicApp.Models.Mappers;
 using MagicApp.Services;
+using MagicApp.WebSocketComunication;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Server.Kestrel.Core;
 using Microsoft.Extensions.FileProviders;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
@@ -44,10 +46,22 @@ namespace MagicApp
 
             // Inyección de Servicios
             builder.Services.AddScoped<UserService>();
+            builder.Services.AddSingleton<WebSocketNetwork>();
+            builder.Services.AddSingleton<IWebSocketMessageSender>(provider => provider.GetRequiredService<WebSocketNetwork>());
 
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
+
+            // Configuración del WebSocket
+            builder.WebHost.ConfigureKestrel(options =>
+            {
+                options.ListenAnyIP(7012, listenOptions =>
+                {
+                    listenOptions.UseHttps();
+                    listenOptions.Protocols = HttpProtocols.Http1;
+                });
+            });
 
             // Configuración de CORS
             builder.Services.AddCors(options =>
@@ -123,6 +137,9 @@ namespace MagicApp
 
             // Permite CORS
             app.UseCors("AllowAllOrigins");
+
+            // Middleware del WebSocket
+            app.UseMiddleware<WebSocketMiddleware>();
 
             // wwwroot
             app.UseStaticFiles(new StaticFileOptions
