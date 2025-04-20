@@ -20,6 +20,8 @@ public class Seeder
 
     private async Task SeedUsersAsync()
     {
+        const string IMAGES_FOLDER = "avatars/";
+
         // Crear usuarios
         User[] users = [
         new User {
@@ -27,6 +29,7 @@ public class Seeder
             Email = "admin@gmail.com",
             Password = PasswordHelper.Hash("123456"),
             Role = "Admin",
+            AvatarUrl = $"{IMAGES_FOLDER}ajani.jpg",
             IsBanned = false,
         },
         new User {
@@ -34,6 +37,7 @@ public class Seeder
             Email = "usuario@gmail.com",
             Password = PasswordHelper.Hash("123456"),
             Role = "User",
+            AvatarUrl = $"{IMAGES_FOLDER}gideon.jpg",
             IsBanned = false,
         }
     ];
