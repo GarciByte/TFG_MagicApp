@@ -1,18 +1,130 @@
+using MagicApp.Models.Database;
+using MagicApp.Models.Database.Repositories;
+using MagicApp.Models.Mappers;
+using MagicApp.Services;
+using MagicApp.WebSocketComunication;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Server.Kestrel.Core;
+using Microsoft.Extensions.FileProviders;
+using Microsoft.Extensions.Options;
+using Microsoft.IdentityModel.Tokens;
+using Microsoft.OpenApi.Models;
+using Serilog;
+using Serilog.Events;
+using Swashbuckle.AspNetCore.Filters;
+using System.Globalization;
+using System.Text;
+using System.Text.Json.Serialization;
 
 namespace MagicApp
 {
     public class Program
     {
-        public static void Main(string[] args)
+        public static async Task Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
 
-            // Add services to the container.
+            // Cultura invariante
+            CultureInfo.DefaultThreadCurrentCulture = CultureInfo.InvariantCulture;
 
-            builder.Services.AddControllers();
+            // Configuración del directorio
+            Directory.SetCurrentDirectory(AppContext.BaseDirectory);
+
+            // Leer la configuración
+            builder.Services.Configure<Settings>(builder.Configuration.GetSection("Settings"));
+            builder.Services.AddSingleton(sp => sp.GetRequiredService<IOptions<Settings>>().Value);
+
+            // Inyectamos el DbContext
+            builder.Services.AddScoped<MagicAppContext>();
+            builder.Services.AddScoped<UnitOfWork>();
+
+            // Inyección de todos los repositorios
+            builder.Services.AddScoped<UserRepository>();
+
+            // Inyección de Mappers
+            builder.Services.AddScoped<UserMapper>();
+
+            // Inyección de Servicios
+            builder.Services.AddScoped<UserService>();
+            builder.Services.AddSingleton<WebSocketNetwork>();
+            builder.Services.AddSingleton<IWebSocketMessageSender>(provider => provider.GetRequiredService<WebSocketNetwork>());
+
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
+
+            // Configuración del WebSocket
+            builder.WebHost.ConfigureKestrel(options =>
+            {
+                options.ListenAnyIP(7012, listenOptions =>
+                {
+                    listenOptions.UseHttps();
+                    listenOptions.Protocols = HttpProtocols.Http1;
+                });
+            });
+
+            // Configuración de CORS
+            builder.Services.AddCors(options =>
+            {
+                options.AddPolicy("AllowAllOrigins", builder =>
+                {
+                    builder.AllowAnyOrigin()
+                           .AllowAnyHeader()
+                           .AllowAnyMethod();
+                });
+            });
+
+            // Añadir controladores
+            builder.Services.AddControllers();
+            builder.Services.AddControllers().AddJsonOptions(options =>
+            {
+                options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles;
+            });
+
+            // Configuración de Swagger
+            builder.Services.AddSwaggerGen(options =>
+            {
+                options.AddSecurityDefinition(JwtBearerDefaults.AuthenticationScheme, new OpenApiSecurityScheme
+                {
+                    BearerFormat = "JWT",
+                    Name = "Authorization",
+                    Description = "Escribe **_SOLO_** tu token JWT",
+                    In = ParameterLocation.Header,
+                    Type = SecuritySchemeType.Http,
+                    Scheme = JwtBearerDefaults.AuthenticationScheme
+                });
+
+                options.OperationFilter<SecurityRequirementsOperationFilter>(true, JwtBearerDefaults.AuthenticationScheme);
+            });
+
+            // Configuración de autenticación
+            builder.Services.AddAuthentication()
+            .AddJwtBearer(options =>
+            {
+                string key = Environment.GetEnvironmentVariable("JwtKey");
+                options.TokenValidationParameters = new TokenValidationParameters()
+                {
+                    ValidateIssuer = false,
+                    ValidateAudience = false,
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(key))
+                };
+            });
+
+            // Configuración de Serilog
+            Log.Logger = new LoggerConfiguration()
+                .MinimumLevel.Information()
+                .MinimumLevel.Override("Microsoft", LogEventLevel.Warning)
+                .Enrich.FromLogContext()
+                .WriteTo.Console()
+                .WriteTo.File(
+                    path: Path.Combine(Directory.GetCurrentDirectory(), "logs", "log-.txt"),
+                    rollingInterval: RollingInterval.Day,
+                    retainedFileCountLimit: 7,
+                    outputTemplate: "{Timestamp:yyyy-MM-dd HH:mm:ss.fff zzz} [{Level:u3}] {Message:lj}{NewLine}{Exception}")
+                .CreateLogger();
+
+            // Registrar Serilog
+            builder.Host.UseSerilog();
 
             var app = builder.Build();
 
@@ -23,14 +135,48 @@ namespace MagicApp
                 app.UseSwaggerUI();
             }
 
+            // Permite CORS
+            app.UseCors("AllowAllOrigins");
+
+            // Middleware del WebSocket
+            app.UseMiddleware<WebSocketMiddleware>();
+
+            // wwwroot
+            app.UseStaticFiles(new StaticFileOptions
+            {
+                FileProvider = new PhysicalFileProvider(
+                        Path.Combine(Directory.GetCurrentDirectory(), "wwwroot"))
+            });
+
+            app.UseWebSockets();
+
             app.UseHttpsRedirection();
+
+            app.UseRouting();
+
+            app.UseAuthentication();
 
             app.UseAuthorization();
 
-
             app.MapControllers();
 
+            await SeedDataBaseAsync(app.Services);
+
             app.Run();
+        }
+
+        // Seeder
+        static async Task SeedDataBaseAsync(IServiceProvider serviceProvider)
+        {
+            using IServiceScope scope = serviceProvider.CreateScope();
+            using MagicAppContext dbContext = scope.ServiceProvider.GetService<MagicAppContext>();
+
+            // Si no existe la base de datos, la creamos y ejecutamos el seeder
+            if (dbContext.Database.EnsureCreated())
+            {
+                Seeder seeder = new Seeder(dbContext);
+                await seeder.SeedAsync();
+            }
         }
     }
 }
