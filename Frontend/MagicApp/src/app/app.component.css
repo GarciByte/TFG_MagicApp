@@ -3,14 +3,6 @@ ion-app {
     min-height: 100vh;
 }
 
-app-sidebar {
-    background: #627cbc;
-    padding: 20px;
-    overflow-y: auto;
-}
-
 ion-router-outlet {
-    flex: 1;
-    position: relative;
     padding: 20px;
 }

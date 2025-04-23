@@ -1,17 +1,28 @@
+import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
-import {IonTitle } from "@ionic/angular/standalone";
+import { RouterModule } from '@angular/router';
+import { IonicModule, NavController } from '@ionic/angular';
+import { AuthService } from 'src/app/services/auth.service';
+import { WebsocketService } from 'src/app/services/websocket.service';
 
 @Component({
   selector: 'app-home',
-  imports: [IonTitle],
+  imports: [IonicModule, CommonModule, RouterModule],
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.css'],
   standalone: true,
 })
-export class HomeComponent  implements OnInit {
+export class HomeComponent implements OnInit {
 
-  constructor() { }
+  constructor(
+    private navCtrl: NavController,
+    private authService: AuthService,
+    private websocketService: WebsocketService
+  ) { }
 
-  ngOnInit() {}
-
+  async ngOnInit(): Promise<void> {
+    if (await this.authService.isAuthenticated() && this.websocketService.isConnectedRxjs()) {
+      this.navCtrl.navigateRoot(['/menu']);
+    }
+  }
 }
