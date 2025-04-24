@@ -53,13 +53,12 @@ namespace MagicApp
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
 
-            // Configuración del WebSocket
+            // Configuración para el WebSocket
             builder.WebHost.ConfigureKestrel(options =>
             {
-                options.ListenAnyIP(7012, listenOptions =>
+                options.ConfigureEndpointDefaults(lo =>
                 {
-                    listenOptions.UseHttps();
-                    listenOptions.Protocols = HttpProtocols.Http1;
+                    lo.Protocols = HttpProtocols.Http1;
                 });
             });
 
@@ -101,7 +100,9 @@ namespace MagicApp
             builder.Services.AddAuthentication()
             .AddJwtBearer(options =>
             {
-                string key = Environment.GetEnvironmentVariable("JwtKey");
+                Settings settings = builder.Configuration.GetSection(Settings.SECTION_NAME).Get<Settings>();
+                string key = settings.JwtKey;
+
                 options.TokenValidationParameters = new TokenValidationParameters()
                 {
                     ValidateIssuer = false,
