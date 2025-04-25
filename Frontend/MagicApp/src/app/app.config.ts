@@ -31,14 +31,15 @@ export const appConfig: ApplicationConfig = {
       provide: RouteReuseStrategy,
       useClass: IonicRouteStrategy
     },
-    provideIonicAngular({ mode: 'md' }),
+    provideIonicAngular({ 
+      mode: 'md',
+      hardwareBackButton: true,
+      rippleEffect: true
+    }),
     importProvidersFrom(
       IonicStorageModule.forRoot({
         name: '__mydb',
-        driverOrder: [
-          Drivers.IndexedDB,
-          Drivers.LocalStorage
-        ]
+        driverOrder: [Drivers.IndexedDB, Drivers.LocalStorage]
       })
     ),
     provideAppInitializer(() => {

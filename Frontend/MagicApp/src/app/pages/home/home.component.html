@@ -4,6 +4,8 @@
     </ion-toolbar>
 </ion-header>
 
-<ion-content>
-    <p>Contenido de la vista Inicial</p>
+<ion-content class="custom-content">
+    <ion-button (click)="navCtrl.navigateRoot(['/login'])">
+        Iniciar sesión
+    </ion-button>
 </ion-content>

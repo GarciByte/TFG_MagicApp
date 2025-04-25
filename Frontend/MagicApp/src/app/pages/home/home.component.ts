@@ -1,13 +1,14 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { RouterModule } from '@angular/router';
-import { IonicModule, NavController } from '@ionic/angular';
+import { NavController } from '@ionic/angular';
 import { AuthService } from 'src/app/services/auth.service';
 import { WebsocketService } from 'src/app/services/websocket.service';
+import { IonHeader, IonToolbar, IonContent, IonButton, IonTitle } from "@ionic/angular/standalone";
 
 @Component({
   selector: 'app-home',
-  imports: [IonicModule, CommonModule, RouterModule],
+  imports: [IonTitle, IonButton, IonContent, IonToolbar, IonHeader, CommonModule, RouterModule],
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.css'],
   standalone: true,
@@ -15,7 +16,7 @@ import { WebsocketService } from 'src/app/services/websocket.service';
 export class HomeComponent implements OnInit {
 
   constructor(
-    private navCtrl: NavController,
+    public navCtrl: NavController,
     private authService: AuthService,
     private websocketService: WebsocketService
   ) { }
@@ -25,4 +26,5 @@ export class HomeComponent implements OnInit {
       this.navCtrl.navigateRoot(['/menu']);
     }
   }
+
 }

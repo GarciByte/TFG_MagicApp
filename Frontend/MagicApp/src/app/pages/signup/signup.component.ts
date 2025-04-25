@@ -2,14 +2,15 @@ import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { RouterModule } from '@angular/router';
-import { IonicModule, NavController } from '@ionic/angular';
+import { NavController } from '@ionic/angular';
 import { AuthService } from 'src/app/services/auth.service';
 import { ModalService } from 'src/app/services/modal.service';
 import { WebsocketService } from 'src/app/services/websocket.service';
+import { IonHeader, IonToolbar, IonTitle, IonContent } from "@ionic/angular/standalone";
 
 @Component({
   selector: 'app-signup',
-  imports: [IonicModule, CommonModule, RouterModule],
+  imports: [IonContent, IonTitle, IonToolbar, IonHeader, CommonModule, RouterModule],
   templateUrl: './signup.component.html',
   styleUrls: ['./signup.component.css'],
   standalone: true,

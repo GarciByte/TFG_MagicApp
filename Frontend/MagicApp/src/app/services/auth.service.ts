@@ -8,6 +8,7 @@ import { WebsocketService } from './websocket.service';
 import { StorageService } from './storage.service';
 import { RefreshTokenRequest } from '../models/refresh-token-request';
 import { RefreshTokenResult } from '../models/refresh-token-result';
+import { Capacitor } from '@capacitor/core';
 
 @Injectable({
   providedIn: 'root'
@@ -17,6 +18,7 @@ export class AuthService {
   private readonly USER_KEY = 'user';
   private readonly TOKEN_KEY = 'jwtToken';
   private readonly REMEMBER_ME_KEY = 'rememberMe';
+  private isNative = Capacitor.isNativePlatform();
 
   constructor(
     private api: ApiService,
@@ -28,7 +30,8 @@ export class AuthService {
   async autoLogin(): Promise<void> {
     try {
       const rememberMe = await this.storageService.getObject<boolean>(this.REMEMBER_ME_KEY) ?? false;
-      if (!rememberMe) {
+
+      if (this.isNative && !rememberMe) {
         await this.logout();
         return;
       }
@@ -67,11 +70,21 @@ export class AuthService {
       const { accessToken, refreshToken, user } = result.data;
       this.api.accessToken = accessToken;
 
-      // Guardar tokens
-      await this.storageService.saveObject(this.TOKEN_KEY, { accessToken, refreshToken });
-
       // Guardar datos del usuario
       await this.storageService.saveObject(this.USER_KEY, user);
+
+      // Guardar tokens
+      if (!this.isNative && !rememberMe) {
+        const tokens = {
+          accessToken: accessToken,
+          refreshToken: refreshToken
+        };
+
+        sessionStorage.setItem(this.TOKEN_KEY, JSON.stringify(tokens));
+
+      } else {
+        await this.storageService.saveObject(this.TOKEN_KEY, { accessToken, refreshToken });
+      }
 
       // Recordar sesión
       await this.storageService.saveObject(this.REMEMBER_ME_KEY, rememberMe);
@@ -96,8 +109,28 @@ export class AuthService {
 
   // Comprobar si el usuario está logeado
   async isAuthenticated(): Promise<boolean> {
-    const tokens = await this.storageService.getObject<{ accessToken: string; refreshToken: string }>(this.TOKEN_KEY);
-    return !!tokens?.accessToken && !!tokens?.refreshToken && !!this.api.accessToken?.trim();
+    try {
+      const rememberMe = await this.storageService.getObject<boolean>(this.REMEMBER_ME_KEY) ?? false;
+      let tokens = null;
+
+      if (!this.isNative && !rememberMe) {
+        const tokensString = sessionStorage.getItem(this.TOKEN_KEY);
+
+        if (!tokensString) {
+          return false;
+        }
+        tokens = JSON.parse(tokensString);
+
+      } else {
+        tokens = await this.storageService.getObject<{ accessToken: string; refreshToken: string }>(this.TOKEN_KEY);
+      }
+
+      return !!tokens?.accessToken && !!tokens?.refreshToken && !!this.api.accessToken?.trim();
+
+    } catch (error) {
+      console.error("Se ha producido un error al comprobar si el usuario está logeado:", error);
+      return false;
+    }
   }
 
   // Cerrar sesión
@@ -107,6 +140,7 @@ export class AuthService {
       await this.storageService.removeObject(this.TOKEN_KEY);
       await this.storageService.removeObject(this.USER_KEY);
       await this.storageService.removeObject(this.REMEMBER_ME_KEY);
+      sessionStorage.removeItem(this.TOKEN_KEY);
       this.api.accessToken = null;
 
     } catch (error) {
@@ -121,19 +155,42 @@ export class AuthService {
 
   // Refrescar el token
   async refreshTokens(): Promise<boolean> {
-    const tokens = await this.storageService.getObject<{ accessToken: string; refreshToken: string; }>(this.TOKEN_KEY);
-
-    if (!tokens?.refreshToken) {
-      await this.logout();
-      return false;
-    }
-
     try {
-      const request: RefreshTokenRequest = { refreshToken: tokens.refreshToken };
+      const rememberMe = await this.storageService.getObject<boolean>(this.REMEMBER_ME_KEY) ?? false;
+      let refreshToken = null;
+
+      if (!this.isNative && !rememberMe) {
+        const tokensString = sessionStorage.getItem(this.TOKEN_KEY);
+
+        if (!tokensString) {
+          await this.logout();
+          return false;
+        }
+        const tokens = JSON.parse(tokensString);
+        refreshToken = tokens?.refreshToken;
+
+      } else {
+        const tokens = await this.storageService.getObject<{ accessToken: string; refreshToken: string; }>(this.TOKEN_KEY);
+        refreshToken = tokens?.refreshToken;
+      }
+
+      if (!refreshToken) {
+        await this.logout();
+        return false;
+      }
+
+      const request: RefreshTokenRequest = { refreshToken: refreshToken };
       const response = await this.api.post<RefreshTokenResult>('Auth/refresh', request);
 
       if (response.success) {
-        await this.storageService.saveObject(this.TOKEN_KEY, response.data);
+
+        if (!this.isNative && !rememberMe) {
+          sessionStorage.setItem(this.TOKEN_KEY, JSON.stringify(response.data));
+
+        } else {
+          await this.storageService.saveObject(this.TOKEN_KEY, response.data);
+        }
+
         this.api.accessToken = response.data.accessToken;
         console.log("Tokens refrescados con éxito.");
         return true;

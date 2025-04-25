@@ -103,6 +103,7 @@ export class WebsocketService {
         });
 
       } else {
+        console.error("No se ha podido iniciar la conexión WebSocket");
         resolve();
       }
     });

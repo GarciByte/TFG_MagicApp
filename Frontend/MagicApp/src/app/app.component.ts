@@ -3,6 +3,7 @@ import { StatusBar, Style } from '@capacitor/status-bar';
 import { IonApp, IonRouterOutlet, Platform } from "@ionic/angular/standalone";
 import { WebsocketService } from './services/websocket.service';
 import { AuthService } from './services/auth.service';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-root',
@@ -17,7 +18,9 @@ export class AppComponent implements OnInit, OnDestroy {
     private platform: Platform,
     private authService: AuthService,
     private websocketService: WebsocketService
-  ) { }
+  ) { 
+    console.log('ENVIRONMENT:', environment);
+  }
 
   async ngOnInit() {
     await this.platform.ready();

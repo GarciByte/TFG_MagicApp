@@ -4,5 +4,5 @@ ion-app {
 }
 
 ion-router-outlet {
-    padding: 20px;
+    background-color: var(--ion-background-color);
 }

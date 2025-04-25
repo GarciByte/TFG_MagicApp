@@ -1,14 +1,15 @@
 import { Component, OnInit } from '@angular/core';
-import { RouterModule } from '@angular/router';
 import { AuthService } from 'src/app/services/auth.service';
 import { WebsocketService } from 'src/app/services/websocket.service';
 import { CommonModule } from '@angular/common';
-import { IonicModule, NavController } from '@ionic/angular';
+import { NavController } from '@ionic/angular';
 import { ModalService } from 'src/app/services/modal.service';
+import { FormsModule } from '@angular/forms';
+import { IonContent, IonItem, IonLabel, IonButton, IonCardContent, IonCard, IonInput, IonCheckbox } from "@ionic/angular/standalone";
 
 @Component({
   selector: 'app-login',
-  imports: [IonicModule, CommonModule, RouterModule],
+  imports: [IonContent, IonCard, IonCardContent, IonItem, IonInput, IonCheckbox, IonLabel, IonButton, CommonModule, FormsModule],
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.css'],
   standalone: true,
@@ -20,7 +21,7 @@ export class LoginComponent implements OnInit {
   rememberMe: boolean = false;
 
   constructor(
-    private navCtrl: NavController,
+    public navCtrl: NavController,
     private authService: AuthService,
     private websocketService: WebsocketService,
     private modalService: ModalService
@@ -35,6 +36,9 @@ export class LoginComponent implements OnInit {
   async submit() {
     const authData = { nickname: this.nickname, password: this.password };
     const result = await this.authService.login(authData, this.rememberMe);
+
+    console.log("Datos:", authData);
+    console.log("Resultado", result);
 
     if (result.success) {
       this.modalService.showToast("Inicio de sesión con éxito", "success");

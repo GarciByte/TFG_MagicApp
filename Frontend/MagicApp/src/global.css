@@ -4,8 +4,13 @@
     padding: 0;
 }
 
-html {
-    overflow-x: hidden;
+ion-content {
+    --overflow: auto !important;
+}
+
+.ion-page {
+    contain: none !important;
+    overflow: auto !important;
 }
 
 /* Toast */
@@ -69,7 +74,7 @@ ion-toast {
     font-size: 13px !important;
 }
 
-.custom-alert .alert-button:hover  {
+.custom-alert .alert-button:hover {
     background-color: #5043e3;
 }
 

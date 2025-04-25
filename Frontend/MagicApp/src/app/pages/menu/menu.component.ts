@@ -3,11 +3,12 @@ import { RouterModule } from '@angular/router';
 import { AuthService } from 'src/app/services/auth.service';
 import { WebsocketService } from 'src/app/services/websocket.service';
 import { CommonModule } from '@angular/common';
-import { IonicModule, NavController } from '@ionic/angular';
+import { NavController } from '@ionic/angular';
+import { IonHeader, IonToolbar, IonContent, IonTitle } from "@ionic/angular/standalone";
 
 @Component({
   selector: 'app-menu',
-  imports: [IonicModule, CommonModule, RouterModule],
+  imports: [IonTitle, IonContent, IonToolbar, IonHeader, CommonModule, RouterModule],
   templateUrl: './menu.component.html',
   styleUrls: ['./menu.component.css'],
   standalone: true,

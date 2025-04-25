@@ -1,0 +1,152 @@
+.login-container {
+    --background: var(--ion-background-color);
+    color: var(--ion-text-color);
+    overflow-y: auto;
+}
+
+.login-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100%;
+    width: 100%;
+    padding: 1rem;
+}
+
+.login-card {
+    width: 90%;
+    max-width: 400px;
+    border-radius: 12px;
+    background: var(--ion-card-background);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
+    margin: 2rem;
+}
+
+.login-form {
+    padding: 2rem 1.5rem;
+}
+
+.logo-container {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 1.5rem;
+    cursor: pointer;
+}
+
+.logo-image {
+    max-width: 150px;
+    height: auto;
+}
+
+.title {
+    text-align: center;
+    font-size: 2.5rem;
+    font-weight: 600;
+    margin-bottom: 2rem;
+    color: var(--ion-color-primary);
+}
+
+.form-item {
+    margin-bottom: 1.5rem;
+    --highlight-color-focused: #2196F3;
+    --border-color: #666;
+    position: relative;
+}
+
+.form-item.ion-focused {
+    box-shadow: 0 0 0 2px #6200ee;
+    border-radius: 4px;
+}
+
+.form-item ion-input,
+.form-item ion-input::placeholder {
+    color: inherit;
+}
+
+.form-item ion-input {
+    font-size: 1.1rem;
+}
+
+.checkbox-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 1rem 0;
+    cursor: pointer;
+    width: 100%;
+}
+
+.checkbox-label {
+    margin-left: 12px;
+    color: var(--ion-text-color);
+    font-size: 0.95rem;
+    user-select: none;
+}
+
+ion-checkbox {
+    --size: 18px;
+    --checkbox-background-checked: #6200ee;
+    --border-color-checked: #6200ee;
+}
+
+.login-button {
+    --background: #6200ee;
+    --background-activated: #4304a7;
+    --background-hover: #6320d5;
+    --padding-top: 1.2rem;
+    --padding-bottom: 1.2rem;
+    margin: 2rem 0 1.5rem;
+    font-weight: 600;
+    color: #ffffff;
+    font-size: 1.1rem;
+}
+
+.login-button:hover {
+    --background: #5703cc;
+}
+
+.signup-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 1rem;
+}
+
+.signup-text {
+    font-size: 0.9rem;
+}
+
+.signup-button {
+    --color: var(--ion-color-primary);
+    --background: transparent;
+    --background-hover: transparent;
+    --background-activated: transparent;
+    font-weight: 500;
+    transition: none;
+}
+
+.signup-button:hover {
+    text-decoration: underline;
+}
+
+@media (max-width: 767px) {
+    .login-card {
+        margin: 1rem 0;
+    }
+
+    .logo-image {
+        max-width: 100px;
+    }
+
+    .title {
+        font-size: 2rem;
+    }
+
+    .form-item ion-input {
+        font-size: 1rem;
+    }
+
+    .login-button {
+        font-size: 1rem;
+    }
+}
