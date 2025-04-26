@@ -1,0 +1,8 @@
+ion-app {
+    display: flex;
+    min-height: 100vh;
+}
+
+ion-router-outlet {
+    background-color: var(--ion-background-color);
+}
