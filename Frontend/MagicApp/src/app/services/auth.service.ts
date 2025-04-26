@@ -48,6 +48,7 @@ export class AuthService {
         }
 
       } else {
+        console.error("No se han podido refrescar los tokens");
         await this.logout();
       }
 
@@ -163,7 +164,6 @@ export class AuthService {
         const tokensString = sessionStorage.getItem(this.TOKEN_KEY);
 
         if (!tokensString) {
-          await this.logout();
           return false;
         }
         const tokens = JSON.parse(tokensString);
@@ -175,7 +175,6 @@ export class AuthService {
       }
 
       if (!refreshToken) {
-        await this.logout();
         return false;
       }
 
@@ -196,12 +195,10 @@ export class AuthService {
         return true;
       }
 
-      await this.logout();
       return false;
 
     } catch (error) {
       console.error("Error renovando tokens:", error);
-      await this.logout();
       return false;
     }
   }
