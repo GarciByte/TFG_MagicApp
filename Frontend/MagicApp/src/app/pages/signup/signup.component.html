@@ -1,9 +1,99 @@
-<ion-header>
-  <ion-toolbar>
-    <ion-title>Vista Registro</ion-title>
-  </ion-toolbar>
-</ion-header>
+<ion-content class="signup-container">
+  <div class="signup-wrapper">
+    <ion-card class="signup-card">
+      <ion-card-content>
+        <form [formGroup]="signupForm" (ngSubmit)="submit()" class="signup-form">
 
-<ion-content>
-  <p>Formulario del registro</p>
+          <!-- Avatar -->
+          <div class="avatar-section">
+
+            <ion-item lines="full" class="form-item">
+              <ion-select formControlName="avatarName" interface="popover" okText="Seleccionar" cancelText="Cancelar">
+                <ion-select-option *ngFor="let av of avatars" [value]="av">
+                  {{ av }}
+                </ion-select-option>
+              </ion-select>
+            </ion-item>
+
+            <div class="avatar-preview">
+              <img [src]="'assets/images/avatars/' + signupForm.get('avatarName')!.value + '.jpg'"
+                alt="Avatar seleccionado" />
+            </div>
+          </div>
+
+          <!-- Nickname -->
+          <ion-item lines="full" class="form-item">
+            <ion-input label="Apodo" labelPlacement="floating" formControlName="nickname" required
+              autocomplete="nickname" enterkeyhint="next">
+            </ion-input>
+          </ion-item>
+          <div class="error" *ngIf="signupForm.get('nickname')?.invalid && signupForm.get('nickname')?.touched">
+            <div *ngIf="signupForm.get('nickname')?.hasError('required')">
+              El apodo es obligatorio.
+            </div>
+            <div *ngIf="signupForm.get('nickname')?.hasError('pattern')">
+              No se permite el carácter &#64;.
+            </div>
+          </div>
+
+          <!-- Email -->
+          <ion-item lines="full" class="form-item">
+            <ion-input label="Correo electrónico" labelPlacement="floating" type="email" formControlName="email"
+              required autocomplete="email" enterkeyhint="next">
+            </ion-input>
+          </ion-item>
+          <div class="error" *ngIf="signupForm.get('email')?.invalid && signupForm.get('email')?.touched">
+            <div *ngIf="signupForm.get('email')?.hasError('required')">
+              El correo es obligatorio.
+            </div>
+            <div *ngIf="signupForm.get('email')?.hasError('email')">
+              Debe ser un correo válido.
+            </div>
+          </div>
+
+          <!-- Password -->
+          <ion-item lines="full" class="form-item">
+            <ion-input label="Contraseña" labelPlacement="floating" type="password" formControlName="password" required
+              autocomplete="new-password" enterkeyhint="next">
+            </ion-input>
+          </ion-item>
+          <div class="error" *ngIf="signupForm.get('password')?.invalid && signupForm.get('password')?.touched">
+            <div *ngIf="signupForm.get('password')?.hasError('required')">
+              La contraseña es obligatoria.
+            </div>
+            <div *ngIf="signupForm.get('password')?.hasError('minlength')">
+              Mínimo 6 caracteres.
+            </div>
+          </div>
+
+          <!-- Confirm Password -->
+          <ion-item lines="full" class="form-item">
+            <ion-input label="Repetir contraseña" labelPlacement="floating" type="password"
+              formControlName="confirmPassword" required autocomplete="new-password" enterkeyhint="done">
+            </ion-input>
+          </ion-item>
+          <div class="error"
+            *ngIf="signupForm.get('confirmPassword')?.invalid && signupForm.get('confirmPassword')?.touched">
+            <div *ngIf="signupForm.get('confirmPassword')?.hasError('mismatch')">
+              Las contraseñas deben coincidir.
+            </div>
+          </div>
+
+          <!-- Botón -->
+          <ion-button type="submit" expand="block" shape="round" class="signup-button" [disabled]="signupForm.invalid">
+            Registrarse
+          </ion-button>
+
+          <!-- Login -->
+          <div class="login-container">
+            <span class="login-text">¿Ya tienes cuenta?</span>
+            <ion-button fill="clear" (click)="navCtrl.navigateRoot(['/login'])" class="login-button">
+              Inicia sesión
+            </ion-button>
+          </div>
+
+        </form>
+      </ion-card-content>
+    </ion-card>
+  </div>
 </ion-content>
