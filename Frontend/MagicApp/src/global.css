@@ -4,6 +4,81 @@
     padding: 0;
 }
 
-html {
-    overflow-x: hidden;
+ion-content {
+    --overflow: auto !important;
+}
+
+.ion-page {
+    contain: none !important;
+    overflow: auto !important;
+}
+
+/* Toast */
+ion-toast {
+    --border-radius: 20px;
+    --width: fit-content;
+    font-size: 15px;
+}
+
+.success-toast {
+    --background: #2dd36f;
+    --color: #fff;
+}
+
+.error-toast {
+    --background: #eb445a;
+    --color: #fff;
+}
+
+.warning-toast {
+    --background: #ffc409;
+    --color: #000;
+}
+
+.info-toast {
+    --background: #3880ff;
+    --color: #fff;
+}
+
+/* Alert */
+.custom-alert .alert-wrapper {
+    border-radius: 20px;
+}
+
+.custom-alert .alert-head,
+.custom-alert .alert-title,
+.custom-alert .alert-sub-header,
+.custom-alert .alert-message {
+    text-align: center !important;
+    font-weight: bold !important;
+    font-size: 22px !important;
+}
+
+.custom-alert .alert-head,
+.custom-alert .alert-message {
+    padding: 15px !important;
+}
+
+.custom-alert .alert-button-group {
+    justify-content: center !important;
+    padding: 15px !important;
+}
+
+.custom-alert .alert-button {
+    min-width: 5rem;
+    margin: 0 0.25rem;
+    cursor: pointer !important;
+    background-color: #7066e0;
+    color: #fff;
+    border-radius: 12px;
+    font-size: 13px !important;
+}
+
+.custom-alert .alert-button:hover {
+    background-color: #5043e3;
+}
+
+.custom-alert .alert-button-group.alert-button-group--one-button .alert-button {
+    margin: 0 auto !important;
+    width: 8rem;
 }

@@ -99,7 +99,7 @@ public class UserService
             Email = model.Email,
             Password = PasswordHelper.Hash(model.Password),
             Role = "User", // Rol por defecto
-            AvatarUrl = $"{IMAGES_FOLDER}{model.AvatarName}",
+            AvatarUrl = $"{IMAGES_FOLDER}{model.AvatarName}.jpg",
             IsBanned = false
         };
 

@@ -1,6 +1,6 @@
 export const environment = { // En producción
   production: true,
-  apiUrl: "",
-  apiImg: "",
-  socketUrl: ""
+  apiUrl: "https://magichub.runasp.net/api/",
+  apiImg: "https://magichub.runasp.net/",
+  socketUrl: "wss://magichub.runasp.net/socket"
 };

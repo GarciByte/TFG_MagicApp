@@ -4,12 +4,9 @@ const config: CapacitorConfig = {
   appId: 'com.magic.magicHub',
   appName: 'MagicHub',
   webDir: 'www',
-  server: {
-    androidScheme: 'https'
-  },
   plugins: {},
   android: {
-    allowMixedContent: true
+    allowMixedContent: false
   }
 };
 

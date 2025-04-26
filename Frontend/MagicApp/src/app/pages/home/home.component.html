@@ -1,1 +1,11 @@
-<ion-title>Página de inicio</ion-title>
+<ion-header>
+    <ion-toolbar>
+        <ion-title>Vista Inicial</ion-title>
+    </ion-toolbar>
+</ion-header>
+
+<ion-content class="custom-content">
+    <ion-button (click)="navCtrl.navigateRoot(['/login'])">
+        Iniciar sesión
+    </ion-button>
+</ion-content>

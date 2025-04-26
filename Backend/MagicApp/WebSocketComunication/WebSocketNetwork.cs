@@ -143,7 +143,7 @@ public class WebSocketNetwork : IWebSocketMessageSender
             {
                 // Mensaje del chat global
                 case MsgType.GlobalChat:
-                    await HandleGlobalChatMessageAsync(handler, message);
+                    await HandleGlobalChatMessageAsync(message);
                     break;
 
                 default:
@@ -158,14 +158,12 @@ public class WebSocketNetwork : IWebSocketMessageSender
     }
 
     // Manejar mensajes del chat global
-    private async Task HandleGlobalChatMessageAsync(WebSocketHandler handler, WebSocketMessage message)
+    private async Task HandleGlobalChatMessageAsync(WebSocketMessage message)
     {
-        GlobalChatMessageDto chatMessage = null;
-
         try
         {
             string jsonContent = message.Content.ToString();
-            chatMessage = JsonSerializer.Deserialize<GlobalChatMessageDto>(jsonContent);
+            GlobalChatMessageDto chatMessage = JsonSerializer.Deserialize<GlobalChatMessageDto>(jsonContent);
             string updatedMessage = $"{chatMessage.Nickname}: {chatMessage.Content}";
 
             _logger.LogInformation("Mensaje de chat global recibido de {chatMessage.Nickname}: {chatMessage.Content}", chatMessage.Nickname, chatMessage.Content);
