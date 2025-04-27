@@ -1,0 +1,28 @@
+<ion-content>
+
+  <!-- Botón para volver al menú principal -->
+  <div class="button-container">
+    <ion-button size="small" shape="round" (click)="navCtrl.navigateRoot(['/menu'])">
+      Volver al menú principal
+    </ion-button>
+  </div>
+
+  <!-- Buscador de cartas -->
+  <div class="search-container">
+    <ion-searchbar name="searchTerm" [(ngModel)]="searchTerm" placeholder="Escribe nombre..."
+      (keyup.enter)="search()"></ion-searchbar>
+    <ion-button size="small" shape="round" (click)="search()">Buscar</ion-button>
+  </div>
+
+  <!-- Mensaje de estado -->
+  <div class="message" *ngIf="isLoading">Buscando cartas…</div>
+  <div class="message" *ngIf="!isLoading && hasSearched && cards.length === 0">
+    No se encontraron cartas.
+  </div>
+
+  <!-- Listado de cartas -->
+  <div class="card-grid" *ngIf="!isLoading && cards.length > 0">
+    <img *ngFor="let card of cards" [src]="card.imageUrl" [alt]="card.name" loading="lazy" />
+  </div>
+
+</ion-content>

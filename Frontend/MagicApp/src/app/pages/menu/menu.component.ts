@@ -25,7 +25,7 @@ export class MenuComponent implements OnInit, OnDestroy {
   user: User;
 
   constructor(
-    private navCtrl: NavController,
+    public navCtrl: NavController,
     private authService: AuthService,
     private websocketService: WebsocketService,
     private modalService: ModalService
