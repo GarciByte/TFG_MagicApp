@@ -4,18 +4,21 @@ import { AuthService } from 'src/app/services/auth.service';
 import { WebsocketService } from 'src/app/services/websocket.service';
 import { CommonModule } from '@angular/common';
 import { NavController } from '@ionic/angular';
-import { IonHeader, IonToolbar, IonContent, IonTitle, IonButton } from "@ionic/angular/standalone";
+import { IonHeader, IonToolbar, IonContent, IonTitle, IonFab, IonFabList, IonButton, IonIcon, IonCard, IonCardContent, IonFabButton } from "@ionic/angular/standalone";
 import { Subscription } from 'rxjs';
 import { User } from 'src/app/models/user';
 import { ModalService } from 'src/app/services/modal.service';
+import { environment } from '../../../environments/environment';
+
 
 @Component({
   selector: 'app-menu',
-  imports: [IonButton, IonTitle, IonContent, IonToolbar, IonHeader, CommonModule, RouterModule],
+  imports: [IonFabButton, IonCardContent, IonCard, IonFab, IonIcon, IonFabList, IonTitle, IonContent, IonToolbar, IonHeader, CommonModule, RouterModule],
   templateUrl: './menu.component.html',
   styleUrls: ['./menu.component.css'],
   standalone: true,
 })
+
 export class MenuComponent implements OnInit, OnDestroy {
 
   // Suscripciones a los datos necesarios
@@ -23,6 +26,8 @@ export class MenuComponent implements OnInit, OnDestroy {
   error$: Subscription;
 
   user: User;
+
+  public apiImg = environment.apiImg
 
   constructor(
     public navCtrl: NavController,
@@ -51,6 +56,7 @@ export class MenuComponent implements OnInit, OnDestroy {
     }
 
     this.user = await this.authService.getUser();
+    console.log(this.user)
 
     this.disconnected$ = this.websocketService.disconnected.subscribe(() => {
       console.warn("Desconectado del Servidor");
