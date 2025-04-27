@@ -2,6 +2,7 @@ using MagicApp.Models.Database;
 using MagicApp.Models.Database.Repositories;
 using MagicApp.Models.Mappers;
 using MagicApp.Services;
+using MagicApp.Services.Scryfall;
 using MagicApp.WebSocketComunication;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Server.Kestrel.Core;
@@ -33,6 +34,20 @@ namespace MagicApp
             // Leer la configuración
             builder.Services.Configure<Settings>(builder.Configuration.GetSection("Settings"));
             builder.Services.AddSingleton(sp => sp.GetRequiredService<IOptions<Settings>>().Value);
+
+            // Registrar HttpClient para ScryfallService
+            builder.Services.AddHttpClient<ScryfallService>(client =>
+            {
+                Settings settings = builder.Configuration.GetSection(Settings.SECTION_NAME).Get<Settings>();
+                var baseUrl = settings.Scryfall;
+                client.BaseAddress = new Uri(baseUrl);
+
+                client.DefaultRequestHeaders.Accept.Add(
+                    new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/json")
+                );
+
+                client.DefaultRequestHeaders.UserAgent.ParseAdd("MagicHub/1.0");
+            });
 
             // Inyectamos el DbContext
             builder.Services.AddScoped<MagicAppContext>();
