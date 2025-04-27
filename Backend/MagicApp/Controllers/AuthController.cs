@@ -210,7 +210,7 @@ public class AuthController : ControllerBase
     // Registro
     [AllowAnonymous]
     [HttpPost("Signup")]
-    public async Task<ActionResult<RegisterDto>> SignUp([FromBody] RegisterDto model)
+    public async Task<ActionResult<RegisterDto>> SignUp([FromForm] RegisterDto model)
     {
         _logger.LogInformation("Un usuario quiere registrarse: {@model}", model);
 

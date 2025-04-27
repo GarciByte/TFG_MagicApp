@@ -2,6 +2,7 @@ using MagicApp.Models.Database;
 using MagicApp.Models.Database.Repositories;
 using MagicApp.Models.Mappers;
 using MagicApp.Services;
+using MagicApp.Services.Scryfall;
 using MagicApp.WebSocketComunication;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Server.Kestrel.Core;
@@ -34,6 +35,20 @@ namespace MagicApp
             builder.Services.Configure<Settings>(builder.Configuration.GetSection("Settings"));
             builder.Services.AddSingleton(sp => sp.GetRequiredService<IOptions<Settings>>().Value);
 
+            // Registrar HttpClient para ScryfallService
+            builder.Services.AddHttpClient<ScryfallService>(client =>
+            {
+                Settings settings = builder.Configuration.GetSection(Settings.SECTION_NAME).Get<Settings>();
+                var baseUrl = settings.Scryfall;
+                client.BaseAddress = new Uri(baseUrl);
+
+                client.DefaultRequestHeaders.Accept.Add(
+                    new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/json")
+                );
+
+                client.DefaultRequestHeaders.UserAgent.ParseAdd("MagicHub/1.0");
+            });
+
             // Inyectamos el DbContext
             builder.Services.AddScoped<MagicAppContext>();
             builder.Services.AddScoped<UnitOfWork>();
@@ -53,13 +68,12 @@ namespace MagicApp
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
 
-            // Configuración del WebSocket
+            // Configuración para el WebSocket
             builder.WebHost.ConfigureKestrel(options =>
             {
-                options.ListenAnyIP(7012, listenOptions =>
+                options.ConfigureEndpointDefaults(lo =>
                 {
-                    listenOptions.UseHttps();
-                    listenOptions.Protocols = HttpProtocols.Http1;
+                    lo.Protocols = HttpProtocols.Http1;
                 });
             });
 
@@ -101,7 +115,9 @@ namespace MagicApp
             builder.Services.AddAuthentication()
             .AddJwtBearer(options =>
             {
-                string key = Environment.GetEnvironmentVariable("JwtKey");
+                Settings settings = builder.Configuration.GetSection(Settings.SECTION_NAME).Get<Settings>();
+                string key = settings.JwtKey;
+
                 options.TokenValidationParameters = new TokenValidationParameters()
                 {
                     ValidateIssuer = false,
