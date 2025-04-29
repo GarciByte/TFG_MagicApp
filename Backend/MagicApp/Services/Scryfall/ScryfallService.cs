@@ -1,6 +1,7 @@
 ﻿using MagicApp.Models.Dtos;
 using System.Net;
 using System.Text.Json;
+using System.Text.RegularExpressions;
 
 namespace MagicApp.Services.Scryfall;
 
@@ -112,8 +113,10 @@ public class ScryfallService
                 ImageUrl = src.ImageUris?.Normal,
                 ManaCost = src.ManaCost,
                 Cmc = src.Cmc,
+                ManaSymbolUrls = BuildManaSymbolUrls(src.ManaCost),
                 TypeLine = src.TypeLine,
                 OracleText = src.OracleText,
+                OracleTextHtml = BuildOracleTextHtml(src.OracleText),
                 Power = src.Power,
                 Toughness = src.Toughness,
                 Colors = src.Colors,
@@ -139,6 +142,39 @@ public class ScryfallService
         if (dict != null && dict.TryGetValue(key, out var value))
             return value;
         return null;
+    }
+
+    // Obtener símbolos SVG del coste de la carta
+    private static List<string> BuildManaSymbolUrls(string manaCost)
+    {
+        var urls = new List<string>();
+        if (string.IsNullOrEmpty(manaCost))
+            return urls;
+
+        var matches = Regex.Matches(manaCost, @"\{([^}]+)\}");
+
+        foreach (Match m in matches)
+        {
+            var symbol = m.Groups[1].Value;
+            urls.Add($"https://svgs.scryfall.io/card-symbols/{symbol}.svg");
+        }
+        return urls;
+    }
+
+    // Obtener símbolos SVG de la descripción de la carta
+    private static string BuildOracleTextHtml(string oracleText)
+    {
+        if (string.IsNullOrEmpty(oracleText))
+            return string.Empty;
+
+        return Regex.Replace(WebUtility.HtmlEncode(oracleText), @"\{([^}]+)\}",
+            match =>
+            {
+                var symbol = match.Groups[1].Value;
+                var url = $"https://svgs.scryfall.io/card-symbols/{symbol}.svg";
+                return $"<img class=\"mana-symbol-inline\" src=\"{url}\" alt=\"{symbol}\" />";
+            }
+        );
     }
 
 }

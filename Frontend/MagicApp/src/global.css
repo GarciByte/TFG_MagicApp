@@ -82,3 +82,12 @@ ion-toast {
     margin: 0 auto !important;
     width: 8rem;
 }
+
+/* Iconos de los textos de una carta */
+.oracle-text .mana-symbol-inline {
+    width: 20px;
+    height: auto;
+    vertical-align: -0.1em;
+    margin: 0 0.1em;
+    object-fit: contain;
+}

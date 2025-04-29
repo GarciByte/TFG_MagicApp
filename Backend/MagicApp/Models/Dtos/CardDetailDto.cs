@@ -12,9 +12,13 @@ public class CardDetailDto
 
     public decimal Cmc { get; set; }
 
+    public List<string> ManaSymbolUrls { get; set; }
+
     public string TypeLine { get; set; }
 
     public string OracleText { get; set; }
+
+    public string OracleTextHtml { get; set; }
 
     public string Power { get; set; }
 
