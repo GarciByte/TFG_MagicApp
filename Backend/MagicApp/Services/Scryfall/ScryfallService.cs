@@ -15,7 +15,7 @@ public class ScryfallService
         _logger = logger;
     }
 
-    // Busca cartas por nombre
+    // Buscar cartas por nombre
     public async Task<List<CardImageDto>> SearchCardImagesAsync(string name)
     {
         _logger.LogInformation("Se va a buscar en Scryfall la carta: {name}", name);
@@ -79,4 +79,66 @@ public class ScryfallService
             return new List<CardImageDto>();
         }
     }
+
+    // Obtener datos de una carta por ID
+    public async Task<CardDetailDto> GetCardByIdAsync(string id)
+    {
+        _logger.LogInformation("Obteniendo carta con ID {id}", id);
+
+        try
+        {
+            // Hacemos la petición
+            using var resp = await _http.GetAsync($"cards/{Uri.EscapeDataString(id)}");
+
+            // Si no encuentra la carta
+            if (resp.StatusCode == HttpStatusCode.NotFound)
+            {
+                _logger.LogError("No se ha encontrado la carta con ID: {id}", id);
+                return null;
+            }
+
+            resp.EnsureSuccessStatusCode();
+
+            // Deserializamos la respuesta
+            var json = await resp.Content.ReadAsStringAsync();
+            var src = JsonSerializer.Deserialize<CardDetailResponse>(json,
+                new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+
+            // Se devuelve el DTO de la carta
+            return new CardDetailDto
+            {
+                Id = src.Id,
+                Name = src.Name,
+                ImageUrl = src.ImageUris?.Normal,
+                ManaCost = src.ManaCost,
+                Cmc = src.Cmc,
+                TypeLine = src.TypeLine,
+                OracleText = src.OracleText,
+                Power = src.Power,
+                Toughness = src.Toughness,
+                Colors = src.Colors,
+                ColorIdentity = src.ColorIdentity,
+                SetName = src.SetName,
+                CollectorNumber = src.CollectorNumber,
+                Rarity = src.Rarity,
+                PriceEur = GetValueOrNull(src.Prices, "eur"),
+                PurchaseCardmarket = GetValueOrNull(src.PurchaseUris, "cardmarket"),
+                Keywords = src.Keywords,
+                Legalities = src.Legalities
+            };
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError("Se producido un error en la petición: {ex.Message}", ex.Message);
+            return null;
+        }
+    }
+
+    private static string GetValueOrNull(IDictionary<string, string> dict, string key)
+    {
+        if (dict != null && dict.TryGetValue(key, out var value))
+            return value;
+        return null;
+    }
+
 }
