@@ -27,6 +27,11 @@ export const routes: Routes = [
     pathMatch: 'full'
   },
   {
+    path: 'card-details', // Ruta de detalles de una carta
+    loadComponent: () => import('./pages/card-details/card-details.component').then(m => m.CardDetailsComponent),
+    pathMatch: 'full'
+  },
+  {
     path: '**',
     redirectTo: '',
     pathMatch: 'full'

@@ -6,8 +6,8 @@
 
 <ion-content class="ion-padding">
   <div class="profile-container">
-    <img [src]="apiImg + this.user.avatarUrl" alt="Avatar" class="profile-avatar" />
-    <h2 class="profile-name">{{ this.user.nickname }}</h2>
+    <img *ngIf="this.user" [src]="apiImg + this.user.avatarUrl" alt="Avatar" class="profile-avatar" />
+    <h2 *ngIf="this.user" class="profile-name">{{ this.user.nickname }}</h2>
   </div>
 
   <div class="buttons-layout">
@@ -18,7 +18,7 @@
     </ion-card>
 
     <div class="half-buttons">
-      <ion-card button class="menu-card half-width" (click)="navCtrl.navigateRoot(['/cartas'])">
+      <ion-card button class="menu-card half-width" (click)="navCtrl.navigateRoot(['/card-search'])">
         <ion-card-content>
           <span>Cartas</span>
         </ion-card-content>
