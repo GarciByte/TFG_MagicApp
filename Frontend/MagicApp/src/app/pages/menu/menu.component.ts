@@ -4,7 +4,19 @@ import { AuthService } from 'src/app/services/auth.service';
 import { WebsocketService } from 'src/app/services/websocket.service';
 import { CommonModule } from '@angular/common';
 import { NavController } from '@ionic/angular';
-import { IonHeader, IonToolbar, IonContent, IonTitle, IonFab, IonFabList, IonIcon, IonCard, IonCardContent, IonFabButton } from "@ionic/angular/standalone";
+import { 
+  IonContent,
+  IonGrid,
+  IonRow,
+  IonCol,
+  IonCard,
+  IonCardContent,
+  IonButton,
+  IonIcon,
+  IonItem,
+  IonLabel,
+  IonAvatar,
+} from "@ionic/angular/standalone";
 import { Subscription } from 'rxjs';
 import { User } from 'src/app/models/user';
 import { ModalService } from 'src/app/services/modal.service';
@@ -13,7 +25,12 @@ import { environment } from '../../../environments/environment';
 
 @Component({
   selector: 'app-menu',
-  imports: [IonFabButton, IonCardContent, IonCard, IonFab, IonIcon, IonFabList, IonTitle, IonContent, IonToolbar, IonHeader, CommonModule, RouterModule],
+  imports: [
+    IonContent,
+    IonButton,
+    CommonModule,
+    RouterModule
+],
   templateUrl: './menu.component.html',
   styleUrls: ['./menu.component.css'],
   standalone: true,

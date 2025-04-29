@@ -1,50 +1,61 @@
-<ion-header>
-  <ion-toolbar color="primary">
-    <ion-title>Menú Principal</ion-title>
-  </ion-toolbar>
-</ion-header>
+<ion-content>
+  <div class="menu-container">
+    <!-- Header -->
+    <h1 class="menu-title">MENU PRINCIPAL</h1>
 
-<ion-content class="ion-padding">
-  <div class="profile-container">
-    <img *ngIf="this.user" [src]="apiImg + this.user.avatarUrl" alt="Avatar" class="profile-avatar" />
-    <h2 *ngIf="this.user" class="profile-name">{{ this.user.nickname }}</h2>
-  </div>
+    <!-- Profile Section -->
+    <div class="profile-section">
+      <div class="avatar-container">
+        <div class="avatar-glow"></div>
+        <img [src]="apiImg + this.user.avatarUrl" alt="Avatar" class="avatar-img" />
+      </div>
+      <h2 class="username">{{ this.user.nickname }}</h2>
+    </div>
 
-  <div class="buttons-layout">
-    <ion-card button class="menu-card full-width" (click)="navCtrl.navigateRoot(['/mazos'])">
-      <ion-card-content>
-        <span>Mazos</span>
-      </ion-card-content>
-    </ion-card>
+    <!-- Menu Buttons -->
+    <div class="menu-buttons">
+      <!-- Buscador de Cartas - Full width button -->
+      <ion-button class="menu-button full-width" (click)="navCtrl.navigateRoot(['/card-search'])">
+        <div class="button-content">
+          <div class="magic-icon search-icon"></div>
+          <span>BUSCADOR DE CARTAS</span>
+        </div>
+      </ion-button>
 
-    <div class="half-buttons">
-      <ion-card button class="menu-card half-width" (click)="navCtrl.navigateRoot(['/card-search'])">
-        <ion-card-content>
-          <span>Cartas</span>
-        </ion-card-content>
-      </ion-card>
+      <!-- Bottom row with split buttons -->
+      <div class="button-row">
+        <!-- Mazos - Left side -->
+        <ion-button class="menu-button half-width-left" (click)="navCtrl.navigateRoot(['/mazos'])">
+          <div class="button-content">
+            <div class="magic-icon deck-icon"></div>
+            <span>MAZOS</span>
+          </div>
+        </ion-button>
 
-      <ion-card button class="menu-card half-width" (click)="navCtrl.navigateRoot(['/foros'])">
-        <ion-card-content>
-          <span>Foros</span>
-        </ion-card-content>
-      </ion-card>
+        <!-- Right side column -->
+        <div class="half-width-right">
+          <!-- Foros - Top right -->
+          <ion-button class="menu-button quarter-height">
+            <div class="button-content">
+              <div class="magic-icon forum-icon"></div>
+              <span>FOROS</span>
+            </div>
+          </ion-button>
+
+          <!-- Magic Chat - Bottom right -->
+          <ion-button class="menu-button quarter-height">
+            <div class="button-content">
+              <div class="magic-icon chat-icon"></div>
+              <span>MAGIC CHAT</span>
+            </div>
+          </ion-button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Footer Logo -->
+    <div class="footer-logo">
+      <img src="assets/images/logo.png" alt="MagicHub Logo" />
     </div>
   </div>
 </ion-content>
-<ion-fab slot="fixed" vertical="bottom" horizontal="end">
-  <ion-fab-button>
-    <ion-icon name="chevron-up-circle"></ion-icon>
-  </ion-fab-button>
-  <ion-fab-list side="top">
-    <ion-fab-button>
-      <ion-icon name="document"></ion-icon>
-    </ion-fab-button>
-    <ion-fab-button>
-      <ion-icon name="color-palette"></ion-icon>
-    </ion-fab-button>
-    <ion-fab-button>
-      <ion-icon name="globe"></ion-icon>
-    </ion-fab-button>
-  </ion-fab-list>
-</ion-fab>
