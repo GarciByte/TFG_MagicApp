@@ -23,4 +23,15 @@ public class CardsController : ControllerBase
         var images = await _scryfall.SearchCardImagesAsync(name);
         return Ok(images);
     }
+
+    // Obtener datos de una carta por ID
+    [HttpGet("{id}")]
+    public async Task<IActionResult> GetById(string id)
+    {
+        var card = await _scryfall.GetCardByIdAsync(id);
+        if (card == null)
+            return NotFound();
+        return Ok(card);
+    }
+
 }

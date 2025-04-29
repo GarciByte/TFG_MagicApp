@@ -1,0 +1,129 @@
+ion-content {
+    --background: var(--ion-background-color);
+    padding: 32px 16px;
+    display: flex;
+    justify-content: center;
+}
+
+.button-container {
+    display: flex;
+    justify-content: center;
+    padding: 0 16px;
+    margin: 16px 0;
+}
+
+.detail-container {
+    background: var(--ion-card-background);
+    color: var(--ion-text-color);
+    font-family: var(--ion-font-family);
+    width: 100%;
+    max-width: 900px;
+    margin: 32px auto;
+    border-radius: 8px;
+    padding: 32px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.detail-main {
+    display: flex;
+    gap: 32px;
+}
+
+.detail-left {
+    flex: 0 0 350px;
+    text-align: center;
+}
+
+.card-image {
+    width: 100%;
+    border-radius: 6px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+    margin-bottom: 24px;
+}
+
+.card-title {
+    font-size: 1.8rem;
+    margin: 0 0 24px 0;
+    font-weight: var(--ion-headings-font-weight);
+}
+
+.detail-right {
+    flex: 1;
+}
+
+.info-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 24px;
+}
+
+.info-item {
+    text-align: left;
+    padding-bottom: 12px;
+}
+
+.info-item.full-width {
+    grid-column: 1 / -1;
+}
+
+.mana-symbol {
+    width: 20px;
+    height: auto;
+}
+
+.label {
+    display: block;
+    font-weight: bold;
+    margin-bottom: 6px;
+    color: var(--ion-color-primary);
+}
+
+.value {
+    color: var(--ion-text-color);
+}
+
+.link {
+    color: var(--ion-color-secondary);
+    text-decoration: none;
+}
+
+.link:hover {
+    text-decoration: underline;
+}
+
+@media (max-width: 600px) {
+    .detail-container {
+        padding: 24px;
+    }
+
+    .detail-main {
+        flex-direction: column;
+        gap: 16px;
+    }
+
+    .detail-left {
+        flex: 1 1 auto;
+    }
+
+    .detail-right {
+        flex: 1 1 auto;
+    }
+
+    .card-image {
+        margin-bottom: 16px;
+    }
+
+    .card-title {
+        font-size: 1.5rem;
+        margin-bottom: 16px;
+    }
+
+    .info-grid {
+        grid-template-columns: 1fr;
+        gap: 16px;
+    }
+
+    .info-item {
+        padding-bottom: 8px;
+    }
+}

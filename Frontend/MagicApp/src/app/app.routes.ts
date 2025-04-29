@@ -27,6 +27,11 @@ export const routes: Routes = [
     pathMatch: "full",
   },
   {
+    path: 'card-details', // Ruta de detalles de una carta
+    loadComponent: () => import('./pages/card-details/card-details.component').then(m => m.CardDetailsComponent),
+    pathMatch: 'full'
+  },
+  {
     path: "mazos", // Ruta de Mazos
     loadComponent: () => import("./pages/mazos/mazos.component").then((m) => m.MazosComponent),
     pathMatch: "full",
@@ -37,8 +42,8 @@ export const routes: Routes = [
     pathMatch: "full",
   },
   {
-    path: "**",
-    redirectTo: "",
-    pathMatch: "full",
-  },
-]
+    path: '**',
+    redirectTo: '',
+    pathMatch: 'full'
+  }
+];
