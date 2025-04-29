@@ -41,7 +41,8 @@ export class AppComponent implements OnInit, OnDestroy {
       'chevron-up-circle': icons.chevronUpCircle,
       'document': icons.document,
       'color-palette': icons.colorPalette,
-      'globe': icons.globe
+      'globe': icons.globe,
+      'add-outline': icons.addOutline
     });
 
     if (await this.authService.isAuthenticated() && this.websocketService.isConnectedRxjs()) {

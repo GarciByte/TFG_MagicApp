@@ -7,9 +7,9 @@
     <div class="profile-section">
       <div class="avatar-container">
         <div class="avatar-glow"></div>
-        <img [src]="apiImg + this.user.avatarUrl" alt="Avatar" class="avatar-img" />
+        <img *ngIf="this.user" [src]="apiImg + this.user.avatarUrl" alt="Avatar" class="avatar-img" />
       </div>
-      <h2 class="username">{{ this.user.nickname }}</h2>
+      <h2 *ngIf="this.user" class="username">{{ this.user.nickname }}</h2>
     </div>
 
     <!-- Menu Buttons -->
