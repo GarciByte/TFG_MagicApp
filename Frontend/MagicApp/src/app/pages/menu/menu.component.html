@@ -1,14 +1,50 @@
 <ion-header>
-  <ion-toolbar>
-    <ion-title>Vista Menú Principal</ion-title>
+  <ion-toolbar color="primary">
+    <ion-title>Menú Principal</ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-content>
-  <ion-button (click)="this.logout()">
-    Cerrar sesión
-  </ion-button>
-  <ion-button (click)="navCtrl.navigateRoot(['/card-search'])">
-    Buscar cartas
-  </ion-button>
+<ion-content class="ion-padding">
+  <div class="profile-container">
+    <img [src]="apiImg + this.user.avatarUrl" alt="Avatar" class="profile-avatar" />
+    <h2 class="profile-name">{{ this.user.nickname }}</h2>
+  </div>
+
+  <div class="buttons-layout">
+    <ion-card button class="menu-card full-width" (click)="navCtrl.navigateRoot(['/mazos'])">
+      <ion-card-content>
+        <span>Mazos</span>
+      </ion-card-content>
+    </ion-card>
+
+    <div class="half-buttons">
+      <ion-card button class="menu-card half-width" (click)="navCtrl.navigateRoot(['/cartas'])">
+        <ion-card-content>
+          <span>Cartas</span>
+        </ion-card-content>
+      </ion-card>
+
+      <ion-card button class="menu-card half-width" (click)="navCtrl.navigateRoot(['/foros'])">
+        <ion-card-content>
+          <span>Foros</span>
+        </ion-card-content>
+      </ion-card>
+    </div>
+  </div>
 </ion-content>
+<ion-fab slot="fixed" vertical="bottom" horizontal="end">
+  <ion-fab-button>
+    <ion-icon name="chevron-up-circle"></ion-icon>
+  </ion-fab-button>
+  <ion-fab-list side="top">
+    <ion-fab-button>
+      <ion-icon name="document"></ion-icon>
+    </ion-fab-button>
+    <ion-fab-button>
+      <ion-icon name="color-palette"></ion-icon>
+    </ion-fab-button>
+    <ion-fab-button>
+      <ion-icon name="globe"></ion-icon>
+    </ion-fab-button>
+  </ion-fab-list>
+</ion-fab>
