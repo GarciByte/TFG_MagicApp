@@ -1,14 +1,61 @@
-<ion-header>
-  <ion-toolbar>
-    <ion-title>Vista Menú Principal</ion-title>
-  </ion-toolbar>
-</ion-header>
-
 <ion-content>
-  <ion-button (click)="this.logout()">
-    Cerrar sesión
-  </ion-button>
-  <ion-button (click)="navCtrl.navigateRoot(['/card-search'])">
-    Buscar cartas
-  </ion-button>
+  <div class="menu-container">
+    <!-- Header -->
+    <h1 class="menu-title">MENU PRINCIPAL</h1>
+
+    <!-- Profile Section -->
+    <div class="profile-section">
+      <div class="avatar-container">
+        <div class="avatar-glow"></div>
+        <img *ngIf="this.user" [src]="apiImg + this.user.avatarUrl" alt="Avatar" class="avatar-img" />
+      </div>
+      <h2 *ngIf="this.user" class="username">{{ this.user.nickname }}</h2>
+    </div>
+
+    <!-- Menu Buttons -->
+    <div class="menu-buttons">
+      <!-- Buscador de Cartas - Full width button -->
+      <ion-button class="menu-button full-width" (click)="navCtrl.navigateRoot(['/card-search'])">
+        <div class="button-content">
+          <div class="magic-icon search-icon"></div>
+          <span>BUSCADOR DE CARTAS</span>
+        </div>
+      </ion-button>
+
+      <!-- Bottom row with split buttons -->
+      <div class="button-row">
+        <!-- Mazos - Left side -->
+        <ion-button class="menu-button half-width-left" (click)="navCtrl.navigateRoot(['/mazos'])">
+          <div class="button-content">
+            <div class="magic-icon deck-icon"></div>
+            <span>MAZOS</span>
+          </div>
+        </ion-button>
+
+        <!-- Right side column -->
+        <div class="half-width-right">
+          <!-- Foros - Top right -->
+          <ion-button class="menu-button quarter-height">
+            <div class="button-content">
+              <div class="magic-icon forum-icon"></div>
+              <span>FOROS</span>
+            </div>
+          </ion-button>
+
+          <!-- Magic Chat - Bottom right -->
+          <ion-button class="menu-button quarter-height">
+            <div class="button-content">
+              <div class="magic-icon chat-icon"></div>
+              <span>MAGIC CHAT</span>
+            </div>
+          </ion-button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Footer Logo -->
+    <div class="footer-logo">
+      <img src="assets/images/logo.png" alt="MagicHub Logo" />
+    </div>
+  </div>
 </ion-content>

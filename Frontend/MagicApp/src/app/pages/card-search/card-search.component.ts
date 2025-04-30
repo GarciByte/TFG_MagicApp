@@ -81,4 +81,11 @@ export class CardSearchComponent implements OnInit {
     }
   }
 
+  // Redirigir a los detalles de la carta
+  navigateToDetails(cardId: string) {
+    this.navCtrl.navigateRoot(['/card-details'], {
+      queryParams: { cardId }
+    });
+  }
+
 }
