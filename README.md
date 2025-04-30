@@ -128,7 +128,7 @@ En el cliente se empleará una persistencia de datos para almacenar opciones de 
 
 ### Revisión del proyecto
 
-[Enlace]()
+[Enlace](https://drive.google.com/file/d/1W9ygPesxZU1p28SSNWP7tGrXJTAct0H_/view?usp=sharing)
 
 ---
 
