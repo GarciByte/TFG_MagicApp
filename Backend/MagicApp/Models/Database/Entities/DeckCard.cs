@@ -9,7 +9,7 @@ public class DeckCard
     [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     public int Id { get; set; }
 
-    public int CardId { get; set; }
+    public string CardId { get; set; }
 
     public int DeckId { get; set; }
 

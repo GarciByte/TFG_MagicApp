@@ -48,7 +48,7 @@ export class AuthService {
         }
 
       } else {
-        console.error("No se han podido refrescar los tokens");
+        console.warn("No se han podido refrescar los tokens");
         await this.logout();
       }
 
@@ -198,7 +198,7 @@ export class AuthService {
       return false;
 
     } catch (error) {
-      console.error("Error renovando tokens:", error);
+      console.warn("No se han podido refrescar los tokens");
       return false;
     }
   }

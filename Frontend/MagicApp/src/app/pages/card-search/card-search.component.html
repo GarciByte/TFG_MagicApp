@@ -22,7 +22,8 @@
 
   <!-- Listado de cartas -->
   <div class="card-grid" *ngIf="!isLoading && cards.length > 0">
-    <img *ngFor="let card of cards" [src]="card.imageUrl" [alt]="card.name" loading="lazy" />
+    <img *ngFor="let card of cards" (click)="navigateToDetails(card.id)" [src]="card.imageUrl" [alt]="card.name"
+      loading="lazy" />
   </div>
 
 </ion-content>

@@ -1,0 +1,55 @@
+<ion-content>
+  <div class="header-container">
+    <h1 class="page-title">Crear mazo</h1>
+  </div>
+
+  <div class="content-container">
+    <div class="crear-mazo-title">CREAR MAZO</div>
+
+    <div class="form-container">
+      <!-- Icono del mazo -->
+      <div class="mazo-icon-container">
+        <div class="mazo-icon icon-sun"></div>
+      </div>
+
+      <!-- Formulario -->
+      <div class="form-group">
+        <label class="form-label">Nombre del mazo</label>
+        <input type="text" class="form-input" [(ngModel)]="nombreMazo" placeholder="nombre del mazo">
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Formato</label>
+        <div class="select-container">
+          <select class="form-select" [(ngModel)]="formato">
+            <option *ngFor="let f of formatos" [value]="f">{{ f }}</option>
+          </select>
+          <div class="select-arrow"></div>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Tamaño del mazo</label>
+        <div class="select-container">
+          <select class="form-select" [(ngModel)]="tamanio">
+            <option *ngFor="let t of tamanios" [value]="t">{{ t }}</option>
+          </select>
+          <div class="select-arrow"></div>
+        </div>
+      </div>
+
+      <!-- Botones de acción -->
+      <div class="action-buttons">
+        <button class="action-button" (click)="anadirCartas()">Añadir cartas</button>
+        <button class="action-button" (click)="verCartas()">Ver cartas</button>
+      </div>
+
+      <!-- Botón crear -->
+      <button class="crear-button" (click)="crearMazo()">Crear</button>
+    </div>
+  </div>
+
+  <div class="footer-logo">
+    <img src="assets/images/logo.png" alt="MagicHub Logo" />
+  </div>
+</ion-content>
