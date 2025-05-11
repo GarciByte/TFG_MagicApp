@@ -2,28 +2,13 @@ import { Component, type OnInit } from "@angular/core"
 import { CommonModule } from "@angular/common"
 import { FormsModule } from "@angular/forms"
 import { NavController } from "@ionic/angular"
-import {
-  IonContent,
-  IonHeader,
-  IonToolbar,
-  IonTitle,
-  IonButton,
-  IonIcon,
-  IonInput,
-  IonSelect,
-  IonSelectOption,
-  IonItem,
-  IonLabel,
-} from "@ionic/angular/standalone"
+import { IonContent } from "@ionic/angular/standalone"
+import { AuthService } from "src/app/services/auth.service"
 
 @Component({
   selector: "app-crear-mazo",
   standalone: true,
-  imports: [
-    CommonModule,
-    FormsModule,
-    IonContent
-],
+  imports: [CommonModule, FormsModule, IonContent],
   templateUrl: "./crear-mazo.component.html",
   styleUrls: ["./crear-mazo.component.css"],
 })
@@ -35,9 +20,16 @@ export class CrearMazoComponent implements OnInit {
   formatos: string[] = ["Estándar", "Modern", "Commander", "Legacy", "Vintage", "Pauper"]
   tamanios: number[] = [40, 60, 100]
 
-  constructor(public navCtrl: NavController) {}
+  constructor(
+    public navCtrl: NavController,
+    private authService: AuthService
+  ) { }
 
-  ngOnInit() {}
+  async ngOnInit(): Promise<void> {
+    if (!await this.authService.isAuthenticated()) {
+      this.navCtrl.navigateRoot(['/']);
+    }
+  }
 
   anadirCartas() {
     console.log("Añadir cartas al mazo")
@@ -61,4 +53,5 @@ export class CrearMazoComponent implements OnInit {
     // Volver a la página de mazos
     this.navCtrl.navigateBack("/mazos")
   }
+  
 }

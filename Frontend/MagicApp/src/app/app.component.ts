@@ -2,8 +2,6 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { StatusBar, Style } from '@capacitor/status-bar';
 import { IonApp, IonRouterOutlet, Platform } from "@ionic/angular/standalone";
 import { WebsocketService } from './services/websocket.service';
-import { AuthService } from './services/auth.service';
-import { environment } from 'src/environments/environment';
 import { addIcons } from 'ionicons';
 import * as icons from 'ionicons/icons';
 
@@ -18,11 +16,8 @@ export class AppComponent implements OnInit, OnDestroy {
 
   constructor(
     private platform: Platform,
-    private authService: AuthService,
     private websocketService: WebsocketService
-  ) {
-    console.log('ENVIRONMENT:', environment);
-  }
+  ) { }
 
   async ngOnInit() {
     await this.platform.ready();
@@ -44,14 +39,6 @@ export class AppComponent implements OnInit, OnDestroy {
       'globe': icons.globe,
       'add-outline': icons.addOutline
     });
-
-    if (await this.authService.isAuthenticated() && this.websocketService.isConnectedRxjs()) {
-      const user = await this.authService.getUser();
-      console.log("Usuario logeado:", user);
-
-    } else {
-      console.log("Usuario no logeado");
-    }
   }
 
   ngOnDestroy(): void {

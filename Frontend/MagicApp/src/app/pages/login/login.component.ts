@@ -71,7 +71,7 @@ export class LoginComponent implements OnInit {
           'El nombre de usuario o la contraseña son incorrectos',
           [{ text: 'Aceptar' }]
         );
-        
+
       }
     }
   }

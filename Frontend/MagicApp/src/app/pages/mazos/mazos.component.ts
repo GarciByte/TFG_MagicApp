@@ -2,45 +2,19 @@ import { Component, type OnInit } from "@angular/core"
 import { CommonModule } from "@angular/common"
 import { RouterModule } from "@angular/router"
 import { NavController } from "@ionic/angular"
-import {
-  IonContent,
-  IonHeader,
-  IonToolbar,
-  IonTitle,
-  IonButton,
-  IonIcon,
-  IonCard,
-  IonCardContent,
-  IonGrid,
-  IonRow,
-  IonCol,
-} from "@ionic/angular/standalone"
-
-interface Mazo {
-  id: number
-  nombre: string
-  cartas: number
-  color: string
-  icono: string
-}
+import { IonContent, IonIcon, IonGrid, IonRow, IonCol } from "@ionic/angular/standalone"
+import { Deck } from "src/app/models/deck"
+import { AuthService } from "src/app/services/auth.service"
 
 @Component({
   selector: "app-mazos",
   standalone: true,
-  imports: [
-    CommonModule,
-    RouterModule,
-    IonContent,
-    IonIcon,
-    IonGrid,
-    IonRow,
-    IonCol
-],
+  imports: [CommonModule, RouterModule, IonContent, IonIcon, IonGrid, IonRow, IonCol],
   templateUrl: "./mazos.component.html",
   styleUrls: ["./mazos.component.css"],
 })
 export class MazosComponent implements OnInit {
-  mazos: Mazo[] = [
+  mazos: Deck[] = [
     {
       id: 1,
       nombre: "Mazo 1",
@@ -78,9 +52,16 @@ export class MazosComponent implements OnInit {
     },
   ]
 
-  constructor(public navCtrl: NavController) {}
+  constructor(
+    public navCtrl: NavController,
+    private authService: AuthService
+  ) { }
 
-  ngOnInit() {}
+  async ngOnInit(): Promise<void> {
+    if (!await this.authService.isAuthenticated()) {
+      this.navCtrl.navigateRoot(['/']);
+    }
+  }
 
   crearMazo() {
     this.navCtrl.navigateForward("/crear-mazo")
@@ -90,4 +71,5 @@ export class MazosComponent implements OnInit {
     console.log("Ver mazo:", id)
     // Implementar navegación al detalle del mazo
   }
+
 }
