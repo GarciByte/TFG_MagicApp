@@ -31,7 +31,7 @@ export const appConfig: ApplicationConfig = {
       provide: RouteReuseStrategy,
       useClass: IonicRouteStrategy
     },
-    provideIonicAngular({ 
+    provideIonicAngular({
       mode: 'md',
       hardwareBackButton: true,
       rippleEffect: true
