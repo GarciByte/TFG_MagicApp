@@ -79,7 +79,7 @@ En el cliente se empleará una persistencia de datos para almacenar opciones de 
 ## Diseño de la Aplicación
 
 ### Figma
-[Enlace](https://www.figma.com/design/9UIaWhamE4J6e4vrTp9jap/MAGICHUB-MOCKUP?node-id=0-1)
+[Enlace](https://www.figma.com/design/9UIaWhamE4J6e4vrTp9jap/MAGICHUB-MOCKUP?node-id=0-1&t=RVZqIslaLqk6i7ja-1)
 
 ---
 
@@ -102,6 +102,13 @@ En el cliente se empleará una persistencia de datos para almacenar opciones de 
 - **27/04/2025**: Búsqueda de cartas por nombre funcionando (servidor y cliente).
 - **29/04/2025**: Obtener datos de una carta por ID funcionando (servidor y cliente).
 
+
+### Noe
+- **23/04/2025**: Creación del figma y primeros pasos de maquetación
+- **24/04/2025**: Vistas de buscador de cartas, detalles de cartas, mazos, crear mazos completadas.
+- **25/04/2025**: Resto de vistas terminadas.
+- **27/04/2025**: Ajustes esteticos en el inicio, el login y el menu principal.
+- **29/04/2025**: Ajustes esteticos en el menu principal y el registro más la creación de los componentes mazos y crear mazos con sus respectivos estilos.
 ---
 
 ## Bibliografía
@@ -121,7 +128,7 @@ En el cliente se empleará una persistencia de datos para almacenar opciones de 
 
 ### Revisión del proyecto
 
-[Enlace]()
+[Enlace](https://drive.google.com/file/d/1W9ygPesxZU1p28SSNWP7tGrXJTAct0H_/view?usp=sharing)
 
 ---
 
