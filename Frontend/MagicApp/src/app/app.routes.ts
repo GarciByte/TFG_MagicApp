@@ -22,6 +22,11 @@ export const routes: Routes = [
     pathMatch: "full",
   },
   {
+    path: "global-chat", // Ruta del chat global
+    loadComponent: () => import("./pages/global-chat/global-chat.component").then((m) => m.GlobalChatComponent),
+    pathMatch: "full",
+  },
+  {
     path: "card-search", // Ruta del Buscador de Cartas
     loadComponent: () => import("./pages/card-search/card-search.component").then((m) => m.CardSearchComponent),
     pathMatch: "full",

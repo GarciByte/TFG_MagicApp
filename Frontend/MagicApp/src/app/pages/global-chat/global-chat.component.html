@@ -1,0 +1,57 @@
+<ion-content class="chat-page">
+
+  <!-- Botón para volver al menú principal -->
+  <div class="button-container">
+    <ion-button size="small" shape="round" (click)="navCtrl.navigateRoot(['/menu'])">
+      Volver al menú principal
+    </ion-button>
+  </div>
+
+  <!-- Chat -->
+  <div class="card-container">
+
+    <ion-card class="chat-card">
+      <ion-card-content class="messages-container">
+        <ion-list lines="none" class="messages-list">
+          <ion-item *ngFor="let msg of chatMessages" class="message-item">
+            
+            <!-- Avatar -->
+            <ion-avatar slot="start">
+              <img [src]="msg.avatarUrl">
+            </ion-avatar>
+
+            <ion-label class="message-content">
+
+              <!-- Nickname -->
+              <h3 class="nickname">{{ msg.Nickname }}</h3>
+
+              <!-- Mensaje -->
+              <div class="message-bubble">
+                <p>{{ msg.Content }}</p>
+              </div>
+
+            </ion-label>
+
+          </ion-item>
+        </ion-list>
+      </ion-card-content>
+
+      <ion-footer class="input-footer">
+        <form (ngSubmit)="sendMessage()">
+          <ion-item lines="none" class="input-container">
+
+            <ion-input [(ngModel)]="chatInput" name="chatInput" placeholder="Escribe un mensaje..." clearInput required
+              autocomplete="off" class="chat-input">
+            </ion-input>
+
+            <ion-button slot="end" type="submit" fill="clear" [disabled]="!chatInput.trim()" class="send-button">
+              <ion-icon slot="icon-only" name="send"></ion-icon>
+            </ion-button>
+            
+          </ion-item>
+        </form>
+      </ion-footer>
+    </ion-card>
+
+  </div>
+</ion-content>

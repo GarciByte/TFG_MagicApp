@@ -164,7 +164,6 @@ public class WebSocketNetwork : IWebSocketMessageSender
         {
             string jsonContent = message.Content.ToString();
             GlobalChatMessageDto chatMessage = JsonSerializer.Deserialize<GlobalChatMessageDto>(jsonContent);
-            string updatedMessage = $"{chatMessage.Nickname}: {chatMessage.Content}";
 
             _logger.LogInformation("Mensaje de chat global recibido de {chatMessage.Nickname}: {chatMessage.Content}", chatMessage.Nickname, chatMessage.Content);
 
@@ -172,7 +171,7 @@ public class WebSocketNetwork : IWebSocketMessageSender
             {
                 UserId = chatMessage.UserId,
                 Nickname = chatMessage.Nickname,
-                Content = updatedMessage
+                Content = chatMessage.Content
             };
 
             var chatResponse = new WebSocketMessage

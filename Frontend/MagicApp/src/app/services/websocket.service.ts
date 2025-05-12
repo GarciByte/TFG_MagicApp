@@ -4,6 +4,7 @@ import { Subject } from 'rxjs';
 import { webSocket, WebSocketSubject } from 'rxjs/webSocket';
 import { environment } from 'src/environments/environment';
 import { ModalService } from './modal.service';
+import { GlobalChatMessage } from '../models/global-chat-message';
 
 @Injectable({
   providedIn: 'root'
@@ -20,7 +21,7 @@ export class WebsocketService {
   public error = new Subject<void>();
 
   // Notificar mensajes del chat global
-  public globalChatSubject = new Subject<string>();
+  public globalChatSubject = new Subject<GlobalChatMessage>();
 
   private onConnected() {
     this.connected.next();
@@ -37,7 +38,7 @@ export class WebsocketService {
         break;
 
       case MsgType.GlobalChat:
-        this.globalChatSubject.next(message.Content.Content);
+        this.globalChatSubject.next(message.Content);
         break;
 
       default:
