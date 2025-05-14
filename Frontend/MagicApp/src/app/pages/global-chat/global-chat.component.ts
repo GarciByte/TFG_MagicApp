@@ -11,6 +11,8 @@ import { GlobalChatMessage } from 'src/app/models/global-chat-message';
 import { User } from 'src/app/models/user';
 import { environment } from '../../../environments/environment';
 import { UserService } from 'src/app/services/user.service';
+import { ChatMessageService } from 'src/app/services/chat-message.service';
+import { ModalService } from 'src/app/services/modal.service';
 
 @Component({
   selector: 'app-global-chat',
@@ -32,6 +34,8 @@ export class GlobalChatComponent implements OnInit {
     private authService: AuthService,
     private webSocketService: WebsocketService,
     private userService: UserService,
+    private chatMessageService: ChatMessageService,
+    private modalService: ModalService
   ) { }
 
   async ngOnInit(): Promise<void> {
@@ -39,15 +43,23 @@ export class GlobalChatComponent implements OnInit {
       this.navCtrl.navigateRoot(['/']);
     }
 
-    // Mensajes del chat
+    this.user = await this.authService.getUser();
+
+    // Obtener todos los mensajes
+    await this.getAllMessages();
+
+    // Nuevos mensajes en el chat
     this.chatSubscription = this.webSocketService.globalChatSubject.subscribe(async (message: GlobalChatMessage) => {
+
+      const avatarUrl = this.apiImg + await this.getUserAvatar(message.UserId);
+
       this.chatMessages.push({
-        ...message,
-        avatarUrl: this.apiImg + await this.getUserAvatar(message.UserId)
+        UserId: message.UserId,
+        Nickname: message.Nickname,
+        Content: message.Content,
+        AvatarUrl: avatarUrl
       });
     });
-
-    this.user = await this.authService.getUser();
   }
 
   ngOnDestroy(): void {
@@ -95,6 +107,47 @@ export class GlobalChatComponent implements OnInit {
     } catch (error) {
       console.error('Error al obtener datos del usuario:', error);
       return "";
+    }
+  }
+
+  // Obtener todos los mensajes
+  async getAllMessages(): Promise<void> {
+    try {
+      const result = await this.chatMessageService.getAllGlobalMessages();
+
+      if (result.success) {
+        const messages = result.data;
+
+        for (const message of messages) {
+          const avatarUrl = this.apiImg + await this.getUserAvatar(message.userId);
+
+          this.chatMessages.push({
+            UserId: message.userId,
+            Nickname: message.nickname,
+            Content: message.content,
+            AvatarUrl: avatarUrl
+          });
+        }
+
+      } else {
+
+        this.modalService.showAlert(
+          'error',
+          'Se ha producido un error al obtener todos los mensajes',
+          [{ text: 'Aceptar' }]
+        );
+
+      }
+
+    } catch (error) {
+      console.error("Error al obtener todos los mensajes:", error);
+
+      this.modalService.showAlert(
+        'error',
+        'Se ha producido un error al obtener todos los mensajes',
+        [{ text: 'Aceptar' }]
+      );
+
     }
   }
 

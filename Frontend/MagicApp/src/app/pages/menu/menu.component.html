@@ -51,6 +51,23 @@
           </ion-button>
         </div>
       </div>
+
+      <!-- Chat global -->
+      <ion-button class="menu-button full-width" (click)="navCtrl.navigateRoot(['/global-chat'])">
+        <div class="button-content">
+          <div class="magic-icon chat-icon"></div>
+          <span>CHAT GLOBAL</span>
+        </div>
+      </ion-button>
+
+      <!-- Cerrar sesión -->
+      <ion-button class="menu-button full-width" (click)="logout()">
+        <div class="button-content">
+          <div class="magic-icon"></div>
+          <span>CERRAR SESIÓN</span>
+        </div>
+      </ion-button>
+
     </div>
 
     <!-- Footer Logo -->

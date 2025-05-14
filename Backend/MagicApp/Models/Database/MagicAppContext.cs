@@ -30,6 +30,8 @@ public class MagicAppContext : DbContext
 
     public DbSet<Report> Report { get; set; }
 
+    public DbSet<GlobalChatMessage> GlobalChatMessage { get; set; }
+
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
 #if DEBUG

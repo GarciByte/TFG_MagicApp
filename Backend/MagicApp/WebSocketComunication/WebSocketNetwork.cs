@@ -1,4 +1,5 @@
 ﻿using MagicApp.Models.Dtos;
+using MagicApp.Services;
 using System.Net.WebSockets;
 using System.Text.Json;
 
@@ -7,6 +8,7 @@ namespace MagicApp.WebSocketComunication;
 public class WebSocketNetwork : IWebSocketMessageSender
 {
     private readonly ILogger<WebSocketNetwork> _logger;
+    private readonly IServiceProvider _serviceProvider;
 
     // Lista de WebSocketHandler (clase que gestiona cada WebSocket)
     private readonly List<WebSocketHandler> _handlers = new List<WebSocketHandler>();
@@ -14,9 +16,10 @@ public class WebSocketNetwork : IWebSocketMessageSender
     // Semáforo para controlar el acceso a la lista de WebSocketHandler
     private readonly SemaphoreSlim _semaphore = new SemaphoreSlim(1, 1);
 
-    public WebSocketNetwork(ILogger<WebSocketNetwork> logger)
+    public WebSocketNetwork(ILogger<WebSocketNetwork> logger, IServiceProvider serviceProvider)
     {
         _logger = logger;
+        _serviceProvider = serviceProvider;
     }
 
     public async Task HandleAsync(WebSocket webSocket, UserDto user)
@@ -167,12 +170,7 @@ public class WebSocketNetwork : IWebSocketMessageSender
 
             _logger.LogInformation("Mensaje de chat global recibido de {chatMessage.Nickname}: {chatMessage.Content}", chatMessage.Nickname, chatMessage.Content);
 
-            var chatMessageUpdated = new GlobalChatMessageDto
-            {
-                UserId = chatMessage.UserId,
-                Nickname = chatMessage.Nickname,
-                Content = chatMessage.Content
-            };
+            var chatMessageUpdated =  await InsertGlobalMessageAsync(chatMessage);
 
             var chatResponse = new WebSocketMessage
             {
@@ -188,5 +186,14 @@ public class WebSocketNetwork : IWebSocketMessageSender
         }
     }
 
+    // Guardar un nuevo mensaje del chat global
+    public async Task<GlobalChatMessageDto> InsertGlobalMessageAsync(GlobalChatMessageDto globalChatMessageDto)
+    {
+        using var scope = _serviceProvider.CreateScope();
+        var globalChatMessageService = scope.ServiceProvider.GetRequiredService<GlobalChatMessageService>();
+        var message = await globalChatMessageService.InsertGlobalMessageAsync(globalChatMessageDto);
+
+        return message;
+    }
 
 }
