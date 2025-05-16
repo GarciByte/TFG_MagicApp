@@ -1,9 +1,9 @@
 <ion-content class="chat-page">
 
-  <!-- Botón para volver al menú principal -->
+  <!-- Botón para volver a la lista de chats-->
   <div class="button-container">
-    <ion-button size="small" shape="round" (click)="navCtrl.navigateRoot(['/menu'])">
-      Volver al menú principal
+    <ion-button size="small" shape="round" (click)="navCtrl.navigateRoot(['/private-chat-list'])">
+      Volver a la lista de chats
     </ion-button>
   </div>
 
@@ -14,17 +14,17 @@
       <ion-card-content class="messages-container">
         <ion-list lines="none" class="messages-list">
           <ion-item *ngFor="let msg of chatMessages" class="message-item"
-            [ngClass]="{'own': msg.UserId === user.userId, 'other': msg.UserId !== user.userId}">
+            [ngClass]="{'own': msg.SenderId === user.userId, 'other': msg.SenderId !== user.userId}">
 
             <!-- Avatar -->
-            <ion-avatar slot="start">
-              <img [src]="msg.AvatarUrl">
+            <ion-avatar>
+              <img [src]="msg.AvatarUrl" />
             </ion-avatar>
 
             <ion-label class="message-content">
 
               <!-- Nickname -->
-              <h3 class="nickname">{{ msg.Nickname }}</h3>
+              <h3 class="nickname">{{ msg.SenderNickname }}</h3>
 
               <!-- Mensaje -->
               <div class="message-bubble">

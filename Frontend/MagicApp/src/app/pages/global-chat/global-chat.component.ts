@@ -9,7 +9,6 @@ import { FormsModule } from '@angular/forms';
 import { MsgType, WebSocketMessage } from 'src/app/models/web-socket-message';
 import { GlobalChatMessage } from 'src/app/models/global-chat-message';
 import { User } from 'src/app/models/user';
-import { environment } from '../../../environments/environment';
 import { UserService } from 'src/app/services/user.service';
 import { ChatMessageService } from 'src/app/services/chat-message.service';
 import { ModalService } from 'src/app/services/modal.service';
@@ -27,7 +26,6 @@ export class GlobalChatComponent implements OnInit {
   chatMessages: any[] = [];
   chatInput: string = "";
   user: User;
-  apiImg = environment.apiImg
 
   constructor(
     public navCtrl: NavController,
@@ -51,7 +49,7 @@ export class GlobalChatComponent implements OnInit {
     // Nuevos mensajes en el chat
     this.chatSubscription = this.webSocketService.globalChatSubject.subscribe(async (message: GlobalChatMessage) => {
 
-      const avatarUrl = this.apiImg + await this.getUserAvatar(message.UserId);
+      const avatarUrl = await this.userService.getUserAvatar(message.UserId);
 
       this.chatMessages.push({
         UserId: message.UserId,
@@ -88,28 +86,6 @@ export class GlobalChatComponent implements OnInit {
     }
   }
 
-  // Obtener avatares de usuarios
-  async getUserAvatar(userId: number): Promise<string> {
-
-    if (userId === this.user.userId) {
-      return this.user.avatarUrl;
-    }
-
-    try {
-      const result = await this.userService.getUserById(userId);
-
-      if (result.success) {
-        return result.data.avatarUrl;
-      }
-
-      return "";
-
-    } catch (error) {
-      console.error('Error al obtener datos del usuario:', error);
-      return "";
-    }
-  }
-
   // Obtener todos los mensajes
   async getAllMessages(): Promise<void> {
     try {
@@ -119,7 +95,7 @@ export class GlobalChatComponent implements OnInit {
         const messages = result.data;
 
         for (const message of messages) {
-          const avatarUrl = this.apiImg + await this.getUserAvatar(message.userId);
+          const avatarUrl = await this.userService.getUserAvatar(message.userId);
 
           this.chatMessages.push({
             UserId: message.userId,

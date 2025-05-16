@@ -27,6 +27,16 @@ export const routes: Routes = [
     pathMatch: "full",
   },
   {
+    path: "private-chat-list", // Ruta de la lista de chats privados
+    loadComponent: () => import("./pages/private-chats-list/private-chats-list.component").then((m) => m.PrivateChatsListComponent),
+    pathMatch: "full",
+  },
+  {
+    path: "private-chat", // Ruta del chat privado con otro usuario
+    loadComponent: () => import("./pages/private-chat/private-chat.component").then((m) => m.PrivateChatComponent),
+    pathMatch: "full",
+  },
+  {
     path: "card-search", // Ruta del Buscador de Cartas
     loadComponent: () => import("./pages/card-search/card-search.component").then((m) => m.CardSearchComponent),
     pathMatch: "full",
