@@ -1,0 +1,142 @@
+.cards-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    grid-gap: 1.5rem;
+    padding: 1.5rem;
+}
+
+.button-container {
+    display: flex;
+    justify-content: center;
+    padding: 0 16px;
+    margin: 16px 0;
+}
+
+.button-container ion-button {
+    --padding-top: 4px;
+    --padding-bottom: 4px;
+    --padding-start: 12px;
+    --padding-end: 12px;
+}
+
+.chat-card {
+    --background: var(--ion-card-background);
+    padding: 1.2rem;
+    cursor: pointer;
+    transition: transform 0.12s ease-in-out, box-shadow 0.12s ease-in-out;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.chat-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.chat-card-header {
+    display: flex;
+    align-items: center;
+    padding: 0.75rem;
+    position: relative;
+}
+
+.chat-card-header ion-avatar {
+    margin-right: 0px;
+    margin-inline-end: 0px;
+    margin-bottom: 24px;
+}
+
+.chat-header-text {
+    display: flex;
+    align-items: center;
+}
+
+.chat-avatar {
+    --size: 64px;
+}
+
+.delete-btn {
+    position: absolute;
+    top: 0.5rem;
+    right: 0.5rem;
+    --padding-start: 0;
+    --padding-end: 0;
+    --padding-top: 0;
+    --padding-bottom: 0;
+}
+
+ion-card-title {
+    font-size: 1.2rem;
+    font-weight: 500;
+    color: var(--ion-color-primary);
+    margin: 0;
+    padding: 0;
+    line-height: 1;
+}
+
+.chat-content {
+    display: flex !important;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 0.75rem;
+    text-align: center;
+}
+
+.message-date {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+}
+
+.message {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    text-align: center;
+    display: block;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    line-clamp: 2;
+    -webkit-line-clamp: 2;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    font-size: 1rem;
+    color: var(--ion-text-color);
+}
+
+.date {
+    flex-shrink: 0;
+    font-size: 0.85rem;
+    color: var(--ion-color-secondary);
+    white-space: nowrap;
+    margin-top: 24px;
+    align-self: center;
+}
+
+.no-chats-message {
+    text-align: center;
+    color: var(--ion-text-color);
+    margin: 3rem;
+    font-size: 1.1rem;
+}
+
+@media (max-width: 480px) {
+    .chat-avatar {
+        --size: 56px;
+    }
+
+    ion-card-title {
+        font-size: 1.1rem;
+    }
+
+    .message {
+        font-size: 0.95rem;
+    }
+
+    .date {
+        font-size: 0.8rem;
+    }
+}

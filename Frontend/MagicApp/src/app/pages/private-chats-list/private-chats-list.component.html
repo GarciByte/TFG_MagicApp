@@ -1,0 +1,53 @@
+<ion-content [fullscreen]="true" class="ion-padding">
+
+  <!-- Botón para volver al menú principal -->
+  <div class="button-container">
+    <ion-button size="small" shape="round" (click)="navCtrl.navigateRoot(['/menu'])">
+      Volver al menú principal
+    </ion-button>
+  </div>
+
+  <ng-container *ngIf="chatList.length; else noChats">
+
+    <!-- Card de cada usuario -->
+    <div class="cards-container">
+      <ion-card *ngFor="let chat of chatList" (click)="openChat(chat.ReceiverId)" class="chat-card" button>
+
+        <!-- Avatar y Nickname -->
+        <ion-card-header class="chat-card-header">
+          <ion-avatar class="chat-avatar">
+            <img [src]="chat.AvatarUrl" alt="Avatar de {{ chat.ReceiverNickname }}">
+          </ion-avatar>
+          <div class="chat-header-text">
+            <ion-card-title>{{ chat.ReceiverNickname }}</ion-card-title>
+          </div>
+
+          <!-- Icono de borrar -->
+          <ion-button fill="clear" size="small" class="delete-btn" (click)="confirmDelete(chat.ReceiverId, $event)">
+            <ion-icon name="trash-outline"></ion-icon>
+          </ion-button>
+
+        </ion-card-header>
+
+        <!-- Mensaje y Fecha -->
+        <ion-card-content class="chat-content">
+          <div class="message-date">
+            <div class="message">{{ chat.LastMessage }}</div>
+            <div class="date">
+              {{ chat.LastTimestamp | date:'dd/MM/yyyy HH:mm' }}
+            </div>
+          </div>
+        </ion-card-content>
+
+      </ion-card>
+    </div>
+
+  </ng-container>
+
+  <ng-template #noChats>
+    <div class="no-chats-message">
+      No tienes ningún chat disponible.
+    </div>
+  </ng-template>
+
+</ion-content>

@@ -51,6 +51,31 @@
           </ion-button>
         </div>
       </div>
+
+      <!-- Chat global -->
+      <ion-button class="menu-button full-width" (click)="navCtrl.navigateRoot(['/global-chat'])">
+        <div class="button-content">
+          <div class="magic-icon chat-icon"></div>
+          <span>CHAT GLOBAL</span>
+        </div>
+      </ion-button>
+
+      <!-- Chat privado -->
+      <ion-button class="menu-button full-width" (click)="navCtrl.navigateRoot(['/private-chat-list'])">
+        <div class="button-content">
+          <div class="magic-icon chat-icon"></div>
+          <span>CHAT PRIVADO</span>
+        </div>
+      </ion-button>
+
+      <!-- Cerrar sesión -->
+      <ion-button class="menu-button full-width" (click)="logout()">
+        <div class="button-content">
+          <div class="magic-icon"></div>
+          <span>CERRAR SESIÓN</span>
+        </div>
+      </ion-button>
+
     </div>
 
     <!-- Footer Logo -->

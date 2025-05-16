@@ -1,4 +1,6 @@
 ﻿using MagicApp.Models.Dtos;
+using MagicApp.Services;
+using System.Collections.Concurrent;
 using System.Net.WebSockets;
 using System.Text.Json;
 
@@ -7,16 +9,14 @@ namespace MagicApp.WebSocketComunication;
 public class WebSocketNetwork : IWebSocketMessageSender
 {
     private readonly ILogger<WebSocketNetwork> _logger;
-
-    // Lista de WebSocketHandler (clase que gestiona cada WebSocket)
-    private readonly List<WebSocketHandler> _handlers = new List<WebSocketHandler>();
-
-    // Semáforo para controlar el acceso a la lista de WebSocketHandler
+    private readonly IServiceProvider _serviceProvider;
+    private readonly ConcurrentDictionary<int, List<WebSocketHandler>> _userConnections = new ConcurrentDictionary<int, List<WebSocketHandler>>();
     private readonly SemaphoreSlim _semaphore = new SemaphoreSlim(1, 1);
 
-    public WebSocketNetwork(ILogger<WebSocketNetwork> logger)
+    public WebSocketNetwork(ILogger<WebSocketNetwork> logger, IServiceProvider serviceProvider)
     {
         _logger = logger;
+        _serviceProvider = serviceProvider;
     }
 
     public async Task HandleAsync(WebSocket webSocket, UserDto user)
@@ -46,22 +46,16 @@ public class WebSocketNetwork : IWebSocketMessageSender
         await _semaphore.WaitAsync();
         try
         {
-            var existingHandler = _handlers.FirstOrDefault(h => h.Id == user.UserId);
-            if (existingHandler == null)
-            {
-                // Creamos un nuevo WebSocketHandler, nos suscribimos a sus eventos y lo añadimos a la lista
-                WebSocketHandler handler = new(user.UserId, webSocket, user, _logger);
-                handler.Disconnected += OnDisconnectedAsync;
-                handler.MessageReceived += OnMessageReceivedAsync;
-                _handlers.Add(handler);
+            // Creamos un nuevo WebSocketHandler, nos suscribimos a sus eventos y lo añadimos a la lista
+            var handler = new WebSocketHandler(user.UserId, webSocket, user, _logger);
 
-                return handler;
-            }
-            else
-            {
-                _logger.LogError("El usuario ya tiene una conexión activa");
-                return null;
-            }
+            handler.Disconnected += OnDisconnectedAsync;
+            handler.MessageReceived += OnMessageReceivedAsync;
+
+            var list = _userConnections.GetOrAdd(user.UserId, _ => new List<WebSocketHandler>());
+            list.Add(handler);
+
+            return handler;
         }
         finally
         {
@@ -76,10 +70,15 @@ public class WebSocketNetwork : IWebSocketMessageSender
         await _semaphore.WaitAsync();
         try
         {
-            var handler = _handlers.FirstOrDefault(h => h.Id == userId);
-            if (handler != null && handler.IsOpen)
+            if (_userConnections.TryGetValue(userId, out var list))
             {
-                await handler.SendAsync(message);
+                foreach (var handler in list.ToList())
+                {
+                    if (handler.IsOpen)
+                    {
+                        await handler.SendAsync(message);
+                    }
+                }
             }
         }
         finally
@@ -94,20 +93,16 @@ public class WebSocketNetwork : IWebSocketMessageSender
         await _semaphore.WaitAsync();
         try
         {
-            var tasks = _handlers
-                .Where(handler => handler.IsOpen)
-                .Select(async handler =>
+            foreach (var user in _userConnections)
+            {
+                foreach (var handler in user.Value.ToList())
                 {
-                    try
+                    if (handler.IsOpen)
                     {
                         await handler.SendAsync(message);
                     }
-                    catch (Exception ex)
-                    {
-                        _logger.LogError("Error enviando un mensaje a {handler.User.Nickname}: {ex.Message}", handler.User.Nickname, ex.Message);
-                    }
-                });
-            await Task.WhenAll(tasks);
+                }
+            }
         }
         finally
         {
@@ -124,7 +119,13 @@ public class WebSocketNetwork : IWebSocketMessageSender
         try
         {
             // Eliminamos el WebSocketHandler de la lista
-            _handlers.Remove(handler);
+            if (_userConnections.TryGetValue(handler.Id, out var list))
+            {
+                list.Remove(handler);
+
+                if (list.Count == 0)
+                    _userConnections.TryRemove(handler.Id, out _);
+            }
         }
         finally
         {
@@ -146,6 +147,11 @@ public class WebSocketNetwork : IWebSocketMessageSender
                     await HandleGlobalChatMessageAsync(message);
                     break;
 
+                // Mensaje del chat privado
+                case MsgType.PrivateChat:
+                    await HandleChatMessageAsync(message);
+                    break;
+
                 default:
                     _logger.LogError("Mensaje no manejado: {message.Type}", message.Type);
                     break;
@@ -164,16 +170,10 @@ public class WebSocketNetwork : IWebSocketMessageSender
         {
             string jsonContent = message.Content.ToString();
             GlobalChatMessageDto chatMessage = JsonSerializer.Deserialize<GlobalChatMessageDto>(jsonContent);
-            string updatedMessage = $"{chatMessage.Nickname}: {chatMessage.Content}";
 
             _logger.LogInformation("Mensaje de chat global recibido de {chatMessage.Nickname}: {chatMessage.Content}", chatMessage.Nickname, chatMessage.Content);
 
-            var chatMessageUpdated = new GlobalChatMessageDto
-            {
-                UserId = chatMessage.UserId,
-                Nickname = chatMessage.Nickname,
-                Content = updatedMessage
-            };
+            var chatMessageUpdated = await InsertGlobalMessageAsync(chatMessage);
 
             var chatResponse = new WebSocketMessage
             {
@@ -189,5 +189,52 @@ public class WebSocketNetwork : IWebSocketMessageSender
         }
     }
 
+    // Manejar mensajes del chat privado
+    private async Task HandleChatMessageAsync(WebSocketMessage message)
+    {
+        try
+        {
+            string jsonContent = message.Content.ToString();
+            ChatMessageDto chatMessage = JsonSerializer.Deserialize<ChatMessageDto>(jsonContent);
+
+            _logger.LogInformation("Mensaje de chat privado recibido de {chatMessage.SenderNickname} para {chatMessage.ReceiverNickname}: {chatMessage.Content}",
+                chatMessage.SenderNickname, chatMessage.ReceiverNickname, chatMessage.Content);
+
+            var chatMessageUpdated = await InsertMessageAsync(chatMessage);
+
+            var chatResponse = new WebSocketMessage
+            {
+                Type = MsgType.PrivateChat,
+                Content = chatMessageUpdated
+            };
+
+            await SendToUserAsync(chatMessage.SenderId, chatResponse);
+            await SendToUserAsync(chatMessage.ReceiverId, chatResponse);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError("Error al deserializar chatMessage: {ex.Message}", ex.Message);
+        }
+    }
+
+    // Guardar un nuevo mensaje del chat global
+    public async Task<GlobalChatMessageDto> InsertGlobalMessageAsync(GlobalChatMessageDto globalChatMessageDto)
+    {
+        using var scope = _serviceProvider.CreateScope();
+        var globalChatMessageService = scope.ServiceProvider.GetRequiredService<GlobalChatMessageService>();
+        var message = await globalChatMessageService.InsertGlobalMessageAsync(globalChatMessageDto);
+
+        return message;
+    }
+
+    // Guardar un nuevo mensaje del chat privado
+    public async Task<ChatMessageDto> InsertMessageAsync(ChatMessageDto chatMessageDto)
+    {
+        using var scope = _serviceProvider.CreateScope();
+        var chatMessageService = scope.ServiceProvider.GetRequiredService<ChatMessageService>();
+        var message = await chatMessageService.InsertMessageAsync(chatMessageDto);
+
+        return message;
+    }
 
 }

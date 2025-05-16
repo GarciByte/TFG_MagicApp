@@ -9,6 +9,9 @@ namespace MagicApp.Models.Database
         public UserRepository UserRepository { get; init; }
 
         public DeckRepository DeckRepository { get; init; }
+        public GlobalChatMessageRepository GlobalChatMessageRepository { get; init; }
+
+        public ChatMessageRepository ChatMessageRepository { get; init; }
 
         public UnitOfWork(
             MagicAppContext context,
@@ -18,6 +21,13 @@ namespace MagicApp.Models.Database
             _context = context;
             UserRepository = userRepository;
             DeckRepository = deckRepository;
+            GlobalChatMessageRepository globalChatMessageRepository,
+            ChatMessageRepository chatMessageRepository)
+        {
+            _context = context;
+            UserRepository = userRepository;
+            GlobalChatMessageRepository = globalChatMessageRepository;
+            ChatMessageRepository = chatMessageRepository;
         }
 
         public async Task<bool> SaveAsync()

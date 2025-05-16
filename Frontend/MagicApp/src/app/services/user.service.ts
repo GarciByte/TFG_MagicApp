@@ -2,17 +2,45 @@ import { Injectable } from '@angular/core';
 import { Result } from '../models/result';
 import { User } from '../models/user';
 import { ApiService } from './api.service';
+import { AuthService } from './auth.service';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class UserService {
 
-  constructor(private api: ApiService) { }
+  constructor(private api: ApiService, private authService: AuthService,) { }
 
   // Obtener información de un usuario por su ID
   async getUserById(userId: number): Promise<Result<User>> {
     return this.api.get<User>(`User/${userId}`);
+  }
+
+  // Obtener avatares de usuarios
+  async getUserAvatar(userId: number): Promise<string> {
+    const currentUser = await this.authService.getUser();
+    const apiImg = environment.apiImg;
+
+    if (userId === currentUser.userId) {
+      return apiImg + currentUser.avatarUrl;
+    }
+
+    try {
+      const result = await this.getUserById(userId);
+
+      if (result.success) {
+        return apiImg + result.data.avatarUrl;
+
+      } else {
+        console.error("Error al obtener datos del usuario:", result.error);
+        return "";
+      }
+
+    } catch (error) {
+      console.error("Error al obtener datos del usuario:", error);
+      return "";
+    }
   }
 
   // Buscar usuarios por nickname

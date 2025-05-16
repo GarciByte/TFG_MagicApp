@@ -1,5 +1,5 @@
 export interface GlobalChatMessage {
-    userId: number;
-    nickname: string;
-    content: string;
+    UserId: number;
+    Nickname: string;
+    Content: string;
 }
