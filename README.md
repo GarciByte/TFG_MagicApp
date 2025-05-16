@@ -109,6 +109,7 @@ En el cliente se empleará una persistencia de datos para almacenar opciones de 
 - **25/04/2025**: Resto de vistas terminadas.
 - **27/04/2025**: Ajustes esteticos en el inicio, el login y el menu principal.
 - **29/04/2025**: Ajustes esteticos en el menu principal y el registro más la creación de los componentes mazos y crear mazos con sus respectivos estilos.
+- **16/05/2025**: Logica de los mazos en el backend.
 ---
 
 ## Bibliografía
