@@ -55,12 +55,14 @@ namespace MagicApp
 
             // Inyección de todos los repositorios
             builder.Services.AddScoped<UserRepository>();
+            builder.Services.AddScoped<DeckRepository>();
 
             // Inyección de Mappers
             builder.Services.AddScoped<UserMapper>();
 
             // Inyección de Servicios
             builder.Services.AddScoped<UserService>();
+            builder.Services.AddScoped<DeckService>();
             builder.Services.AddSingleton<WebSocketNetwork>();
             builder.Services.AddSingleton<IWebSocketMessageSender>(provider => provider.GetRequiredService<WebSocketNetwork>());
 

@@ -8,12 +8,16 @@ namespace MagicApp.Models.Database
 
         public UserRepository UserRepository { get; init; }
 
+        public DeckRepository DeckRepository { get; init; }
+
         public UnitOfWork(
             MagicAppContext context,
-            UserRepository userRepository)
+            UserRepository userRepository,
+            DeckRepository deckRepository)
         {
             _context = context;
             UserRepository = userRepository;
+            DeckRepository = deckRepository;
         }
 
         public async Task<bool> SaveAsync()
