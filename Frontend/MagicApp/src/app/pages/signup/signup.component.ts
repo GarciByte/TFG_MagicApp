@@ -46,9 +46,9 @@ export class SignupComponent implements OnInit {
       { validators: this.passwordMatchValidator });
   }
 
-  ngOnInit(): void {
-    if (this.authService.isAuthenticated() && this.websocketService.isConnectedRxjs()) {
-      this.navCtrl.navigateRoot('/menu');
+  async ngOnInit(): Promise<void> {
+    if (await this.authService.isAuthenticated() && this.websocketService.isConnectedRxjs()) {
+      this.navCtrl.navigateRoot(['/menu']);
     }
   }
 

@@ -1,0 +1,102 @@
+ion-content {
+    --background: var(--ion-background-color);
+    padding: 32px 16px;
+}
+
+.button-container {
+    display: flex;
+    justify-content: center;
+    padding: 0 16px;
+    margin: 16px 0;
+}
+
+.button-container ion-button {
+    --padding-top: 4px;
+    --padding-bottom: 4px;
+    --padding-start: 12px;
+    --padding-end: 12px;
+}
+
+.search-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 24px 0;
+}
+
+.search-container ion-searchbar {
+    width: 50%;
+}
+
+.search-container ion-button {
+    margin-left: 8px;
+    flex-shrink: 0;
+}
+
+.message {
+    text-align: center;
+    color: var(--ion-text-color);
+    margin: 24px 0;
+    font-size: 1.1em;
+    font-style: italic;
+}
+
+.users-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    grid-gap: 1.5rem;
+    padding: 1.5rem;
+}
+
+.user-card {
+    --background: var(--ion-card-background);
+    padding: 1.2rem;
+    cursor: pointer;
+    transition: transform 0.12s ease-in-out, box-shadow 0.12s ease-in-out;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    max-width: 260px;
+}
+
+.user-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.user-header {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.user-avatar {
+    --size: 64px;
+}
+
+.user-header-text {
+    margin-left: 20px;
+}
+
+ion-card-title {
+    font-size: 1.2rem;
+    font-weight: 500;
+    color: var(--ion-color-primary);
+    margin: 0;
+    padding: 0;
+    line-height: 1;
+}
+
+@media (max-width: 600px) {
+    .search-container ion-searchbar {
+        width: 70%;
+    }
+
+    .user-avatar {
+        --size: 56px;
+    }
+
+    ion-card-title {
+        font-size: 1.1rem;
+    }
+}

@@ -68,6 +68,22 @@
         </div>
       </ion-button>
 
+      <!-- Buscador de usuarios -->
+      <ion-button class="menu-button full-width" (click)="navCtrl.navigateRoot(['/user-search'])">
+        <div class="button-content">
+          <div class="magic-icon"></div>
+          <span>BUSCADOR DE USUARIOS</span>
+        </div>
+      </ion-button>
+
+      <!-- Perfil del usuario -->
+      <ion-button class="menu-button full-width" (click)="navCtrl.navigateRoot(['/user-profile'])">
+        <div class="button-content">
+          <div class="magic-icon"></div>
+          <span>MI PERFIL</span>
+        </div>
+      </ion-button>
+
       <!-- Cerrar sesión -->
       <ion-button class="menu-button full-width" (click)="logout()">
         <div class="button-content">

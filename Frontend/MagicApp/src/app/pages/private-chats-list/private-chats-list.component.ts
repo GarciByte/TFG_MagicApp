@@ -118,13 +118,13 @@ export class PrivateChatsListComponent implements OnInit {
       'warning',
       '¿Estás seguro de que quieres eliminar esta conversación?',
       [
-        { text: 'Cancelar' },
         {
           text: 'Borrar',
           handler: async () => {
             await this.deleteChat(otherUserId);
           }
-        }
+        },
+        { text: 'Cancelar' }
       ]
     );
   }
