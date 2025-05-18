@@ -10,6 +10,8 @@ import { ModalService } from 'src/app/services/modal.service';
 import { UserService } from 'src/app/services/user.service';
 import { environment } from 'src/environments/environment';
 import { IonContent, IonButton, IonCard, IonAvatar } from "@ionic/angular/standalone";
+import { ReportService } from 'src/app/services/report.service';
+import { NewReport } from 'src/app/models/new-report';
 
 @Component({
   selector: 'app-other-users-profile',
@@ -30,7 +32,8 @@ export class OtherUsersProfileComponent implements OnInit {
     private authService: AuthService,
     private route: ActivatedRoute,
     private userService: UserService,
-    private modalService: ModalService
+    private modalService: ModalService,
+    private reportService: ReportService
   ) { }
 
   async ngOnInit(): Promise<void> {
@@ -108,8 +111,57 @@ export class OtherUsersProfileComponent implements OnInit {
   }
 
   // Reportar al usuario
-  reportUser(): void {
-    console.log('Reportar usuario', this.user.userId);
+  async reportUser(): Promise<void> {
+    const reason = await this.modalService.promptReportReason(this.user.nickname);
+
+    if (!reason) {
+      this.modalService.showToast('Reporte cancelado', 'warning');
+      return;
+    }
+
+    const newReport: NewReport = {
+      ReportedUserId: this.user.userId,
+      Reason: reason
+    };
+
+    try {
+      const result = await this.reportService.createReport(newReport);
+
+      if (result.success) {
+        this.modalService.showToast(`Has reportado a ${this.user.nickname} con éxito`, "success");
+
+      } else {
+
+        if (result.error === 'Conflict') {
+
+          this.modalService.showAlert(
+            'warning',
+            'Ya has reportado a este usuario',
+            [{ text: 'Aceptar' }]
+          );
+
+        } else {
+          console.error("Se ha producido un error al enviar el reporte:", result.error);
+
+          this.modalService.showAlert(
+            'error',
+            'Se ha producido un error al enviar el reporte',
+            [{ text: 'Aceptar' }]
+          );
+
+        }
+      }
+
+    } catch (error) {
+      console.error("Se ha producido un error al enviar el reporte:", error);
+
+      this.modalService.showAlert(
+        'error',
+        'Se ha producido un error al enviar el reporte',
+        [{ text: 'Aceptar' }]
+      );
+
+    }
   }
 
 }

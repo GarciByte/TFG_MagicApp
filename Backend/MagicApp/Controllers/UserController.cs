@@ -99,6 +99,10 @@ public class UserController : ControllerBase
         try
         {
             await _userService.ModifyUserAsync(modifyUserDto);
+
+            _logger.LogInformation("Nuevos datos del usuario: ID = {modifyUserDto.UserId}, Nickname = {modifyUserDto.Nickname}, Email = {modifyUserDto.Email}",
+                modifyUserDto.UserId, modifyUserDto.Nickname, modifyUserDto.Email);
+
             return Ok("Usuario actualizado correctamente.");
         }
 

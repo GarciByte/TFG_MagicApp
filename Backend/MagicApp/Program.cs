@@ -57,16 +57,19 @@ namespace MagicApp
             builder.Services.AddScoped<UserRepository>();
             builder.Services.AddScoped<GlobalChatMessageRepository>();
             builder.Services.AddScoped<ChatMessageRepository>();
+            builder.Services.AddScoped<ReportRepository>();
 
             // Inyección de Mappers
             builder.Services.AddScoped<UserMapper>();
             builder.Services.AddScoped<GlobalChatMessageMapper>();
             builder.Services.AddScoped<ChatMessageMapper>();
+            builder.Services.AddScoped<ReportMapper>();
 
             // Inyección de Servicios
             builder.Services.AddScoped<UserService>();
             builder.Services.AddScoped<GlobalChatMessageService>();
             builder.Services.AddScoped<ChatMessageService>();
+            builder.Services.AddScoped<ReportService>();
             builder.Services.AddSingleton<WebSocketNetwork>();
             builder.Services.AddSingleton<IWebSocketMessageSender>(provider => provider.GetRequiredService<WebSocketNetwork>());
 
