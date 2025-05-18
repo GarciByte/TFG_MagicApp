@@ -48,12 +48,12 @@ export const routes: Routes = [
   },
   {
     path: "mazos", // Ruta de Mazos
-    loadComponent: () => import("./pages/mazos/mazos.component").then((m) => m.MazosComponent),
+    loadComponent: () => import("./pages/deck/deck.component").then((m) => m.DeckComponent),
     pathMatch: "full",
   },
   {
     path: "crear-mazo", // Ruta de Crear Mazo
-    loadComponent: () => import("./pages/crear-mazo/crear-mazo.component").then((m) => m.CrearMazoComponent),
+    loadComponent: () => import("./pages/create-deck/create-deck.component").then((m) => m.CreateDeckComponent),
     pathMatch: "full",
   },
   {

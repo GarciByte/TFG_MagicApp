@@ -1,0 +1,35 @@
+<ion-content>
+  <div class="header-container">
+    <h1 class="page-title">Decks</h1>
+  </div>
+
+  <div class="content-container">
+    <div class="decks-title">DECKS</div>
+
+    <ion-grid class="decks-grid">
+      <ion-row>
+        <!-- Button to create a new deck -->
+        <ion-col size="6" size-md="4" size-lg="3">
+          <div class="deck-card add-card" (click)="createDeck()">
+            <div class="add-icon">
+              <ion-icon name="add-outline"></ion-icon>
+            </div>
+          </div>
+        </ion-col>
+
+        <!-- Existing decks -->
+        <ion-col size="6" size-md="4" size-lg="3" *ngFor="let deck of decks">
+          <div class="deck-card" [style.background-color]="deck.color" (click)="viewDeck(deck.id)">
+            <div class="deck-icon" [ngClass]="'icon-' + deck.icon"></div>
+            <div class="deck-name">{{ deck.name }}</div>
+            <div class="deck-cards">{{ deck.cards }} cards</div>
+          </div>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </div>
+
+  <div class="footer-logo">
+    <img src="assets/images/logo.png" alt="MagicHub Logo" />
+  </div>
+</ion-content>

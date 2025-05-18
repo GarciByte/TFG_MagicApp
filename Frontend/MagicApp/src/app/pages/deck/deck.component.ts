@@ -7,48 +7,48 @@ import { Deck } from "src/app/models/deck"
 import { AuthService } from "src/app/services/auth.service"
 
 @Component({
-  selector: "app-mazos",
+  selector: "app-decks",
   standalone: true,
   imports: [CommonModule, RouterModule, IonContent, IonIcon, IonGrid, IonRow, IonCol],
-  templateUrl: "./mazos.component.html",
-  styleUrls: ["./mazos.component.css"],
+  templateUrl: "./deck.component.html",
+  styleUrls: ["./deck.component.css"],
 })
-export class MazosComponent implements OnInit {
-  mazos: Deck[] = [
+export class DeckComponent implements OnInit {
+  decks: Deck[] = [
     {
       id: 1,
-      nombre: "Mazo 1",
-      cartas: 60,
+      name: "Deck 1",
+      cards: 60,
       color: "#fff2b2",
-      icono: "sun",
+      icon: "sun",
     },
     {
       id: 2,
-      nombre: "Mazo 2",
-      cartas: 60,
+      name: "Deck 2",
+      cards: 60,
       color: "#ffbfaa",
-      icono: "phoenix",
+      icon: "phoenix",
     },
     {
       id: 3,
-      nombre: "Mazo 3",
-      cartas: 60,
+      name: "Deck 3",
+      cards: 60,
       color: "#fff2b2",
-      icono: "sun",
+      icon: "sun",
     },
     {
       id: 4,
-      nombre: "Mazo 4",
-      cartas: 60,
+      name: "Deck 4",
+      cards: 60,
       color: "#c8e6c9",
-      icono: "tree",
+      icon: "tree",
     },
     {
       id: 5,
-      nombre: "Mazo 5",
-      cartas: 60,
+      name: "Deck 5",
+      cards: 60,
       color: "#ffbfaa",
-      icono: "phoenix",
+      icon: "phoenix",
     },
   ]
 
@@ -63,13 +63,12 @@ export class MazosComponent implements OnInit {
     }
   }
 
-  crearMazo() {
-    this.navCtrl.navigateForward("/crear-mazo")
+  createDeck() {
+    this.navCtrl.navigateForward("/create-deck")
   }
 
-  verMazo(id: number) {
-    console.log("Ver mazo:", id)
-    // Implementar navegación al detalle del mazo
+  viewDeck(id: number) {
+    console.log("View deck:", id)
+    // Implement navigation to deck detail page
   }
-
 }

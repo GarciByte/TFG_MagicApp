@@ -1,7 +1,7 @@
 export interface Deck {
     id: number
-    nombre: string
-    cartas: number
+    name: string
+    cards: number
     color: string
-    icono: string
+    icon: string
 }

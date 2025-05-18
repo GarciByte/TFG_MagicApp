@@ -1,0 +1,55 @@
+<ion-content>
+  <div class="header-container">
+    <h1 class="page-title">Create Deck</h1>
+  </div>
+
+  <div class="content-container">
+    <div class="create-deck-title">CREATE DECK</div>
+
+    <div class="form-container">
+      <!-- Deck Icon -->
+      <div class="deck-icon-container">
+        <div class="deck-icon icon-sun"></div>
+      </div>
+
+      <!-- Form -->
+      <div class="form-group">
+        <label class="form-label">Deck Name</label>
+        <input type="text" class="form-input" [(ngModel)]="deckName" placeholder="deck name">
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Format</label>
+        <div class="select-container">
+          <select class="form-select" [(ngModel)]="format">
+            <option *ngFor="let f of formats" [value]="f">{{ f }}</option>
+          </select>
+          <div class="select-arrow"></div>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Deck Size</label>
+        <div class="select-container">
+          <select class="form-select" [(ngModel)]="sizes">
+            <option *ngFor="let t of sizes" [value]="t">{{ t }}</option>
+          </select>
+          <div class="select-arrow"></div>
+        </div>
+      </div>
+
+      <!-- Action Buttons -->
+      <div class="action-buttons">
+        <button class="action-button" (click)="addCard()">Add Cards</button>
+        <button class="action-button" (click)="cardDetails()">View Cards</button>
+      </div>
+
+      <!-- Create Button -->
+      <button class="create-button" (click)="createDeck()">Create</button>
+    </div>
+  </div>
+
+  <div class="footer-logo">
+    <img src="assets/images/logo.png" alt="MagicHub Logo" />
+  </div>
+</ion-content>

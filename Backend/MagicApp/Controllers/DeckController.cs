@@ -23,7 +23,7 @@ public class DeckController : ControllerBase
     }
 
     //Obtener decks de un usuario
-    [HttpPost("GetAllUserDecksAsync")]
+    [HttpPost("GetAllUserDecks")]
     public async Task<List<Deck>> GetAllUserDecksAsync([FromForm] User user)
     {
         return await _deckService.GetAllUserDecksAsync(user.Id);
