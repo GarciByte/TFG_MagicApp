@@ -19,10 +19,10 @@
 
         <!-- Existing decks -->
         <ion-col size="6" size-md="4" size-lg="3" *ngFor="let deck of decks">
-          <div class="deck-card" [style.background-color]="deck.color" (click)="viewDeck(deck.id)">
+          <div class="deck-card" [style.background-color]="deck.color" (click)="viewDeck(deck.Id)">
             <div class="deck-icon" [ngClass]="'icon-' + deck.icon"></div>
-            <div class="deck-name">{{ deck.name }}</div>
-            <div class="deck-cards">{{ deck.cards }} cards</div>
+            <div class="deck-name">{{ deck.Name }}</div>
+            <div class="deck-cards">{{ deck.DeckCards }} cards</div>
           </div>
         </ion-col>
       </ion-row>

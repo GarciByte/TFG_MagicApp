@@ -5,6 +5,8 @@ import { NavController } from "@ionic/angular"
 import { IonContent } from "@ionic/angular/standalone"
 import { AuthService } from "src/app/services/auth.service"
 import { DeckServiceService } from "src/app/services/deck-service.service"
+import { CardDetail } from "../../models/card-detail";
+import { DeckRequest } from '../../models/deck-request';
 
 @Component({
   selector: "app-create-deck",
@@ -14,9 +16,12 @@ import { DeckServiceService } from "src/app/services/deck-service.service"
   styleUrls: ["./create-deck.component.css"],
 })
 export class CreateDeckComponent implements OnInit {
+  deckId: number
   deckName = ""
+  deckDescription = ""
   format = "Standard"
   size = 60
+  deckCards: CardDetail[] = []
 
   formats: string[] = ["Standard", "Modern", "Commander", "Legacy", "Vintage", "Pauper"]
   sizes: number[] = [40, 60, 100]
@@ -35,32 +40,70 @@ export class CreateDeckComponent implements OnInit {
 
   addCard() {
     console.log("Add cards to the deck")
-    // Implement navigation to the add cards page
+    // Navigation to the add cards page
   }
 
   cardDetails() {
     console.log("View deck cards")
-    // Implement navigation to the view cards page
+    // Navigation to the view cards page
   }
 
-  createDeck() {
+  async createDeck() {
     console.log("Create deck:", {
       name: this.deckName,
       format: this.format,
       size: this.size,
     })
 
-    // Logic to save the deck would go here
+    const deckData: DeckRequest = {
+        Name: this.deckName,
+        Description: this.deckDescription,
+        UserId: 1,
+        DeckCards: this.deckCards
+    }
+    
 
-    // Navigate back to the decks page
-    this.navCtrl.navigateBack("/decks")
+    // Save the deck
+    const response = await this.deckService.CreateDeck(deckData)
+
+    if(response.success){
+      // Navigate back to the decks page
+      this.navCtrl.navigateBack("/decks")
+    }else{
+      //Error message
+    }
   }
 
-  updateDeck() {
+  async updateDeck() {
     // Logic for updating the deck
+        const deckData: DeckRequest = {
+        Name: this.deckName,
+        Description: this.deckDescription,
+        UserId: 1,
+        DeckCards: this.deckCards
+    }
+    
+
+    // Save the deck
+    const response = await this.deckService.UpdateDeck(deckData)
+
+    if(response.success){
+      // Navigate back to the decks page
+      this.navCtrl.navigateBack("/decks")
+    }else{
+      //Error message
+    }
   }
 
-  deleteDeck() {
+  async deleteDeck() {
     // Logic for deleting the deck
+    const response = await this.deckService.DeleteDeck(this.deckId)
+
+    if(response.success){
+      // Navigate back to the decks page
+      this.navCtrl.navigateBack("/decks")
+    }else{
+      //Error message
+    }
   }
 }

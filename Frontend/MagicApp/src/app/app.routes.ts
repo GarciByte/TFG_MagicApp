@@ -47,12 +47,12 @@ export const routes: Routes = [
     pathMatch: 'full'
   },
   {
-    path: "mazos", // Ruta de Mazos
+    path: "decks", // Ruta de Mazos
     loadComponent: () => import("./pages/deck/deck.component").then((m) => m.DeckComponent),
     pathMatch: "full",
   },
   {
-    path: "crear-mazo", // Ruta de Crear Mazo
+    path: "create-deck", // Ruta de Crear Mazo
     loadComponent: () => import("./pages/create-deck/create-deck.component").then((m) => m.CreateDeckComponent),
     pathMatch: "full",
   },

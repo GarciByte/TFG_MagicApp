@@ -8,6 +8,8 @@ namespace MagicApp.Models.Dtos
         public string Description { get; set; } = null!;
 
         public int UserId { get; set; }
+
+        public string DeckIconName { get; set; } = null;
         public List<DeckCard> DeckCards { get; set; } = new List<DeckCard>();
     }
 }

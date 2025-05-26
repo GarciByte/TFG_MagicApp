@@ -3,8 +3,10 @@ import { CommonModule } from "@angular/common"
 import { RouterModule } from "@angular/router"
 import { NavController } from "@ionic/angular"
 import { IonContent, IonIcon, IonGrid, IonRow, IonCol } from "@ionic/angular/standalone"
-import { Deck } from "src/app/models/deck"
 import { AuthService } from "src/app/services/auth.service"
+import { DeckServiceService } from "src/app/services/deck-service.service"
+import { User } from "src/app/models/user"
+import { DeckResponse } from "src/app/models/deck-response"
 
 @Component({
   selector: "app-decks",
@@ -14,53 +16,26 @@ import { AuthService } from "src/app/services/auth.service"
   styleUrls: ["./deck.component.css"],
 })
 export class DeckComponent implements OnInit {
-  decks: Deck[] = [
-    {
-      id: 1,
-      name: "Deck 1",
-      cards: 60,
-      color: "#fff2b2",
-      icon: "sun",
-    },
-    {
-      id: 2,
-      name: "Deck 2",
-      cards: 60,
-      color: "#ffbfaa",
-      icon: "phoenix",
-    },
-    {
-      id: 3,
-      name: "Deck 3",
-      cards: 60,
-      color: "#fff2b2",
-      icon: "sun",
-    },
-    {
-      id: 4,
-      name: "Deck 4",
-      cards: 60,
-      color: "#c8e6c9",
-      icon: "tree",
-    },
-    {
-      id: 5,
-      name: "Deck 5",
-      cards: 60,
-      color: "#ffbfaa",
-      icon: "phoenix",
-    },
-  ]
+  decks: DeckResponse[] = []
 
   constructor(
     public navCtrl: NavController,
-    private authService: AuthService
+    private authService: AuthService,
+    private deckService: DeckServiceService
   ) { }
 
   async ngOnInit(): Promise<void> {
     if (!await this.authService.isAuthenticated()) {
       this.navCtrl.navigateRoot(['/']);
+    }else{
+      await this.getUserDecks();
     }
+  }
+
+  async getUserDecks(){
+    const user = await this.authService.getUser();
+    const result = await this.deckService.GetAllUserDecks(user);
+    this.decks = result.data;
   }
 
   createDeck() {
@@ -70,5 +45,7 @@ export class DeckComponent implements OnInit {
   viewDeck(id: number) {
     console.log("View deck:", id)
     // Implement navigation to deck detail page
+
+    
   }
 }
