@@ -8,7 +8,5 @@ export interface DeckResponse{
     User : User;
     Victories : number;
     Defeats : number;
-    Color: string;
-    DeckIcon: string;
     DeckCards : CardDetail[];
 }

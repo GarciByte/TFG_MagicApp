@@ -1,10 +1,10 @@
 <ion-content>
   <div class="header-container">
-    <h1 class="page-title">Decks</h1>
+    <h1 class="page-title">Mazos</h1>
   </div>
 
   <div class="content-container">
-    <div class="decks-title">DECKS</div>
+    <div class="decks-title">MAZOS</div>
 
     <ion-grid class="decks-grid">
       <ion-row>
@@ -19,10 +19,9 @@
 
         <!-- Existing decks -->
         <ion-col size="6" size-md="4" size-lg="3" *ngFor="let deck of decks">
-          <div class="deck-card" [style.background-color]="deck.color" (click)="viewDeck(deck.Id)">
-            <div class="deck-icon" [ngClass]="'icon-' + deck.icon"></div>
+          <div class="deck-card" (click)="viewDeck(deck.Id)">
             <div class="deck-name">{{ deck.Name }}</div>
-            <div class="deck-cards">{{ deck.DeckCards }} cards</div>
+            <div class="deck-cards">{{ deck.DeckCards }} Cartas</div>
           </div>
         </ion-col>
       </ion-row>

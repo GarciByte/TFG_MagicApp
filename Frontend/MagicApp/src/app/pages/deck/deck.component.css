@@ -76,10 +76,6 @@ ion-col {
   margin-bottom: 12px;
 }
 
-.icon-sun, .icon-phoenix, .icon-tree {
-  background-image: url(...);
-}
-
 .deck-name {
   font-size: 1.2rem;
   font-weight: 500;

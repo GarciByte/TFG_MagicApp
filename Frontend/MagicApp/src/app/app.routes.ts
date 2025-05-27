@@ -57,6 +57,21 @@ export const routes: Routes = [
     pathMatch: "full",
   },
   {
+    path: "add-cards-deck", // Ruta de Añadir Cartas al Mazo
+    loadComponent: () => import("./pages/add-cards-deck/add-cards-deck.component").then((m) => m.AddCardsDeckComponent),
+    pathMatch: "full",
+  },
+  {
+    path: "deck-cards-views", // Ruta de Ver Cartas del Mazo
+    loadComponent: () => import("./pages/deck-cards-views/deck-cards-views.component").then((m) => m.DeckCardsViewsComponent),
+    pathMatch: "full",
+  },
+  {
+    path: "deck-view", // Ruta de Ver Mazo
+    loadComponent: () => import("./pages/deck-view/deck-view.component").then((m) => m.DeckViewComponent),
+    pathMatch: "full",
+  },
+  {
     path: '**',
     redirectTo: '',
     pathMatch: 'full'

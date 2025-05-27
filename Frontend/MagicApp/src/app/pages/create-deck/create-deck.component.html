@@ -1,10 +1,10 @@
 <ion-content>
   <div class="header-container">
-    <h1 class="page-title">Create Deck</h1>
+    <h1 class="page-title">Crear mazo</h1>
   </div>
 
   <div class="content-container">
-    <div class="create-deck-title">CREATE DECK</div>
+    <div class="create-deck-title">CREAR MAZO</div>
 
     <div class="form-container">
       <!-- Deck Icon -->
@@ -14,38 +14,23 @@
 
       <!-- Form -->
       <div class="form-group">
-        <label class="form-label">Deck Name</label>
-        <input type="text" class="form-input" [(ngModel)]="deckName" placeholder="deck name">
+        <label class="form-label">Nombre del mazo</label>
+        <input type="text" class="form-input" [(ngModel)]="deckName" placeholder="nombre">
       </div>
 
       <div class="form-group">
-        <label class="form-label">Format</label>
-        <div class="select-container">
-          <select class="form-select" [(ngModel)]="format">
-            <option *ngFor="let f of formats" [value]="f">{{ f }}</option>
-          </select>
-          <div class="select-arrow"></div>
-        </div>
-      </div>
-
-      <div class="form-group">
-        <label class="form-label">Deck Size</label>
-        <div class="select-container">
-          <select class="form-select" [(ngModel)]="sizes">
-            <option *ngFor="let t of sizes" [value]="t">{{ t }}</option>
-          </select>
-          <div class="select-arrow"></div>
-        </div>
+        <label class="form-label">Descripción del mazo</label>
+        <input type="text" class="form-input" [(ngModel)]="deckDescription" placeholder="descripción">
       </div>
 
       <!-- Action Buttons -->
       <div class="action-buttons">
-        <button class="action-button" (click)="addCard()">Add Cards</button>
-        <button class="action-button" (click)="cardDetails()">View Cards</button>
+        <button class="action-button" (click)="addCard()">Añadir cartas</button>
+        <button class="action-button" (click)="cardDetails()">Ver cartas</button>
       </div>
 
       <!-- Create Button -->
-      <button class="create-button" (click)="createDeck()">Create</button>
+      <button class="create-button" (click)="createDeck()">Crear</button>
     </div>
   </div>
 
