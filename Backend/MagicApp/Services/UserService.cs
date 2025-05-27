@@ -233,7 +233,7 @@ public class UserService
     // Actualizar los datos del usuario
     public async Task UpdateUser(User user)
     {
-        _unitOfWork.UserRepository.Update(user);
+        await _unitOfWork.UserRepository.Update(user);
         await _unitOfWork.SaveAsync();
     }
 }
