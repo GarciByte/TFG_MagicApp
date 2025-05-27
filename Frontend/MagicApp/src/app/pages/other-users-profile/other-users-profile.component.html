@@ -1,0 +1,52 @@
+<ion-content [fullscreen]="true" class="ion-padding">
+
+  <!-- Botón para volver al buscador de usuarios -->
+  <div class="button-container">
+    <ion-button size="small" shape="round" (click)="navCtrl.navigateRoot(['/user-search'])">
+      Volver al buscador de usuarios
+    </ion-button>
+  </div>
+
+  <!-- Card del usuario -->
+  <ng-container *ngIf="user">
+
+    <div class="users-container">
+      <ion-card class="user-card">
+
+        <div class="card-inner">
+
+          <!-- Información del usuario -->
+          <div class="user-info">
+            <ion-avatar class="user-avatar">
+              <img [src]="avatarUrl" alt="Avatar de {{ user.nickname }}">
+            </ion-avatar>
+            <div class="user-details">
+              <h2>{{ user.nickname }}</h2>
+              <p class="user-email">{{ user.email }}</p>
+            </div>
+          </div>
+
+          <div class="action-buttons">
+
+            <!-- Botón para reportar al usuario -->
+            <ion-button fill="solid" (click)="reportUser()">
+              Reportar usuario
+            </ion-button>
+
+            <!-- Botón para ver los mazos creados del usuario -->
+            <ion-button fill="solid" (click)="viewDecks()">
+              Ver mazos
+            </ion-button>
+
+            <!-- Botón para enviar un mensaje privado -->
+            <ion-button fill="solid" (click)="sendMessage()">
+              Mensaje privado
+            </ion-button>
+          </div>
+
+        </div>
+      </ion-card>
+    </div>
+
+  </ng-container>
+</ion-content>

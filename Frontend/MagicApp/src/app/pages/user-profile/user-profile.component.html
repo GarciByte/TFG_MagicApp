@@ -1,0 +1,95 @@
+<ion-content [fullscreen]="true" class="ion-padding">
+
+  <!-- Botón para volver al menú -->
+  <div class="button-container">
+    <ion-button size="small" shape="round" (click)="navCtrl.navigateRoot(['/menu'])">
+      Volver al menú principal
+    </ion-button>
+  </div>
+
+  <ng-container *ngIf="user">
+
+    <!-- Datos de perfil -->
+    <div class="users-container">
+      <ion-card class="card-profile">
+
+        <ion-card-header>
+          <ion-card-title>Mi perfil</ion-card-title>
+        </ion-card-header>
+
+        <ion-card-content [formGroup]="userProfileForm">
+
+          <!-- Avatar -->
+          <div class="avatar-container">
+            <div class="avatar-preview">
+              <img [src]="'assets/images/avatars/' + userProfileForm.get('avatarName')!.value + '.jpg'"
+                alt="Avatar seleccionado">
+            </div>
+            <ion-item lines="full" class="form-item">
+              <ion-select formControlName="avatarName" interface="popover" okText="Seleccionar" cancelText="Cancelar">
+                <ion-select-option *ngFor="let av of avatars" [value]="av">
+                  {{ av }}
+                </ion-select-option>
+              </ion-select>
+            </ion-item>
+          </div>
+
+          <!-- Nickname -->
+          <ion-item lines="full" class="form-item">
+            <ion-input label="Apodo" labelPlacement="floating" formControlName="nickname" required
+              autocomplete="nickname" enterkeyhint="next">
+            </ion-input>
+          </ion-item>
+
+          <!-- Email -->
+          <ion-item lines="full" class="form-item">
+            <ion-input label="Correo electrónico" labelPlacement="floating" type="email" formControlName="email"
+              required autocomplete="email" enterkeyhint="next">
+            </ion-input>
+          </ion-item>
+
+          <!-- Botones de acción -->
+          <div class="action-buttons">
+            <ion-button expand="block" (click)="onSubmitProfile()">Guardar cambios</ion-button>
+            <ion-button fill="outline" expand="block" (click)="viewDecks()">Ver mis mazos</ion-button>
+          </div>
+
+        </ion-card-content>
+      </ion-card>
+
+      <!-- Cambio de contraseña -->
+      <ion-card class="card-password">
+
+        <ion-card-header>
+          <ion-card-title>Cambiar contraseña</ion-card-title>
+        </ion-card-header>
+
+        <ion-card-content [formGroup]="passwordForm">
+
+          <div class="password-fields">
+
+            <!-- Nueva contraseña -->
+            <ion-item lines="full" class="form-item">
+              <ion-input label="Contraseña" labelPlacement="floating" type="password" formControlName="newPassword"
+                required autocomplete="new-password" enterkeyhint="next">
+              </ion-input>
+            </ion-item>
+
+            <!-- Confirmar contraseña -->
+            <ion-item lines="full" class="form-item">
+              <ion-input label="Repetir contraseña" labelPlacement="floating" type="password"
+                formControlName="confirmPassword" required autocomplete="new-password" enterkeyhint="done">
+              </ion-input>
+            </ion-item>
+
+            <ion-button expand="block" (click)="onSubmitPassword()">
+              Cambiar contraseña
+            </ion-button>
+
+          </div>
+        </ion-card-content>
+      </ion-card>
+    </div>
+
+  </ng-container>
+</ion-content>

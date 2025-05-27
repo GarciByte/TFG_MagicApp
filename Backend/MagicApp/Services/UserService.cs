@@ -10,6 +10,7 @@ public class UserService
 {
     private readonly UnitOfWork _unitOfWork;
     private readonly UserMapper _userMapper;
+    private readonly string IMAGES_FOLDER = "avatars/";
 
     public UserService(UnitOfWork unitOfWork, UserMapper userMapper)
     {
@@ -61,6 +62,19 @@ public class UserService
         return _userMapper.UserToDto(user);
     }
 
+    // Obtener usuario por id (Sin DTO)
+    public async Task<User> GetUserByIdAsyncNoDto(int id)
+    {
+        var user = await _unitOfWork.UserRepository.GetUserById(id);
+
+        if (user == null)
+        {
+            return null;
+        }
+
+        return user;
+    }
+
     // Login
     public async Task<User> LoginAsync(string nickname, string password)
     {
@@ -82,8 +96,6 @@ public class UserService
     // Registro
     public async Task<User> RegisterAsync(RegisterDto model)
     {
-        const string IMAGES_FOLDER = "avatars/";
-
         // Verifica si el Email o el Nickname ya están en uso
         var existingUserEmail = await GetUserByEmailAsync(model.Email);
         var existingUserNickname = await GetUserByNicknameAsync(model.Nickname);
@@ -107,5 +119,121 @@ public class UserService
         await _unitOfWork.SaveAsync();
 
         return newUser;
+    }
+
+    // Modificar los datos del usuario
+    public async Task ModifyUserAsync(ModifyUserDto modifyUserDto)
+    {
+        // Obtener usuario
+        var existingUser = await _unitOfWork.UserRepository.GetUserById(modifyUserDto.UserId);
+        if (existingUser == null)
+        {
+            throw new InvalidOperationException("Usuario no encontrado");
+        }
+
+        // Actualizar los datos
+        if (!string.IsNullOrEmpty(modifyUserDto.Nickname) && existingUser.Nickname != modifyUserDto.Nickname)
+        {
+            // Verifica si ya existe un usuario con el mismo nickname
+            var existingUserNickname = await GetUserByNicknameAsync(modifyUserDto.Nickname);
+            if (existingUserNickname != null)
+            {
+                throw new InvalidOperationException("El nickname ya está en uso");
+            }
+
+            existingUser.Nickname = modifyUserDto.Nickname;
+        }
+
+        if (!string.IsNullOrEmpty(modifyUserDto.Email) && existingUser.Email != modifyUserDto.Email)
+        {
+            // Verifica si ya existe un usuario con el mismo correo
+            var existingUserEmail = await GetUserByEmailAsync(modifyUserDto.Email);
+            if (existingUserEmail != null)
+            {
+                throw new InvalidOperationException("El correo electrónico ya está en uso");
+            }
+
+            existingUser.Email = modifyUserDto.Email;
+        }
+
+        // Avatar
+        existingUser.AvatarUrl = $"{IMAGES_FOLDER}{modifyUserDto.AvatarName}.jpg";
+
+        await UpdateUser(existingUser);
+        await _unitOfWork.SaveAsync();
+    }
+
+    // Modificar el rol del usuario
+    public async Task ModifyUserRoleAsync(int userId, string newRole)
+    {
+        // Obtener usuario
+        var existingUser = await _unitOfWork.UserRepository.GetUserById(userId);
+        if (existingUser == null)
+        {
+            throw new InvalidOperationException("Usuario no encontrado");
+        }
+
+        // Actualizar el rol
+        if (!string.IsNullOrEmpty(newRole))
+        {
+            existingUser.Role = newRole;
+        }
+
+        await UpdateUser(existingUser);
+        await _unitOfWork.SaveAsync();
+    }
+
+    // Modificar la prohibición de un usuario
+    public async Task ModifyUserBanAsync(int userId, bool isBanned)
+    {
+        // Obtener usuario
+        var existingUser = await _unitOfWork.UserRepository.GetUserById(userId);
+        if (existingUser == null)
+        {
+            throw new InvalidOperationException("Usuario no encontrado");
+        }
+
+        // Actualizar la prohibición
+        if (isBanned)
+        {
+            existingUser.IsBanned = true;
+        }
+        else
+        {
+            existingUser.IsBanned = false;
+        }
+
+        await UpdateUser(existingUser);
+        await _unitOfWork.SaveAsync();
+    }
+
+    // Modificar contraseña del usuario
+    public async Task ModifyPasswordAsync(int userId, string newPassword)
+    {
+        // Obtener usuario
+        var existingUser = await _unitOfWork.UserRepository.GetUserById(userId);
+        if (existingUser == null)
+        {
+            throw new InvalidOperationException("Usuario no encontrado");
+        }
+
+        if (!string.IsNullOrEmpty(newPassword) && existingUser.Password != PasswordHelper.Hash(newPassword))
+        {
+            existingUser.Password = PasswordHelper.Hash(newPassword);
+        }
+        else
+        {
+            throw new InvalidOperationException("La contraseña es nula o similar a la anterior");
+        }
+
+        await UpdateUser(existingUser);
+        await _unitOfWork.SaveAsync();
+    }
+
+    // Actualizar los datos del usuario
+    public async Task UpdateUser(User user)
+    {
+        _unitOfWork.UserRepository.Update(user);
+        await _unitOfWork.SaveAsync();
     }
 }
