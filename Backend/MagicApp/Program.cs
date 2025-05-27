@@ -28,10 +28,10 @@ namespace MagicApp
             // Cultura invariante
             CultureInfo.DefaultThreadCurrentCulture = CultureInfo.InvariantCulture;
 
-            // Configuración del directorio
+            // Configuraciï¿½n del directorio
             Directory.SetCurrentDirectory(AppContext.BaseDirectory);
 
-            // Leer la configuración
+            // Leer la configuraciï¿½n
             builder.Services.Configure<Settings>(builder.Configuration.GetSection("Settings"));
             builder.Services.AddSingleton(sp => sp.GetRequiredService<IOptions<Settings>>().Value);
 
@@ -53,14 +53,25 @@ namespace MagicApp
             builder.Services.AddScoped<MagicAppContext>();
             builder.Services.AddScoped<UnitOfWork>();
 
-            // Inyección de todos los repositorios
+            // Inyecciï¿½n de todos los repositorios
             builder.Services.AddScoped<UserRepository>();
+            builder.Services.AddScoped<DeckRepository>();
+            builder.Services.AddScoped<GlobalChatMessageRepository>();
+            builder.Services.AddScoped<ChatMessageRepository>();
+            builder.Services.AddScoped<ReportRepository>();
 
-            // Inyección de Mappers
+            // Inyecciï¿½n de Mappers
             builder.Services.AddScoped<UserMapper>();
+            builder.Services.AddScoped<GlobalChatMessageMapper>();
+            builder.Services.AddScoped<ChatMessageMapper>();
+            builder.Services.AddScoped<ReportMapper>();
 
-            // Inyección de Servicios
+            // Inyecciï¿½n de Servicios
             builder.Services.AddScoped<UserService>();
+            builder.Services.AddScoped<DeckService>();
+            builder.Services.AddScoped<GlobalChatMessageService>();
+            builder.Services.AddScoped<ChatMessageService>();
+            builder.Services.AddScoped<ReportService>();
             builder.Services.AddSingleton<WebSocketNetwork>();
             builder.Services.AddSingleton<IWebSocketMessageSender>(provider => provider.GetRequiredService<WebSocketNetwork>());
 
@@ -68,7 +79,7 @@ namespace MagicApp
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
 
-            // Configuración para el WebSocket
+            // Configuraciï¿½n para el WebSocket
             builder.WebHost.ConfigureKestrel(options =>
             {
                 options.ConfigureEndpointDefaults(lo =>
@@ -77,7 +88,7 @@ namespace MagicApp
                 });
             });
 
-            // Configuración de CORS
+            // Configuraciï¿½n de CORS
             builder.Services.AddCors(options =>
             {
                 options.AddPolicy("AllowAllOrigins", builder =>
@@ -88,14 +99,14 @@ namespace MagicApp
                 });
             });
 
-            // Añadir controladores
+            // Aï¿½adir controladores
             builder.Services.AddControllers();
             builder.Services.AddControllers().AddJsonOptions(options =>
             {
                 options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles;
             });
 
-            // Configuración de Swagger
+            // Configuraciï¿½n de Swagger
             builder.Services.AddSwaggerGen(options =>
             {
                 options.AddSecurityDefinition(JwtBearerDefaults.AuthenticationScheme, new OpenApiSecurityScheme
@@ -111,7 +122,7 @@ namespace MagicApp
                 options.OperationFilter<SecurityRequirementsOperationFilter>(true, JwtBearerDefaults.AuthenticationScheme);
             });
 
-            // Configuración de autenticación
+            // Configuraciï¿½n de autenticaciï¿½n
             builder.Services.AddAuthentication()
             .AddJwtBearer(options =>
             {
@@ -126,7 +137,7 @@ namespace MagicApp
                 };
             });
 
-            // Configuración de Serilog
+            // Configuraciï¿½n de Serilog
             Log.Logger = new LoggerConfiguration()
                 .MinimumLevel.Information()
                 .MinimumLevel.Override("Microsoft", LogEventLevel.Warning)

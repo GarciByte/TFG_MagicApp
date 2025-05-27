@@ -1,7 +1,14 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Text.Json.Serialization;
 
 namespace MagicApp.Models.Database.Entities;
+
+public enum ReportStatus
+{
+    InReview,
+    Completed
+}
 
 public class Report
 {
@@ -19,5 +26,6 @@ public class Report
 
     public string Reason { get; set; } = null!;
 
-    public string Status { get; set; } = null!;
+    [JsonConverter(typeof(JsonStringEnumConverter))]
+    public ReportStatus Status { get; set; }
 }

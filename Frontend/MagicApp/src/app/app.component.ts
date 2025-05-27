@@ -37,7 +37,9 @@ export class AppComponent implements OnInit, OnDestroy {
       'document': icons.document,
       'color-palette': icons.colorPalette,
       'globe': icons.globe,
-      'add-outline': icons.addOutline
+      'add-outline': icons.addOutline,
+      'send': icons.send,
+      'trash-outline': icons.trashOutline
     });
   }
 

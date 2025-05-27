@@ -30,6 +30,9 @@ public class User
     [InverseProperty(nameof(ChatMessage.Receiver))]
     public List<ChatMessage> ReceivedMessages { get; set; } = new List<ChatMessage>();
 
+    [InverseProperty(nameof(GlobalChatMessage.Sender))]
+    public List<GlobalChatMessage> SentGlobalMessages { get; set; } = new List<GlobalChatMessage>();
+
     [InverseProperty(nameof(Report.Reporter))]
     public List<Report> ReportsSent { get; set; } = new List<Report>();
 

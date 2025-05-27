@@ -60,4 +60,39 @@ export class ModalService {
     await alert.present();
   }
 
+  // Alerta para pedir el motivo de reporte
+  async promptReportReason(nickname: string): Promise<string | null> {
+    return new Promise(async resolve => {
+      const alert = await this.alertCtrl.create({
+        header: `Reportar a ${nickname}`,
+        message: 'Escribe el motivo de tu reporte',
+        cssClass: 'custom-alert',
+        inputs: [
+          {
+            name: 'reason',
+            type: 'textarea',
+            placeholder: 'Motivo del reporte…'
+          }
+        ],
+        buttons: [
+          {
+            text: 'Cancelar',
+            role: 'cancel',
+            handler: () => resolve(null)
+          },
+          {
+            text: 'Enviar',
+            handler: (data: { reason: string }) => {
+              const txt = data.reason?.trim() || '';
+              resolve(txt || null);
+              return true;
+            }
+          }
+        ]
+      });
+
+      await alert.present();
+    });
+  }
+
 }

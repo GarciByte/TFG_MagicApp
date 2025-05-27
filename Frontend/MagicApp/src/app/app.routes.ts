@@ -22,7 +22,37 @@ export const routes: Routes = [
     pathMatch: "full",
   },
   {
-    path: "card-search", // Ruta del Buscador de Cartas
+    path: "global-chat", // Ruta del chat global
+    loadComponent: () => import("./pages/global-chat/global-chat.component").then((m) => m.GlobalChatComponent),
+    pathMatch: "full",
+  },
+  {
+    path: "private-chat-list", // Ruta de la lista de chats privados
+    loadComponent: () => import("./pages/private-chats-list/private-chats-list.component").then((m) => m.PrivateChatsListComponent),
+    pathMatch: "full",
+  },
+  {
+    path: "private-chat", // Ruta del chat privado con otro usuario
+    loadComponent: () => import("./pages/private-chat/private-chat.component").then((m) => m.PrivateChatComponent),
+    pathMatch: "full",
+  },
+  {
+    path: "user-search", // Ruta del Buscador de usuarios
+    loadComponent: () => import("./pages/user-search/user-search.component").then((m) => m.UserSearchComponent),
+    pathMatch: "full",
+  },
+  {
+    path: "user-profile", // Ruta del perfil del usuario
+    loadComponent: () => import("./pages/user-profile/user-profile.component").then((m) => m.UserProfileComponent),
+    pathMatch: "full",
+  },
+  {
+    path: "other-users-profile", // Ruta del perfil de otro usuario
+    loadComponent: () => import("./pages/other-users-profile/other-users-profile.component").then((m) => m.OtherUsersProfileComponent),
+    pathMatch: "full",
+  },
+  {
+    path: "card-search", // Ruta del buscador de cartas
     loadComponent: () => import("./pages/card-search/card-search.component").then((m) => m.CardSearchComponent),
     pathMatch: "full",
   },
@@ -32,13 +62,28 @@ export const routes: Routes = [
     pathMatch: 'full'
   },
   {
-    path: "mazos", // Ruta de Mazos
-    loadComponent: () => import("./pages/mazos/mazos.component").then((m) => m.MazosComponent),
+    path: "decks", // Ruta de Mazos
+    loadComponent: () => import("./pages/deck/deck.component").then((m) => m.DeckComponent),
     pathMatch: "full",
   },
   {
-    path: "crear-mazo", // Ruta de Crear Mazo
-    loadComponent: () => import("./pages/crear-mazo/crear-mazo.component").then((m) => m.CrearMazoComponent),
+    path: "create-deck", // Ruta de Crear Mazo
+    loadComponent: () => import("./pages/create-deck/create-deck.component").then((m) => m.CreateDeckComponent),
+    pathMatch: "full",
+  },
+  {
+    path: "add-cards-deck", // Ruta de Añadir Cartas al Mazo
+    loadComponent: () => import("./pages/add-cards-deck/add-cards-deck.component").then((m) => m.AddCardsDeckComponent),
+    pathMatch: "full",
+  },
+  {
+    path: "deck-cards-views", // Ruta de Ver Cartas del Mazo
+    loadComponent: () => import("./pages/deck-cards-views/deck-cards-views.component").then((m) => m.DeckCardsViewsComponent),
+    pathMatch: "full",
+  },
+  {
+    path: "deck-view", // Ruta de Ver Mazo
+    loadComponent: () => import("./pages/deck-view/deck-view.component").then((m) => m.DeckViewComponent),
     pathMatch: "full",
   },
   {

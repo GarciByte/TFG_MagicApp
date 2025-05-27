@@ -1,0 +1,45 @@
+<ion-content [fullscreen]="true" class="ion-padding">
+
+  <!-- Botón para volver al menú principal -->
+  <div class="button-container">
+    <ion-button size="small" shape="round" (click)="navCtrl.navigateRoot(['/menu'])">
+      Volver al menú principal
+    </ion-button>
+  </div>
+
+  <!-- Buscador de usuarios -->
+  <div class="search-container">
+    <ion-searchbar name="searchTerm" [(ngModel)]="searchTerm" placeholder="Escribe el nombre del usuario..."
+      (keyup.enter)="search()"></ion-searchbar>
+    <ion-button size="small" shape="round" (click)="search()">Buscar</ion-button>
+  </div>
+
+  <!-- Mensaje de estado -->
+  <div class="message" *ngIf="isLoading">Buscando usuarios…</div>
+  <div class="message" *ngIf="!isLoading && hasSearched && filteredUsers.length === 0">
+    No se encontraron usuarios.
+  </div>
+
+  <ng-container *ngIf="!isLoading && filteredUsers.length > 0">
+
+    <!-- Card de cada usuario -->
+    <div class="users-container">
+      <ion-card *ngFor="let user of filteredUsers" (click)="navigateToProfile(user.userId)" class="user-card" button>
+
+        <!-- Avatar y Nickname -->
+        <div class="user-header">
+
+          <ion-avatar class="user-avatar">
+            <img [src]="user.avatarUrl" alt="Avatar de {{ user.nickname }}">
+          </ion-avatar>
+
+          <div class="user-header-text">
+            <ion-card-title>{{ user.nickname }}</ion-card-title>
+          </div>
+        </div>
+
+      </ion-card>
+    </div>
+
+  </ng-container>
+</ion-content>
