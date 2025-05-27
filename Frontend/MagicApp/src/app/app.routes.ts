@@ -62,13 +62,28 @@ export const routes: Routes = [
     pathMatch: 'full'
   },
   {
-    path: "mazos", // Ruta de Mazos
-    loadComponent: () => import("./pages/mazos/mazos.component").then((m) => m.MazosComponent),
+    path: "decks", // Ruta de Mazos
+    loadComponent: () => import("./pages/deck/deck.component").then((m) => m.DeckComponent),
     pathMatch: "full",
   },
   {
-    path: "crear-mazo", // Ruta de Crear Mazo
-    loadComponent: () => import("./pages/crear-mazo/crear-mazo.component").then((m) => m.CrearMazoComponent),
+    path: "create-deck", // Ruta de Crear Mazo
+    loadComponent: () => import("./pages/create-deck/create-deck.component").then((m) => m.CreateDeckComponent),
+    pathMatch: "full",
+  },
+  {
+    path: "add-cards-deck", // Ruta de Añadir Cartas al Mazo
+    loadComponent: () => import("./pages/add-cards-deck/add-cards-deck.component").then((m) => m.AddCardsDeckComponent),
+    pathMatch: "full",
+  },
+  {
+    path: "deck-cards-views", // Ruta de Ver Cartas del Mazo
+    loadComponent: () => import("./pages/deck-cards-views/deck-cards-views.component").then((m) => m.DeckCardsViewsComponent),
+    pathMatch: "full",
+  },
+  {
+    path: "deck-view", // Ruta de Ver Mazo
+    loadComponent: () => import("./pages/deck-view/deck-view.component").then((m) => m.DeckViewComponent),
     pathMatch: "full",
   },
   {

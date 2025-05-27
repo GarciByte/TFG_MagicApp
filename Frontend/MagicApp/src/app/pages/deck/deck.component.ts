@@ -1,0 +1,51 @@
+import { Component, type OnInit } from "@angular/core"
+import { CommonModule } from "@angular/common"
+import { RouterModule } from "@angular/router"
+import { NavController } from "@ionic/angular"
+import { IonContent, IonIcon, IonGrid, IonRow, IonCol } from "@ionic/angular/standalone"
+import { AuthService } from "src/app/services/auth.service"
+import { DeckServiceService } from "src/app/services/deck-service.service"
+import { User } from "src/app/models/user"
+import { DeckResponse } from "src/app/models/deck-response"
+
+@Component({
+  selector: "app-decks",
+  standalone: true,
+  imports: [CommonModule, RouterModule, IonContent, IonIcon, IonGrid, IonRow, IonCol],
+  templateUrl: "./deck.component.html",
+  styleUrls: ["./deck.component.css"],
+})
+export class DeckComponent implements OnInit {
+  decks: DeckResponse[] = []
+
+  constructor(
+    public navCtrl: NavController,
+    private authService: AuthService,
+    private deckService: DeckServiceService
+  ) { }
+
+  async ngOnInit(): Promise<void> {
+    if (!await this.authService.isAuthenticated()) {
+      this.navCtrl.navigateRoot(['/']);
+    }else{
+      await this.getUserDecks();
+    }
+  }
+
+  async getUserDecks(){
+    const user = await this.authService.getUser();
+    const result = await this.deckService.GetAllUserDecks(user);
+    this.decks = result.data;
+  }
+
+  createDeck() {
+    this.navCtrl.navigateForward("/create-deck")
+  }
+
+  viewDeck(id: number) {
+    console.log("View deck:", id)
+    // Implement navigation to deck detail page
+
+    
+  }
+}

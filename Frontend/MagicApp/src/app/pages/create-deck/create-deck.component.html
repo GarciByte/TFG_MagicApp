@@ -1,0 +1,40 @@
+<ion-content>
+  <div class="header-container">
+    <h1 class="page-title">Crear mazo</h1>
+  </div>
+
+  <div class="content-container">
+    <div class="create-deck-title">CREAR MAZO</div>
+
+    <div class="form-container">
+      <!-- Deck Icon -->
+      <div class="deck-icon-container">
+        <div class="deck-icon icon-sun"></div>
+      </div>
+
+      <!-- Form -->
+      <div class="form-group">
+        <label class="form-label">Nombre del mazo</label>
+        <input type="text" class="form-input" [(ngModel)]="deckName" placeholder="nombre">
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Descripción del mazo</label>
+        <input type="text" class="form-input" [(ngModel)]="deckDescription" placeholder="descripción">
+      </div>
+
+      <!-- Action Buttons -->
+      <div class="action-buttons">
+        <button class="action-button" (click)="addCard()">Añadir cartas</button>
+        <button class="action-button" (click)="cardDetails()">Ver cartas</button>
+      </div>
+
+      <!-- Create Button -->
+      <button class="create-button" (click)="createDeck()">Crear</button>
+    </div>
+  </div>
+
+  <div class="footer-logo">
+    <img src="assets/images/logo.png" alt="MagicHub Logo" />
+  </div>
+</ion-content>
