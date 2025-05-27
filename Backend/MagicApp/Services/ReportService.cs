@@ -91,7 +91,7 @@ public class ReportService
 
         report.Status = status;
 
-        _unitOfWork.ReportRepository.Update(report);
+        await _unitOfWork.ReportRepository.Update(report);
         await _unitOfWork.SaveAsync();
 
         return _reportMapper.ReportToDto(report);
