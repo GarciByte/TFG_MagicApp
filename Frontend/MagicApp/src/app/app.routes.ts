@@ -52,6 +52,11 @@ export const routes: Routes = [
     pathMatch: "full",
   },
   {
+    path: "admin-profile", // Ruta del perfil admin
+    loadComponent: () => import("./pages/admin-profile/admin-profile.component").then((m) => m.AdminProfileComponent),
+    pathMatch: "full",
+  },
+  {
     path: "card-search", // Ruta del buscador de cartas
     loadComponent: () => import("./pages/card-search/card-search.component").then((m) => m.CardSearchComponent),
     pathMatch: "full",

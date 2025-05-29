@@ -49,10 +49,25 @@ export class WebsocketService {
         this.chatSubject.next(message.Content);
         break;
 
+      case MsgType.UserBanned:
+        this.handleUserBan();
+        break;
+
       default:
         console.warn("Mensaje no reconocido:", message.Type);
         break;
     }
+  }
+
+  // Prohibición de un usuario
+  async handleUserBan(): Promise<void> {
+    this.modalService.showAlert(
+      'error',
+      'Tu cuenta ha sido suspendida',
+      [{ text: 'Aceptar' }]
+    );
+    
+    this.error.next();
   }
 
   private onError(error: any) {

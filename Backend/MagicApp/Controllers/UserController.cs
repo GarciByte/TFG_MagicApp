@@ -72,9 +72,24 @@ public class UserController : ControllerBase
 
         var users = await _userService.GetAllUsersAsync();
 
-        _logger.LogInformation("Usuarios: {@users}", users);
-
         return Ok(users);
+    }
+
+    // Verificar si un usuario es admin
+    [HttpGet("is-admin")]
+    [Authorize]
+    public IActionResult IsAdmin()
+    {
+        _logger.LogInformation("Se ha recibido una consulta a si un usuario es admin");
+
+        bool isAdmin = User.IsInRole("Admin");
+
+        _logger.LogInformation("Es admin: {isAdmin}", isAdmin);
+
+        if (!isAdmin)
+            return Forbid();
+
+        return Ok(new { isAdmin = true });
     }
 
     // Modificar datos de un usuario

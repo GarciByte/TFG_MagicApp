@@ -31,8 +31,6 @@ public class ReportController : Controller
 
         var reports = await _reportService.GetAllReportsAsync();
 
-        _logger.LogInformation("Reportes: {@reports}", reports);
-
         return Ok(reports);
     }
 
@@ -124,13 +122,13 @@ public class ReportController : Controller
     // Actualiza el estado de un reporte
     [Authorize(Roles = "Admin")]
     [HttpPut("{id}/status")]
-    public async Task<IActionResult> UpdateReportStatus(int id, [FromBody] ReportStatus status)
+    public async Task<IActionResult> UpdateReportStatus(int id, [FromBody] UpdateReportStatusDto updateReportStatusDto)
     {
-        _logger.LogInformation("Se va a actualizar el reporte: {@id} a {status}", id, status);
+        _logger.LogInformation("Se va a actualizar el reporte: {@id} a {updateReportStatusDto.Status}", id, updateReportStatusDto.Status);
 
         try
         {
-            var report = await _reportService.UpdateReportStatusAsync(id, status);
+            var report = await _reportService.UpdateReportStatusAsync(id, updateReportStatusDto.Status);
 
             if (report == null)
             {

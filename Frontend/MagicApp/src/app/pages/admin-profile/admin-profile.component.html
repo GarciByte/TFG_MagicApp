@@ -1,0 +1,186 @@
+<ion-content [fullscreen]="true" class="ion-padding">
+
+  <!-- Botón para volver al menú -->
+  <div class="button-container">
+    <ion-button size="small" shape="round" (click)="navCtrl.navigateRoot(['/menu'])">
+      Volver al menú principal
+    </ion-button>
+  </div>
+
+  <ng-container *ngIf="isAdmin">
+    <div class="admin-container">
+
+      <ion-card class="card-reports">
+        <ion-card-header>
+          <ion-card-subtitle>Reportes recibidos</ion-card-subtitle>
+        </ion-card-header>
+
+        <ion-card-content>
+
+          <!-- Filtro y paginación -->
+          <div class="filter-pagination-row">
+            <ion-searchbar placeholder="Nickname" [(ngModel)]="reportSearchTerm"
+              (ionInput)="onReportSearchChange()"></ion-searchbar>
+
+            <div class="pagination-select-container">
+              <ion-select [(ngModel)]="reportPageSize" (ionChange)="onReportPageSizeChange()" class="custom-select">
+                <ion-select-option [value]="5">5</ion-select-option>
+                <ion-select-option [value]="10">10</ion-select-option>
+                <ion-select-option [value]="20">20</ion-select-option>
+              </ion-select>
+            </div>
+          </div>
+
+          <!-- Tabla de Reportes -->
+          <div class="table-container">
+            <table class="report-table">
+              <thead>
+                <tr>
+                  <th>ID</th>
+                  <th class="reporter">Usuario reportante</th>
+                  <th class="reported">Usuario reportado</th>
+                  <th class="reason">Razón</th>
+                  <th>Estado</th>
+                  <th class="actions">Acciones</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let report of displayedReports">
+                  <td class="id">{{ report.id }}</td>
+                  <td class="reporter">{{ report.reporterNickname }}</td>
+                  <td class="reported">{{ report.reportedUserNickname }}</td>
+                  <td class="reason">
+                    <div class="reason-content">
+                      {{ report.reason }}
+                    </div>
+                  </td>
+                  <td class="status" [ngClass]="report.status">
+                    {{ report.status === ReportStatus.InReview ? 'En Revisión' : 'Revisado' }}
+                  </td>
+                  <td class="actions">
+                    <div class="actions-button-container">
+
+                      <!-- Botón para actualizar el estado de un reporte -->
+                      <ion-button size="small" shape="round" fill="solid" (click)="updateReportStatus(report)">
+                        {{ report.status === ReportStatus.InReview
+                        ? 'Marcar como Revisado'
+                        : 'Marcar como En Revisión' }}
+                      </ion-button>
+
+                      <!-- Botón para eliminar un reporte -->
+                      <ion-button size="small" shape="round" fill="solid" class="ban-button"
+                        (click)="confirmDeleteReport(report)">
+                        Eliminar
+                      </ion-button>
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <!-- Paginación -->
+          <div class="pagination-container">
+            <ion-button class="pagination-btn" [disabled]="reportPage === 1" (click)="goReportPage(-1)" fill="clear"
+              size="small">
+              <ion-icon name="chevron-back" slot="icon-only"></ion-icon>
+            </ion-button>
+
+            <span class="page-info">
+              Página {{ reportPage }} de {{ reportTotalPages }}
+            </span>
+
+            <ion-button class="pagination-btn" [disabled]="reportPage === reportTotalPages" (click)="goReportPage(+1)"
+              fill="clear" size="small">
+              <ion-icon name="chevron-forward" slot="icon-only"></ion-icon>
+            </ion-button>
+          </div>
+
+        </ion-card-content>
+      </ion-card>
+
+      <ion-card class="card-users">
+        <ion-card-header>
+          <ion-card-subtitle>Usuarios registrados</ion-card-subtitle>
+        </ion-card-header>
+
+        <ion-card-content>
+
+          <!-- Filtro y paginación -->
+          <div class="filter-pagination-row">
+            <ion-searchbar placeholder="Nickname" [(ngModel)]="userSearchTerm"
+              (ionInput)="onUserSearchChange()"></ion-searchbar>
+
+            <div class="pagination-select-container">
+              <ion-select [(ngModel)]="userPageSize" (ionChange)="onUserPageSizeChange()" class="custom-select">
+                <ion-select-option [value]="5">5</ion-select-option>
+                <ion-select-option [value]="10">10</ion-select-option>
+                <ion-select-option [value]="20">20</ion-select-option>
+              </ion-select>
+            </div>
+          </div>
+
+          <!-- Tabla de Usuarios -->
+          <div class="table-container">
+            <table class="user-table">
+              <thead>
+                <tr>
+                  <th>ID</th>
+                  <th>Apodo</th>
+                  <th>Correo electrónico</th>
+                  <th>Rol</th>
+                  <th>Acciones</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let user of displayedUsers">
+                  <td class="id">{{ user.userId }}</td>
+                  <td class="nickname">{{ user.nickname }}</td>
+                  <td class="email">{{ user.email }}</td>
+                  <td class="role">{{ user.role }}</td>
+                  <td class="actions">
+
+                    <div class="actions-button-container">
+                      <!-- Botón para cambiar rol -->
+                      <ion-button size="small" shape="round" fill="solid" class="role-button"
+                        (click)="modifyUserRole(user)" [disabled]="user.userId === this.user.userId">
+                        Cambiar Rol
+                      </ion-button>
+
+                      <!-- Botón para prohibir o quitar prohibición -->
+                      <ion-button size="small" shape="round" fill="solid" class="ban-button"
+                        (click)="confirmModifyUserBan(user)" [disabled]="user.userId === this.user.userId">
+                        {{ user.isBanned ? 'Quitar Prohibición' : 'Prohibir' }}
+                      </ion-button>
+                    </div>
+
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <!-- Paginación -->
+          <div class="pagination-container">
+            <ion-button class="pagination-btn" [disabled]="userPage === 1" (click)="goUserPage(-1)" fill="clear"
+              size="small">
+              <ion-icon name="chevron-back" slot="icon-only"></ion-icon>
+            </ion-button>
+
+            <span class="page-info">
+              Página {{ userPage }} de {{ userTotalPages }}
+            </span>
+
+            <ion-button class="pagination-btn" [disabled]="userPage === userTotalPages" (click)="goUserPage(+1)"
+              fill="clear" size="small">
+              <ion-icon name="chevron-forward" slot="icon-only"></ion-icon>
+            </ion-button>
+          </div>
+
+        </ion-card-content>
+      </ion-card>
+
+    </div>
+  </ng-container>
+
+</ion-content>

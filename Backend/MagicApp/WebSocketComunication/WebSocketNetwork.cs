@@ -1,4 +1,5 @@
-﻿using MagicApp.Models.Dtos;
+﻿using MagicApp.Models.Database.Entities;
+using MagicApp.Models.Dtos;
 using MagicApp.Services;
 using System.Collections.Concurrent;
 using System.Net.WebSockets;
@@ -152,6 +153,11 @@ public class WebSocketNetwork : IWebSocketMessageSender
                     await HandleChatMessageAsync(message);
                     break;
 
+                // Usuario baneado
+                case MsgType.UserBanned:
+                    await HandleUserBanAsync(message);
+                    break;
+
                 default:
                     _logger.LogError("Mensaje no manejado: {message.Type}", message.Type);
                     break;
@@ -235,6 +241,28 @@ public class WebSocketNetwork : IWebSocketMessageSender
         var message = await chatMessageService.InsertMessageAsync(chatMessageDto);
 
         return message;
+    }
+
+    // Notificar la prohibición de un usuario
+    private async Task HandleUserBanAsync(WebSocketMessage message)
+    {
+        try
+        {
+            string jsonContent = message.Content.ToString();
+            int userId = JsonSerializer.Deserialize<int>(jsonContent);
+
+            _logger.LogInformation("Se ha baneado al usuaio con ID: {userId}", userId);
+
+            await SendToUserAsync(userId, new WebSocketMessage
+            {
+                Type = MsgType.UserBanned,
+                Content = "UserBanned"
+            });
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError("Error al deserializar userId: {ex.Message}", ex.Message);
+        }
     }
 
 }
