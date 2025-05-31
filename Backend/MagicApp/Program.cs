@@ -59,12 +59,16 @@ namespace MagicApp
             builder.Services.AddScoped<GlobalChatMessageRepository>();
             builder.Services.AddScoped<ChatMessageRepository>();
             builder.Services.AddScoped<ReportRepository>();
+            builder.Services.AddScoped<ThreadSubscriptionRepository>();
+            builder.Services.AddScoped<ForumCommentRepository>();
+            builder.Services.AddScoped<ForumThreadRepository>();
 
             // Inyecci�n de Mappers
             builder.Services.AddScoped<UserMapper>();
             builder.Services.AddScoped<GlobalChatMessageMapper>();
             builder.Services.AddScoped<ChatMessageMapper>();
             builder.Services.AddScoped<ReportMapper>();
+            builder.Services.AddScoped<ForumMapper>();
 
             // Inyecci�n de Servicios
             builder.Services.AddScoped<UserService>();
@@ -72,6 +76,7 @@ namespace MagicApp
             builder.Services.AddScoped<GlobalChatMessageService>();
             builder.Services.AddScoped<ChatMessageService>();
             builder.Services.AddScoped<ReportService>();
+            builder.Services.AddScoped<ForumService>();
             builder.Services.AddSingleton<WebSocketNetwork>();
             builder.Services.AddSingleton<IWebSocketMessageSender>(provider => provider.GetRequiredService<WebSocketNetwork>());
 

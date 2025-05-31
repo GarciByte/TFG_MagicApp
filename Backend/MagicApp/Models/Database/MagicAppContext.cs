@@ -42,4 +42,23 @@ public class MagicAppContext : DbContext
         optionsBuilder.UseMySql(_settings.DatabaseConnection, ServerVersion.AutoDetect(_settings.DatabaseConnection));
 #endif
     }
+
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
+    {
+        base.OnModelCreating(modelBuilder);
+
+        // Al borrar un ForumThread se borrarán en cascada todos sus ForumComments
+        modelBuilder.Entity<ForumComment>()
+            .HasOne(c => c.Thread)
+            .WithMany(t => t.Comments)
+            .HasForeignKey(c => c.ThreadId)
+            .OnDelete(DeleteBehavior.Cascade);
+
+        // Al borrar un ForumThread se borrarán en cascada todos sus ThreadSubscriptions
+        modelBuilder.Entity<ThreadSubscription>()
+            .HasOne(s => s.Thread)
+            .WithMany(t => t.Subscriptions)
+            .HasForeignKey(s => s.ThreadId)
+            .OnDelete(DeleteBehavior.Cascade);
+    }
 }

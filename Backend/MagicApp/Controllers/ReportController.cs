@@ -1,5 +1,4 @@
-﻿using MagicApp.Models.Database.Entities;
-using MagicApp.Models.Dtos;
+﻿using MagicApp.Models.Dtos;
 using MagicApp.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
