@@ -54,24 +54,47 @@ ion-toast {
     font-size: 22px !important;
 }
 
-.custom-alert .alert-head,
-.custom-alert .alert-message {
+.custom-alert .alert-head {
+    background: rgba(112, 102, 224, 0.1);
     padding: 15px !important;
+    margin: 0 !important;
 }
 
-.custom-alert .alert-button-group {
+.custom-alert .alert-message {
+    padding: 25px !important;
+    margin: 1.5rem 0 0 0 !important;
+    box-sizing: border-box !important;
+}
+
+.custom-alert .alert-message-group {
+    padding: 20px !important;
+}
+
+.custom-alert .alert-button .button-inner,
+.custom-alert .alert-button span,
+.custom-alert ion-button .button-inner,
+.custom-alert ion-button span,
+.custom-alert button span {
+    display: flex !important;
     justify-content: center !important;
-    padding: 15px !important;
+    align-items: center !important;
+    text-align: center !important;
+    width: 100% !important;
 }
 
 .custom-alert .alert-button {
     min-width: 5rem;
-    margin: 0 0.25rem;
+    margin: 0 0.5rem;
     cursor: pointer !important;
     background-color: #7066e0;
     color: #fff;
     border-radius: 12px;
     font-size: 13px !important;
+    display: flex !important;
+    justify-content: center !important;
+    align-items: center !important;
+    padding: 0.75rem 1rem !important;
+    text-align: center !important;
 }
 
 .custom-alert .alert-button:hover {
@@ -81,6 +104,16 @@ ion-toast {
 .custom-alert .alert-button-group.alert-button-group--one-button .alert-button {
     margin: 0 auto !important;
     width: 8rem;
+}
+
+.custom-alert .alert-button-group {
+    display: flex;
+    justify-content: center !important;
+    padding: 15px !important;
+}
+
+.custom-alert .alert-input-wrapper {
+    padding: 0 1rem !important;
 }
 
 .custom-alert .alert-input {
@@ -96,33 +129,9 @@ ion-toast {
     background: var(--ion-background-color) !important;
 }
 
-.custom-alert .alert-input-wrapper {
-    padding: 0 1rem !important;
-}
-
 .custom-alert .alert-backdrop {
     backdrop-filter: blur(3px);
     background-color: rgba(0, 0, 0, 0.3) !important;
-}
-
-.custom-alert .alert-head {
-    background: rgba(112, 102, 224, 0.1);
-}
-
-.custom-alert .alert-message {
-    margin-top: 1.5rem !important;
-}
-
-.custom-alert .alert-button {
-    display: flex !important;
-    justify-content: center !important;
-    align-items: center !important;
-    padding: 0.75rem 1rem !important;
-    text-align: center !important;
-}
-
-.custom-alert .alert-button-group .alert-button {
-    margin: 0 0.5rem !important;
 }
 
 /* Iconos de los textos de una carta */

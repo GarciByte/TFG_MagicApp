@@ -35,7 +35,7 @@
         <!-- Right side column -->
         <div class="half-width-right">
           <!-- Foros -->
-          <ion-button class="menu-button quarter-height">
+          <ion-button class="menu-button quarter-height" (click)="navCtrl.navigateRoot(['/forum'])">
             <div class="button-content">
               <div class="magic-icon forum-icon"></div>
               <span>FOROS</span>
@@ -81,6 +81,14 @@
         <div class="button-content">
           <div class="magic-icon"></div>
           <span>MI PERFIL</span>
+        </div>
+      </ion-button>
+
+      <!-- Perfil admin -->
+      <ion-button class="menu-button full-width" (click)="navCtrl.navigateRoot(['/admin-profile'])">
+        <div class="button-content">
+          <div class="magic-icon"></div>
+          <span>PERFIL ADMIN</span>
         </div>
       </ion-button>
 

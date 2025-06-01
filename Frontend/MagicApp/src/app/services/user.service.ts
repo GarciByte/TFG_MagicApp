@@ -4,6 +4,7 @@ import { User } from '../models/user';
 import { ApiService } from './api.service';
 import { AuthService } from './auth.service';
 import { environment } from 'src/environments/environment';
+import { IsAdmin } from '../models/is-admin';
 
 @Injectable({
   providedIn: 'root'
@@ -15,6 +16,11 @@ export class UserService {
   // Obtener información de un usuario por su ID
   async getUserById(userId: number): Promise<Result<User>> {
     return this.api.get<User>(`User/${userId}`);
+  }
+
+  // Comprueba si el usuario actual tiene rol Admin
+  async isAdmin(): Promise<Result<IsAdmin>> {
+    return this.api.get<IsAdmin>(`User/is-admin`);
   }
 
   // Obtener avatares de usuarios

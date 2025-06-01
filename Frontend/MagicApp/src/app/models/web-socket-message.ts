@@ -1,7 +1,8 @@
 export enum MsgType {
     Connection = 'Connection',
     GlobalChat = 'GlobalChat',
-    PrivateChat = 'PrivateChat'
+    PrivateChat = 'PrivateChat',
+    UserBanned = 'UserBanned'
 }
 
 export interface WebSocketMessage {
