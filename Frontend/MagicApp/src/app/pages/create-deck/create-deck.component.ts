@@ -80,7 +80,8 @@ export class CreateDeckComponent implements OnInit {
     const response = await this.deckService.CreateDeck(deckData)
     if (response.success) {
       console.log(response.data)
-      this.deckCardsService.clearDeck();
+      this.deckCardsService.clear();
+
       // Navigate back to the decks page
       this.navCtrl.navigateRoot(['/decks']);
     } else {

@@ -16,8 +16,10 @@ export class DeckCardsService {
     this._deckCards = deckCards
   }
 
-  clearDeck() {
+  clear() {
     this._deckCards = [];
+    this._description = "";
+    this._name = "";
   }
 
   addCard(card: DeckCard) {

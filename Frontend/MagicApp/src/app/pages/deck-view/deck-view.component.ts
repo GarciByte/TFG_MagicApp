@@ -90,6 +90,7 @@ export class DeckViewComponent implements OnInit {
 
     // Save the deck
     const response = await this.deckService.UpdateDeck(deckData, this.deck.id)
+    this.deckCardsService.clear()
     this.navCtrl.navigateRoot("/decks")
 
   }
