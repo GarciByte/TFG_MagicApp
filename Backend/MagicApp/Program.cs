@@ -91,6 +91,10 @@ namespace MagicApp
                 {
                     lo.Protocols = HttpProtocols.Http1;
                 });
+                options.ListenLocalhost(7012, listenOptions =>
+                {
+                    listenOptions.UseHttps();
+                });
             });
 
             // Configuraci�n de CORS

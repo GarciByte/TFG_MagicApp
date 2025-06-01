@@ -1,12 +1,12 @@
-import { CardDetail } from "./card-detail";
+import { DeckCard } from "./deck-card";
 import { User } from "./user";
 
 export interface DeckResponse{
-    Id : number;
-    Name : string;
-    Description : string;
-    User : User;
-    Victories : number;
-    Defeats : number;
-    DeckCards : CardDetail[];
+    id : number;
+    name : string;
+    description? : string | null;
+    userId : number;
+    victories : number;
+    defeats : number;
+    deckCards : DeckCard[];
 }

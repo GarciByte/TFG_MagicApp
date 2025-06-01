@@ -4,6 +4,7 @@ using MagicApp.Services;
 using Microsoft.AspNetCore.Mvc;
 
 namespace MagicApp.Controllers;
+
 [Route("api/[controller]")]
 [ApiController]
 public class DeckController : ControllerBase
@@ -16,40 +17,47 @@ public class DeckController : ControllerBase
     }
 
     //Obtener deck mediante Id
-    [HttpPost("GetDeckById")]
-    public async Task<Deck> GetDeckById([FromForm] int id)
-    { 
+    [HttpGet("GetDeckById")]
+    public async Task<Deck> GetDeckById([FromQuery] int id)
+    {
         return await _deckService.GetDeckAsync(id);
     }
 
     //Obtener decks de un usuario
-    [HttpPost("GetAllUserDecks")]
-    public async Task<List<Deck>> GetAllUserDecksAsync([FromForm] User user)
+    [HttpGet("GetAllUserDecks")]
+    public async Task<List<Deck>> GetAllUserDecksAsync([FromQuery] int userId)
     {
-        return await _deckService.GetAllUserDecksAsync(user.Id);
+        
+        return await _deckService.GetAllUserDecksAsync(userId);
     }
 
     //Crear deck
     [HttpPost("CreateDeck")]
-    public async Task<ActionResult<DeckDto>> CreateDeck([FromForm] DeckDto model)
+    public async Task<ActionResult<DeckDto>> CreateDeck([FromBody] DeckDto model)
     {
-        await _deckService.CreateDeckAsync(model);
+        var createdDeck = await _deckService.CreateDeckAsync(model);
 
-        return Ok("Deck create "+model);
+        if (createdDeck == null)
+        {
+            return BadRequest(new { success = false, error = "No se pudo crear el deck" });
+        }
+
+        return Ok(new { success = true, data = createdDeck });
     }
 
-    //Crear deck
+
+    //Actualizar deck
     [HttpPost("UpdateDeck")]
-    public async Task<ActionResult<DeckDto>> UpdateDeck([FromForm] DeckDto model, int id)
+    public async Task<ActionResult<DeckDto>> UpdateDeck([FromBody] DeckDto model, [FromQuery]int id)
     {
         await _deckService.UpdateDeckAsync(model, id);
 
         return Ok("Deck updated " + id);
     }
 
-    //Crear deck
-    [HttpPost("DeleteDeck")]
-    public async Task<ActionResult<DeckDto>> DeleteDeck([FromForm] int id)
+    //Eliminar deck
+    [HttpGet("DeleteDeck")]
+    public async Task<ActionResult<DeckDto>> DeleteDeck([FromQuery] int id)
     {
         await _deckService.DeleteDeckAsync(id);
 

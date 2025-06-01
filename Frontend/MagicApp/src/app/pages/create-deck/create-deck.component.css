@@ -145,3 +145,21 @@ ion-content {
   width: 32px;
   height: 32px;
 }
+
+.card-counter {
+  text-align: center;
+  margin-top: 1rem;
+  font-weight: bold;
+  color: #333;
+}
+
+.counter-text {
+  font-size: 1.1rem;
+}
+
+.warning-message {
+  color: red;
+  margin-top: 8px;
+  font-weight: bold;
+}
+

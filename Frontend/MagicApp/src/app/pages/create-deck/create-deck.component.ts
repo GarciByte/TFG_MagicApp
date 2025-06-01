@@ -1,13 +1,14 @@
 import { Component, type OnInit } from "@angular/core"
 import { CommonModule } from "@angular/common"
 import { FormsModule } from "@angular/forms"
-import { NavController } from "@ionic/angular"
+import { AlertController, NavController } from "@ionic/angular"
 import { IonContent } from "@ionic/angular/standalone"
 import { AuthService } from "src/app/services/auth.service"
 import { DeckServiceService } from "src/app/services/deck-service.service"
-import { CardDetail } from "../../models/card-detail";
 import { DeckRequest } from '../../models/deck-request';
 import { Router } from "@angular/router"
+import { DeckCardsService } from "src/app/services/deck-cards.service"
+import { DeckCard } from "src/app/models/deck-card"
 
 @Component({
   selector: "app-create-deck",
@@ -21,89 +22,83 @@ export class CreateDeckComponent implements OnInit {
   deckName = ""
   deckDescription = ""
   size = 60
-  deckCards: CardDetail[] = []
+  deckCards: DeckCard[] = []
 
   constructor(
     public navCtrl: NavController,
     private authService: AuthService,
     private deckService: DeckServiceService,
-    private router: Router
+    private router: Router,
+    private alertController: AlertController,
+    private deckCardsService: DeckCardsService
   ) { }
 
   async ngOnInit(): Promise<void> {
     if (!await this.authService.isAuthenticated()) {
       this.navCtrl.navigateRoot(['/']);
     }
-    const navigation = history.state;
-    if (navigation && navigation.selectCard) {
-      this.deckCards.push(navigation.selectCard);
-    }
+
+    this.deckCards = this.deckCardsService.deckCards;
+    this.deckName = this.deckCardsService.name;
+    this.deckDescription = this.deckCardsService.description;
+  }
+
+  setDeckName(name: string){
+    this.deckCardsService.name = this.deckName
+  }
+
+  setDeckDescription(description: string){
+    this.deckCardsService.description = this.deckDescription
   }
 
   addCard() {
-    this.router.navigate(['/add-cards-deck']);
+   this.navCtrl.navigateRoot("/add-cards-deck")
   }
 
   cardDetails() {
-    console.log("View deck cards")
+    console.log(this.deckCards)
     // Navigation to the view cards page
   }
 
   async createDeck() {
-    console.log("Create deck:", {
-      name: this.deckName,
-      size: this.size,
-    })
 
     const deckData: DeckRequest = {
       Name: this.deckName,
       Description: this.deckDescription,
-      UserId: 1,
+      UserId: (await this.authService.getUser()).userId,
       DeckCards: this.deckCards
     }
 
+    console.log("Create deck:", {
+      Name: deckData.Name,
+      Description: deckData.Description,
+      UserId: deckData.UserId,
+      DeckCards: deckData.DeckCards.length
+    })
 
     // Save the deck
     const response = await this.deckService.CreateDeck(deckData)
-
     if (response.success) {
+      console.log(response.data)
+      this.deckCardsService.clear();
+
       // Navigate back to the decks page
-      this.navCtrl.navigateBack("/decks")
+      this.navCtrl.navigateRoot(['/decks']);
     } else {
       //Error message
+      console.log("Esto no furula")
+      await this.presentAlert('Error', 'Tamaño del mazo inadecuado')
     }
   }
 
-  async updateDeck() {
-    // Logic for updating the deck
-    const deckData: DeckRequest = {
-      Name: this.deckName,
-      Description: this.deckDescription,
-      UserId: 1,
-      DeckCards: this.deckCards
-    }
+  async presentAlert(header: string, message: string) {
+  const alert = await this.alertController.create({
+    header,
+    message,
+    buttons: ['OK']
+  });
 
+  await alert.present();
+}
 
-    // Save the deck
-    const response = await this.deckService.UpdateDeck(deckData)
-
-    if (response.success) {
-      // Navigate back to the decks page
-      this.navCtrl.navigateBack("/decks")
-    } else {
-      //Error message
-    }
-  }
-
-  async deleteDeck() {
-    // Logic for deleting the deck
-    const response = await this.deckService.DeleteDeck(this.deckId)
-
-    if (response.success) {
-      // Navigate back to the decks page
-      this.navCtrl.navigateBack("/decks")
-    } else {
-      //Error message
-    }
-  }
 }
