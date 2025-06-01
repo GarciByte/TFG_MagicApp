@@ -24,9 +24,10 @@
   <div class="card-grid" *ngIf="!isLoading && cards.length > 0">
     <div class="card-item" *ngFor="let card of cards">
       <img (click)="navigateToDetails(card.id)" [src]="card.imageUrl" [alt]="card.name" loading="lazy" />
-      <ion-button size="small" shape="round" color="success" (click)="selectCard(card.id)">
-        Añadir carta
+      <ion-button size="small" shape="round" color="success" (click)="selectCard(card.id)" class="custom-add-button">
+        ➕ Añadir Carta
       </ion-button>
+
     </div>
   </div>
 

@@ -9,6 +9,7 @@ import { IonButton, NavController, IonContent, IonSearchbar } from "@ionic/angul
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { CardImage } from 'src/app/models/card-image';
+import { CardTransferService } from 'src/app/services/card-transfer.service';
 
 @Component({
   selector: 'app-add-cards-deck',
@@ -24,22 +25,23 @@ export class AddCardsDeckComponent implements OnInit {
     private cardService: CardService,
     private modalService: ModalService,
     private router: Router,
-    private sanitizer: DomSanitizer
+    private sanitizer: DomSanitizer,
+    private cardTransfer: CardTransferService
   ) { }
 
   ngOnInit() { }
 
   card: CardDetail;
   safeOracleHtml: SafeHtml;
-  searchTerm = ''; // Nombre de la carta
-  cards: CardImage[] = []; // Lista de cartas
+  searchTerm = ''; 
+  cards: CardImage[] = [];
   hasSearched = false;
   isLoading = false;
 
-  selectCard(cardId: string) {
-    this.router.navigate(['/pagina-principal'], {
-      state: { selectedCard: this.card }
-    });
+  async selectCard(cardId: string) {
+    await this.loadCardDetails(cardId)
+    this.cardTransfer.setCard(this.card)
+    this.navCtrl.back()
   }
 
   private async loadCardDetails(cardId: string) {

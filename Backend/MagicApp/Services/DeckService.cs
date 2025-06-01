@@ -22,28 +22,39 @@ public class DeckService
 
 
     //Obtener decks de un usuario
-    public async Task<List<Deck>> GetAllUserDecksAsync(int Id)
+    public async Task<List<Deck>> GetAllUserDecksAsync(int userId)
     {
-        return await _unitOfWork.DeckRepository.GetAllUserDecksAsync(Id);
+        return await _unitOfWork.DeckRepository.GetAllUserDecksAsync(userId);
     }
 
     //Crear deck
     public async Task<Deck> CreateDeckAsync(DeckDto model)
     {
-        var newDeck = new Deck()
+        var user = await _unitOfWork.UserRepository.GetUserById(model.UserId);
+        if (user == null)
+            throw new Exception($"User with id {model.UserId} not found.");
+
+        var newDeck = new Deck
         {
             Name = model.Name,
-            DeckCards = model.DeckCards,
             Description = model.Description,
             UserId = model.UserId,
-            User = await _unitOfWork.UserRepository.GetUserById(model.UserId),
+            Victories = 0,
+            Defeats = 0,
+            DeckCards = model.DeckCards
+               .Select(dc => new DeckCard { CardId = dc.CardId })
+               .ToList()
         };
+
+
 
         await _unitOfWork.DeckRepository.InsertDeckAsync(newDeck);
         await _unitOfWork.SaveAsync();
 
         return newDeck;
     }
+
+
 
     //Editar deck
     public async Task<Deck> UpdateDeckAsync(DeckDto model, int id)

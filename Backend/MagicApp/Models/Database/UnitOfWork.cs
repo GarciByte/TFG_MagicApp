@@ -29,7 +29,7 @@ namespace MagicApp.Models.Database
             GlobalChatMessageRepository = globalChatMessageRepository;
             ChatMessageRepository = chatMessageRepository;
             ReportRepository = reportRepository;
-            DeckRepository = deckRepository;
+            DeckRepository = deckRepository; 
         }
 
         public async Task<bool> SaveAsync()

@@ -12,8 +12,5 @@ public class DeckCard
     public string CardId { get; set; }
 
     public int DeckId { get; set; }
-
-    public Deck Deck { get; set; } = null!;
-
-    public int Quantity { get; set; }
+    public Deck Deck { get; set; }
 }
