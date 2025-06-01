@@ -41,6 +41,14 @@ ion-content {
   margin-bottom: 24px;
   position: relative;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  cursor: pointer;
+
+  /* Añadido para dar un poco más de vida */
+  transition: transform 0.2s ease;
+}
+
+.deck-card:hover {
+  transform: scale(1.03);
 }
 
 ion-col {
@@ -68,11 +76,8 @@ ion-col {
 }
 
 .deck-icon {
-  width: 60px;
-  height: 60px;
-  background-size: contain;
-  background-position: center;
-  background-repeat: no-repeat;
+  font-size: 2.5rem; /* tamaño grande para ícono */
+  color: #3880ff; /* azul Ionic */
   margin-bottom: 12px;
 }
 
@@ -81,12 +86,22 @@ ion-col {
   font-weight: 500;
   text-align: center;
   margin-bottom: 6px;
+  color: #1a1a1a; /* mismo gris que tenías, si quieres más contraste, cambia a #fff */
 }
 
 .deck-cards {
   font-size: 0.9rem;
   color: #666666;
   text-align: center;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.deck-cards ion-icon {
+  font-size: 1.1rem;
+  vertical-align: middle;
+  color: #9e9e9e;
 }
 
 .footer-logo {

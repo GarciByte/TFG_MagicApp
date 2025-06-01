@@ -2,7 +2,7 @@ import { Component, type OnInit } from "@angular/core"
 import { CommonModule } from "@angular/common"
 import { RouterModule } from "@angular/router"
 import { NavController } from "@ionic/angular"
-import { IonContent, IonIcon, IonGrid, IonRow, IonCol } from "@ionic/angular/standalone"
+import { IonContent, IonIcon, IonGrid, IonRow, IonCol, IonCardHeader, IonCardTitle, IonCard, IonCardContent, IonCardSubtitle } from "@ionic/angular/standalone"
 import { AuthService } from "src/app/services/auth.service"
 import { DeckServiceService } from "src/app/services/deck-service.service"
 import { User } from "src/app/models/user"
@@ -11,7 +11,7 @@ import { DeckResponse } from "src/app/models/deck-response"
 @Component({
   selector: "app-decks",
   standalone: true,
-  imports: [CommonModule, RouterModule, IonContent, IonIcon, IonGrid, IonRow, IonCol],
+  imports: [IonCardSubtitle, IonCardContent, IonCard, IonCardTitle, IonCardHeader, CommonModule, RouterModule, IonContent, IonIcon, IonGrid, IonRow, IonCol],
   templateUrl: "./deck.component.html",
   styleUrls: ["./deck.component.css"],
 })
@@ -27,25 +27,26 @@ export class DeckComponent implements OnInit {
   async ngOnInit(): Promise<void> {
     if (!await this.authService.isAuthenticated()) {
       this.navCtrl.navigateRoot(['/']);
-    }else{
+    } else {
       await this.getUserDecks();
     }
   }
 
-  async getUserDecks(){
-    const user = await this.authService.getUser();
-    const result = await this.deckService.GetAllUserDecks(user);
+  async getUserDecks() {
+    const user = (await this.authService.getUser());
+    const result = await this.deckService.GetAllUserDecks(user.userId);
     this.decks = result.data;
   }
 
   createDeck() {
-    this.navCtrl.navigateForward("/create-deck")
+    this.navCtrl.navigateRoot("/create-deck")
   }
 
   viewDeck(id: number) {
     console.log("View deck:", id)
-    // Implement navigation to deck detail page
-
-    
+    const deckId = "" + id;
+    this.navCtrl.navigateRoot(['/deck-view'], {
+      queryParams: { deckId }
+    });
   }
 }

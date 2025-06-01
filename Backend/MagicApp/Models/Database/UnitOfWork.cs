@@ -20,7 +20,7 @@ namespace MagicApp.Models.Database
         {
             _context = context;
             UserRepository = userRepository;
-            DeckRepository = deckRepository;
+            DeckRepository = deckRepository; 
             GlobalChatMessageRepository globalChatMessageRepository;
             ChatMessageRepository chatMessageRepository;
         }
