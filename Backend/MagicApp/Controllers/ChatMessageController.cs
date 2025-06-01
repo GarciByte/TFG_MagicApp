@@ -13,10 +13,10 @@ public class ChatMessageController : Controller
     private readonly GlobalChatMessageService _globalChatMessageService;
     private readonly ChatMessageService _chatMessageService;
     private readonly UserService _userService;
-    private readonly ILogger<UserController> _logger;
+    private readonly ILogger<ChatMessageController> _logger;
 
     public ChatMessageController(GlobalChatMessageService globalChatMessageService, 
-        ILogger<UserController> logger, 
+        ILogger<ChatMessageController> logger, 
         ChatMessageService chatMessageService,
         UserService userService)
     {
@@ -39,8 +39,8 @@ public class ChatMessageController : Controller
         return Ok(messages);
     }
 
-    /*
     // Guardar un nuevo mensaje Global
+    [Authorize(Roles = "Admin")]
     [HttpPost("newGlobalMessage")]
     public async Task<ActionResult<GlobalChatMessageDto>> InsertGlobalMessageAsync([FromBody] GlobalChatMessageDto globalChatMessageDto)
     {
@@ -66,10 +66,9 @@ public class ChatMessageController : Controller
             return BadRequest("Se ha producido un error al crear el mensaje.");
         }
     }
-    */
 
-    /* 
     // Obtener todos los mensajes de todos los chats Privados
+    [Authorize(Roles = "Admin")]
     [HttpGet("allMessages")]
     public async Task<IActionResult> GetAllMessagesAsync()
     {
@@ -81,10 +80,9 @@ public class ChatMessageController : Controller
 
         return Ok(messages);
     }
-    */
 
-    /*
     // Guardar un nuevo mensaje Privado
+    [Authorize(Roles = "Admin")]
     [HttpPost("newMessage")]
     public async Task<ActionResult<ChatMessageDto>> InsertMessageAsync([FromBody] ChatMessageDto chatMessageDto)
     {
@@ -111,7 +109,6 @@ public class ChatMessageController : Controller
             return BadRequest("Se ha producido un error al crear el mensaje.");
         }
     }
-    */
 
     // Obtener la lista de chats para un usuario
     [HttpGet("chatList")]
@@ -177,7 +174,7 @@ public class ChatMessageController : Controller
         try
         {
             string id = User.Claims.FirstOrDefault().Value;
-            UserDto user = await _userService.GetUserByIdAsync(Int32.Parse(id, null));
+            UserDto user = await _userService.GetUserByIdAsync(Int32.Parse(id));
             return user;
         }
         catch (Exception ex)

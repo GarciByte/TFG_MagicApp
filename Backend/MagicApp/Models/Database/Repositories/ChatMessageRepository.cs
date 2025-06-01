@@ -28,8 +28,8 @@ public class ChatMessageRepository : Repository<ChatMessage, int>
     {
         return await GetQueryable()
             .Where(m =>
-                (m.SenderId == userId && m.ReceiverId == otherUserId) ||
-                (m.SenderId == otherUserId && m.ReceiverId == userId)
+                ((m.SenderId == userId && m.ReceiverId == otherUserId)
+                || (m.SenderId == otherUserId && m.ReceiverId == userId))
                 && !(m.SenderId == userId && m.SenderDeleted)
                 && !(m.ReceiverId == userId && m.ReceiverDeleted))
             .OrderBy(m => m.Timestamp)

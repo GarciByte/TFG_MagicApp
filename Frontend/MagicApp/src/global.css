@@ -83,6 +83,48 @@ ion-toast {
     width: 8rem;
 }
 
+.custom-alert .alert-input {
+    width: 100% !important;
+    min-height: 120px !important;
+    padding: 0.75rem !important;
+    margin: 0.5rem 0 1rem !important;
+    border: 1px solid var(--ion-color-medium) !important;
+    border-radius: 12px !important;
+    font-size: 1rem !important;
+    resize: vertical !important;
+    box-sizing: border-box !important;
+    background: var(--ion-background-color) !important;
+}
+
+.custom-alert .alert-input-wrapper {
+    padding: 0 1rem !important;
+}
+
+.custom-alert .alert-backdrop {
+    backdrop-filter: blur(3px);
+    background-color: rgba(0, 0, 0, 0.3) !important;
+}
+
+.custom-alert .alert-head {
+    background: rgba(112, 102, 224, 0.1);
+}
+
+.custom-alert .alert-message {
+    margin-top: 1.5rem !important;
+}
+
+.custom-alert .alert-button {
+    display: flex !important;
+    justify-content: center !important;
+    align-items: center !important;
+    padding: 0.75rem 1rem !important;
+    text-align: center !important;
+}
+
+.custom-alert .alert-button-group .alert-button {
+    margin: 0 0.5rem !important;
+}
+
 /* Iconos de los textos de una carta */
 .oracle-text .mana-symbol-inline {
     width: 20px;

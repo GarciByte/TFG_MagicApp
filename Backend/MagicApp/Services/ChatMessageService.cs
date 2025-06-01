@@ -91,7 +91,7 @@ public class ChatMessageService
 
             if (changed)
             {
-                _unitOfWork.ChatMessageRepository.Update(m);
+                await _unitOfWork.ChatMessageRepository.Update(m);
             }
 
             if (m.SenderDeleted && m.ReceiverDeleted)

@@ -154,6 +154,25 @@ export class AuthService {
     return await this.storageService.getObject<User>(this.USER_KEY);
   }
 
+  // Actualizar datos del usuario logeado
+  async updateUser(userId: Number): Promise<void> {
+    try {
+      const result = await this.api.get<User>(`User/${userId}`);
+
+      if (result.success) {
+        const user = result.data;
+        await this.storageService.removeObject(this.USER_KEY);
+        await this.storageService.saveObject(this.USER_KEY, user);
+
+      } else {
+        console.error("No se han podido actualizar los datos del usuario.");
+      }
+      
+    } catch (error) {
+      console.error("No se han podido actualizar los datos del usuario.");
+    }
+  }
+
   // Refrescar el token
   async refreshTokens(): Promise<boolean> {
     try {

@@ -37,7 +37,22 @@ export const routes: Routes = [
     pathMatch: "full",
   },
   {
-    path: "card-search", // Ruta del Buscador de Cartas
+    path: "user-search", // Ruta del Buscador de usuarios
+    loadComponent: () => import("./pages/user-search/user-search.component").then((m) => m.UserSearchComponent),
+    pathMatch: "full",
+  },
+  {
+    path: "user-profile", // Ruta del perfil del usuario
+    loadComponent: () => import("./pages/user-profile/user-profile.component").then((m) => m.UserProfileComponent),
+    pathMatch: "full",
+  },
+  {
+    path: "other-users-profile", // Ruta del perfil de otro usuario
+    loadComponent: () => import("./pages/other-users-profile/other-users-profile.component").then((m) => m.OtherUsersProfileComponent),
+    pathMatch: "full",
+  },
+  {
+    path: "card-search", // Ruta del buscador de cartas
     loadComponent: () => import("./pages/card-search/card-search.component").then((m) => m.CardSearchComponent),
     pathMatch: "full",
   },
