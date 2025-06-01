@@ -34,4 +34,16 @@ public class ThreadSubscriptionRepository : Repository<ThreadSubscription, int>
     {
         await base.Delete(sub);
     }
+
+    // Obtener todos los hilos a los que está suscrito un usuario
+    public async Task<List<ForumThread>> GetSubscriptionsByUserIdAsync(int userId)
+    {
+        return await GetQueryable()
+            .Where(s => s.UserId == userId)
+            .Include(s => s.Thread)
+                .ThenInclude(t => t.User)
+            .Select(s => s.Thread)
+            .OrderByDescending(t => t.CreatedAt)
+            .ToListAsync();
+    }
 }

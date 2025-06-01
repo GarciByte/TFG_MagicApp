@@ -3,6 +3,7 @@ using MagicApp.Models.Dtos.Forum;
 using MagicApp.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Threading;
 
 namespace MagicApp.Controllers;
 
@@ -101,6 +102,24 @@ public class ForumController : ControllerBase
             _logger.LogError("Se ha producido un error al crear el comentario {ex}", ex);
             return BadRequest("Se ha producido un error al crear el comentario.");
         }
+    }
+
+    // Obtener todos los hilos a los que está suscrito un usuario
+    [HttpGet("subscriptions")]
+    public async Task<IActionResult> GetMySubscriptions()
+    {
+        UserDto user = await ReadToken();
+
+        if (user == null)
+        {
+            _logger.LogError("Error al obtener el usuario desde el token");
+            return Unauthorized();
+        }
+
+        _logger.LogInformation("El usuario {user.Nickname} va a obtener todas las suscripciones a hilos", user.Nickname);
+
+        var subscribedThreads = await _forumService.GetSubscribedThreadsAsync(user.UserId);
+        return Ok(subscribedThreads);
     }
 
     // Suscribe al usuario a un hilo

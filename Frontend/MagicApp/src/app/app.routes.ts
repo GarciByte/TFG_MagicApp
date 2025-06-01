@@ -67,6 +67,21 @@ export const routes: Routes = [
     pathMatch: 'full'
   },
   {
+    path: 'forum', // Ruta del foro
+    loadComponent: () => import('./pages/forum/forum.component').then(m => m.ForumComponent),
+    pathMatch: 'full'
+  },
+  {
+    path: 'thread-detail', // Ruta dentro de un hilo del foro
+    loadComponent: () => import('./pages/thread-detail/thread-detail.component').then(m => m.ThreadDetailComponent),
+    pathMatch: 'full'
+  },
+  {
+    path: 'create-thread', // Ruta para crear un hilo del foro
+    loadComponent: () => import('./pages/create-thread/create-thread.component').then(m => m.CreateThreadComponent),
+    pathMatch: 'full'
+  },
+  {
     path: "decks", // Ruta de Mazos
     loadComponent: () => import("./pages/deck/deck.component").then((m) => m.DeckComponent),
     pathMatch: "full",

@@ -190,4 +190,11 @@ public class ForumService
         await _unitOfWork.ForumThreadRepository.DeleteThreadAsync(threadId);
         await _unitOfWork.SaveAsync();
     }
+
+    // Obtener todos los hilos a los que está suscrito un usuario
+    public async Task<List<ForumThreadDto>> GetSubscribedThreadsAsync(int userId)
+    {
+        var threads = await _unitOfWork.ThreadSubscriptionRepository.GetSubscriptionsByUserIdAsync(userId);
+        return threads.Select(thread => _forumMapper.ToThreadDto(thread)).ToList();
+    }
 }

@@ -33,6 +33,7 @@ export class AppComponent implements OnInit, OnDestroy {
       'albums-outline': icons.albumsOutline,
       'flash-outline': icons.flashOutline,
       'notifications-outline': icons.notificationsOutline,
+      'notifications': icons.notifications,
       'chevron-up-circle': icons.chevronUpCircle,
       'document': icons.document,
       'color-palette': icons.colorPalette,
