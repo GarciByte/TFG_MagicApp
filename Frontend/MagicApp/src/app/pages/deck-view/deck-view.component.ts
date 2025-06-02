@@ -50,6 +50,8 @@ export class DeckViewComponent implements OnInit {
       this.deckCardsService.deckcards = this.deck.deckCards;
       this.deckCardsService.name = this.deck.name;
       this.deckCardsService.description = this.deck.description;
+      this.deckCardsService.userId = this.deck.userId;
+      this.deckCardsService.deckId = this.deck.id;
 
       console.log("Deck cargado desde backend:", this.deck);
     } else {
@@ -74,29 +76,25 @@ export class DeckViewComponent implements OnInit {
 
   cardDetails() {
     console.log("View deck cards")
-    // Navigation to the view cards page
+    this.navCtrl.navigateRoot("/deck-cards-views")
   }
 
   async updateDeck() {
-    // Logic for updating the deck
     const deckData: DeckRequest = {
       Name: this.deckCardsService.name,
       Description: this.deckCardsService.description,
-      UserId: this.deck.userId,
+      UserId: this.deckCardsService.userId,
       DeckCards: this.deckCardsService.deckCards
     }
 
-  console.log(deckData)
-
     // Save the deck
-    const response = await this.deckService.UpdateDeck(deckData, this.deck.id)
+    const response = await this.deckService.UpdateDeck(deckData, this.deckCardsService.deckId)
     this.deckCardsService.clear()
     this.navCtrl.navigateRoot("/decks")
 
   }
 
   async deleteDeck() {
-    // Logic for deleting the deck
     const response = await this.deckService.DeleteDeck(this.deckId)
     this.navCtrl.navigateRoot("/decks")
   }
