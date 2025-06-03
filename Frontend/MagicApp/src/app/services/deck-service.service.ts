@@ -3,8 +3,8 @@ import { ApiService } from './api.service';
 import { DeckRequest } from '../models/deck-request';
 import { DeckResponse } from '../models/deck-response';
 import { Result } from '../models/result';
-import { DeckCard } from '../models/deck-card';
 import { User } from '../models/user';
+import { CardDetail } from '../models/card-detail';
 
 @Injectable({
   providedIn: 'root'
@@ -85,7 +85,7 @@ export class DeckServiceService {
   }
 
   //Check deck size
-  deckSize(deckCards: DeckCard[]): Boolean {
+  deckSize(deckCards: CardDetail[]): Boolean {
     if (/* deckCards.length >= 60 &&  */deckCards.length <= 150) {
       return true
     } else {

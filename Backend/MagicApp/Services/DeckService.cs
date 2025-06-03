@@ -42,8 +42,6 @@ public class DeckService
             Victories = 0,
             Defeats = 0,
             DeckCards = model.DeckCards
-               .Select(dc => new DeckCard { CardId = dc.CardId })
-               .ToList()
         };
 
 
@@ -63,6 +61,8 @@ public class DeckService
         updatedDeck.Name = model.Name;
         updatedDeck.Description = model.Description;
         updatedDeck.DeckCards = model.DeckCards;
+        updatedDeck.Victories = model.Victories;
+        updatedDeck.Defeats = model.Defeats;
 
         await _unitOfWork.DeckRepository.UpdateDeckAsync(updatedDeck);
         await _unitOfWork.SaveAsync();
