@@ -10,6 +10,10 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { CardImage } from 'src/app/models/card-image';
 import { CardTransferService } from 'src/app/services/card-transfer.service';
+import { CardFilter } from 'src/app/models/card-filter';
+import { CardType } from 'src/app/models/enums/card-type';
+import { Color } from 'src/app/models/enums/color';
+import { Rarity } from 'src/app/models/enums/rarity';
 
 @Component({
   selector: 'app-add-cards-deck',
@@ -33,15 +37,21 @@ export class AddCardsDeckComponent implements OnInit {
 
   card: CardDetail;
   safeOracleHtml: SafeHtml;
-  searchTerm = ''; 
+  searchTerm = '';
   cards: CardImage[] = [];
   hasSearched = false;
   isLoading = false;
+  page: 0;
+  colors: Color[] = null;
+  rarity: Rarity = null;
+  types: CardType[] = null;
 
   async selectCard(cardId: string) {
     await this.loadCardDetails(cardId)
     this.cardTransfer.setCard(this.card)
     this.navCtrl.back()
+
+    this.search()
   }
 
   private async loadCardDetails(cardId: string) {
@@ -81,14 +91,17 @@ export class AddCardsDeckComponent implements OnInit {
     this.hasSearched = true;
     this.isLoading = true;
 
-    if (!term) {
-      this.cards = [];
-      this.isLoading = false;
-      return;
-    }
-
     try {
-      const result = await this.cardService.searchCardImages(term);
+
+      const cardFilter: CardFilter = {
+        Page: this.page,
+        Name: term,
+        Colors: this.colors,
+        Rarity: this.rarity,
+        Types: this.types
+      }
+
+      const result = await this.cardService.searchCardImages(cardFilter);
 
       if (result.success && result.data) {
         this.cards = result.data;

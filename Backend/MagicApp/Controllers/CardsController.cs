@@ -19,9 +19,9 @@ public class CardsController : ControllerBase
 
     // Busca cartas por nombre
     [HttpPost("search")]
-    public async Task<IActionResult> GetImages([FromBody] PaginationDto model)
+    public async Task<IActionResult> GetImages([FromBody] PaginationDto filter)
     {
-        var images = await _scryfall.SearchCardImagesAsync(model.Name, model);
+        var images = await _scryfall.SearchCardImagesAsync(filter.Name, filter);
         return Ok(images);
     }
 

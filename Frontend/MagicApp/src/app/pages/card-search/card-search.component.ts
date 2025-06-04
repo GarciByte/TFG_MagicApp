@@ -7,6 +7,10 @@ import { AuthService } from 'src/app/services/auth.service';
 import { CardService } from 'src/app/services/card.service';
 import { IonContent, IonButton, IonSearchbar } from "@ionic/angular/standalone";
 import { ModalService } from 'src/app/services/modal.service';
+import { CardFilter } from 'src/app/models/card-filter';
+import { Color } from 'src/app/models/enums/color';
+import { Rarity } from 'src/app/models/enums/rarity';
+import { CardType } from 'src/app/models/enums/card-type';
 
 @Component({
   selector: 'app-card-search',
@@ -21,6 +25,10 @@ export class CardSearchComponent implements OnInit {
   cards: CardImage[] = []; // Lista de cartas
   hasSearched = false;
   isLoading = false;
+  page: number;
+  colors: Color[];
+  rarity: Rarity;
+  types: CardType[];
 
   constructor(
     public navCtrl: NavController,
@@ -33,6 +41,8 @@ export class CardSearchComponent implements OnInit {
     if (!await this.authService.isAuthenticated()) {
       this.navCtrl.navigateRoot(['/']);
     }
+
+    this.search()
   }
 
   // Buscar cartas por nombre
@@ -41,14 +51,20 @@ export class CardSearchComponent implements OnInit {
     this.hasSearched = true;
     this.isLoading = true;
 
-    if (!term) {
-      this.cards = [];
-      this.isLoading = false;
-      return;
-    }
-
     try {
-      const result = await this.cardService.searchCardImages(term);
+
+      const cardFilter: CardFilter = {
+        Page: 0,
+        Name: term,
+        Colors: null,
+        Rarity: null,
+        Types: null
+      }
+
+      console.log(cardFilter)
+
+      const result = await this.cardService.searchCardImages(cardFilter);
+      console.log(result.data)
 
       if (result.success && result.data) {
         this.cards = result.data;

@@ -18,7 +18,7 @@ public class ScryfallService
     }
 
     // Buscar cartas por nombre y filtros
-    public async Task<PagedResult<CardImageDto>> SearchCardImagesAsync(string name, PaginationDto pagination)
+    public async Task<List<CardImageDto>> SearchCardImagesAsync(string name, PaginationDto pagination)
     {
 
         var queryString = BuildScryfallQuery(name, pagination);
@@ -30,7 +30,8 @@ public class ScryfallService
 
             if (response.StatusCode == HttpStatusCode.NotFound)
             {
-                return new PagedResult<CardImageDto> { Items = new List<CardImageDto>(), TotalCount = 0 };
+                // return new PagedResult<CardImageDto> { Items = new List<CardImageDto>() };
+                return new List<CardImageDto>();
             }
 
             response.EnsureSuccessStatusCode();
@@ -43,16 +44,17 @@ public class ScryfallService
 
             int totalCount = result.TotalCards;
 
-            return new PagedResult<CardImageDto>
-            {
-                Items = list,
-                TotalCount = totalCount
-            };
+            /*           return new PagedResult<CardImageDto>
+                      {
+                          Items = list,
+                      }; */
+            return list;
         }
         catch (Exception ex)
         {
             _logger.LogError("Ha ocurrido un error: " + ex.Message);
-            return new PagedResult<CardImageDto> { Items = new List<CardImageDto>(), TotalCount = 0 };
+            // return new PagedResult<CardImageDto> { Items = new List<CardImageDto>() };
+            return new List<CardImageDto>();
         }
     }
 
@@ -249,5 +251,4 @@ public class ScryfallService
 public class PagedResult<T>
 {
     public List<T> Items { get; set; } = new();
-    public int TotalCount { get; set; }
 }
