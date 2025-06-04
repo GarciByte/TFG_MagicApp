@@ -47,7 +47,8 @@ export class AppComponent implements OnInit, OnDestroy {
       'layers-outline': icons.layersOutline,
       'refresh-outline': icons.refreshOutline,
       'lock-closed-outline': icons.lockClosedOutline,
-      'lock-open-outline': icons.lockOpenOutline
+      'lock-open-outline': icons.lockOpenOutline,
+      'log-in-outline': icons.logInOutline
     });
 
     console.log('ENVIRONMENT:', environment);
