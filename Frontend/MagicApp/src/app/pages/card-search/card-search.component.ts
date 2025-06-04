@@ -64,7 +64,6 @@ export class CardSearchComponent implements OnInit {
       console.log(cardFilter)
 
       const result = await this.cardService.searchCardImages(cardFilter);
-      console.log(result.data)
 
       if (result.success && result.data) {
         this.cards = result.data;

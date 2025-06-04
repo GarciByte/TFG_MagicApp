@@ -14,7 +14,6 @@ export class CardService {
 
   // Buscar cartas por nombre
   async searchCardImages(filter: CardFilter): Promise<Result<CardImage[]>> {
-    console.log(this.api.post<CardImage[]>("Cards/search", filter))
     return this.api.post<CardImage[]>("Cards/search", filter);
   }
 
