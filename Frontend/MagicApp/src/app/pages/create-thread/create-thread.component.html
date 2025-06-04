@@ -1,3 +1,55 @@
-<p>
-  create-thread works!
-</p>
+<ion-content [fullscreen]="true" class="ion-padding">
+
+  <!-- Botón para volver al foro -->
+  <div class="back-button-container">
+    <ion-button size="small" shape="round" (click)="navCtrl.navigateRoot(['/menu'])">
+      Volver al foro
+    </ion-button>
+  </div>
+
+  <ng-container>
+    <div class="create-container">
+      <ion-card class="create-card">
+
+        <ion-card-header class="page-title">
+          <ion-icon name="document" class="page-icon"></ion-icon>
+          Crear nuevo hilo
+        </ion-card-header>
+
+        <form [formGroup]="threadForm" (ngSubmit)="submitThread()">
+
+          <!-- Campo de título -->
+          <ion-item class="input-item">
+            <ion-label position="stacked">Título</ion-label>
+            <ion-input type="text" formControlName="title" placeholder="Introduce el título del hilo"></ion-input>
+          </ion-item>
+
+          <ion-note class="error-note" *ngIf="threadForm.get('title')?.touched && threadForm.get('title')?.invalid">
+            El título es obligatorio.
+          </ion-note>
+
+          <!-- Campo de contenido -->
+          <ion-item class="input-item">
+            <ion-label position="stacked">Contenido</ion-label>
+            <ion-textarea formControlName="content" rows="6"
+              placeholder="Escribe la descripción"></ion-textarea>
+          </ion-item>
+
+          <ion-note class="error-note" *ngIf="threadForm.get('content')?.touched && threadForm.get('content')?.invalid">
+            El contenido es obligatorio.
+          </ion-note>
+
+          <!-- Botón de envío -->
+          <div class="submit-container">
+            <ion-button type="submit" shape="round" [disabled]="threadForm.invalid || isSubmitting">
+              <ion-icon name="send"></ion-icon>
+              &nbsp;Crear hilo
+            </ion-button>
+          </div>
+
+        </form>
+
+      </ion-card>
+    </div>
+  </ng-container>
+</ion-content>

@@ -81,6 +81,12 @@
 
           <!-- Paginación -->
           <div class="pagination-container">
+
+            <ion-button class="pagination-btn" [disabled]="reportPage === 1" (click)="goReportToPage(1)" fill="clear"
+              size="small">
+              «
+            </ion-button>
+
             <ion-button class="pagination-btn" [disabled]="reportPage === 1" (click)="goReportPage(-1)" fill="clear"
               size="small">
               <ion-icon name="chevron-back" slot="icon-only"></ion-icon>
@@ -94,7 +100,14 @@
               fill="clear" size="small">
               <ion-icon name="chevron-forward" slot="icon-only"></ion-icon>
             </ion-button>
+
+            <!-- Ir a última página -->
+            <ion-button class="pagination-btn" [disabled]="reportPage === reportTotalPages"
+              (click)="goReportToPage(reportTotalPages)" fill="clear" size="small">
+              »
+            </ion-button>
           </div>
+
 
         </ion-card-content>
       </ion-card>
@@ -161,7 +174,13 @@
           </div>
 
           <!-- Paginación -->
-          <div class="pagination-container">
+          <div class="pagination-container" *ngIf="userTotalPages > 1">
+
+            <ion-button class="pagination-btn" [disabled]="userPage === 1" (click)="goUserToPage(1)" fill="clear"
+              size="small">
+              «
+            </ion-button>
+
             <ion-button class="pagination-btn" [disabled]="userPage === 1" (click)="goUserPage(-1)" fill="clear"
               size="small">
               <ion-icon name="chevron-back" slot="icon-only"></ion-icon>
@@ -175,7 +194,13 @@
               fill="clear" size="small">
               <ion-icon name="chevron-forward" slot="icon-only"></ion-icon>
             </ion-button>
+
+            <ion-button class="pagination-btn" [disabled]="userPage === userTotalPages"
+              (click)="goUserToPage(userTotalPages)" fill="clear" size="small">
+              »
+            </ion-button>
           </div>
+
 
         </ion-card-content>
       </ion-card>

@@ -72,7 +72,7 @@ export const routes: Routes = [
     pathMatch: 'full'
   },
   {
-    path: 'thread-detail', // Ruta dentro de un hilo del foro
+    path: 'thread-detail/:id', // Ruta dentro de un hilo del foro
     loadComponent: () => import('./pages/thread-detail/thread-detail.component').then(m => m.ThreadDetailComponent),
     pathMatch: 'full'
   },

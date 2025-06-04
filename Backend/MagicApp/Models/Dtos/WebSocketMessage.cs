@@ -7,7 +7,9 @@ public enum MsgType
     Connection,             // Conexión con el WebSocket
     GlobalChat,             // Mensaje del chat global
     PrivateChat,            // Mensaje del chat privado
-    UserBanned              // Usuario baneado
+    UserBanned,             // Usuario baneado
+    ForumNotification,      // Notificación del foro
+    ChatNotification        // Notificación de chat
 }
 
 public class WebSocketMessage

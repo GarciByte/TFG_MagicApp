@@ -15,6 +15,7 @@ export class WebsocketService {
   constructor(private modalService: ModalService) { }
 
   rxjsSocket: WebSocketSubject<WebSocketMessage> | null = null;
+  public activePrivateChatUserId: number | null = null;
 
   // Eventos de conexión
   public connected = new Subject<void>();
@@ -53,6 +54,14 @@ export class WebsocketService {
         this.handleUserBan();
         break;
 
+      case MsgType.ForumNotification:
+        this.handleForumNotification(message);
+        break;
+
+      case MsgType.ChatNotification:
+        this.handleChatNotification(message.Content);
+        break;
+
       default:
         console.warn("Mensaje no reconocido:", message.Type);
         break;
@@ -68,6 +77,19 @@ export class WebsocketService {
     );
     
     this.error.next();
+  }
+
+  // Nuevo mensaje de chat
+  async handleChatNotification(message: ChatMessage): Promise<void> {
+    if (this.activePrivateChatUserId !== null && this.activePrivateChatUserId === message.SenderId) {
+      return;
+    }
+    this.modalService.showToast(`Has recibido un nuevo mensaje de ${message.SenderNickname}`, "info");
+  }
+
+  // Nuevo mensaje del hilo al que está suscrito el usuario
+  async handleForumNotification(message: WebSocketMessage): Promise<void> {
+    this.modalService.showToast(`Hay un nuevo mensaje en el hilo "${message.Content}"`, "info");
   }
 
   private onError(error: any) {

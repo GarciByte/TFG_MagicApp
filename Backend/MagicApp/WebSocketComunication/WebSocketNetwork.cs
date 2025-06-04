@@ -1,5 +1,6 @@
 ﻿using MagicApp.Models.Database.Entities;
 using MagicApp.Models.Dtos;
+using MagicApp.Models.Dtos.Forum;
 using MagicApp.Services;
 using System.Collections.Concurrent;
 using System.Net.WebSockets;
@@ -158,6 +159,16 @@ public class WebSocketNetwork : IWebSocketMessageSender
                     await HandleUserBanAsync(message);
                     break;
 
+                // Notificación del foro
+                case MsgType.ForumNotification:
+                    await HandleForumNotificationAsync(handler, message);
+                    break;
+
+                // Notificación de chat
+                case MsgType.ChatNotification:
+                    await HandleChatNotificationAsync(message);
+                    break;
+
                 default:
                     _logger.LogError("Mensaje no manejado: {message.Type}", message.Type);
                     break;
@@ -257,6 +268,92 @@ public class WebSocketNetwork : IWebSocketMessageSender
             {
                 Type = MsgType.UserBanned,
                 Content = "UserBanned"
+            });
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError("Error al deserializar userId: {ex.Message}", ex.Message);
+        }
+    }
+
+    // Obtiene los usuarios que están conectados
+    public async Task<List<int>> GetConnectedUserIdsAsync()
+    {
+        await _semaphore.WaitAsync();
+        try
+        {
+            return _userConnections.Keys.ToList();
+        }
+        finally
+        {
+            _semaphore.Release();
+        }
+    }
+
+    // Obtener todos los hilos a los que está suscrito un usuario
+    public async Task<List<ForumThreadDto>> GetSubscribedThreadsAsync(int userId)
+    {
+        using var scope = _serviceProvider.CreateScope();
+        var forumService = scope.ServiceProvider.GetRequiredService<ForumService>();
+        var threads = await forumService.GetSubscribedThreadsAsync(userId);
+
+        return threads;
+    }
+
+    // Notificar un nuevo mensaje del hilo al que está suscrito el usuario
+    private async Task HandleForumNotificationAsync(WebSocketHandler handler, WebSocketMessage message)
+    {
+        try
+        {
+            string jsonContent = message.Content.ToString();
+            int threadId = JsonSerializer.Deserialize<int>(jsonContent);
+            int authorId = handler.Id;
+
+            _logger.LogInformation("Se va a recibir una notificación del hilo: {threadId}", threadId);
+
+            var connectedUserIds = await GetConnectedUserIdsAsync();
+
+            foreach (var userId in connectedUserIds)
+            {
+                if (userId == authorId)
+                    continue;
+
+                var subscribedThreads = await GetSubscribedThreadsAsync(userId);
+                var thread = subscribedThreads.FirstOrDefault(t => t.Id == threadId);
+
+                if (thread != null)
+                {
+                    var notification = new WebSocketMessage
+                    {
+                        Type = MsgType.ForumNotification,
+                        Content = thread.Title
+                    };
+
+                    await SendToUserAsync(userId, notification);
+                }
+            }
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError("Error al deserializar threadId: {ex.Message}", ex.Message);
+        }
+    }
+
+    // Notificar de un nuevo mensaje de chat
+    private async Task HandleChatNotificationAsync(WebSocketMessage message)
+    {
+        try
+        {
+            string jsonContent = message.Content.ToString();
+            ChatMessage ChatMessage = JsonSerializer.Deserialize<ChatMessage>(jsonContent);
+
+            _logger.LogInformation("El usuario {ChatMessage.ReceiverNickname} va a recibir una notificación de chat de " +
+                "{ChatMessage.ReceiverNickname}", ChatMessage.ReceiverNickname, ChatMessage.SenderNickname);
+
+            await SendToUserAsync(ChatMessage.ReceiverId, new WebSocketMessage
+            {
+                Type = MsgType.ChatNotification,
+                Content = ChatMessage
             });
         }
         catch (Exception ex)
