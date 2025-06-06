@@ -212,18 +212,18 @@ public class ScryfallService
             {
                 return c switch
                 {
-                    Color.W => "White",
-                    Color.U => "Blue",
-                    Color.B => "Black",
-                    Color.R => "Red",
-                    Color.G => "Green",
+                    Color.W => "w",
+                    Color.U => "u",
+                    Color.B => "b",
+                    Color.R => "r",
+                    Color.G => "g",
                     _ => ""
                 };
             }));
 
             if (!string.IsNullOrEmpty(colorsCode))
             {
-                parts.Add($"colors:{colorsCode}");
+                parts.Add($"color>={colorsCode}"); // o "colors=" según cómo quieras filtrar
             }
         }
 
@@ -236,8 +236,9 @@ public class ScryfallService
         // Tipos
         if (filter.Types != null && filter.Types.Count > 0)
         {
-            var typesStr = string.Join(" ", filter.Types.Select(t => t.ToString().ToLower()));
+            var typesStr = "(" + string.Join(" OR ", filter.Types.Select(t => $"type:{t.ToString().ToLower()}")) + ")";
             parts.Add(typesStr);
+
         }
 
         // Si no hay nada devolver ! para obtener todas las cartas

@@ -69,3 +69,45 @@ ion-content {
         width: 150px;
     }
 }
+
+.filter-group {
+  margin: 1rem 0;
+  padding: 0.5rem;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  background-color: #f9f9f9;
+  max-width: 320px;
+}
+
+.filter-group label {
+  font-weight: bold;
+  display: block;
+  margin-bottom: 0.5rem;
+  font-size: 1.1rem;
+  color: #333;
+}
+
+/* Contenedor para cada checkbox + texto */
+.filter-group .checkbox-item {
+  display: flex;
+  align-items: center;
+  margin-bottom: 6px;
+  cursor: pointer;
+}
+
+/* El checkbox con un margen pequeño a la derecha para que quede pegado al texto */
+.filter-group ion-checkbox {
+  --background: #e0e0e0;
+  --border-radius: 4px;
+  --checked-background: #3880ff;
+  --checked-border-color: #3880ff;
+  margin-right: 6px; /* Ajusta aquí para más o menos espacio */
+  flex-shrink: 0;
+}
+
+/* El texto */
+.filter-group .checkbox-item span {
+  font-size: 1rem;
+  user-select: none;
+}
+

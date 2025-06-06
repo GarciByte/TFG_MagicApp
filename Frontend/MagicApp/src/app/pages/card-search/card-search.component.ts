@@ -5,16 +5,18 @@ import { NavController } from '@ionic/angular';
 import { CardImage } from 'src/app/models/card-image';
 import { AuthService } from 'src/app/services/auth.service';
 import { CardService } from 'src/app/services/card.service';
-import { IonContent, IonButton, IonSearchbar } from "@ionic/angular/standalone";
+import { IonContent, IonButton, IonSearchbar, IonSelectOption, IonCheckbox, IonSelect } from "@ionic/angular/standalone";
 import { ModalService } from 'src/app/services/modal.service';
 import { CardFilter } from 'src/app/models/card-filter';
 import { Color } from 'src/app/models/enums/color';
 import { Rarity } from 'src/app/models/enums/rarity';
 import { CardType } from 'src/app/models/enums/card-type';
+import { CardColorService } from 'src/app/services/card-color.service';
+import { CardTypeService } from 'src/app/services/card-type.service';
 
 @Component({
   selector: 'app-card-search',
-  imports: [IonSearchbar, IonButton, IonContent, CommonModule, FormsModule],
+  imports: [IonCheckbox, IonSearchbar, IonButton, IonContent, CommonModule, FormsModule, IonSelectOption, IonSelect],
   templateUrl: './card-search.component.html',
   styleUrls: ['./card-search.component.css'],
   standalone: true,
@@ -25,16 +27,19 @@ export class CardSearchComponent implements OnInit {
   cards: CardImage[] = []; // Lista de cartas
   hasSearched = false;
   isLoading = false;
-  page: number;
-  colors: Color[];
-  rarity: Rarity;
-  types: CardType[];
+  page: number = 1;
+  rarity: Rarity | null = null;
+  Rarity = Rarity;
+  colors: Color[] = [];
+  types: CardType[] = [];
 
   constructor(
     public navCtrl: NavController,
     private authService: AuthService,
     private cardService: CardService,
-    private modalService: ModalService
+    private modalService: ModalService,
+    private cardColorService: CardColorService,
+    private cardTypeService: CardTypeService
   ) { }
 
   async ngOnInit(): Promise<void> {
@@ -50,16 +55,17 @@ export class CardSearchComponent implements OnInit {
     const term = this.searchTerm.trim();
     this.hasSearched = true;
     this.isLoading = true;
+    console.log(this.rarity)
 
     try {
 
       const cardFilter: CardFilter = {
-        Page: 0,
+        Page: this.page,
         Name: term,
-        Colors: null,
-        Rarity: null,
-        Types: null
-      }
+        Colors: this.colors || null,
+        Rarity: this.rarity,
+        Types: this.types || null
+      };
 
       console.log(cardFilter)
 
@@ -103,4 +109,57 @@ export class CardSearchComponent implements OnInit {
     });
   }
 
+  //CARD RARITY
+  rarityOptions = [
+    { label: 'Todas', value: null },
+    { label: 'Común', value: Rarity.Common },
+    { label: 'Poco Común', value: Rarity.Uncommon },
+    { label: 'Rara', value: Rarity.Rare },
+    { label: 'Mítica', value: Rarity.Mythic },
+  ];
+
+
+  //CARD COLOR
+  cardColorOptions: ColorOption[] = [
+    { label: 'Blanco', color: Color.W, checked: false },
+    { label: 'Azul', color: Color.U, checked: false },
+    { label: 'Negro', color: Color.B, checked: false },
+    { label: 'Rojo', color: Color.R, checked: false },
+    { label: 'Verde', color: Color.G, checked: false }
+  ];
+
+  cardColor(option: ColorOption) {
+    console.log(option.checked)
+    this.colors = this.cardColorService.cardColor(option.color, option.checked);
+  }
+
+  //CARD TYPE
+  cardTypeOptions: TypeOption[] = [
+    { label: 'Creature', type: CardType.Creature, checked: false },
+    { label: 'Instant', type: CardType.Instant, checked: false },
+    { label: 'Sorcery', type: CardType.Sorcery, checked: false },
+    { label: 'Enchantment', type: CardType.Enchantment, checked: false },
+    { label: 'Artifact', type: CardType.Artifact, checked: false },
+    { label: 'Land', type: CardType.Land, checked: false },
+    { label: 'Planeswalker', type: CardType.Planeswalker, checked: false },
+  ];
+
+
+  cardType(option: TypeOption) {
+    this.types = this.cardTypeService.cardType(option.type, option.checked);
+  }
 }
+
+
+//Helpers para selecionar los filtros
+type ColorOption = {
+  label: string;
+  color: Color;
+  checked: boolean;
+};
+
+type TypeOption = {
+  label: string;
+  type: CardType;
+  checked: boolean;
+};

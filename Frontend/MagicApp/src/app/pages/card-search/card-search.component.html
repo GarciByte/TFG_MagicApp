@@ -7,6 +7,44 @@
     </ion-button>
   </div>
 
+  <!-- Filtros -->
+  <div class="filter-container">
+
+    <!-- Colores -->
+    <div class="filter-group">
+      <label>Tipos:</label>
+      <label *ngFor="let option of cardColorOptions" class="checkbox-item">
+        <ion-checkbox [(ngModel)]="option.checked" (ionChange)="cardColor(option)">
+        </ion-checkbox>
+        <span>{{ option.label }}</span>
+      </label>
+    </div>
+
+
+    <!-- Rareza -->
+    <div class="filter-group">
+      <label>Rareza:</label>
+      <ion-select [(ngModel)]="rarity" interface="popover" placeholder="Selecciona rareza">
+        <ion-select-option *ngFor="let option of rarityOptions" [value]="option.value">
+          {{ option.label }}
+        </ion-select-option>
+      </ion-select>
+    </div>
+
+
+    <!-- Tipos -->
+    <div class="filter-group">
+      <label>Tipos:</label>
+      <label *ngFor="let option of cardTypeOptions" class="checkbox-item">
+        <ion-checkbox [(ngModel)]="option.checked" (ionChange)="cardType(option)">
+        </ion-checkbox>
+        <span>{{ option.label }}</span>
+      </label>
+    </div>
+
+
+  </div>
+
   <!-- Buscador de cartas -->
   <div class="search-container">
     <ion-searchbar name="searchTerm" [(ngModel)]="searchTerm" placeholder="Escribe nombre..."
