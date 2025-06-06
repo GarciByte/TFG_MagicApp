@@ -148,6 +148,20 @@ export class CardSearchComponent implements OnInit {
   cardType(option: TypeOption) {
     this.types = this.cardTypeService.cardType(option.type, option.checked);
   }
+
+  //CAMBIAR DE PÁGINA
+  prevPage() {
+    if (this.page > 1) {
+      this.page--;
+      this.search();
+    }
+  }
+
+  nextPage() {
+    this.page++;
+    this.search();
+  }
+
 }
 
 
