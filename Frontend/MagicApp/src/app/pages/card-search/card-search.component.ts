@@ -5,7 +5,7 @@ import { NavController } from '@ionic/angular';
 import { CardImage } from 'src/app/models/card-image';
 import { AuthService } from 'src/app/services/auth.service';
 import { CardService } from 'src/app/services/card.service';
-import { IonContent, IonButton, IonSearchbar, IonSelectOption, IonCheckbox, IonSelect } from "@ionic/angular/standalone";
+import { IonContent, IonButton, IonSearchbar, IonSelectOption, IonCheckbox, IonSelect, IonIcon } from "@ionic/angular/standalone";
 import { ModalService } from 'src/app/services/modal.service';
 import { CardFilter } from 'src/app/models/card-filter';
 import { Color } from 'src/app/models/enums/color';
@@ -16,7 +16,7 @@ import { CardTypeService } from 'src/app/services/card-type.service';
 
 @Component({
   selector: 'app-card-search',
-  imports: [IonCheckbox, IonSearchbar, IonButton, IonContent, CommonModule, FormsModule, IonSelectOption, IonSelect],
+  imports: [IonIcon, IonCheckbox, IonSearchbar, IonButton, IonContent, CommonModule, FormsModule, IonSelectOption, IonSelect],
   templateUrl: './card-search.component.html',
   styleUrls: ['./card-search.component.css'],
   standalone: true,
@@ -32,6 +32,8 @@ export class CardSearchComponent implements OnInit {
   Rarity = Rarity;
   colors: Color[] = [];
   types: CardType[] = [];
+  showAllFilters = false;
+  debounceTimeout: any;
 
   constructor(
     public navCtrl: NavController,
@@ -49,6 +51,18 @@ export class CardSearchComponent implements OnInit {
 
     this.search()
   }
+
+  toggleFilters() {
+    this.showAllFilters = !this.showAllFilters;
+  }
+
+realTimeSearch() {
+  clearTimeout(this.debounceTimeout);
+
+  this.debounceTimeout = setTimeout(() => {
+    this.search();
+  }, 300); // Espera 3 segundos
+}
 
   // Buscar cartas por nombre
   async search() {
@@ -129,8 +143,8 @@ export class CardSearchComponent implements OnInit {
   ];
 
   cardColor(option: ColorOption) {
-    console.log(option.checked)
     this.colors = this.cardColorService.cardColor(option.color, option.checked);
+    this.realTimeSearch();
   }
 
   //CARD TYPE
@@ -147,6 +161,7 @@ export class CardSearchComponent implements OnInit {
 
   cardType(option: TypeOption) {
     this.types = this.cardTypeService.cardType(option.type, option.checked);
+    this.realTimeSearch();
   }
 
   //CAMBIAR DE PÁGINA

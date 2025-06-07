@@ -5,7 +5,7 @@ import { DeckRequest } from 'src/app/models/deck-request';
 import { DeckResponse } from 'src/app/models/deck-response';
 import { AuthService } from 'src/app/services/auth.service';
 import { DeckServiceService } from 'src/app/services/deck-service.service';
-import { IonContent } from "@ionic/angular/standalone";
+import { IonContent, IonIcon } from "@ionic/angular/standalone";
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { DeckCardsService } from 'src/app/services/deck-cards.service';
@@ -13,7 +13,7 @@ import { CardDetail } from 'src/app/models/card-detail';
 
 @Component({
   selector: 'app-deck-view',
-  imports: [CommonModule, FormsModule, IonContent],
+  imports: [IonIcon, CommonModule, FormsModule, IonContent],
   templateUrl: './deck-view.component.html',
   styleUrls: ['./deck-view.component.css'],
   standalone: true,

@@ -1,18 +1,25 @@
 <ion-content>
+  <div class="header-container">
+    <ion-icon name="arrow-back-outline" class="back-icon" (click)="navCtrl.navigateRoot(['/menu'])"></ion-icon>
+    <h1 class="page-title">Buscador de cartas</h1>
+  </div>
 
-  <!-- Botón para volver al menú principal -->
-  <div class="button-container">
-    <ion-button size="small" shape="round" (click)="navCtrl.navigateRoot(['/menu'])">
-      Volver al menú principal
+  <!-- Buscador y botón filtro juntos -->
+  <div class="search-filter-container">
+    <ion-searchbar name="searchTerm" [(ngModel)]="searchTerm" placeholder="Escribe nombre..." (keyup.enter)="search()"
+      (ionInput)="realTimeSearch()">
+    </ion-searchbar>
+
+    <ion-button fill="clear" class="filter-icon-button" (click)="toggleFilters()" aria-label="Mostrar filtros">
+      <ion-icon name="filter-outline"></ion-icon>
     </ion-button>
   </div>
 
-  <!-- Filtros -->
-  <div class="filter-container">
-
+  <!-- Dropdown filtros, aparece solo si showAllFilters = true -->
+  <div class="filter-dropdown" *ngIf="showAllFilters" (click)="$event.stopPropagation()">
     <!-- Colores -->
     <div class="filter-group">
-      <label>Tipos:</label>
+      <label>Colores:</label>
       <label *ngFor="let option of cardColorOptions" class="checkbox-item">
         <ion-checkbox [(ngModel)]="option.checked" (ionChange)="cardColor(option)">
         </ion-checkbox>
@@ -23,12 +30,14 @@
     <!-- Rareza -->
     <div class="filter-group">
       <label>Rareza:</label>
-      <ion-select [(ngModel)]="rarity" interface="popover" placeholder="Selecciona rareza">
+      <ion-select [(ngModel)]="rarity" interface="popover" placeholder="Selecciona rareza"
+        (ionChange)="realTimeSearch()">
         <ion-select-option *ngFor="let option of rarityOptions" [value]="option.value">
           {{ option.label }}
         </ion-select-option>
       </ion-select>
     </div>
+
 
     <!-- Tipos -->
     <div class="filter-group">
@@ -39,14 +48,6 @@
         <span>{{ option.label }}</span>
       </label>
     </div>
-
-  </div>
-
-  <!-- Buscador de cartas -->
-  <div class="search-container">
-    <ion-searchbar name="searchTerm" [(ngModel)]="searchTerm" placeholder="Escribe nombre..."
-      (keyup.enter)="search()"></ion-searchbar>
-    <ion-button size="small" shape="round" (click)="search()">Buscar</ion-button>
   </div>
 
   <!-- Mensaje de estado -->

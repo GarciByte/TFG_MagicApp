@@ -2,7 +2,7 @@ import { Component, type OnInit } from "@angular/core"
 import { CommonModule } from "@angular/common"
 import { FormsModule } from "@angular/forms"
 import { AlertController, NavController } from "@ionic/angular"
-import { IonContent } from "@ionic/angular/standalone"
+import { IonContent, IonIcon } from "@ionic/angular/standalone"
 import { AuthService } from "src/app/services/auth.service"
 import { DeckServiceService } from "src/app/services/deck-service.service"
 import { DeckRequest } from '../../models/deck-request';
@@ -13,7 +13,7 @@ import { CardDetail } from "src/app/models/card-detail"
 @Component({
   selector: "app-create-deck",
   standalone: true,
-  imports: [CommonModule, FormsModule, IonContent],
+  imports: [IonIcon, CommonModule, FormsModule, IonContent],
   templateUrl: "./create-deck.component.html",
   styleUrls: ["./create-deck.component.css"],
 })

@@ -3,16 +3,29 @@ ion-content {
 }
 
 .header-container {
-  background-color: #1a1a1a;
+  display: flex;
+  align-items: center;
+  gap: 12px;
   padding: 16px;
-  padding-top: 30px;
+  background-color: var(--ion-background-color);
+}
+
+.back-icon {
+  font-size: 24px;
+  color: var(--ion-color-primary);
+  cursor: pointer;
+  transition: transform 0.2s ease;
+}
+
+.back-icon:hover {
+  transform: scale(1.1);
 }
 
 .page-title {
-  color: #ffffff;
   font-size: 1.5rem;
-  font-weight: 500;
   margin: 0;
+  color: var(--ion-text-color);
+  font-weight: bold;
 }
 
 .content-container {
