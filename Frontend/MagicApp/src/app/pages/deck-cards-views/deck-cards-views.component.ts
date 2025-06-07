@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { NavController, AlertController } from '@ionic/angular';
-import { DeckCard } from 'src/app/models/deck-card';
+import { CardDetail } from 'src/app/models/card-detail';
 import { AuthService } from 'src/app/services/auth.service';
 import { DeckCardsService } from 'src/app/services/deck-cards.service';
 import { DeckServiceService } from 'src/app/services/deck-service.service';
@@ -14,7 +14,7 @@ import { DeckServiceService } from 'src/app/services/deck-service.service';
 })
 export class DeckCardsViewsComponent implements OnInit {
 
-  deckCards: DeckCard[] = [];
+  deckCards: CardDetail[] = [];
 
   constructor(
     public navCtrl: NavController,

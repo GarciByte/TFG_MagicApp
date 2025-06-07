@@ -1,4 +1,5 @@
 ﻿using MagicApp.Models.Dtos;
+using MagicApp.Models.Enums;
 using System.Net;
 using System.Text.Json;
 using System.Text.RegularExpressions;
@@ -16,67 +17,43 @@ public class ScryfallService
         _logger = logger;
     }
 
-    // Buscar cartas por nombre
-    public async Task<List<CardImageDto>> SearchCardImagesAsync(string name)
+    // Buscar cartas por nombre y filtros
+    public async Task<List<CardImageDto>> SearchCardImagesAsync(string name, PaginationDto pagination)
     {
-        _logger.LogInformation("Se va a buscar en Scryfall la carta: {name}", name);
 
-        if (string.IsNullOrWhiteSpace(name))
-            return new List<CardImageDto>();
-
-        var query = Uri.EscapeDataString(name);
-        var relativeUri = $"cards/search?q={query}";
+        var queryString = BuildScryfallQuery(name, pagination);
+        var relativeUri = $"cards/search?q={Uri.EscapeDataString(queryString)}&page={pagination.Page}";
 
         try
         {
-            // Hacemos la petición
             using var response = await _http.GetAsync(relativeUri);
 
-            // Si no hay coincidencias, se devuelve una lista vacía
             if (response.StatusCode == HttpStatusCode.NotFound)
             {
-                _logger.LogInformation("No se ha encontrado la carta: {name}", name);
+                // return new PagedResult<CardImageDto> { Items = new List<CardImageDto>() };
                 return new List<CardImageDto>();
             }
 
             response.EnsureSuccessStatusCode();
 
-            // Deserializamos la respuesta
             var body = await response.Content.ReadAsStringAsync();
             var result = JsonSerializer.Deserialize<ScryfallSearchResponse>(body,
                 new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
 
-            // Se devuelve el DTO de cada carta
-            var list = new List<CardImageDto>();
-            foreach (var card in result.Data ?? Enumerable.Empty<CardData>())
-            {
-                var url = card.ImageUris?.Normal;
+            var list = ExtractCardImages(result);
 
-                if (url == null && card.CardFaces?.Any() == true)
-                    url = card.CardFaces[0].ImageUris?.Normal;
+            int totalCount = result.TotalCards;
 
-                // Si la carta no tiene imagen, se omite
-                if (string.IsNullOrEmpty(url))
-                {
-                    _logger.LogInformation("Se ha omitido la carta: {card.Name}", card.Name);
-                    continue;
-                }
-
-                list.Add(new CardImageDto
-                {
-                    Id = card.Id,
-                    Name = card.Name,
-                    ImageUrl = url
-                });
-            }
-
-            _logger.LogInformation("Se han encontrado {list.Count} coincidencias con el nombre: {name}", list.Count, name);
-
+            /*           return new PagedResult<CardImageDto>
+                      {
+                          Items = list,
+                      }; */
             return list;
         }
         catch (Exception ex)
         {
-            _logger.LogError("Se producido un error en la petición: {ex.Message}", ex.Message);
+            _logger.LogError("Ha ocurrido un error: " + ex.Message);
+            // return new PagedResult<CardImageDto> { Items = new List<CardImageDto>() };
             return new List<CardImageDto>();
         }
     }
@@ -84,14 +61,10 @@ public class ScryfallService
     // Obtener datos de una carta por ID
     public async Task<CardDetailDto> GetCardByIdAsync(string id)
     {
-        _logger.LogInformation("Obteniendo carta con ID {id}", id);
-
         try
         {
-            // Hacemos la petición
             using var resp = await _http.GetAsync($"cards/{Uri.EscapeDataString(id)}");
 
-            // Si no encuentra la carta
             if (resp.StatusCode == HttpStatusCode.NotFound)
             {
                 _logger.LogError("No se ha encontrado la carta con ID: {id}", id);
@@ -100,12 +73,10 @@ public class ScryfallService
 
             resp.EnsureSuccessStatusCode();
 
-            // Deserializamos la respuesta
             var json = await resp.Content.ReadAsStringAsync();
             var src = JsonSerializer.Deserialize<CardDetailResponse>(json,
                 new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
 
-            // Se devuelve el DTO de la carta
             return new CardDetailDto
             {
                 Id = src.Id,
@@ -132,7 +103,7 @@ public class ScryfallService
         }
         catch (Exception ex)
         {
-            _logger.LogError("Se producido un error en la petición: {ex.Message}", ex.Message);
+            _logger.LogError("Ha ocurrido un error: " + ex.Message);
             return null;
         }
     }
@@ -144,7 +115,6 @@ public class ScryfallService
         return null;
     }
 
-    // Obtener símbolos SVG del coste de la carta
     private static List<string> BuildManaSymbolUrls(string manaCost)
     {
         var urls = new List<string>();
@@ -161,7 +131,6 @@ public class ScryfallService
         return urls;
     }
 
-    // Obtener símbolos SVG de la descripción de la carta
     private static string BuildOracleTextHtml(string oracleText)
     {
         if (string.IsNullOrEmpty(oracleText))
@@ -177,4 +146,110 @@ public class ScryfallService
         );
     }
 
+    private List<CardImageDto> ExtractCardImages(ScryfallSearchResponse result)
+    {
+        var list = new List<CardImageDto>();
+
+        foreach (var card in result.Data ?? Enumerable.Empty<CardData>())
+        {
+            var url = card.ImageUris?.Normal;
+
+            if (url == null && card.CardFaces?.Any() == true)
+                url = card.CardFaces[0].ImageUris?.Normal;
+
+            if (string.IsNullOrEmpty(url))
+            {
+                continue;
+            }
+
+            // Convierte string rarity a enum Rarity
+            Rarity? rarityEnum = null;
+            if (!string.IsNullOrEmpty(card.Rarity))
+            {
+                if (Enum.TryParse<Rarity>(CapitalizeFirst(card.Rarity), out var parsedRarity))
+                {
+                    rarityEnum = parsedRarity;
+                }
+            }
+
+            string CapitalizeFirst(string input) =>
+                string.IsNullOrEmpty(input) ? input : char.ToUpper(input[0]) + input.Substring(1).ToLower();
+
+            list.Add(new CardImageDto
+            {
+                Id = card.Id,
+                Name = card.Name,
+                ImageUrl = url,
+                Colors = card.Colors?.Select(c => Enum.Parse<Color>(c, ignoreCase: true)).ToList(),
+                Rarity = rarityEnum,
+                Types = card.TypeLine?.Split(' ', StringSplitOptions.RemoveEmptyEntries)
+                                    .Select(t => Enum.TryParse<CardType>(t, true, out var ct) ? ct : (CardType?)null)
+                                    .Where(t => t.HasValue)
+                                    .Select(t => t.Value)
+                                    .ToList(),
+                Set = card.SetName
+            });
+        }
+
+        return list;//.Take(30).ToList();
+    }
+
+    // Query para Scryfall nombre + filtros
+    private string BuildScryfallQuery(string name, PaginationDto filter)
+    {
+        var parts = new List<string>();
+
+        // Nombre o texto libre
+        if (!string.IsNullOrWhiteSpace(name))
+        {
+            parts.Add(name);
+        }
+
+        // Colores
+        if (filter.Colors != null && filter.Colors.Count > 0)
+        {
+            var colorsCode = string.Concat(filter.Colors.Select(c =>
+            {
+                return c switch
+                {
+                    Color.W => "w",
+                    Color.U => "u",
+                    Color.B => "b",
+                    Color.R => "r",
+                    Color.G => "g",
+                    _ => ""
+                };
+            }));
+
+            if (!string.IsNullOrEmpty(colorsCode))
+            {
+                parts.Add($"color>={colorsCode}"); // o "colors=" según cómo quieras filtrar
+            }
+        }
+
+        // Rareza
+        if (filter.Rarity != null)
+        {
+            parts.Add($"rarity:{filter.Rarity.ToString().ToLower()}");
+        }
+
+        // Tipos
+        if (filter.Types != null && filter.Types.Count > 0)
+        {
+            var typesStr = "(" + string.Join(" OR ", filter.Types.Select(t => $"type:{t.ToString().ToLower()}")) + ")";
+            parts.Add(typesStr);
+
+        }
+
+        // Si no hay nada devolver ! para obtener todas las cartas
+        if (parts.Count == 0)
+            return "!";
+
+        return string.Join(" ", parts);
+    }
+}
+
+public class PagedResult<T>
+{
+    public List<T> Items { get; set; } = new();
 }

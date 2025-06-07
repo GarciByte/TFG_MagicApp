@@ -6,12 +6,12 @@ import { CardDetail } from 'src/app/models/card-detail';
 import { AuthService } from 'src/app/services/auth.service';
 import { CardService } from 'src/app/services/card.service';
 import { ModalService } from 'src/app/services/modal.service';
-import { IonContent, IonButton } from "@ionic/angular/standalone";
+import { IonContent, IonButton, IonIcon } from "@ionic/angular/standalone";
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-card-details',
-  imports: [IonButton, IonContent, CommonModule],
+  imports: [IonIcon, IonButton, IonContent, CommonModule],
   templateUrl: './card-details.component.html',
   styleUrls: ['./card-details.component.css'],
   standalone: true,

@@ -1,6 +1,7 @@
 <ion-content>
   <div class="header-container">
-    <h1 class="page-title">Crear mazo</h1>
+    <ion-icon name="arrow-back-outline" class="back-icon" (click)="navCtrl.back()"></ion-icon>
+    <h1 class="page-title">Detalles del mazo</h1>
   </div>
 
   <div class="content-container">
@@ -25,7 +26,7 @@
 
       <!-- Contador de cartas -->
       <div class="card-counter">
-        <p class="counter-text">Cartas en el mazo: {{ deckCards.length }}/150</p>
+        <p class="counter-text">Cartas en el mazo: {{ deckSize() }}/150</p>
       </div>
 
       <!-- Action Buttons -->
@@ -34,7 +35,34 @@
         <button class="action-button" (click)="cardDetails()">Ver cartas</button>
       </div>
 
-      <!-- Create Button -->
+      <!-- Victories -->
+      <div class="counter-box">
+        <label class="form-label">Victorias</label>
+        <div class="counter-controls">
+          <button class="counter-button" (click)="decrementVictories()">-</button>
+          <span class="counter-value">{{ deckCardsService.victories }}</span>
+          <button class="counter-button" (click)="incrementVictories()">+</button>
+        </div>
+      </div>
+
+      <!-- Defeats -->
+      <div class="counter-box">
+        <label class="form-label">Derrotas</label>
+        <div class="counter-controls">
+          <button class="counter-button" (click)="decrementDefeats()">-</button>
+          <span class="counter-value">{{ deckCardsService.defeats }}</span>
+          <button class="counter-button" (click)="incrementDefeats()">+</button>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Porcentaje de victoria</label>
+        <div class="counter-value victory-rate">{{ getVictoryRate() }}</div>
+      </div>
+
+
+
+      <!-- Save-Delete Buttons -->
       <button class="create-button" (click)="updateDeck()">Guardar</button>
       <button class="create-button" (click)="deleteDeck()">Eliminar</button>
     </div>

@@ -5,25 +5,21 @@ import { DeckRequest } from 'src/app/models/deck-request';
 import { DeckResponse } from 'src/app/models/deck-response';
 import { AuthService } from 'src/app/services/auth.service';
 import { DeckServiceService } from 'src/app/services/deck-service.service';
-import { IonContent } from "@ionic/angular/standalone";
+import { IonContent, IonIcon } from "@ionic/angular/standalone";
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { DeckCard } from 'src/app/models/deck-card';
 import { DeckCardsService } from 'src/app/services/deck-cards.service';
+import { CardDetail } from 'src/app/models/card-detail';
 
 @Component({
   selector: 'app-deck-view',
-  imports: [CommonModule, FormsModule, IonContent],
+  imports: [IonIcon, CommonModule, FormsModule, IonContent],
   templateUrl: './deck-view.component.html',
   styleUrls: ['./deck-view.component.css'],
   standalone: true,
 })
 export class DeckViewComponent implements OnInit {
-  deckId: number
-  deckName = ""
-  deckDescription = ""
-  size = 60
-  deckCards: DeckCard[] = []
+  deckId: number;
 
   deck: DeckResponse;
 
@@ -50,20 +46,15 @@ export class DeckViewComponent implements OnInit {
       this.deckCardsService.deckcards = this.deck.deckCards;
       this.deckCardsService.name = this.deck.name;
       this.deckCardsService.description = this.deck.description;
-
-      console.log("Deck cargado desde backend:", this.deck);
-    } else {
-      console.log("Deck cargado desde el servicio (memoria)");
+      this.deckCardsService.userId = this.deck.userId;
+      this.deckCardsService.deckId = this.deck.id;
+      this.deckCardsService.victories = this.deck.victories;
+      this.deckCardsService.defeats = this.deck.defeats;
     }
-
-    this.deckName = this.deckCardsService.name;
-    this.deckDescription = this.deckCardsService.description;
-    this.deckCards = this.deckCardsService.deckCards;
 
     const navigation = history.state;
     if (navigation?.selectCard) {
       this.deckCardsService.addCard(navigation.selectCard);
-      this.deckCards = this.deckCardsService.deckCards;
     }
   }
 
@@ -74,31 +65,63 @@ export class DeckViewComponent implements OnInit {
 
   cardDetails() {
     console.log("View deck cards")
-    // Navigation to the view cards page
+    this.navCtrl.navigateRoot("/deck-cards-views")
   }
 
   async updateDeck() {
-    // Logic for updating the deck
     const deckData: DeckRequest = {
       Name: this.deckCardsService.name,
       Description: this.deckCardsService.description,
-      UserId: this.deck.userId,
-      DeckCards: this.deckCardsService.deckCards
+      UserId: this.deckCardsService.userId,
+      DeckCards: this.deckCardsService.deckCards,
+      Victories: this.deckCardsService.victories,
+      Defeats: this.deckCardsService.defeats 
     }
 
-  console.log(deckData)
-
     // Save the deck
-    const response = await this.deckService.UpdateDeck(deckData, this.deck.id)
+    const response = await this.deckService.UpdateDeck(deckData, this.deckCardsService.deckId)
     this.deckCardsService.clear()
     this.navCtrl.navigateRoot("/decks")
 
   }
 
   async deleteDeck() {
-    // Logic for deleting the deck
     const response = await this.deckService.DeleteDeck(this.deckId)
     this.navCtrl.navigateRoot("/decks")
   }
+
+  deckSize(): number {
+    return this.deckCardsService.deckCards.length
+  }
+
+  incrementVictories() {
+    this.deckCardsService.victories++;
+  }
+
+  decrementVictories() {
+    this.deckCardsService.victories = Math.max(0, this.deckCardsService.victories - 1);
+  }
+
+  incrementDefeats() {
+    this.deckCardsService.defeats++;
+  }
+
+  decrementDefeats() {
+    this.deckCardsService.defeats = Math.max(0, this.deckCardsService.defeats - 1);
+  }
+
+  getVictoryRate(): string {
+  const victories = this.deckCardsService.victories || 0;
+  const defeats = this.deckCardsService.defeats || 0;
+  const totalGames = victories + defeats;
+
+  if (totalGames === 0) {
+    return '0%';
+  }
+
+  const rate = (victories / totalGames) * 100;
+  return rate.toFixed(1) + '%';
+}
+
 
 }

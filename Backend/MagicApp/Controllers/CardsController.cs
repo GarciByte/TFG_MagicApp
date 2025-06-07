@@ -1,4 +1,5 @@
-﻿using MagicApp.Services.Scryfall;
+﻿using MagicApp.Models.Dtos;
+using MagicApp.Services.Scryfall;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -17,10 +18,10 @@ public class CardsController : ControllerBase
     }
 
     // Busca cartas por nombre
-    [HttpGet("search")]
-    public async Task<IActionResult> GetImages([FromQuery] string name)
+    [HttpPost("search")]
+    public async Task<IActionResult> GetImages([FromBody] PaginationDto filter)
     {
-        var images = await _scryfall.SearchCardImagesAsync(name);
+        var images = await _scryfall.SearchCardImagesAsync(filter.Name, filter);
         return Ok(images);
     }
 
