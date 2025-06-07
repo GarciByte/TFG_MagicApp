@@ -14,7 +14,15 @@ namespace MagicApp.Models.Database
 
         public ReportRepository ReportRepository { get; init; }
 
+        public ForumThreadRepository ForumThreadRepository { get; init; }
+
+        public ForumCommentRepository ForumCommentRepository { get; init; }
+
+        public ThreadSubscriptionRepository ThreadSubscriptionRepository { get; init; }
+
         public DeckRepository DeckRepository { get; init; }
+
+        public ChatWithAiMessageRepository ChatWithAiMessageRepository { get; init; }
 
         public UnitOfWork(
             MagicAppContext context,
@@ -22,14 +30,22 @@ namespace MagicApp.Models.Database
             GlobalChatMessageRepository globalChatMessageRepository,
             ChatMessageRepository chatMessageRepository,
             ReportRepository reportRepository,
-            DeckRepository deckRepository)
+            ForumThreadRepository forumThreadRepository,
+            ForumCommentRepository forumCommentRepository,
+            ThreadSubscriptionRepository threadSubscriptionRepository,
+            DeckRepository deckRepository,
+            ChatWithAiMessageRepository chatWithAiMessageRepository)
         {
             _context = context;
             UserRepository = userRepository;
             GlobalChatMessageRepository = globalChatMessageRepository;
             ChatMessageRepository = chatMessageRepository;
             ReportRepository = reportRepository;
-            DeckRepository = deckRepository; 
+            ForumThreadRepository = forumThreadRepository;
+            ForumCommentRepository = forumCommentRepository;
+            ThreadSubscriptionRepository = threadSubscriptionRepository;
+            DeckRepository = deckRepository;
+            ChatWithAiMessageRepository = chatWithAiMessageRepository;
         }
 
         public async Task<bool> SaveAsync()

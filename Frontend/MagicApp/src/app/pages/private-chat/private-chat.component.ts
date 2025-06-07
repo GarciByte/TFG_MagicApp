@@ -82,6 +82,9 @@ export class PrivateChatComponent implements OnInit {
     // Obtener datos del otro usuario
     await this.getUser(userId);
 
+    // Marcar el chat activo
+    this.webSocketService.activePrivateChatUserId = this.otherUser.userId;
+
     // Obtener todos los mensajes
     await this.getAllMessages();
 
@@ -94,6 +97,8 @@ export class PrivateChatComponent implements OnInit {
   }
 
   ngOnDestroy(): void {
+    this.webSocketService.activePrivateChatUserId = null;
+    
     if (this.chatSubscription) {
       this.chatSubscription.unsubscribe();
     }
@@ -122,6 +127,21 @@ export class PrivateChatComponent implements OnInit {
 
       this.webSocketService.sendRxjs(message);
       this.chatInput = "";
+
+      const notification: ChatMessage = {
+        SenderId: this.user.userId,
+        SenderNickname: this.user.nickname,
+        ReceiverId: this.otherUser.userId,
+        ReceiverNickname: this.otherUser.nickname,
+        Content: ""
+      }
+
+      const messageNotification: WebSocketMessage = {
+        Type: MsgType.ChatNotification,
+        Content: notification
+      };
+
+      this.webSocketService.sendRxjs(messageNotification);
     }
   }
 

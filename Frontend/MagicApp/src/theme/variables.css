@@ -7,6 +7,10 @@
     --ion-background-color: #f0f0f0;
     --ion-text-color: #121212;
     --ion-card-background: #ffffff;
+
+    --ion-color-danger: #dc3545;
+    --ion-color-danger-rgb: 220,53,69;
+    --ion-color-success: #28a745;
 }
 
 :root.dark {

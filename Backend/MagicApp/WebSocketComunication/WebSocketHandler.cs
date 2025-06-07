@@ -11,9 +11,14 @@ public class WebSocketHandler : IDisposable
     private readonly WebSocket _webSocket;
     private readonly byte[] _buffer;
     private readonly ILogger<WebSocketNetwork> _logger;
+    private readonly CancellationTokenSource _cancellationTokenSource = new();
+
+    public CancellationToken CancellationToken => _cancellationTokenSource.Token;
 
     public UserDto User { get; private set; }
+
     public int Id { get; init; }
+
     public bool IsOpen => _webSocket.State == WebSocketState.Open;
 
     // Eventos para notificar cuando se recibe un mensaje o se desconecta un usuario
@@ -42,7 +47,28 @@ public class WebSocketHandler : IDisposable
                 // Si hay mensaje y hay suscriptores al evento MessageReceived, gestionamos el evento
                 if (message != null && MessageReceived != null)
                 {
-                    await MessageReceived.Invoke(this, message);
+                    if (message.Type == MsgType.ChatWithAI)
+                    {
+                        _ = Task.Run(async () =>
+                        {
+                            try
+                            {
+                                await MessageReceived.Invoke(this, message);
+                            }
+                            catch (OperationCanceledException)
+                            {
+                                _logger.LogInformation("Operación cancelada para usuario {User.Nickname}", User.Nickname);
+                            }
+                            catch (Exception ex)
+                            {
+                                _logger.LogError("Error inesperado: {ex.Message}", ex.Message);
+                            }
+                        });
+                    }
+                    else
+                    {
+                        await MessageReceived.Invoke(this, message);
+                    }
                 }
             }
         }
@@ -57,6 +83,10 @@ public class WebSocketHandler : IDisposable
             {
                 await Disconnected.Invoke(this);
             }
+
+            // Cancelamos cualquier operación en curso para este handler
+            _cancellationTokenSource.Cancel();
+            _cancellationTokenSource.Dispose();
         }
     }
 
@@ -79,7 +109,11 @@ public class WebSocketHandler : IDisposable
             // Si el mensaje es de tipo Close, cerramos la conexión
             else if (receiveResult.CloseStatus.HasValue)
             {
+                _logger.LogInformation("El usuario {User.Nickname} ha cerrado la conexión", User.Nickname);
+
+                _cancellationTokenSource.Cancel();
                 await _webSocket.CloseAsync(receiveResult.CloseStatus.Value, receiveResult.CloseStatusDescription, CancellationToken.None);
+                return null;
             }
         }
         while (!receiveResult.EndOfMessage);
@@ -97,7 +131,7 @@ public class WebSocketHandler : IDisposable
             }
 
             return JsonSerializer.Deserialize<WebSocketMessage>(jsonMessage);
-        
+
         }
         catch (JsonException ex)
         {

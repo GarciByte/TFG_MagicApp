@@ -4,9 +4,11 @@ export enum ReportStatus {
 }
 
 export interface Report {
-    Id: number;
-    ReporterId: number;
-    ReportedUserId: number;
-    Reason: string;
-    Status: ReportStatus;
+    id: number;
+    reporterId: number;
+    reporterNickname: string;
+    reportedUserId: number;
+    reportedUserNickname: string;
+    reason: string;
+    status: ReportStatus;
 }

@@ -6,6 +6,7 @@ import { environment } from 'src/environments/environment';
 import { ModalService } from './modal.service';
 import { GlobalChatMessage } from '../models/global-chat-message';
 import { ChatMessage } from '../models/chat-message';
+import { ChatWithAiResponse } from '../models/chat-with-ai-response';
 
 @Injectable({
   providedIn: 'root'
@@ -15,6 +16,7 @@ export class WebsocketService {
   constructor(private modalService: ModalService) { }
 
   rxjsSocket: WebSocketSubject<WebSocketMessage> | null = null;
+  public activePrivateChatUserId: number | null = null;
 
   // Eventos de conexión
   public connected = new Subject<void>();
@@ -23,6 +25,9 @@ export class WebsocketService {
 
   // Notificar mensajes del chat global
   public globalChatSubject = new Subject<GlobalChatMessage>();
+
+  // Notificar mensajes del chat de la IA
+  public chatWithAiSubject = new Subject<ChatWithAiResponse>();
 
   // Notificar mensajes del chat privado
   public chatSubject = new Subject<ChatMessage>();
@@ -49,10 +54,50 @@ export class WebsocketService {
         this.chatSubject.next(message.Content);
         break;
 
+      case MsgType.UserBanned:
+        this.handleUserBan();
+        break;
+
+      case MsgType.ForumNotification:
+        this.handleForumNotification(message);
+        break;
+
+      case MsgType.ChatNotification:
+        this.handleChatNotification(message.Content);
+        break;
+
+      case MsgType.ChatWithAI:
+        this.chatWithAiSubject.next(message.Content);
+        break;
+
       default:
         console.warn("Mensaje no reconocido:", message.Type);
         break;
     }
+  }
+
+  // Prohibición de un usuario
+  async handleUserBan(): Promise<void> {
+    this.modalService.showAlert(
+      'error',
+      'Tu cuenta ha sido suspendida',
+      [{ text: 'Aceptar' }]
+    );
+    
+    this.error.next();
+  }
+
+  // Nuevo mensaje de chat
+  async handleChatNotification(message: ChatMessage): Promise<void> {
+    if (this.activePrivateChatUserId !== null && this.activePrivateChatUserId === message.SenderId) {
+      return;
+    }
+    this.modalService.showToast(`Has recibido un nuevo mensaje de ${message.SenderNickname}`, "info");
+  }
+
+  // Nuevo mensaje del hilo al que está suscrito el usuario
+  async handleForumNotification(message: WebSocketMessage): Promise<void> {
+    this.modalService.showToast(`Hay un nuevo mensaje en el hilo "${message.Content}"`, "info");
   }
 
   private onError(error: any) {

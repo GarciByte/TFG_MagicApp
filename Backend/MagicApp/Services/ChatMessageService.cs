@@ -1,6 +1,5 @@
 ﻿using MagicApp.Models.Database;
 using MagicApp.Models.Database.Entities;
-using MagicApp.Models.Database.Repositories;
 using MagicApp.Models.Dtos;
 using MagicApp.Models.Mappers;
 
@@ -30,8 +29,8 @@ public class ChatMessageService
     {
         var allMessages = await _unitOfWork.ChatMessageRepository.GetConversationAsync(chatMessageDto.SenderId, chatMessageDto.ReceiverId);
 
-        // Límite de 50 mensajes, mantiene solo los mensajes más recientes
-        if (allMessages.Count >= 50)
+        // Límite de 25 mensajes, mantiene solo los mensajes más recientes
+        if (allMessages.Count >= 25)
         {
             var oldest = allMessages
                 .OrderBy(m => m.Timestamp)

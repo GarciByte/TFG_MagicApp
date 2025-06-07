@@ -20,7 +20,8 @@ public class ReportService
     public async Task<List<ReportDto>> GetAllReportsAsync()
     {
         var reports = await _unitOfWork.ReportRepository.GetAllReportsAsync();
-        return _reportMapper.ReportsToDto(reports).ToList();
+        var reportsDto = await _reportMapper.ReportsToDtoAsync(reports);
+        return reportsDto.ToList();
     }
 
     // Obtener reporte por id
@@ -33,21 +34,23 @@ public class ReportService
             return null;
         }
 
-        return _reportMapper.ReportToDto(report);
+        return await _reportMapper.ReportToDtoAsync(report);
     }
 
     // Obtiene todos los reportes realizados por un usuario
     public async Task<List<ReportDto>> GetReportByReporterAsync(int reporterId)
     {
         var reports = await _unitOfWork.ReportRepository.GetByReporterIdAsync(reporterId);
-        return _reportMapper.ReportsToDto(reports).ToList();
+        var reportsDto = await _reportMapper.ReportsToDtoAsync(reports);
+        return reportsDto.ToList();
     }
 
     // Obtiene todos los reportes donde un usuario ha sido reportado
     public async Task<List<ReportDto>> GetByReportedUserAsync(int reportedUserId)
     {
         var reports = await _unitOfWork.ReportRepository.GetByReportedUserIdAsync(reportedUserId);
-        return _reportMapper.ReportsToDto(reports).ToList();
+        var reportsDto = await _reportMapper.ReportsToDtoAsync(reports);
+        return reportsDto.ToList();
     }
 
     // Crear un nuevo reporte
@@ -76,7 +79,7 @@ public class ReportService
         await _unitOfWork.ReportRepository.InsertReportAsync(report);
         await _unitOfWork.SaveAsync();
 
-        return _reportMapper.ReportToDto(report);
+        return await _reportMapper.ReportToDtoAsync(report);
     }
 
     // Actualiza el estado de un reporte
@@ -94,7 +97,7 @@ public class ReportService
         await _unitOfWork.ReportRepository.Update(report);
         await _unitOfWork.SaveAsync();
 
-        return _reportMapper.ReportToDto(report);
+        return await _reportMapper.ReportToDtoAsync(report);
     }
 
     // Eliminar un reporte

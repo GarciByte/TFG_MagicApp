@@ -27,6 +27,11 @@ export const routes: Routes = [
     pathMatch: "full",
   },
   {
+    path: "magic-chat", // Ruta del chat con la IA
+    loadComponent: () => import("./pages/chat-with-ai/chat-with-ai.component").then((m) => m.ChatWithAiComponent),
+    pathMatch: "full",
+  },
+  {
     path: "private-chat-list", // Ruta de la lista de chats privados
     loadComponent: () => import("./pages/private-chats-list/private-chats-list.component").then((m) => m.PrivateChatsListComponent),
     pathMatch: "full",
@@ -52,6 +57,11 @@ export const routes: Routes = [
     pathMatch: "full",
   },
   {
+    path: "admin-profile", // Ruta del perfil admin
+    loadComponent: () => import("./pages/admin-profile/admin-profile.component").then((m) => m.AdminProfileComponent),
+    pathMatch: "full",
+  },
+  {
     path: "card-search", // Ruta del buscador de cartas
     loadComponent: () => import("./pages/card-search/card-search.component").then((m) => m.CardSearchComponent),
     pathMatch: "full",
@@ -59,6 +69,21 @@ export const routes: Routes = [
   {
     path: 'card-details', // Ruta de detalles de una carta
     loadComponent: () => import('./pages/card-details/card-details.component').then(m => m.CardDetailsComponent),
+    pathMatch: 'full'
+  },
+  {
+    path: 'forum', // Ruta del foro
+    loadComponent: () => import('./pages/forum/forum.component').then(m => m.ForumComponent),
+    pathMatch: 'full'
+  },
+  {
+    path: 'thread-detail/:id', // Ruta dentro de un hilo del foro
+    loadComponent: () => import('./pages/thread-detail/thread-detail.component').then(m => m.ThreadDetailComponent),
+    pathMatch: 'full'
+  },
+  {
+    path: 'create-thread', // Ruta para crear un hilo del foro
+    loadComponent: () => import('./pages/create-thread/create-thread.component').then(m => m.CreateThreadComponent),
     pathMatch: 'full'
   },
   {
