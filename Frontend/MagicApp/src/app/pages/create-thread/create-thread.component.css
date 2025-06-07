@@ -3,6 +3,32 @@ ion-content {
     padding: 32px 16px;
 }
 
+.header-container {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 16px;
+    background-color: var(--ion-background-color);
+}
+
+.back-icon {
+    font-size: 24px;
+    color: var(--ion-color-primary);
+    cursor: pointer;
+    transition: transform 0.2s ease;
+}
+
+.back-icon:hover {
+    transform: scale(1.1);
+}
+
+.page-title {
+    font-size: 1.5rem;
+    margin: 0;
+    color: var(--ion-text-color);
+    font-weight: bold;
+}
+
 .back-button-container {
     display: flex;
     justify-content: center;
@@ -23,16 +49,6 @@ ion-content {
     padding: 2rem 1.5rem;
     border-radius: 12px;
     box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
-}
-
-.page-title {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 1.6rem;
-    font-weight: 600;
-    color: var(--ion-color-primary);
-    margin-bottom: 1.8rem;
 }
 
 .page-icon {
