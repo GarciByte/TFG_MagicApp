@@ -4,6 +4,7 @@ import { IonApp, IonRouterOutlet, Platform } from "@ionic/angular/standalone";
 import { WebsocketService } from './services/websocket.service';
 import { addIcons } from 'ionicons';
 import * as icons from 'ionicons/icons';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-root',
@@ -17,7 +18,30 @@ export class AppComponent implements OnInit, OnDestroy {
   constructor(
     private platform: Platform,
     private websocketService: WebsocketService
-  ) { }
+  ) {
+    addIcons({
+      'chatbubbles-outline': icons.chatbubblesOutline,
+      'albums-outline': icons.albumsOutline,
+      'flash-outline': icons.flashOutline,
+      'notifications-outline': icons.notificationsOutline,
+      'notifications': icons.notifications,
+      'chevron-up-circle': icons.chevronUpCircle,
+      'document': icons.document,
+      'color-palette': icons.colorPalette,
+      'globe': icons.globe,
+      'add-outline': icons.addOutline,
+      'send': icons.send,
+      'trash-outline': icons.trashOutline,
+      'chevron-back': icons.chevronBack,
+      'chevron-forward': icons.chevronForward,
+      'layers-outline': icons.layersOutline,
+      'refresh-outline': icons.refreshOutline,
+      'lock-closed-outline': icons.lockClosedOutline,
+      'lock-open-outline': icons.lockOpenOutline,
+      'log-in-outline': icons.logInOutline,
+      'sparkles': icons.sparkles
+    });
+  }
 
   async ngOnInit() {
     await this.platform.ready();
@@ -28,19 +52,7 @@ export class AppComponent implements OnInit, OnDestroy {
       await StatusBar.setStyle({ style: Style.Dark });
     }
 
-    addIcons({
-      'chatbubbles-outline': icons.chatbubblesOutline,
-      'albums-outline': icons.albumsOutline,
-      'flash-outline': icons.flashOutline,
-      'notifications-outline': icons.notificationsOutline,
-      'chevron-up-circle': icons.chevronUpCircle,
-      'document': icons.document,
-      'color-palette': icons.colorPalette,
-      'globe': icons.globe,
-      'add-outline': icons.addOutline,
-      'send': icons.send,
-      'trash-outline': icons.trashOutline
-    });
+    console.log('ENVIRONMENT:', environment);
   }
 
   ngOnDestroy(): void {

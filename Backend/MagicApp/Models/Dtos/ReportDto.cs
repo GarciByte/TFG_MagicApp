@@ -9,7 +9,11 @@ public class ReportDto
 
     public int ReporterId { get; set; }
 
+    public string ReporterNickname { get; set; }
+
     public int ReportedUserId { get; set; }
+
+    public string ReportedUserNickname { get; set; }
 
     public string Reason { get; set; } = null!;
 

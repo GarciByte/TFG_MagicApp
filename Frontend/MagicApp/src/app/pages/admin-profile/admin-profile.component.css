@@ -1,0 +1,292 @@
+ion-content {
+    --background: var(--ion-background-color);
+    padding: 32px 16px;
+}
+
+.button-container {
+    display: flex;
+    justify-content: center;
+    margin: 16px 0 32px;
+}
+
+.admin-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 0 1.5rem;
+}
+
+.card-users,
+.card-reports {
+    --background: var(--ion-card-background);
+    width: 100%;
+    max-width: 950px;
+    margin: 0 auto 2.5rem;
+    padding: 2rem 1.5rem;
+    border-radius: 12px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
+}
+
+.card-users ion-card-subtitle,
+.card-reports ion-card-subtitle {
+    text-align: center;
+    font-size: 1.6rem;
+    font-weight: 600;
+    color: var(--ion-color-primary);
+    margin-bottom: 1.5rem;
+}
+
+.filter-pagination-row {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+}
+
+.filter-pagination-row ion-searchbar {
+    flex: 1;
+    margin: 0;
+}
+
+.pagination-select-container {
+    min-width: 80px;
+}
+
+.custom-select {
+    --placeholder-color: var(--ion-color-medium);
+    --color: var(--ion-color-dark);
+    cursor: pointer;
+}
+
+.custom-select::part(container),
+.custom-select::part(icon) {
+    cursor: pointer;
+}
+
+.table-container {
+    overflow-x: auto;
+    scrollbar-color: var(--ion-color-primary) transparent;
+}
+
+.user-table,
+.report-table {
+    margin: 0 auto 25px;
+    border-collapse: collapse;
+    width: auto;
+    max-width: 100%;
+    font-size: 1rem;
+    table-layout: fixed;
+}
+
+.user-table th,
+.user-table td,
+.report-table th,
+.report-table td {
+    border: 2px solid #817f7f;
+    padding: 1rem;
+    text-align: center;
+    white-space: nowrap;
+    user-select: text;
+}
+
+.user-table thead th,
+.report-table thead th {
+    background-color: #f0f0f0;
+    font-weight: 600;
+}
+
+.report-table th.reporter,
+.report-table td.reporter,
+.report-table th.reported,
+.report-table td.reported {
+    width: 100px;
+    white-space: normal;
+}
+
+.report-table th.reason,
+.report-table td.reason {
+    width: 350px;
+    min-width: 350px;
+    max-width: 350px;
+    white-space: normal;
+}
+
+.report-table .reason-content {
+    max-height: 95px;
+    overflow-y: auto;
+    padding-right: 0.5rem;
+    box-sizing: border-box;
+}
+
+.reason-content::-webkit-scrollbar {
+    width: 6px;
+}
+
+.reason-content::-webkit-scrollbar-thumb {
+    background: var(--ion-color-primary);
+    border-radius: 3px;
+}
+
+.user-table td.email {
+    max-width: 200px;
+    min-width: 200px;
+    white-space: normal;
+    word-break: break-word;
+}
+
+.actions-button-container {
+    display: flex;
+    flex-direction: column;
+    gap: 0.8rem;
+}
+
+.user-table .actions ion-button,
+.report-table .actions ion-button {
+    width: 100%;
+    --border-radius: 8px;
+    font-weight: 600;
+    user-select: none;
+}
+
+.report-table .actions ion-button:first-child {
+    --background: #007bff;
+}
+
+.report-table .actions ion-button:first-child:hover {
+    --background: #0069d9;
+}
+
+.role-button {
+    --background: #28a745;
+}
+
+.role-button:hover {
+    --background: #218838;
+}
+
+.ban-button {
+    --background: var(--ion-color-danger);
+}
+
+.ban-button:hover {
+    --background: #c82333;
+}
+
+ion-button[disabled] {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.report-table td.status.InReview {
+    background-color: #fff3cd;
+    color: #856404;
+}
+
+.report-table td.status.Completed {
+    background-color: #d4edda;
+    color: #155724;
+}
+
+.pagination-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+    margin-top: 1.5rem;
+}
+
+.pagination-btn {
+    --background: transparent;
+    --color: var(--ion-color-primary);
+    --border-radius: 50%;
+    --padding-start: 8px;
+    --padding-end: 8px;
+    width: 46px;
+    height: 46;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    font-size: 2rem;
+}
+
+.pagination-btn:hover:not([disabled]) {
+    --background: rgba(var(--ion-color-primary-rgb), 0.1);
+    transform: scale(1.1);
+}
+
+.pagination-btn[disabled] {
+    --color: var(--ion-color-medium);
+    cursor: not-allowed;
+    opacity: 0.4;
+}
+
+.pagination-btn ion-icon {
+    font-size: 2rem;
+}
+
+.page-info {
+    font-size: 0.9rem;
+    color: var(--ion-color-medium-shade);
+    font-weight: 500;
+    min-width: 120px;
+    text-align: center;
+}
+
+@media (max-width: 768px) {
+    .filter-pagination-row {
+        align-items: stretch;
+        gap: 0.5rem;
+    }
+
+    .pagination-select-container {
+        align-self: flex-end;
+        min-width: 60px;
+    }
+
+    .pagination-container {
+        gap: 0.8rem;
+    }
+
+    .page-info {
+        font-size: 0.8rem;
+        min-width: 100px;
+    }
+}
+
+@media (max-width: 480px) {
+    .user-table th,
+    .user-table td,
+    .report-table th,
+    .report-table td {
+        padding: 0.5rem;
+        font-size: 0.875rem;
+    }
+
+    .report-table th.reporter,
+    .report-table td.reporter,
+    .report-table th.reported,
+    .report-table td.reported {
+        width: 80px;
+    }
+
+    .report-table th.reason,
+    .report-table td.reason {
+        width: 200px;
+        min-width: 200px;
+    }
+
+    .pagination-btn {
+        width: 32px;
+        height: 32px;
+        --padding-start: 6px;
+        --padding-end: 6px;
+    }
+
+    .pagination-btn ion-icon {
+        font-size: 1.5rem;
+    }
+
+    .page-info {
+        font-size: 0.75rem;
+        min-width: 90px;
+    }
+}
