@@ -9,13 +9,13 @@ import { AuthService } from 'src/app/services/auth.service';
 import { ModalService } from 'src/app/services/modal.service';
 import { UserService } from 'src/app/services/user.service';
 import { environment } from 'src/environments/environment';
-import { IonContent, IonButton, IonCard, IonAvatar } from "@ionic/angular/standalone";
+import { IonContent, IonButton, IonCard, IonAvatar, IonIcon } from "@ionic/angular/standalone";
 import { ReportService } from 'src/app/services/report.service';
 import { NewReport } from 'src/app/models/new-report';
 
 @Component({
   selector: 'app-other-users-profile',
-  imports: [IonAvatar, IonCard, IonButton, IonContent, CommonModule, FormsModule],
+  imports: [IonIcon, IonAvatar, IonCard, IonButton, IonContent, CommonModule, FormsModule],
   templateUrl: './other-users-profile.component.html',
   styleUrls: ['./other-users-profile.component.css'],
   standalone: true,

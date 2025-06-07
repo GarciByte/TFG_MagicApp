@@ -1,10 +1,9 @@
 <ion-content class="chat-page" #chatContent (click)="onLinkClick($event)">
 
   <!-- Botón para volver al menú principal -->
-  <div class="button-container">
-    <ion-button size="small" shape="round" (click)="navCtrl.navigateRoot(['/menu'])">
-      Volver al menú principal
-    </ion-button>
+  <div class="header-container">
+    <ion-icon name="arrow-back-outline" class="back-icon" (click)="navCtrl.navigateRoot(['/menu'])"></ion-icon>
+    <h1 class="page-title">Magic Chat</h1>
   </div>
 
   <div class="card-container">

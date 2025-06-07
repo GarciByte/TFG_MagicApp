@@ -5,13 +5,13 @@ import { User } from 'src/app/models/user';
 import { AuthService } from 'src/app/services/auth.service';
 import { ModalService } from 'src/app/services/modal.service';
 import { UserService } from 'src/app/services/user.service';
-import { IonContent, IonButton, IonSearchbar, IonCard, IonAvatar, IonCardTitle } from "@ionic/angular/standalone";
+import { IonContent, IonButton, IonSearchbar, IonCard, IonAvatar, IonCardTitle, IonIcon } from "@ionic/angular/standalone";
 import { FormsModule } from '@angular/forms';
 import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-user-search',
-  imports: [IonCardTitle, IonAvatar, IonCard, IonSearchbar, IonButton, IonContent, CommonModule, FormsModule],
+  imports: [IonIcon, IonCardTitle, IonAvatar, IonCard, IonSearchbar, IonButton, IonContent, CommonModule, FormsModule],
   templateUrl: './user-search.component.html',
   styleUrls: ['./user-search.component.css'],
   standalone: true,
