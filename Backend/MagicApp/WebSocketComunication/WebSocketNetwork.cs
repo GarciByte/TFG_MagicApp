@@ -1,7 +1,9 @@
 ﻿using MagicApp.Models.Database.Entities;
 using MagicApp.Models.Dtos;
 using MagicApp.Models.Dtos.Forum;
+using MagicApp.Models.Dtos.IA;
 using MagicApp.Services;
+using MagicApp.Services.IA;
 using System.Collections.Concurrent;
 using System.Net.WebSockets;
 using System.Text.Json;
@@ -14,6 +16,7 @@ public class WebSocketNetwork : IWebSocketMessageSender
     private readonly IServiceProvider _serviceProvider;
     private readonly ConcurrentDictionary<int, List<WebSocketHandler>> _userConnections = new ConcurrentDictionary<int, List<WebSocketHandler>>();
     private readonly SemaphoreSlim _semaphore = new SemaphoreSlim(1, 1);
+    private readonly SemaphoreSlim _aiSemaphore = new SemaphoreSlim(5);
 
     public WebSocketNetwork(ILogger<WebSocketNetwork> logger, IServiceProvider serviceProvider)
     {
@@ -167,6 +170,11 @@ public class WebSocketNetwork : IWebSocketMessageSender
                 // Notificación de chat
                 case MsgType.ChatNotification:
                     await HandleChatNotificationAsync(message);
+                    break;
+
+                // Mensaje del chat con la IA
+                case MsgType.ChatWithAI:
+                    await HandleChatWithAiAsync(handler, message);
                     break;
 
                 default:
@@ -360,6 +368,74 @@ public class WebSocketNetwork : IWebSocketMessageSender
         {
             _logger.LogError("Error al deserializar userId: {ex.Message}", ex.Message);
         }
+    }
+
+    // Manejar mensajes del chat con la IA
+    private async Task HandleChatWithAiAsync(WebSocketHandler handler, WebSocketMessage message)
+    {
+        await _aiSemaphore.WaitAsync();
+        try
+        {
+            string jsonContent = message.Content.ToString();
+            ChatWithAiRequestDto requestDto = JsonSerializer.Deserialize<ChatWithAiRequestDto>(jsonContent);
+
+            if (requestDto != null)
+            {
+                _logger.LogInformation("El usuario {handler.User.Nickname} le ha escrito un mensaje a la IA: " +
+                    "{requestDto.Prompt}", handler.User.Nickname, requestDto.Prompt);
+
+                string iaResponse = await ProcessUserPromptAsync(requestDto.UserId, requestDto.Prompt, handler.CancellationToken);
+
+                _logger.LogInformation("La IA le ha respondido a {handler.User.Nickname} con: " +
+                    "{@iaResponse}", handler.User.Nickname, iaResponse);
+
+                var responseDto = new ChatWithAiResponseDto
+                {
+                    UserId = requestDto.UserId,
+                    Response = iaResponse
+                };
+
+                var newMessage = new WebSocketMessage
+                {
+                    Type = MsgType.ChatWithAI,
+                    Content = responseDto
+                };
+
+                await SendToUserAsync(handler.User.UserId, newMessage);
+            }
+        }
+        catch (OperationCanceledException)
+        {
+            _logger.LogInformation("Petición a IA cancelada porque el usuario se desconectó.");
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError("Error en el chat con la IA: {ex.Message}", ex.Message);
+
+            var errorDto = new ChatWithAiResponseDto
+            {
+                UserId = handler.User.UserId,
+                Response = "Ha ocurrido un error al procesar tu solicitud."
+            };
+
+            await SendToUserAsync(handler.User.UserId, new WebSocketMessage
+            {
+                Type = MsgType.ChatWithAI,
+                Content = errorDto
+            });
+        }
+        finally
+        {
+            _aiSemaphore.Release();
+        }
+    }
+
+    // Obtiene el mensaje de respuesta de la IA
+    private async Task<string> ProcessUserPromptAsync(int userId, string prompt, CancellationToken cancellationToken)
+    {
+        using var scope = _serviceProvider.CreateScope();
+        var chatService = scope.ServiceProvider.GetRequiredService<ChatWithAiService>();
+        return await chatService.ProcessPromptAsync(userId, prompt, cancellationToken);
     }
 
 }

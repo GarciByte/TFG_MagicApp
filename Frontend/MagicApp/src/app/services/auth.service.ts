@@ -217,7 +217,6 @@ export class AuthService {
       return false;
 
     } catch (error) {
-      console.warn("No se han podido refrescar los tokens");
       return false;
     }
   }

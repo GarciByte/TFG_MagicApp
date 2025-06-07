@@ -9,7 +9,8 @@ public enum MsgType
     PrivateChat,            // Mensaje del chat privado
     UserBanned,             // Usuario baneado
     ForumNotification,      // Notificación del foro
-    ChatNotification        // Notificación de chat
+    ChatNotification,       // Notificación de chat
+    ChatWithAI,             // Mensaje del chat con la IA
 }
 
 public class WebSocketMessage

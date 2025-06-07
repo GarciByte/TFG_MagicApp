@@ -27,6 +27,11 @@ export const routes: Routes = [
     pathMatch: "full",
   },
   {
+    path: "magic-chat", // Ruta del chat con la IA
+    loadComponent: () => import("./pages/chat-with-ai/chat-with-ai.component").then((m) => m.ChatWithAiComponent),
+    pathMatch: "full",
+  },
+  {
     path: "private-chat-list", // Ruta de la lista de chats privados
     loadComponent: () => import("./pages/private-chats-list/private-chats-list.component").then((m) => m.PrivateChatsListComponent),
     pathMatch: "full",

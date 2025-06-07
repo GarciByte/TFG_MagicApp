@@ -29,8 +29,8 @@ public class GlobalChatMessageService
     {
         var allMessages = await _unitOfWork.GlobalChatMessageRepository.GetAllGlobalMessagesAsync();
 
-        // Límite de 50 mensajes, mantiene solo los mensajes más recientes
-        if (allMessages.Count >= 50)
+        // Límite de 25 mensajes, mantiene solo los mensajes más recientes
+        if (allMessages.Count >= 25)
         {
             var oldest = allMessages
                 .OrderBy(m => m.Timestamp)

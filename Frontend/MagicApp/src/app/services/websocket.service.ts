@@ -6,6 +6,7 @@ import { environment } from 'src/environments/environment';
 import { ModalService } from './modal.service';
 import { GlobalChatMessage } from '../models/global-chat-message';
 import { ChatMessage } from '../models/chat-message';
+import { ChatWithAiResponse } from '../models/chat-with-ai-response';
 
 @Injectable({
   providedIn: 'root'
@@ -24,6 +25,9 @@ export class WebsocketService {
 
   // Notificar mensajes del chat global
   public globalChatSubject = new Subject<GlobalChatMessage>();
+
+  // Notificar mensajes del chat de la IA
+  public chatWithAiSubject = new Subject<ChatWithAiResponse>();
 
   // Notificar mensajes del chat privado
   public chatSubject = new Subject<ChatMessage>();
@@ -60,6 +64,10 @@ export class WebsocketService {
 
       case MsgType.ChatNotification:
         this.handleChatNotification(message.Content);
+        break;
+
+      case MsgType.ChatWithAI:
+        this.chatWithAiSubject.next(message.Content);
         break;
 
       default:

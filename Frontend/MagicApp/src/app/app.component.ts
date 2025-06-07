@@ -18,17 +18,7 @@ export class AppComponent implements OnInit, OnDestroy {
   constructor(
     private platform: Platform,
     private websocketService: WebsocketService
-  ) { }
-
-  async ngOnInit() {
-    await this.platform.ready();
-
-    if (this.platform.is('android')) {
-      await StatusBar.setOverlaysWebView({ overlay: false });
-      await StatusBar.setBackgroundColor({ color: '#3f51b5' });
-      await StatusBar.setStyle({ style: Style.Dark });
-    }
-
+  ) {
     addIcons({
       'chatbubbles-outline': icons.chatbubblesOutline,
       'albums-outline': icons.albumsOutline,
@@ -48,8 +38,19 @@ export class AppComponent implements OnInit, OnDestroy {
       'refresh-outline': icons.refreshOutline,
       'lock-closed-outline': icons.lockClosedOutline,
       'lock-open-outline': icons.lockOpenOutline,
-      'log-in-outline': icons.logInOutline
+      'log-in-outline': icons.logInOutline,
+      'sparkles': icons.sparkles
     });
+  }
+
+  async ngOnInit() {
+    await this.platform.ready();
+
+    if (this.platform.is('android')) {
+      await StatusBar.setOverlaysWebView({ overlay: false });
+      await StatusBar.setBackgroundColor({ color: '#3f51b5' });
+      await StatusBar.setStyle({ style: Style.Dark });
+    }
 
     console.log('ENVIRONMENT:', environment);
   }
