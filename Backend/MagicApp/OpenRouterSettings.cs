@@ -11,4 +11,6 @@ public class OpenRouterSettings
     public string Model { get; init; } = null!;
 
     public string SystemPrompt { get; init; } = null!;
+
+    public string SystemPromptCardDetail { get; init; } = null!;
 }

@@ -4,8 +4,8 @@
 
     <!-- Botón para volver al foro -->
   <div class="header-container">
-    <ion-icon name="arrow-back-outline" class="back-icon" (click)="navCtrl.back()"></ion-icon>
-    <h1 class="page-title">{{ threadDetail.title }}</h1>
+    <ion-icon name="arrow-back-outline" class="back-icon" (click)="navCtrl.navigateRoot(['/forum'])"></ion-icon>
+    <h1 class="page-title">{{ threadDetail?.title }}</h1>
   </div>
 
     <!-- Botón para Refrescar Hilo -->

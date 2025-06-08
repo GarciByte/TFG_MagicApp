@@ -1,6 +1,7 @@
 ﻿using MagicApp.Models.Dtos;
 using MagicApp.Models.Enums;
 using System.Net;
+using System.Text;
 using System.Text.Json;
 using System.Text.RegularExpressions;
 
@@ -87,7 +88,7 @@ public class ScryfallService
                 ManaSymbolUrls = BuildManaSymbolUrls(src.ManaCost),
                 TypeLine = src.TypeLine,
                 OracleText = src.OracleText,
-                OracleTextHtml = BuildOracleTextHtml(src.OracleText),
+                OracleTextHtml = BuildOracleTextHtml(src),
                 Power = src.Power,
                 Toughness = src.Toughness,
                 Colors = src.Colors,
@@ -131,12 +132,40 @@ public class ScryfallService
         return urls;
     }
 
-    private static string BuildOracleTextHtml(string oracleText)
+    private static string BuildOracleTextHtml(CardDetailResponse src)
     {
-        if (string.IsNullOrEmpty(oracleText))
-            return string.Empty;
+        var sb = new StringBuilder();
 
-        return Regex.Replace(WebUtility.HtmlEncode(oracleText), @"\{([^}]+)\}",
+        if (src.CardFaces != null && src.CardFaces.Any())
+        {
+            foreach (var face in src.CardFaces)
+            {
+                sb.Append($"<h3>{WebUtility.HtmlEncode(face.Name)}</h3>");
+
+                if (!string.IsNullOrEmpty(face.OracleText))
+                    sb.Append(TransformSymbolsToHtml(WebUtility.HtmlEncode(face.OracleText)));
+
+                if (!string.IsNullOrEmpty(face.FlavorText))
+                    sb.Append($"<br/><em>{WebUtility.HtmlEncode(face.FlavorText)}</em>");
+
+                sb.Append("<hr/>");
+            }
+        }
+        else
+        {
+            if (!string.IsNullOrEmpty(src.OracleText))
+                sb.Append(TransformSymbolsToHtml(WebUtility.HtmlEncode(src.OracleText)));
+
+            if (!string.IsNullOrEmpty(src.FlavorText))
+                sb.Append($"<br/><em>{WebUtility.HtmlEncode(src.FlavorText)}</em>");
+        }
+
+        return sb.ToString();
+    }
+
+    private static string TransformSymbolsToHtml(string text)
+    {
+        return Regex.Replace(text, @"\{([^}]+)\}",
             match =>
             {
                 var symbol = match.Groups[1].Value;

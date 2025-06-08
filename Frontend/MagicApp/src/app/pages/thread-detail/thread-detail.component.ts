@@ -29,7 +29,7 @@ import { WebsocketService } from 'src/app/services/websocket.service';
 export class ThreadDetailComponent implements OnInit {
 
   threadId!: number;
-  threadDetail!: ForumThreadDetail;
+  threadDetail: ForumThreadDetail;
   isAdmin = false;
   apiImg = environment.apiImg;
   commentForm: FormGroup;
@@ -61,6 +61,7 @@ export class ThreadDetailComponent implements OnInit {
     }
     await this.checkAdmin();
     await this.loadThreadDetail();
+    console.log(this.threadDetail);
   }
 
   // Comprueba si el usuario actual tiene rol Admin

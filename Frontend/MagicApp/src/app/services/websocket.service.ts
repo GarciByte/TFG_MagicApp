@@ -29,6 +29,9 @@ export class WebsocketService {
   // Notificar mensajes del chat de la IA
   public chatWithAiSubject = new Subject<ChatWithAiResponse>();
 
+  // Notificar comentario sobre una carta de la IA
+  public CardDetailsWithAiSubject = new Subject<ChatWithAiResponse>();
+
   // Notificar mensajes del chat privado
   public chatSubject = new Subject<ChatMessage>();
 
@@ -68,6 +71,10 @@ export class WebsocketService {
 
       case MsgType.ChatWithAI:
         this.chatWithAiSubject.next(message.Content);
+        break;
+
+      case MsgType.CardDetailsWithAI:
+        this.CardDetailsWithAiSubject.next(message.Content);
         break;
 
       default:

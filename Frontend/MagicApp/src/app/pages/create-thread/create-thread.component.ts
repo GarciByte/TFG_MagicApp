@@ -53,6 +53,7 @@ export class CreateThreadComponent implements OnInit {
 
     try {
       const result = await this.forumService.createThread(createForumThread);
+      console.log(result);
 
       if (result.success) {
         this.modalService.showToast('Hilo creado con éxito', "success");

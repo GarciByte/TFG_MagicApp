@@ -171,6 +171,16 @@ export class ChatWithAiComponent implements OnInit, OnDestroy {
     if (this.chatSubscription) {
       this.chatSubscription.unsubscribe();
     }
+    this.CancelAiRequest();
+  }
+
+  // Cancela la petición de IA en curso
+  async CancelAiRequest() {
+    const wsMessage = {
+      Type: MsgType.CancelAIMessage,
+      Content: 'CancelAIMessage'
+    };
+    this.webSocketService.sendRxjs(wsMessage);
   }
 
   // Animación de escritura para la IA
