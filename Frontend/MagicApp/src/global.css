@@ -1,3 +1,8 @@
+:root {
+    --ion-safe-area-top: env(safe-area-inset-top);
+    --ion-safe-area-bottom: env(safe-area-inset-bottom);
+}
+
 * {
     box-sizing: border-box;
     margin: 0;

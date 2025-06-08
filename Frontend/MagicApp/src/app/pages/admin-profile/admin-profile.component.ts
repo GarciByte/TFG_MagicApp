@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { NavController } from '@ionic/angular';
 import { User } from 'src/app/models/user';
 import { AuthService } from 'src/app/services/auth.service';
@@ -14,6 +14,7 @@ import {
 } from '@ionic/angular/standalone';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-admin-profile',
@@ -23,8 +24,9 @@ import { FormsModule } from '@angular/forms';
   styleUrls: ['./admin-profile.component.css'],
   standalone: true,
 })
-export class AdminProfileComponent implements OnInit {
+export class AdminProfileComponent implements OnInit, OnDestroy {
 
+  error$: Subscription;
   isAdmin = false;
   user: User = null;
   allUsers: User[] = [];
@@ -58,9 +60,16 @@ export class AdminProfileComponent implements OnInit {
   ) { }
 
   async ngOnInit(): Promise<void> {
-    if (!await this.authService.isAuthenticated()) {
+    if (!(await this.authService.isAuthenticated())) {
       this.navCtrl.navigateRoot(['/']);
+      return;
     }
+
+    this.error$ = this.webSocketService.error.subscribe(async () => {
+      await this.authService.logout();
+      this.navCtrl.navigateRoot(['/']);
+    });
+
     await this.loadUser();
   }
 
@@ -426,6 +435,12 @@ export class AdminProfileComponent implements OnInit {
     if (newPage >= 1 && newPage <= this.userTotalPages) {
       this.userPage = newPage;
       this.updateUsersView();
+    }
+  }
+
+  ngOnDestroy(): void {
+    if (this.error$) {
+      this.error$.unsubscribe();
     }
   }
 

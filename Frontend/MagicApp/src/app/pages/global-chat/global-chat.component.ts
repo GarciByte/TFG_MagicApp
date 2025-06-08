@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { NavController } from '@ionic/angular';
 import { Subscription } from 'rxjs';
 import { AuthService } from 'src/app/services/auth.service';
@@ -20,8 +20,8 @@ import { ModalService } from 'src/app/services/modal.service';
   styleUrls: ['./global-chat.component.css'],
   standalone: true,
 })
-export class GlobalChatComponent implements OnInit {
-
+export class GlobalChatComponent implements OnInit, OnDestroy {
+  error$: Subscription;
   chatSubscription: Subscription;
   chatMessages: any[] = [];
   chatInput: string = "";
@@ -37,9 +37,15 @@ export class GlobalChatComponent implements OnInit {
   ) { }
 
   async ngOnInit(): Promise<void> {
-    if (!await this.authService.isAuthenticated()) {
+    if (!(await this.authService.isAuthenticated())) {
       this.navCtrl.navigateRoot(['/']);
+      return;
     }
+
+    this.error$ = this.webSocketService.error.subscribe(async () => {
+      await this.authService.logout();
+      this.navCtrl.navigateRoot(['/']);
+    });
 
     this.user = await this.authService.getUser();
 
@@ -63,6 +69,10 @@ export class GlobalChatComponent implements OnInit {
   ngOnDestroy(): void {
     if (this.chatSubscription) {
       this.chatSubscription.unsubscribe();
+    }
+
+    if (this.error$) {
+      this.error$.unsubscribe();
     }
   }
 

@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { IonicModule, ModalController, NavController } from '@ionic/angular';
 import { CardDetail } from 'src/app/models/card-detail';
@@ -8,6 +8,8 @@ import { CardService } from 'src/app/services/card.service';
 import { ModalService } from 'src/app/services/modal.service';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 import { AiCommentModalComponent } from 'src/app/components/ai-comment-modal/ai-comment-modal.component';
+import { Subscription } from 'rxjs';
+import { WebsocketService } from 'src/app/services/websocket.service';
 
 @Component({
   selector: 'app-card-details',
@@ -16,8 +18,9 @@ import { AiCommentModalComponent } from 'src/app/components/ai-comment-modal/ai-
   styleUrls: ['./card-details.component.css'],
   standalone: true,
 })
-export class CardDetailsComponent implements OnInit {
+export class CardDetailsComponent implements OnInit, OnDestroy {
 
+  error$: Subscription;
   cardId: string;
   card: CardDetail;
   safeOracleHtml: SafeHtml;
@@ -30,6 +33,7 @@ export class CardDetailsComponent implements OnInit {
     private route: ActivatedRoute,
     private sanitizer: DomSanitizer,
     private modalCtrl: ModalController,
+    private webSocketService: WebsocketService
   ) { }
 
   async ngOnInit(): Promise<void> {
@@ -37,6 +41,11 @@ export class CardDetailsComponent implements OnInit {
       this.navCtrl.navigateRoot(['/']);
       return;
     }
+
+    this.error$ = this.webSocketService.error.subscribe(async () => {
+      await this.authService.logout();
+      this.navCtrl.navigateRoot(['/']);
+    });
 
     this.cardId = this.route.snapshot.queryParamMap.get('cardId');
 
@@ -102,6 +111,12 @@ export class CardDetailsComponent implements OnInit {
     });
 
     await modal.present();
+  }
+
+  ngOnDestroy(): void {
+    if (this.error$) {
+      this.error$.unsubscribe();
+    }
   }
 
 }

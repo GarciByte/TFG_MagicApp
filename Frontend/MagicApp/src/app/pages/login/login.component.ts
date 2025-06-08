@@ -28,7 +28,7 @@ export class LoginComponent implements OnInit {
   ) { }
 
   async ngOnInit(): Promise<void> {
-    if (await this.authService.isAuthenticated() && this.websocketService.isConnectedRxjs()) {
+    if ((await this.authService.isAuthenticated()) && this.websocketService.isConnectedRxjs()) {
       this.navCtrl.navigateRoot(['/menu']);
     }
   }

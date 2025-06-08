@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { NavController } from '@ionic/angular';
 import { DeckRequest } from 'src/app/models/deck-request';
@@ -9,7 +9,8 @@ import { IonContent, IonIcon } from "@ionic/angular/standalone";
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { DeckCardsService } from 'src/app/services/deck-cards.service';
-import { CardDetail } from 'src/app/models/card-detail';
+import { Subscription } from 'rxjs';
+import { WebsocketService } from 'src/app/services/websocket.service';
 
 @Component({
   selector: 'app-deck-view',
@@ -18,25 +19,30 @@ import { CardDetail } from 'src/app/models/card-detail';
   styleUrls: ['./deck-view.component.css'],
   standalone: true,
 })
-export class DeckViewComponent implements OnInit {
+export class DeckViewComponent implements OnInit, OnDestroy {
+  error$: Subscription;
   deckId: number;
-
   deck: DeckResponse;
 
   constructor(
     public navCtrl: NavController,
     private authService: AuthService,
     private deckService: DeckServiceService,
-    private router: Router,
     private route: ActivatedRoute,
-    public deckCardsService: DeckCardsService
+    public deckCardsService: DeckCardsService,
+    private webSocketService: WebsocketService
   ) { }
 
   async ngOnInit(): Promise<void> {
-    if (!await this.authService.isAuthenticated()) {
+    if (!(await this.authService.isAuthenticated())) {
       this.navCtrl.navigateRoot(['/']);
       return;
     }
+
+    this.error$ = this.webSocketService.error.subscribe(async () => {
+      await this.authService.logout();
+      this.navCtrl.navigateRoot(['/']);
+    });
 
     this.deckId = Number(this.route.snapshot.queryParamMap.get('deckId'));
 
@@ -75,7 +81,7 @@ export class DeckViewComponent implements OnInit {
       UserId: this.deckCardsService.userId,
       DeckCards: this.deckCardsService.deckCards,
       Victories: this.deckCardsService.victories,
-      Defeats: this.deckCardsService.defeats 
+      Defeats: this.deckCardsService.defeats
     }
 
     // Save the deck
@@ -111,17 +117,22 @@ export class DeckViewComponent implements OnInit {
   }
 
   getVictoryRate(): string {
-  const victories = this.deckCardsService.victories || 0;
-  const defeats = this.deckCardsService.defeats || 0;
-  const totalGames = victories + defeats;
+    const victories = this.deckCardsService.victories || 0;
+    const defeats = this.deckCardsService.defeats || 0;
+    const totalGames = victories + defeats;
 
-  if (totalGames === 0) {
-    return '0%';
+    if (totalGames === 0) {
+      return '0%';
+    }
+
+    const rate = (victories / totalGames) * 100;
+    return rate.toFixed(1) + '%';
   }
 
-  const rate = (victories / totalGames) * 100;
-  return rate.toFixed(1) + '%';
-}
-
+  ngOnDestroy(): void {
+    if (this.error$) {
+      this.error$.unsubscribe();
+    }
+  }
 
 }
