@@ -5,20 +5,14 @@
   </div>
 
   <div class="content-container">
-    <div class="decks-title">MAZOS</div>
 
-    <ion-grid class="decks-grid">
+    <!-- Mostrar mensaje si no hay mazos -->
+    <div class="no-decks-message" *ngIf="decks?.length === 0">
+      El usuario no tiene ningún mazo aún.
+    </div>
+
+    <ion-grid class="decks-grid" *ngIf="decks?.length > 0">
       <ion-row>
-        <!-- Button to create a new deck -->
-        <ion-col size="6" size-md="4" size-lg="3">
-          <div class="deck-card add-card" (click)="createDeck()">
-            <div class="add-icon">
-              <ion-icon name="add-outline"></ion-icon>
-            </div>
-          </div>
-        </ion-col>
-
-        <!-- Existing decks -->
         <ion-col size="6" size-md="4" size-lg="3" *ngFor="let deck of decks">
           <div class="deck-card" (click)="viewDeck(deck.id)">
             <ion-icon name="layers-outline" class="deck-icon"></ion-icon>
@@ -29,7 +23,6 @@
             </div>
           </div>
         </ion-col>
-
       </ion-row>
     </ion-grid>
   </div>

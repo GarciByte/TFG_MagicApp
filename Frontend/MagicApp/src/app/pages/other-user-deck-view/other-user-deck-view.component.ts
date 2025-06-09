@@ -1,24 +1,24 @@
+import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { FormsModule } from '@angular/forms';
+import { Router, ActivatedRoute } from '@angular/router';
 import { NavController } from '@ionic/angular';
+import { IonContent, IonIcon, IonButton } from '@ionic/angular/standalone';
 import { DeckRequest } from 'src/app/models/deck-request';
 import { DeckResponse } from 'src/app/models/deck-response';
 import { AuthService } from 'src/app/services/auth.service';
-import { DeckServiceService } from 'src/app/services/deck-service.service';
-import { IonContent, IonIcon } from "@ionic/angular/standalone";
-import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
 import { DeckCardsService } from 'src/app/services/deck-cards.service';
-import { CardDetail } from 'src/app/models/card-detail';
+import { DeckServiceService } from 'src/app/services/deck-service.service';
 
 @Component({
-  selector: 'app-deck-view',
-  imports: [IonIcon, CommonModule, FormsModule, IonContent],
-  templateUrl: './deck-view.component.html',
-  styleUrls: ['./deck-view.component.css'],
+  selector: 'app-other-user-deck-view',
+   imports: [IonButton, IonIcon, CommonModule, FormsModule, IonContent],
+  templateUrl: './other-user-deck-view.component.html',
+  styleUrls: ['./other-user-deck-view.component.css'],
   standalone: true,
 })
-export class DeckViewComponent implements OnInit {
+export class OtherUserDeckViewComponent  implements OnInit {
+
   deckId: number;
 
   deck: DeckResponse;
@@ -51,16 +51,6 @@ export class DeckViewComponent implements OnInit {
       this.deckCardsService.victories = this.deck.victories;
       this.deckCardsService.defeats = this.deck.defeats;
     }
-
-    const navigation = history.state;
-    if (navigation?.selectCard) {
-      this.deckCardsService.addCard(navigation.selectCard);
-    }
-  }
-
-
-  addCard() {
-    this.navCtrl.navigateRoot("/add-cards-deck")
   }
 
   cardDetails() {
@@ -68,46 +58,8 @@ export class DeckViewComponent implements OnInit {
     this.navCtrl.navigateRoot("/deck-cards-views")
   }
 
-  async updateDeck() {
-    const deckData: DeckRequest = {
-      Name: this.deckCardsService.name,
-      Description: this.deckCardsService.description,
-      UserId: this.deckCardsService.userId,
-      DeckCards: this.deckCardsService.deckCards,
-      Victories: this.deckCardsService.victories,
-      Defeats: this.deckCardsService.defeats 
-    }
-
-    // Save the deck
-    const response = await this.deckService.UpdateDeck(deckData, this.deckCardsService.deckId)
-    this.deckCardsService.clear()
-    this.navCtrl.navigateRoot("/decks")
-
-  }
-
-  async deleteDeck() {
-    const response = await this.deckService.DeleteDeck(this.deckId)
-    this.navCtrl.navigateRoot("/decks")
-  }
-
   deckSize(): number {
     return this.deckCardsService.deckCards.length
-  }
-
-  incrementVictories() {
-    this.deckCardsService.victories++;
-  }
-
-  decrementVictories() {
-    this.deckCardsService.victories = Math.max(0, this.deckCardsService.victories - 1);
-  }
-
-  incrementDefeats() {
-    this.deckCardsService.defeats++;
-  }
-
-  decrementDefeats() {
-    this.deckCardsService.defeats = Math.max(0, this.deckCardsService.defeats - 1);
   }
 
   getVictoryRate(): string {

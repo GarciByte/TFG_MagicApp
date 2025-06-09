@@ -3,7 +3,7 @@
     align-items: center;
     gap: 12px;
     padding: 16px;
-    --background: var(--ion-background-color);
+    background-color: var(--ion-background-color);
 }
 
 .back-icon {

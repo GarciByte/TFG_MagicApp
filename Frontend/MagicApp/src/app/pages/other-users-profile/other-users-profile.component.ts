@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, ParamMap } from '@angular/router';
 import { NavController } from '@ionic/angular';
@@ -12,7 +12,6 @@ import { environment } from 'src/environments/environment';
 import { IonContent, IonButton, IonCard, IonAvatar, IonIcon } from "@ionic/angular/standalone";
 import { ReportService } from 'src/app/services/report.service';
 import { NewReport } from 'src/app/models/new-report';
-import { WebsocketService } from 'src/app/services/websocket.service';
 
 @Component({
   selector: 'app-other-users-profile',
@@ -21,8 +20,8 @@ import { WebsocketService } from 'src/app/services/websocket.service';
   styleUrls: ['./other-users-profile.component.css'],
   standalone: true,
 })
-export class OtherUsersProfileComponent implements OnInit, OnDestroy {
-  error$: Subscription;
+export class OtherUsersProfileComponent implements OnInit {
+
   user: User = null;
   currentUser: User = null;
   avatarUrl: string = "";
@@ -34,20 +33,13 @@ export class OtherUsersProfileComponent implements OnInit, OnDestroy {
     private route: ActivatedRoute,
     private userService: UserService,
     private modalService: ModalService,
-    private reportService: ReportService,
-    private webSocketService: WebsocketService
+    private reportService: ReportService
   ) { }
 
   async ngOnInit(): Promise<void> {
-    if (!(await this.authService.isAuthenticated())) {
+    if (!await this.authService.isAuthenticated()) {
       this.navCtrl.navigateRoot(['/']);
-      return;
     }
-
-    this.error$ = this.webSocketService.error.subscribe(async () => {
-      await this.authService.logout();
-      this.navCtrl.navigateRoot(['/']);
-    });
 
     this.currentUser = await this.authService.getUser();
     this.routeQueryMap$ = this.route.queryParamMap.subscribe(queryMap => this.init(queryMap));
@@ -56,10 +48,6 @@ export class OtherUsersProfileComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     if (this.routeQueryMap$) {
       this.routeQueryMap$.unsubscribe();
-    }
-
-    if (this.error$) {
-      this.error$.unsubscribe();
     }
   }
 
@@ -120,6 +108,10 @@ export class OtherUsersProfileComponent implements OnInit, OnDestroy {
   // Ver mazos del usuario
   viewDecks(): void {
     console.log('Ver mazos de', this.user.userId);
+    this.navCtrl.navigateRoot(
+      ['/other-user-deck'],
+      { queryParams: { id: this.user.userId } }
+    );
   }
 
   // Reportar al usuario

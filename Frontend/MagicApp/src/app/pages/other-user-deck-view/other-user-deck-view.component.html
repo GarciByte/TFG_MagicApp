@@ -5,7 +5,6 @@
   </div>
 
   <div class="content-container">
-    <div class="create-deck-title">CREAR MAZO</div>
 
     <div class="form-container">
       <!-- Deck Icon -->
@@ -16,12 +15,12 @@
       <!-- Form -->
       <div class="form-group">
         <label class="form-label">Nombre del mazo</label>
-        <input type="text" class="form-input" [(ngModel)]="deckCardsService.name" placeholder="nombre">
+        <input type="text" class="text" [(ngModel)]="deckCardsService.name" placeholder="nombre" readonly>
       </div>
 
       <div class="form-group">
         <label class="form-label">Descripción del mazo</label>
-        <input type="text" class="form-input" [(ngModel)]="deckCardsService.description" placeholder="descripción">
+        <input type="text" class="text" [(ngModel)]="deckCardsService.description" placeholder="descripción" readonly>
       </div>
 
       <!-- Contador de cartas -->
@@ -31,7 +30,6 @@
 
       <!-- Action Buttons -->
       <div class="action-buttons">
-        <button class="action-button" (click)="addCard()">Añadir cartas</button>
         <button class="action-button" (click)="cardDetails()">Ver cartas</button>
       </div>
 
@@ -39,19 +37,15 @@
       <div class="counter-box">
         <label class="form-label">Victorias</label>
         <div class="counter-controls">
-          <button class="counter-button" (click)="decrementVictories()">-</button>
           <span class="counter-value">{{ deckCardsService.victories }}</span>
-          <button class="counter-button" (click)="incrementVictories()">+</button>
-        </div>
+         </div>
       </div>
 
       <!-- Defeats -->
       <div class="counter-box">
         <label class="form-label">Derrotas</label>
         <div class="counter-controls">
-          <button class="counter-button" (click)="decrementDefeats()">-</button>
           <span class="counter-value">{{ deckCardsService.defeats }}</span>
-          <button class="counter-button" (click)="incrementDefeats()">+</button>
         </div>
       </div>
 
@@ -59,12 +53,6 @@
         <label class="form-label">Porcentaje de victoria</label>
         <div class="counter-value victory-rate">{{ getVictoryRate() }}</div>
       </div>
-
-
-
-      <!-- Save-Delete Buttons -->
-      <button class="create-button" (click)="updateDeck()">Guardar</button>
-      <button class="create-button" (click)="deleteDeck()">Eliminar</button>
     </div>
   </div>
 

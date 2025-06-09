@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { NavController } from '@ionic/angular';
@@ -17,7 +17,6 @@ import {
 } from "@ionic/angular/standalone";
 import { MsgType, WebSocketMessage } from 'src/app/models/web-socket-message';
 import { WebsocketService } from 'src/app/services/websocket.service';
-import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-thread-detail',
@@ -27,10 +26,10 @@ import { Subscription } from 'rxjs';
   styleUrls: ['./thread-detail.component.css'],
   standalone: true,
 })
-export class ThreadDetailComponent implements OnInit, OnDestroy {
-  error$: Subscription;
+export class ThreadDetailComponent implements OnInit {
+
   threadId!: number;
-  threadDetail: ForumThreadDetail;
+  threadDetail!: ForumThreadDetail;
   isAdmin = false;
   apiImg = environment.apiImg;
   commentForm: FormGroup;
@@ -56,16 +55,10 @@ export class ThreadDetailComponent implements OnInit, OnDestroy {
   }
 
   async ngOnInit(): Promise<void> {
-    if (!(await this.authService.isAuthenticated())) {
+    if (!await this.authService.isAuthenticated()) {
       this.navCtrl.navigateRoot(['/']);
       return;
     }
-
-    this.error$ = this.webSocketService.error.subscribe(async () => {
-      await this.authService.logout();
-      this.navCtrl.navigateRoot(['/']);
-    });
-
     await this.checkAdmin();
     await this.loadThreadDetail();
   }
@@ -442,12 +435,6 @@ export class ThreadDetailComponent implements OnInit, OnDestroy {
         [{ text: 'Aceptar' }]
       );
 
-    }
-  }
-
-  ngOnDestroy(): void {
-    if (this.error$) {
-      this.error$.unsubscribe();
     }
   }
 

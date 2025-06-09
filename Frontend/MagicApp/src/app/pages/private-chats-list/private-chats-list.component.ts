@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { User } from 'src/app/models/user';
 import { NavController } from '@ionic/angular';
@@ -18,8 +18,8 @@ import { IonCardContent, IonCardHeader, IonAvatar, IonCardTitle, IonCard, IonCon
   styleUrls: ['./private-chats-list.component.css'],
   standalone: true,
 })
-export class PrivateChatsListComponent implements OnInit, OnDestroy {
-  error$: Subscription;
+export class PrivateChatsListComponent implements OnInit {
+
   chatSubscription: Subscription;
   chatList: ChatList[] = [];
   user: User;
@@ -34,15 +34,9 @@ export class PrivateChatsListComponent implements OnInit, OnDestroy {
   ) { }
 
   async ngOnInit(): Promise<void> {
-    if (!(await this.authService.isAuthenticated())) {
+    if (!await this.authService.isAuthenticated()) {
       this.navCtrl.navigateRoot(['/']);
-      return;
     }
-
-    this.error$ = this.webSocketService.error.subscribe(async () => {
-      await this.authService.logout();
-      this.navCtrl.navigateRoot(['/']);
-    });
 
     this.user = await this.authService.getUser();
 
@@ -61,10 +55,6 @@ export class PrivateChatsListComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     if (this.chatSubscription) {
       this.chatSubscription.unsubscribe();
-    }
-
-    if (this.error$) {
-      this.error$.unsubscribe();
     }
   }
 

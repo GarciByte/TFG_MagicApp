@@ -36,9 +36,8 @@ export class MenuComponent implements OnInit, OnDestroy {
   ) { }
 
   async ngOnInit(): Promise<void> {
-    if (!(await this.authService.isAuthenticated())) {
+    if (!await this.authService.isAuthenticated()) {
       this.navCtrl.navigateRoot(['/']);
-      return;
     }
 
     const refreshSuccess = await this.authService.refreshTokens();
@@ -56,9 +55,10 @@ export class MenuComponent implements OnInit, OnDestroy {
     }
 
     this.user = await this.authService.getUser();
+    console.log(this.user)
 
     this.disconnected$ = this.websocketService.disconnected.subscribe(() => {
-      console.log("Desconectado del Servidor");
+      console.warn("Desconectado del Servidor");
     });
 
     this.error$ = this.websocketService.error.subscribe(async () => {

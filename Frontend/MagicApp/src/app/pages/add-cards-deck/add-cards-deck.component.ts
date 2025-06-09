@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 import { Router } from '@angular/router';
 import { card, arrowBackOutline, filterOutline, addCircleOutline } from 'ionicons/icons';
@@ -17,8 +17,6 @@ import { Rarity } from 'src/app/models/enums/rarity';
 import { AuthService } from 'src/app/services/auth.service';
 import { CardColorService } from 'src/app/services/card-color.service';
 import { CardTypeService } from 'src/app/services/card-type.service';
-import { Subscription } from 'rxjs';
-import { WebsocketService } from 'src/app/services/websocket.service';
 
 @Component({
   selector: 'app-add-cards-deck',
@@ -27,9 +25,8 @@ import { WebsocketService } from 'src/app/services/websocket.service';
   styleUrls: ['./add-cards-deck.component.css'],
   standalone: true,
 })
-export class AddCardsDeckComponent implements OnInit, OnDestroy {
+export class AddCardsDeckComponent implements OnInit {
 
-  error$: Subscription;
   safeOracleHtml: SafeHtml;
 
   hasSearched = false;
@@ -57,20 +54,14 @@ export class AddCardsDeckComponent implements OnInit, OnDestroy {
     private cardColorService: CardColorService,
     private cardTypeService: CardTypeService,
     private cardTransfer: CardTransferService,
+    private router: Router,
     private sanitizer: DomSanitizer,
-    private webSocketService: WebsocketService
   ) { }
 
   async ngOnInit(): Promise<void> {
-    if (!(await this.authService.isAuthenticated())) {
+    if (!await this.authService.isAuthenticated()) {
       this.navCtrl.navigateRoot(['/']);
-      return;
     }
-
-    this.error$ = this.webSocketService.error.subscribe(async () => {
-      await this.authService.logout();
-      this.navCtrl.navigateRoot(['/']);
-    });
 
     this.search()
   }
@@ -238,12 +229,6 @@ export class AddCardsDeckComponent implements OnInit, OnDestroy {
   nextPage() {
     this.page++;
     this.search();
-  }
-
-  ngOnDestroy(): void {
-    if (this.error$) {
-      this.error$.unsubscribe();
-    }
   }
 
 }

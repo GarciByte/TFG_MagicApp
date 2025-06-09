@@ -1,26 +1,23 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { IonicModule, ModalController, NavController } from '@ionic/angular';
+import { NavController } from '@ionic/angular';
 import { CardDetail } from 'src/app/models/card-detail';
 import { AuthService } from 'src/app/services/auth.service';
 import { CardService } from 'src/app/services/card.service';
 import { ModalService } from 'src/app/services/modal.service';
+import { IonContent, IonButton, IonIcon } from "@ionic/angular/standalone";
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
-import { AiCommentModalComponent } from 'src/app/components/ai-comment-modal/ai-comment-modal.component';
-import { Subscription } from 'rxjs';
-import { WebsocketService } from 'src/app/services/websocket.service';
 
 @Component({
   selector: 'app-card-details',
-  imports: [CommonModule, IonicModule],
+  imports: [IonIcon, IonButton, IonContent, CommonModule],
   templateUrl: './card-details.component.html',
   styleUrls: ['./card-details.component.css'],
   standalone: true,
 })
-export class CardDetailsComponent implements OnInit, OnDestroy {
+export class CardDetailsComponent implements OnInit {
 
-  error$: Subscription;
   cardId: string;
   card: CardDetail;
   safeOracleHtml: SafeHtml;
@@ -31,21 +28,13 @@ export class CardDetailsComponent implements OnInit, OnDestroy {
     private cardService: CardService,
     private modalService: ModalService,
     private route: ActivatedRoute,
-    private sanitizer: DomSanitizer,
-    private modalCtrl: ModalController,
-    private webSocketService: WebsocketService
+    private sanitizer: DomSanitizer
   ) { }
 
   async ngOnInit(): Promise<void> {
-    if (!(await this.authService.isAuthenticated())) {
+    if (!await this.authService.isAuthenticated()) {
       this.navCtrl.navigateRoot(['/']);
-      return;
     }
-
-    this.error$ = this.webSocketService.error.subscribe(async () => {
-      await this.authService.logout();
-      this.navCtrl.navigateRoot(['/']);
-    });
 
     this.cardId = this.route.snapshot.queryParamMap.get('cardId');
 
@@ -93,29 +82,6 @@ export class CardDetailsComponent implements OnInit, OnDestroy {
       );
 
       this.navCtrl.navigateRoot(['/menu']);
-    }
-  }
-
-  // Modal que muestra un análisis de la carta
-  async openAiCommentModal() {
-    const modal = await this.modalCtrl.create({
-      component: AiCommentModalComponent,
-      backdropDismiss: true,
-      componentProps: { card: this.card },
-      cssClass: 'ai-comment-modal',
-      showBackdrop: true,
-      keyboardClose: true,
-      animated: true,
-      mode: 'ios',
-      presentingElement: await this.modalCtrl.getTop(),
-    });
-
-    await modal.present();
-  }
-
-  ngOnDestroy(): void {
-    if (this.error$) {
-      this.error$.unsubscribe();
     }
   }
 

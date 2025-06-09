@@ -28,7 +28,6 @@ import { Browser } from '@capacitor/browser';
 export class ChatWithAiComponent implements OnInit, OnDestroy {
 
   @ViewChild('messagesContainer', { static: true, read: ElementRef }) private messagesContainer: ElementRef;
-  error$: Subscription;
 
   chatSubscription: Subscription;
   chatMessages: ChatWithAiMessage[] = [];
@@ -52,11 +51,6 @@ export class ChatWithAiComponent implements OnInit, OnDestroy {
       this.navCtrl.navigateRoot(['/']);
       return;
     }
-
-    this.error$ = this.webSocketService.error.subscribe(async () => {
-      await this.authService.logout();
-      this.navCtrl.navigateRoot(['/']);
-    });
 
     this.user = await this.authService.getUser();
 
@@ -177,21 +171,6 @@ export class ChatWithAiComponent implements OnInit, OnDestroy {
     if (this.chatSubscription) {
       this.chatSubscription.unsubscribe();
     }
-
-    if (this.error$) {
-      this.error$.unsubscribe();
-    }
-    
-    this.CancelAiRequest();
-  }
-
-  // Cancela la petición de IA en curso
-  async CancelAiRequest() {
-    const wsMessage = {
-      Type: MsgType.CancelAIMessage,
-      Content: 'CancelAIMessage'
-    };
-    this.webSocketService.sendRxjs(wsMessage);
   }
 
   // Animación de escritura para la IA
