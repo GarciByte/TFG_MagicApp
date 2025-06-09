@@ -5,9 +5,13 @@ import { CardDetail } from 'src/app/models/card-detail';
 import { AuthService } from 'src/app/services/auth.service';
 import { DeckCardsService } from 'src/app/services/deck-cards.service';
 import { DeckServiceService } from 'src/app/services/deck-service.service';
+import { IonButton, IonCheckbox, IonContent, IonIcon, IonSearchbar, IonSelect, IonSelectOption } from "@ionic/angular/standalone";
+import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-deck-cards-views',
+  imports: [IonIcon, IonCheckbox, IonSearchbar, IonButton, IonContent, CommonModule, FormsModule, IonSelectOption, IonSelect],
   templateUrl: './deck-cards-views.component.html',
   styleUrls: ['./deck-cards-views.component.css'],
   standalone: true,
@@ -31,9 +35,10 @@ export class DeckCardsViewsComponent implements OnInit {
     }
 
     this.deckCards = this.deckCardsService.deckCards;
+    console.log(this.deckCards)
   }
 
-    navigateToDetails(cardId: string) {
+  navigateToDetails(cardId: string) {
     this.navCtrl.navigateRoot(['/card-details'], {
       queryParams: { cardId }
     });
