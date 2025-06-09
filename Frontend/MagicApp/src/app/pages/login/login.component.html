@@ -6,40 +6,44 @@
 
           <!-- Logo -->
           <div class="logo-container">
-            <img src="assets/images/logo.png" alt="Logo de MagicHub" class="logo-image"
-              (click)="navCtrl.navigateRoot(['/'])">
+            <img src="assets/images/logo.png" alt="MagicHub Logo" class="logo-image"
+              (click)="navCtrl.navigateRoot(['/'])" />
           </div>
 
-          <h1 class="title">Iniciar sesión</h1>
+          <h1 class="title">{{ 'LOGIN.TITLE' | translate }}</h1>
 
           <!-- Apodo -->
           <ion-item lines="full" class="form-item">
-            <ion-input id="nickname" type="text" [(ngModel)]="nickname" name="nickname" label="Apodo"
-              labelPlacement="floating" required autocomplete="username" enterkeyhint="next"></ion-input>
+            <ion-input id="nickname" type="text" [(ngModel)]="nickname" name="nickname"
+              [label]="'LOGIN.NICKNAME' | translate" labelPlacement="floating" required autocomplete="username"
+              enterkeyhint="next"></ion-input>
           </ion-item>
 
           <!-- Contraseña -->
           <ion-item lines="full" class="form-item">
-            <ion-input id="password" type="password" [(ngModel)]="password" name="password" label="Contraseña"
-              labelPlacement="floating" required autocomplete="current-password" enterkeyhint="done"></ion-input>
+            <ion-input id="password" type="password" [(ngModel)]="password" name="password"
+              [label]="'LOGIN.PASSWORD' | translate" labelPlacement="floating" required autocomplete="current-password"
+              enterkeyhint="done"></ion-input>
           </ion-item>
 
           <!-- Recordar sesión -->
           <div class="checkbox-container">
-            <ion-checkbox [(ngModel)]="rememberMe" [ngModelOptions]="{standalone: true}"></ion-checkbox>
-            <ion-label class="checkbox-label" (click)="rememberMe = !rememberMe">Recuérdame</ion-label>
+            <ion-checkbox [(ngModel)]="rememberMe" [ngModelOptions]="{ standalone: true }"></ion-checkbox>
+            <ion-label class="checkbox-label" (click)="rememberMe = !rememberMe">
+              {{ 'LOGIN.REMEMBER' | translate }}
+            </ion-label>
           </div>
 
           <!-- Botón -->
           <ion-button type="submit" expand="block" shape="round" class="login-button">
-            Entrar
+            {{ 'LOGIN.BUTTON' | translate }}
           </ion-button>
 
           <!-- Registro -->
           <div class="signup-container">
-            <span class="signup-text">¿No tienes cuenta?</span>
+            <span class="signup-text">{{ 'LOGIN.NO_ACCOUNT' | translate }}</span>
             <ion-button fill="clear" (click)="navCtrl.navigateRoot(['/signup'])" class="signup-button">
-              Regístrate
+              {{ 'LOGIN.SIGNUP' | translate }}
             </ion-button>
           </div>
 

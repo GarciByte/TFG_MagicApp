@@ -1,0 +1,43 @@
+{
+    "HOME": {
+        "APP_NAME": "MagicHub",
+        "SUBTITLE": "Tu comunidad de Magic: The Gathering",
+        "FEATURES": {
+            "CHAT": "Chats y foros para debatir estrategias",
+            "DECKS": "Gestiona y comparte tus mazos",
+            "AI": "Habla con la IA sobre el juego",
+            "NOTIFICATIONS": "Notificaciones en tiempo real"
+        },
+        "LOGIN": "Iniciar sesión"
+    },
+    "LOGIN": {
+        "TITLE": "Iniciar sesión",
+        "NICKNAME": "Apodo",
+        "PASSWORD": "Contraseña",
+        "REMEMBER": "Recuérdame",
+        "BUTTON": "Entrar",
+        "NO_ACCOUNT": "¿No tienes cuenta?",
+        "SIGNUP": "Regístrate"
+    },
+    "SIGNUP": {
+        "SELECT_AVATAR_OK": "Seleccionar",
+        "SELECT_AVATAR_CANCEL": "Cancelar",
+        "AVATAR_PREVIEW": "Avatar seleccionado",
+        "NICKNAME": "Apodo",
+        "EMAIL": "Correo electrónico",
+        "PASSWORD": "Contraseña",
+        "CONFIRM_PASSWORD": "Repetir contraseña",
+        "BUTTON": "Registrarse",
+        "ALREADY_ACCOUNT": "¿Ya tienes cuenta?",
+        "LOGIN": "Inicia sesión",
+        "ERRORS": {
+            "NICKNAME_REQUIRED": "El apodo es obligatorio.",
+            "NICKNAME_PATTERN": "No se permite el carácter @.",
+            "EMAIL_REQUIRED": "El correo es obligatorio.",
+            "EMAIL_INVALID": "Debe ser un correo válido.",
+            "PASSWORD_REQUIRED": "La contraseña es obligatoria.",
+            "PASSWORD_MIN": "Mínimo 6 caracteres.",
+            "PASSWORD_MISMATCH": "Las contraseñas deben coincidir."
+        }
+    }
+}

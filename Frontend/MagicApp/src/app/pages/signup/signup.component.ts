@@ -7,11 +7,12 @@ import { AuthService } from 'src/app/services/auth.service';
 import { ModalService } from 'src/app/services/modal.service';
 import { WebsocketService } from 'src/app/services/websocket.service';
 import { IonContent, IonCard, IonCardContent, IonItem, IonInput, IonButton, IonSelect, IonSelectOption } from "@ionic/angular/standalone";
+import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-signup',
   imports: [IonButton, IonInput, IonItem, IonCardContent, IonCard, IonContent,
-    CommonModule, RouterModule, ReactiveFormsModule, IonSelect, IonSelectOption],
+    CommonModule, RouterModule, ReactiveFormsModule, IonSelect, IonSelectOption, TranslateModule],
   templateUrl: './signup.component.html',
   styleUrls: ['./signup.component.css'],
   standalone: true,

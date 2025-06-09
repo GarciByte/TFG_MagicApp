@@ -2,7 +2,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  --background: var(--ion-color-light);
+  --background: var(--ion-background-color);
 }
 
 .home-wrapper {
@@ -64,6 +64,7 @@
   font-style: italic;
   opacity: 0.9;
   line-height: 1.4;
+  color: var(--ion-text-color);
 }
 
 .features-list {
@@ -73,15 +74,16 @@
   --background: transparent;
   box-shadow: none;
   width: 100%;
-  max-width: 360px;
-  border-radius: 0;
+  max-width: 380px;
+  border-radius: 10px;
   overflow: hidden;
   margin: 0 auto;
   padding: 0;
 }
 
 .feature-item {
-  --background: var(--ion-color-light);
+  --background: var(--ion-card-background);
+  --color: var(--ion-text-color);
   --padding-top: 8px;
   --padding-bottom: 8px;
   --padding-start: 20px;
@@ -89,16 +91,23 @@
   --border-color: var(--ion-color-light-shade);
   border-bottom: 1px solid var(--ion-color-light-shade);
   width: 100%;
-  max-width: 360px;
+  max-width: 380px;
   display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: flex-start;
+  background: var(--ion-card-background);
+  color: var(--ion-text-color);
 }
 
 .feature-item ion-icon {
   font-size: 1.4rem;
   margin-right: 12px;
   color: var(--ion-color-secondary);
+  flex-shrink: 0;
+}
+
+.feature-label {
+  flex: 1;
 }
 
 .feature-label p {
@@ -122,7 +131,7 @@
   --border-radius: 24px;
   --padding-top: 16px;
   --padding-bottom: 16px;
-  --box-shadow: 0 6px 18px rgba(var(--ion-color-primary-rgb), 0.25);
+  --box-shadow: 0 6px 18px rgba(209, 44, 30, 0.25);
   width: 60%;
   max-width: 260px;
   font-size: 1.2rem;
@@ -132,7 +141,8 @@
 }
 
 .login-button:hover {
-  --box-shadow: 0 8px 24px rgba(var(--ion-color-primary-rgb), 0.35);
+  --box-shadow: 0 8px 24px rgba(209, 44, 30, 0.35);
+  transform: translateY(-1px);
 }
 
 .login-button ion-icon {
@@ -140,8 +150,30 @@
   margin-right: 10px;
 }
 
-@media (max-width: 480px) {
+.home-container ion-title {
+  color: var(--ion-text-color);
+}
 
+.home-container ion-text[color="medium"] {
+  --color: var(--ion-text-color);
+  opacity: 0.7;
+}
+
+.home-container ion-item {
+  --background: var(--ion-card-background);
+  --color: var(--ion-text-color);
+  --border-color: transparent;
+}
+
+.home-container ion-item,
+.home-container ion-list {
+  --background: transparent !important;
+  background: transparent !important;
+  background-color: transparent !important;
+  box-shadow: none !important;
+}
+
+@media (max-width: 480px) {
   .home-container {
     padding: 24px 16px;
   }

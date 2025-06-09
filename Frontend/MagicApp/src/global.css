@@ -9,6 +9,12 @@
     padding: 0;
 }
 
+body {
+    font-family: var(--ion-font-family, 'Roboto', sans-serif);
+    background-color: var(--ion-background-color);
+    color: var(--ion-text-color);
+}
+
 ion-content {
     --overflow: auto !important;
 }
@@ -18,7 +24,7 @@ ion-content {
     overflow: auto !important;
 }
 
-/* Toast */
+/* TOAST */
 ion-toast {
     --border-radius: 20px;
     --width: fit-content;
@@ -45,7 +51,7 @@ ion-toast {
     --color: #fff;
 }
 
-/* Alert */
+/* ALERT */
 .custom-alert .alert-wrapper {
     border-radius: 20px;
 }
@@ -139,7 +145,7 @@ ion-toast {
     background-color: rgba(0, 0, 0, 0.3) !important;
 }
 
-/* Iconos de los textos de una carta */
+/* MAGIC SYMBOLS */
 .oracle-text .mana-symbol-inline {
     width: 20px;
     height: auto;
@@ -148,7 +154,6 @@ ion-toast {
     object-fit: contain;
 }
 
-/* Modal con el comentario de la IA sobre una carta */
 ion-modal.ai-comment-modal {
     --width: 95%;
     --max-width: 900px;
