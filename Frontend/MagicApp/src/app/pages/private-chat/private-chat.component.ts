@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, ParamMap } from '@angular/router';
 import { NavController } from '@ionic/angular';
 import { Subscription } from 'rxjs';
@@ -22,8 +22,8 @@ import { FormsModule } from '@angular/forms';
   styleUrls: ['./private-chat.component.css'],
   standalone: true,
 })
-export class PrivateChatComponent implements OnInit {
-
+export class PrivateChatComponent implements OnInit, OnDestroy {
+  error$: Subscription;
   chatSubscription: Subscription;
   chatMessages: any[] = [];
   chatInput: string = "";
@@ -43,9 +43,15 @@ export class PrivateChatComponent implements OnInit {
   ) { }
 
   async ngOnInit(): Promise<void> {
-    if (!await this.authService.isAuthenticated()) {
+    if (!(await this.authService.isAuthenticated())) {
       this.navCtrl.navigateRoot(['/']);
+      return;
     }
+
+    this.error$ = this.webSocketService.error.subscribe(async () => {
+      await this.authService.logout();
+      this.navCtrl.navigateRoot(['/']);
+    });
 
     this.user = await this.authService.getUser();
 
@@ -98,13 +104,17 @@ export class PrivateChatComponent implements OnInit {
 
   ngOnDestroy(): void {
     this.webSocketService.activePrivateChatUserId = null;
-    
+
     if (this.chatSubscription) {
       this.chatSubscription.unsubscribe();
     }
 
     if (this.routeQueryMap$) {
       this.routeQueryMap$.unsubscribe();
+    }
+
+    if (this.error$) {
+      this.error$.unsubscribe();
     }
   }
 

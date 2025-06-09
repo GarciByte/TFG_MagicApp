@@ -44,18 +44,4 @@ public class ChatWithAiController : ControllerBase
         }
     }
 
-    // Enviar un mensaje a la IA
-    [HttpPost("ia")]
-    public async Task<IActionResult> ProcessPromptAsync([FromBody] ChatWithAiRequestDto chatWithAiRequestDto)
-    {
-        _logger.LogInformation("Se ha recibido un prompt del usuario {chatWithAiRequestDto.UserId}: {chatWithAiRequestDto.Prompt}",
-            chatWithAiRequestDto.UserId, chatWithAiRequestDto.Prompt);
-
-        string iaResponse = await _chatWithAiService.ProcessPromptAsync(chatWithAiRequestDto.UserId, chatWithAiRequestDto.Prompt);
-
-        _logger.LogInformation("Se ha recibido una respuesta: {@iaResponse}", iaResponse);
-
-        return Ok(new { response = iaResponse });
-    }
-
 }

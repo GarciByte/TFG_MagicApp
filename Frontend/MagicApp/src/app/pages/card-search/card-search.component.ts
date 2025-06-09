@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { NavController } from '@ionic/angular';
 import { CardImage } from 'src/app/models/card-image';
@@ -13,6 +13,8 @@ import { Rarity } from 'src/app/models/enums/rarity';
 import { CardType } from 'src/app/models/enums/card-type';
 import { CardColorService } from 'src/app/services/card-color.service';
 import { CardTypeService } from 'src/app/services/card-type.service';
+import { Subscription } from 'rxjs';
+import { WebsocketService } from 'src/app/services/websocket.service';
 
 @Component({
   selector: 'app-card-search',
@@ -21,8 +23,9 @@ import { CardTypeService } from 'src/app/services/card-type.service';
   styleUrls: ['./card-search.component.css'],
   standalone: true,
 })
-export class CardSearchComponent implements OnInit {
+export class CardSearchComponent implements OnInit, OnDestroy {
 
+  error$: Subscription;
   searchTerm = ''; // Nombre de la carta
   cards: CardImage[] = []; // Lista de cartas
   hasSearched = false;
@@ -41,13 +44,20 @@ export class CardSearchComponent implements OnInit {
     private cardService: CardService,
     private modalService: ModalService,
     private cardColorService: CardColorService,
-    private cardTypeService: CardTypeService
+    private cardTypeService: CardTypeService,
+    private webSocketService: WebsocketService
   ) { }
 
   async ngOnInit(): Promise<void> {
-    if (!await this.authService.isAuthenticated()) {
+    if (!(await this.authService.isAuthenticated())) {
       this.navCtrl.navigateRoot(['/']);
+      return;
     }
+
+    this.error$ = this.webSocketService.error.subscribe(async () => {
+      await this.authService.logout();
+      this.navCtrl.navigateRoot(['/']);
+    });
 
     this.search()
   }
@@ -56,13 +66,13 @@ export class CardSearchComponent implements OnInit {
     this.showAllFilters = !this.showAllFilters;
   }
 
-realTimeSearch() {
-  clearTimeout(this.debounceTimeout);
+  realTimeSearch() {
+    clearTimeout(this.debounceTimeout);
 
-  this.debounceTimeout = setTimeout(() => {
-    this.search();
-  }, 300); // Espera 3 segundos
-}
+    this.debounceTimeout = setTimeout(() => {
+      this.search();
+    }, 300); // Espera 3 segundos
+  }
 
   // Buscar cartas por nombre
   async search() {
@@ -175,6 +185,12 @@ realTimeSearch() {
   nextPage() {
     this.page++;
     this.search();
+  }
+
+  ngOnDestroy(): void {
+    if (this.error$) {
+      this.error$.unsubscribe();
+    }
   }
 
 }

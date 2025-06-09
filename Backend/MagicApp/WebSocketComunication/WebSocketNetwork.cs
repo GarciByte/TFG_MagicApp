@@ -177,6 +177,16 @@ public class WebSocketNetwork : IWebSocketMessageSender
                     await HandleChatWithAiAsync(handler, message);
                     break;
 
+                // Comentar una carta con la IA
+                case MsgType.CardDetailsWithAI:
+                    await HandleCardDetailsWithAiAsync(handler, message);
+                    break;
+
+                // Cancelar petición hacia la IA
+                case MsgType.CancelAIMessage:
+                    handler.CancelAiRequest();
+                    break;
+
                 default:
                     _logger.LogError("Mensaje no manejado: {message.Type}", message.Type);
                     break;
@@ -384,7 +394,9 @@ public class WebSocketNetwork : IWebSocketMessageSender
                 _logger.LogInformation("El usuario {handler.User.Nickname} le ha escrito un mensaje a la IA: " +
                     "{requestDto.Prompt}", handler.User.Nickname, requestDto.Prompt);
 
-                string iaResponse = await ProcessUserPromptAsync(requestDto.UserId, requestDto.Prompt, handler.CancellationToken);
+                handler.StartAiRequest();
+
+                string iaResponse = await ProcessUserPromptAsync(requestDto.UserId, requestDto.Prompt, handler.CurrentAiToken);
 
                 _logger.LogInformation("La IA le ha respondido a {handler.User.Nickname} con: " +
                     "{@iaResponse}", handler.User.Nickname, iaResponse);
@@ -406,7 +418,7 @@ public class WebSocketNetwork : IWebSocketMessageSender
         }
         catch (OperationCanceledException)
         {
-            _logger.LogInformation("Petición a IA cancelada porque el usuario se desconectó.");
+            _logger.LogInformation("Petición cancelada");
         }
         catch (Exception ex)
         {
@@ -430,12 +442,87 @@ public class WebSocketNetwork : IWebSocketMessageSender
         }
     }
 
-    // Obtiene el mensaje de respuesta de la IA
+    // Obtiene el mensaje de respuesta de la IA (chat)
     private async Task<string> ProcessUserPromptAsync(int userId, string prompt, CancellationToken cancellationToken)
     {
         using var scope = _serviceProvider.CreateScope();
         var chatService = scope.ServiceProvider.GetRequiredService<ChatWithAiService>();
         return await chatService.ProcessPromptAsync(userId, prompt, cancellationToken);
+    }
+
+    // Comentar una carta con la IA
+    private async Task HandleCardDetailsWithAiAsync(WebSocketHandler handler, WebSocketMessage message)
+    {
+        await _aiSemaphore.WaitAsync();
+        try
+        {
+            var options = new JsonSerializerOptions
+            {
+                PropertyNameCaseInsensitive = true
+            };
+
+            string jsonContent = message.Content.ToString();
+            CardDetailDto cardDto = JsonSerializer.Deserialize<CardDetailDto>(jsonContent, options);
+
+            if (cardDto != null)
+            {
+                _logger.LogInformation("El usuario {handler.User.Nickname} quiere que la IA comente la carta: {cardDto.Name}",
+                    handler.User.Nickname, cardDto.Name);
+
+                handler.StartAiRequest();
+
+                string iaResponse = await ProcessCardDetailPromptAsync(handler.User.UserId, cardDto, handler.CurrentAiToken);
+
+                _logger.LogInformation("La IA le ha respondido a {handler.User.Nickname} con: {@iaResponse}",
+                    handler.User.Nickname, iaResponse);
+
+                var responseDto = new ChatWithAiResponseDto
+                {
+                    UserId = handler.User.UserId,
+                    Response = iaResponse
+                };
+
+                var newMessage = new WebSocketMessage
+                {
+                    Type = MsgType.CardDetailsWithAI,
+                    Content = responseDto
+                };
+
+                await SendToUserAsync(handler.User.UserId, newMessage);
+            }
+        }
+        catch (OperationCanceledException)
+        {
+            _logger.LogInformation("Petición cancelada");
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError("Error obteniendo detalles de una carta con la IA: {ex.Message}", ex.Message);
+
+            var errorDto = new ChatWithAiResponseDto
+            {
+                UserId = handler.User.UserId,
+                Response = "Ha ocurrido un error al procesar tu solicitud."
+            };
+
+            await SendToUserAsync(handler.User.UserId, new WebSocketMessage
+            {
+                Type = MsgType.CardDetailsWithAI,
+                Content = errorDto
+            });
+        }
+        finally
+        {
+            _aiSemaphore.Release();
+        }
+    }
+
+    // Obtiene el mensaje de respuesta de la IA (detalles de una carta)
+    private async Task<string> ProcessCardDetailPromptAsync(int userId, CardDetailDto cardDto, CancellationToken cancellationToken)
+    {
+        using var scope = _serviceProvider.CreateScope();
+        var chatService = scope.ServiceProvider.GetRequiredService<ChatWithAiService>();
+        return await chatService.CommentCardAsync(userId, cardDto, cancellationToken);
     }
 
 }

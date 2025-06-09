@@ -48,7 +48,6 @@ export class AuthService {
         }
 
       } else {
-        console.warn("No se han podido refrescar los tokens");
         await this.logout();
       }
 

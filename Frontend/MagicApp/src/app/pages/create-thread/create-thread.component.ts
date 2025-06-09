@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { NavController } from '@ionic/angular';
 import { CreateForumThread } from 'src/app/models/create-forum-thread';
@@ -7,6 +7,8 @@ import { AuthService } from 'src/app/services/auth.service';
 import { ForumService } from 'src/app/services/forum.service';
 import { ModalService } from 'src/app/services/modal.service';
 import { IonContent, IonIcon, IonItem, IonLabel, IonNote, IonButton, IonInput, IonTextarea, IonCard, IonCardHeader } from "@ionic/angular/standalone";
+import { Subscription } from 'rxjs';
+import { WebsocketService } from 'src/app/services/websocket.service';
 
 @Component({
   selector: 'app-create-thread',
@@ -15,8 +17,9 @@ import { IonContent, IonIcon, IonItem, IonLabel, IonNote, IonButton, IonInput, I
   styleUrls: ['./create-thread.component.css'],
   standalone: true,
 })
-export class CreateThreadComponent implements OnInit {
+export class CreateThreadComponent implements OnInit, OnDestroy {
 
+  error$: Subscription;
   threadForm: FormGroup;
   isSubmitting = false;
 
@@ -25,7 +28,8 @@ export class CreateThreadComponent implements OnInit {
     public navCtrl: NavController,
     private authService: AuthService,
     private modalService: ModalService,
-    private forumService: ForumService
+    private forumService: ForumService,
+    private webSocketService: WebsocketService
   ) {
     this.threadForm = this.fb.group({
       title: ['', [Validators.required, Validators.minLength(3)]],
@@ -34,9 +38,15 @@ export class CreateThreadComponent implements OnInit {
   }
 
   async ngOnInit(): Promise<void> {
-    if (!await this.authService.isAuthenticated()) {
+    if (!(await this.authService.isAuthenticated())) {
       this.navCtrl.navigateRoot(['/']);
+      return;
     }
+
+    this.error$ = this.webSocketService.error.subscribe(async () => {
+      await this.authService.logout();
+      this.navCtrl.navigateRoot(['/']);
+    });
   }
 
   // Crear un hilo
@@ -53,6 +63,7 @@ export class CreateThreadComponent implements OnInit {
 
     try {
       const result = await this.forumService.createThread(createForumThread);
+      console.log(result);
 
       if (result.success) {
         this.modalService.showToast('Hilo creado con éxito', "success");
@@ -80,6 +91,12 @@ export class CreateThreadComponent implements OnInit {
 
     } finally {
       this.isSubmitting = false;
+    }
+  }
+
+  ngOnDestroy(): void {
+    if (this.error$) {
+      this.error$.unsubscribe();
     }
   }
 

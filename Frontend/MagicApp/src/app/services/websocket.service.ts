@@ -7,13 +7,14 @@ import { ModalService } from './modal.service';
 import { GlobalChatMessage } from '../models/global-chat-message';
 import { ChatMessage } from '../models/chat-message';
 import { ChatWithAiResponse } from '../models/chat-with-ai-response';
+import { ApiService } from './api.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class WebsocketService {
 
-  constructor(private modalService: ModalService) { }
+  constructor(private modalService: ModalService, private api: ApiService) { }
 
   rxjsSocket: WebSocketSubject<WebSocketMessage> | null = null;
   public activePrivateChatUserId: number | null = null;
@@ -28,6 +29,9 @@ export class WebsocketService {
 
   // Notificar mensajes del chat de la IA
   public chatWithAiSubject = new Subject<ChatWithAiResponse>();
+
+  // Notificar comentario sobre una carta de la IA
+  public CardDetailsWithAiSubject = new Subject<ChatWithAiResponse>();
 
   // Notificar mensajes del chat privado
   public chatSubject = new Subject<ChatMessage>();
@@ -70,6 +74,10 @@ export class WebsocketService {
         this.chatWithAiSubject.next(message.Content);
         break;
 
+      case MsgType.CardDetailsWithAI:
+        this.CardDetailsWithAiSubject.next(message.Content);
+        break;
+
       default:
         console.warn("Mensaje no reconocido:", message.Type);
         break;
@@ -83,7 +91,7 @@ export class WebsocketService {
       'Tu cuenta ha sido suspendida',
       [{ text: 'Aceptar' }]
     );
-    
+
     this.error.next();
   }
 
@@ -102,14 +110,41 @@ export class WebsocketService {
 
   private onError(error: any) {
     console.error("Error en WebSocket:", error);
+    this.tryReconnect(3);
+  }
 
-    this.modalService.showAlert(
-      'error',
-      'Se ha perdido la conexión con el servidor',
-      [{ text: 'Aceptar' }]
-    );
+  // Intentar reconectar la conexión
+  private async tryReconnect(attemptsLeft: number): Promise<void> {
+    if (attemptsLeft <= 0) {
 
-    this.error.next();
+      this.modalService.showAlert(
+        'error',
+        'Se ha perdido la conexión con el servidor',
+        [{ text: 'Aceptar' }]
+      );
+
+      this.error.next();
+      return;
+    }
+
+    try {
+      const token = this.api.accessToken;
+      if (!token) throw new Error('Token no disponible');
+
+      const isAuthenticated = true;
+      await this.connectRxjs(token, isAuthenticated);
+      console.log('Re-conexión exitosa');
+
+    } catch (reconError) {
+      console.error('Fallo reconexión', reconError);
+
+      await this.delay(1000);
+      return this.tryReconnect(attemptsLeft - 1);
+    }
+  }
+
+  private delay(ms: number): Promise<void> {
+    return new Promise(res => setTimeout(res, ms));
   }
 
   private onDisconnected() {
@@ -157,8 +192,7 @@ export class WebsocketService {
         });
 
       } else {
-        console.error("No se ha podido iniciar la conexión WebSocket");
-        resolve();
+        reject(new Error('Imposible iniciar conexión WebSocket'));
       }
     });
   }
