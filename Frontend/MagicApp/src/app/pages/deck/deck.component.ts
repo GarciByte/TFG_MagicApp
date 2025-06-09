@@ -7,6 +7,7 @@ import { AuthService } from "src/app/services/auth.service"
 import { DeckServiceService } from "src/app/services/deck-service.service"
 import { User } from "src/app/models/user"
 import { DeckResponse } from "src/app/models/deck-response"
+import { DeckCardsService } from "src/app/services/deck-cards.service"
 
 @Component({
   selector: "app-decks",
@@ -21,13 +22,15 @@ export class DeckComponent implements OnInit {
   constructor(
     public navCtrl: NavController,
     private authService: AuthService,
-    private deckService: DeckServiceService
+    private deckService: DeckServiceService,
+    public deckCardsService: DeckCardsService
   ) { }
 
   async ngOnInit(): Promise<void> {
     if (!await this.authService.isAuthenticated()) {
       this.navCtrl.navigateRoot(['/']);
     } else {
+      this.deckCardsService.clear()
       await this.getUserDecks();
     }
   }

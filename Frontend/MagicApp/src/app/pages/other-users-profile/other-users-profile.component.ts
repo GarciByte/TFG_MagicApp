@@ -108,6 +108,10 @@ export class OtherUsersProfileComponent implements OnInit {
   // Ver mazos del usuario
   viewDecks(): void {
     console.log('Ver mazos de', this.user.userId);
+    this.navCtrl.navigateRoot(
+      ['/other-user-deck'],
+      { queryParams: { id: this.user.userId } }
+    );
   }
 
   // Reportar al usuario
