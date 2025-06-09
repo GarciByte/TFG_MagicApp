@@ -25,6 +25,12 @@ public class CardDetailResponse
     [JsonPropertyName("oracle_text")]
     public string OracleText { get; set; }
 
+    [JsonPropertyName("flavor_text")]
+    public string FlavorText { get; set; }
+
+    [JsonPropertyName("card_faces")]
+    public List<CardFace> CardFaces { get; set; }
+
     [JsonPropertyName("power")]
     public string Power { get; set; }
 

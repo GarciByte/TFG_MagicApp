@@ -11,6 +11,8 @@ public enum MsgType
     ForumNotification,      // Notificación del foro
     ChatNotification,       // Notificación de chat
     ChatWithAI,             // Mensaje del chat con la IA
+    CardDetailsWithAI,      // Comentar una carta con la IA
+    CancelAIMessage         // Cancelar petición hacia la IA
 }
 
 public class WebSocketMessage
