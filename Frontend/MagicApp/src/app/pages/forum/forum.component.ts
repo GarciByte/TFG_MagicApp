@@ -7,10 +7,11 @@ import { ForumService } from 'src/app/services/forum.service';
 import { ModalService } from 'src/app/services/modal.service';
 import { UserService } from 'src/app/services/user.service';
 import { IonButton, IonIcon, IonCard, IonCardHeader, IonContent } from "@ionic/angular/standalone";
+import { SidebarComponent } from "../../components/sidebar/sidebar.component";
 
 @Component({
   selector: 'app-forum',
-  imports: [IonContent, IonCardHeader, IonCard, IonIcon, IonButton, CommonModule],
+  imports: [IonContent, IonCardHeader, IonCard, IonIcon, IonButton, CommonModule, SidebarComponent],
   templateUrl: './forum.component.html',
   styleUrls: ['./forum.component.css'],
   standalone: true,

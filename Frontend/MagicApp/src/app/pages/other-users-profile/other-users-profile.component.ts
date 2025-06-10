@@ -12,10 +12,11 @@ import { environment } from 'src/environments/environment';
 import { IonContent, IonButton, IonCard, IonAvatar, IonIcon } from "@ionic/angular/standalone";
 import { ReportService } from 'src/app/services/report.service';
 import { NewReport } from 'src/app/models/new-report';
+import { SidebarComponent } from "../../components/sidebar/sidebar.component";
 
 @Component({
   selector: 'app-other-users-profile',
-  imports: [IonIcon, IonAvatar, IonCard, IonButton, IonContent, CommonModule, FormsModule],
+  imports: [IonIcon, IonAvatar, IonCard, IonButton, IonContent, CommonModule, FormsModule, SidebarComponent],
   templateUrl: './other-users-profile.component.html',
   styleUrls: ['./other-users-profile.component.css'],
   standalone: true,

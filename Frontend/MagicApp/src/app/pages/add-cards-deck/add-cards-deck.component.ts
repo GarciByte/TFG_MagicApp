@@ -17,10 +17,11 @@ import { Rarity } from 'src/app/models/enums/rarity';
 import { AuthService } from 'src/app/services/auth.service';
 import { CardColorService } from 'src/app/services/card-color.service';
 import { CardTypeService } from 'src/app/services/card-type.service';
+import { SidebarComponent } from "../../components/sidebar/sidebar.component";
 
 @Component({
   selector: 'app-add-cards-deck',
-  imports: [IonIcon, IonCheckbox, IonSearchbar, IonButton, IonContent, CommonModule, FormsModule, IonSelectOption, IonSelect],
+  imports: [IonIcon, IonCheckbox, IonSearchbar, IonButton, IonContent, CommonModule, FormsModule, IonSelectOption, IonSelect, SidebarComponent],
   templateUrl: './add-cards-deck.component.html',
   styleUrls: ['./add-cards-deck.component.css'],
   standalone: true,
@@ -56,7 +57,7 @@ export class AddCardsDeckComponent implements OnInit {
     private cardTransfer: CardTransferService,
     private router: Router,
     private sanitizer: DomSanitizer,
-  ) { }
+  ) {}
 
   async ngOnInit(): Promise<void> {
     if (!await this.authService.isAuthenticated()) {

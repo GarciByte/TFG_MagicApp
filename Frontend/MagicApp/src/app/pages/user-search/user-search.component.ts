@@ -8,10 +8,11 @@ import { UserService } from 'src/app/services/user.service';
 import { IonContent, IonButton, IonSearchbar, IonCard, IonAvatar, IonCardTitle, IonIcon } from "@ionic/angular/standalone";
 import { FormsModule } from '@angular/forms';
 import { environment } from 'src/environments/environment';
+import { SidebarComponent } from "../../components/sidebar/sidebar.component";
 
 @Component({
   selector: 'app-user-search',
-  imports: [IonIcon, IonCardTitle, IonAvatar, IonCard, IonSearchbar, IonButton, IonContent, CommonModule, FormsModule],
+  imports: [IonIcon, IonCardTitle, IonAvatar, IonCard, IonSearchbar, IonButton, IonContent, CommonModule, FormsModule, SidebarComponent],
   templateUrl: './user-search.component.html',
   styleUrls: ['./user-search.component.css'],
   standalone: true,

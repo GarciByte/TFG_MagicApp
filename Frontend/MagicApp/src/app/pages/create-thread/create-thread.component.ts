@@ -7,10 +7,11 @@ import { AuthService } from 'src/app/services/auth.service';
 import { ForumService } from 'src/app/services/forum.service';
 import { ModalService } from 'src/app/services/modal.service';
 import { IonContent, IonIcon, IonItem, IonLabel, IonNote, IonButton, IonInput, IonTextarea, IonCard, IonCardHeader } from "@ionic/angular/standalone";
+import { SidebarComponent } from "../../components/sidebar/sidebar.component";
 
 @Component({
   selector: 'app-create-thread',
-  imports: [IonCardHeader, IonCard, CommonModule, ReactiveFormsModule, IonContent, IonItem, IonLabel, IonInput, IonTextarea, IonButton, IonIcon, IonNote],
+  imports: [IonCardHeader, IonCard, CommonModule, ReactiveFormsModule, IonContent, IonItem, IonLabel, IonInput, IonTextarea, IonButton, IonIcon, IonNote, SidebarComponent],
   templateUrl: './create-thread.component.html',
   styleUrls: ['./create-thread.component.css'],
   standalone: true,

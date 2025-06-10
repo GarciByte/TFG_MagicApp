@@ -17,11 +17,12 @@ import {
 } from "@ionic/angular/standalone";
 import { MsgType, WebSocketMessage } from 'src/app/models/web-socket-message';
 import { WebsocketService } from 'src/app/services/websocket.service';
+import { SidebarComponent } from "../../components/sidebar/sidebar.component";
 
 @Component({
   selector: 'app-thread-detail',
   imports: [IonContent, IonCard, IonAvatar, IonCardHeader, IonIcon, IonItem, IonLabel,
-    IonCardContent, IonButton, CommonModule, ReactiveFormsModule, IonTextarea],
+    IonCardContent, IonButton, CommonModule, ReactiveFormsModule, IonTextarea, SidebarComponent],
   templateUrl: './thread-detail.component.html',
   styleUrls: ['./thread-detail.component.css'],
   standalone: true,

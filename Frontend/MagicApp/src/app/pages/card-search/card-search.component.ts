@@ -13,10 +13,11 @@ import { Rarity } from 'src/app/models/enums/rarity';
 import { CardType } from 'src/app/models/enums/card-type';
 import { CardColorService } from 'src/app/services/card-color.service';
 import { CardTypeService } from 'src/app/services/card-type.service';
+import { SidebarComponent } from "../../components/sidebar/sidebar.component";
 
 @Component({
   selector: 'app-card-search',
-  imports: [IonIcon, IonCheckbox, IonSearchbar, IonButton, IonContent, CommonModule, FormsModule, IonSelectOption, IonSelect],
+  imports: [IonIcon, IonCheckbox, IonSearchbar, IonButton, IonContent, CommonModule, FormsModule, IonSelectOption, IonSelect, SidebarComponent],
   templateUrl: './card-search.component.html',
   styleUrls: ['./card-search.component.css'],
   standalone: true,

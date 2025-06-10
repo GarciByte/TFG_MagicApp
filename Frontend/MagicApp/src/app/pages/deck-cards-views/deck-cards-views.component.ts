@@ -8,10 +8,11 @@ import { DeckServiceService } from 'src/app/services/deck-service.service';
 import { IonButton, IonCheckbox, IonContent, IonIcon, IonSearchbar, IonSelect, IonSelectOption } from "@ionic/angular/standalone";
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { SidebarComponent } from "../../components/sidebar/sidebar.component";
 
 @Component({
   selector: 'app-deck-cards-views',
-  imports: [IonIcon, IonCheckbox, IonSearchbar, IonButton, IonContent, CommonModule, FormsModule, IonSelectOption, IonSelect],
+  imports: [IonIcon, IonCheckbox, IonSearchbar, IonButton, IonContent, CommonModule, FormsModule, IonSelectOption, IonSelect, SidebarComponent],
   templateUrl: './deck-cards-views.component.html',
   styleUrls: ['./deck-cards-views.component.css'],
   standalone: true,

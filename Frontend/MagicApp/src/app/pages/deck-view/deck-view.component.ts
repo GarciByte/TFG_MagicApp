@@ -10,10 +10,11 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { DeckCardsService } from 'src/app/services/deck-cards.service';
 import { CardDetail } from 'src/app/models/card-detail';
+import { SidebarComponent } from "../../components/sidebar/sidebar.component";
 
 @Component({
   selector: 'app-deck-view',
-  imports: [IonIcon, CommonModule, FormsModule, IonContent],
+  imports: [IonIcon, CommonModule, FormsModule, IonContent, SidebarComponent],
   templateUrl: './deck-view.component.html',
   styleUrls: ['./deck-view.component.css'],
   standalone: true,

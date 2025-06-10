@@ -15,5 +15,5 @@
     <img *ngFor="let card of deckCards" (click)="navigateToDetails(card.id)" [src]="card.imageUrl" [alt]="card.name"
       loading="lazy" />
   </div>
-  
+  <app-sidebar></app-sidebar>
 </ion-content>

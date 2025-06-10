@@ -8,11 +8,12 @@ import { DeckServiceService } from "src/app/services/deck-service.service"
 import { User } from "src/app/models/user"
 import { DeckResponse } from "src/app/models/deck-response"
 import { DeckCardsService } from "src/app/services/deck-cards.service"
+import { SidebarComponent } from "../../components/sidebar/sidebar.component";
 
 @Component({
   selector: "app-decks",
   standalone: true,
-  imports: [CommonModule, RouterModule, IonContent, IonIcon, IonGrid, IonRow, IonCol],
+  imports: [CommonModule, RouterModule, IonContent, IonIcon, IonGrid, IonRow, IonCol, SidebarComponent],
   templateUrl: "./deck.component.html",
   styleUrls: ["./deck.component.css"],
 })

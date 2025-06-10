@@ -9,11 +9,12 @@ import { DeckRequest } from '../../models/deck-request';
 import { Router } from "@angular/router"
 import { DeckCardsService } from "src/app/services/deck-cards.service"
 import { CardDetail } from "src/app/models/card-detail"
+import { SidebarComponent } from "../../components/sidebar/sidebar.component";
 
 @Component({
   selector: "app-create-deck",
   standalone: true,
-  imports: [IonIcon, CommonModule, FormsModule, IonContent],
+  imports: [IonIcon, CommonModule, FormsModule, IonContent, SidebarComponent],
   templateUrl: "./create-deck.component.html",
   styleUrls: ["./create-deck.component.css"],
 })

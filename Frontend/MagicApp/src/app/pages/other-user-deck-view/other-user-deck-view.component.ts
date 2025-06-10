@@ -9,10 +9,11 @@ import { DeckResponse } from 'src/app/models/deck-response';
 import { AuthService } from 'src/app/services/auth.service';
 import { DeckCardsService } from 'src/app/services/deck-cards.service';
 import { DeckServiceService } from 'src/app/services/deck-service.service';
+import { SidebarComponent } from "../../components/sidebar/sidebar.component";
 
 @Component({
   selector: 'app-other-user-deck-view',
-   imports: [IonButton, IonIcon, CommonModule, FormsModule, IonContent],
+   imports: [IonButton, IonIcon, CommonModule, FormsModule, IonContent, SidebarComponent],
   templateUrl: './other-user-deck-view.component.html',
   styleUrls: ['./other-user-deck-view.component.css'],
   standalone: true,

@@ -17,10 +17,11 @@ import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 import { marked } from 'marked';
 import { Capacitor } from '@capacitor/core';
 import { Browser } from '@capacitor/browser';
+import { SidebarComponent } from "../../components/sidebar/sidebar.component";
 
 @Component({
   selector: 'app-chat-with-ai',
-  imports: [IonItem, IonIcon, IonCardContent, IonCard, IonButton, CommonModule, FormsModule, IonContent, IonFooter, IonSpinner],
+  imports: [IonItem, IonIcon, IonCardContent, IonCard, IonButton, CommonModule, FormsModule, IonContent, IonFooter, IonSpinner, SidebarComponent],
   templateUrl: './chat-with-ai.component.html',
   styleUrls: ['./chat-with-ai.component.css'],
   standalone: true,
