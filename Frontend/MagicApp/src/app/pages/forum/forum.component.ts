@@ -14,8 +14,7 @@ import { SidebarComponent } from "../../components/sidebar/sidebar.component";
 
 @Component({
   selector: 'app-forum',
-  imports: [IonContent, IonCardHeader, IonCard, IonIcon, IonButton, CommonModule, TranslateModule],
-  imports: [IonContent, IonCardHeader, IonCard, IonIcon, IonButton, CommonModule, SidebarComponent],
+  imports: [IonContent, IonCardHeader, IonCard, IonIcon, IonButton, CommonModule, SidebarComponent, TranslateModule],
   templateUrl: './forum.component.html',
   styleUrls: ['./forum.component.css'],
   standalone: true,
