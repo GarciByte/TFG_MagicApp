@@ -19,8 +19,6 @@ import { DeckCardsService } from 'src/app/services/deck-cards.service';
 import { Subscription } from 'rxjs';
 import { WebsocketService } from 'src/app/services/websocket.service';
 import { TranslateService, TranslateModule } from '@ngx-translate/core';
-import { CardTransferService } from 'src/app/services/card-transfer.service';
-import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-add-cards-deck',
@@ -57,10 +55,8 @@ export class AddCardsDeckComponent implements OnInit, OnDestroy {
     private modalService: ModalService,
     private cardColorService: CardColorService,
     private cardTypeService: CardTypeService,
-    private router: Router,
     private deckCardsService: DeckCardsService,
     private sanitizer: DomSanitizer,
-    private cardTransfer: CardTransferService,
     private webSocketService: WebsocketService,
     public translate: TranslateService
   ) { }

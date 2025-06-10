@@ -12,7 +12,6 @@ import { DeckCardsService } from 'src/app/services/deck-cards.service';
 import { Subscription } from 'rxjs';
 import { WebsocketService } from 'src/app/services/websocket.service';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
-import { CardDetail } from 'src/app/models/card-detail';
 import { SidebarComponent } from "../../components/sidebar/sidebar.component";
 
 @Component({
