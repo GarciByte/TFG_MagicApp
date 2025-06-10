@@ -111,12 +111,12 @@ export const routes: Routes = [
     loadComponent: () => import("./pages/deck-view/deck-view.component").then((m) => m.DeckViewComponent),
     pathMatch: "full",
   },
-    {
+  {
     path: "other-user-deck", // Ruta de Ver Mazo otro usuario
     loadComponent: () => import("./pages/other-user-deck/other-user-deck.component").then((m) => m.OtherUserDeckComponent),
     pathMatch: "full",
   },
-      {
+  {
     path: "other-user-deck-view", // Ruta de Ver Detalles del mazo de otro usuario
     loadComponent: () => import("./pages/other-user-deck-view/other-user-deck-view.component").then((m) => m.OtherUserDeckViewComponent),
     pathMatch: "full",

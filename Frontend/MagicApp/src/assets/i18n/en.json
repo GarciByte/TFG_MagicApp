@@ -39,5 +39,127 @@
             "PASSWORD_MIN": "Minimum 6 characters.",
             "PASSWORD_MISMATCH": "Passwords must match."
         }
+    },
+    "REPORT": {
+        "ALERT_TITLE": "Report {{nickname}}",
+        "MESSAGE": "Write the reason for your report",
+        "PLACEHOLDER": "Reason for the report…",
+        "CANCEL": "Cancel",
+        "SEND": "Send"
+    },
+    "COMMON": {
+        "ACCEPT": "OK",
+        "DELETE": "Delete",
+        "YES": "Yes",
+        "NO": "No"
+    },
+    "MODALS": {
+        "USER_BANNED": {
+            "TITLE": "Your account has been suspended"
+        },
+        "CONNECTION_LOST": "The connection to the server was lost",
+        "CANNOT_CONNECT": "Unable to connect to the server",
+        "CARD_FETCH_ERROR": {
+            "SINGLE": "An error occurred while fetching the card",
+            "DATA": "An error occurred while fetching the card data",
+            "MULTIPLE": "An error occurred while fetching the cards"
+        },
+        "FETCH_USERS_ERROR": "An error occurred while fetching all users",
+        "FETCH_REPORTS_ERROR": "An error occurred while fetching all reports",
+        "MODIFY_REPORT_ERROR": "An error occurred while updating the user report",
+        "MODIFY_ROLE_ERROR": "An error occurred while updating the user role",
+        "MODIFY_BAN_CONFIRM": "Are you sure you want to change the ban for {{nickname}}?",
+        "MODIFY_BAN_ERROR": "An error occurred while changing the user ban",
+        "DELETE_REPORT_CONFIRM": "Are you sure you want to delete report #{{id}}?",
+        "DELETE_REPORT_ERROR": "An error occurred while deleting the report"
+    },
+    "TOAST": {
+        "NEW_MESSAGE_FROM": "You’ve received a new message from {{nickname}}",
+        "NEW_THREAD_MESSAGE": "There’s a new message in the thread \"{{content}}\"",
+        "BAN_MODIFIED": "The ban for {{nickname}} has been updated",
+        "REPORT_DELETED": "Report #{{id}} deleted."
+    },
+    "ADMIN": {
+        "TITLE": "Admin",
+        "REPORTS": {
+            "TITLE": "Received Reports",
+            "SEARCH_PLACEHOLDER": "Nickname",
+            "TABLE": {
+                "ID": "ID",
+                "REPORTER": "Reporting User",
+                "REPORTED": "Reported User",
+                "REASON": "Reason",
+                "STATUS": "Status",
+                "ACTIONS": "Actions"
+            },
+            "STATUS": {
+                "IN_REVIEW": "In Review",
+                "REVIEWED": "Reviewed"
+            },
+            "BUTTON": {
+                "MARK_REVIEWED": "Mark as Reviewed",
+                "MARK_IN_REVIEW": "Mark as In Review"
+            }
+        },
+        "USERS": {
+            "TITLE": "Registered Users",
+            "SEARCH_PLACEHOLDER": "Nickname",
+            "TABLE": {
+                "ID": "ID",
+                "NICKNAME": "Nickname",
+                "EMAIL": "Email",
+                "ROLE": "Role",
+                "ACTIONS": "Actions"
+            },
+            "BUTTON": {
+                "CHANGE_ROLE": "Change Role",
+                "BAN": "Ban",
+                "UNBAN": "Unban"
+            }
+        },
+        "PAGINATION": {
+            "PAGE_INFO": "Page {{page}} of {{totalPages}}"
+        }
+    },
+    "RARITY": {
+        "COMMON": "Common",
+        "UNCOMMON": "Uncommon",
+        "RARE": "Rare",
+        "MYTHIC": "Mythic"
+    },
+    "COLOR": {
+        "WHITE": "White",
+        "BLUE": "Blue",
+        "BLACK": "Black",
+        "RED": "Red",
+        "GREEN": "Green"
+    },
+    "FILTER": {
+        "ALL": "All",
+        "SELECT_RARITY": "Select rarity",
+        "COLORS": "Colors:",
+        "RARITY": "Rarity:",
+        "TYPES": "Types:"
+    },
+    "SEARCH": {
+        "TITLE": "Card Search",
+        "PLACEHOLDER": "Enter name...",
+        "SHOW_FILTERS": "Show filters",
+        "LOADING": "Searching for cards…",
+        "NO_RESULTS": "No cards found."
+    },
+    "ACTIONS": {
+        "ADD_TO_DECK": "Add to deck",
+        "PREVIOUS": "Previous",
+        "NEXT": "Next"
+    },
+    "CARD_TYPE": {
+        "CREATURE": "Creature",
+        "INSTANT": "Instant",
+        "SORCERY": "Sorcery",
+        "ENCHANTMENT": "Enchantment",
+        "ARTIFACT": "Artifact",
+        "LAND": "Land",
+        "PLANESWALKER": "Planeswalker"
     }
 }

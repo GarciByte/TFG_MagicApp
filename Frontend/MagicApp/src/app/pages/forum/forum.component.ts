@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { NavController } from '@ionic/angular';
 import { ForumThread } from 'src/app/models/forum-thread';
 import { AuthService } from 'src/app/services/auth.service';
@@ -7,6 +7,8 @@ import { ForumService } from 'src/app/services/forum.service';
 import { ModalService } from 'src/app/services/modal.service';
 import { UserService } from 'src/app/services/user.service';
 import { IonButton, IonIcon, IonCard, IonCardHeader, IonContent } from "@ionic/angular/standalone";
+import { Subscription } from 'rxjs';
+import { WebsocketService } from 'src/app/services/websocket.service';
 
 @Component({
   selector: 'app-forum',
@@ -15,8 +17,8 @@ import { IonButton, IonIcon, IonCard, IonCardHeader, IonContent } from "@ionic/a
   styleUrls: ['./forum.component.css'],
   standalone: true,
 })
-export class ForumComponent implements OnInit {
-
+export class ForumComponent implements OnInit, OnDestroy {
+  error$: Subscription;
   threads: ForumThread[] = [];
   displayedThreads: ForumThread[] = [];
   subscribedThreadIds: Set<number> = new Set<number>();
@@ -32,13 +34,21 @@ export class ForumComponent implements OnInit {
     private authService: AuthService,
     private userService: UserService,
     private modalService: ModalService,
-    private forumService: ForumService
+    private forumService: ForumService,
+    private webSocketService: WebsocketService
   ) { }
 
   async ngOnInit(): Promise<void> {
-    if (!await this.authService.isAuthenticated()) {
+    if (!(await this.authService.isAuthenticated())) {
       this.navCtrl.navigateRoot(['/']);
+      return;
     }
+
+    this.error$ = this.webSocketService.error.subscribe(async () => {
+      await this.authService.logout();
+      this.navCtrl.navigateRoot(['/']);
+    });
+
     await this.checkAdmin();
     await this.loadThreads();
   }
@@ -136,30 +146,30 @@ export class ForumComponent implements OnInit {
 
   // Actualiza la lista de hilos que se muestran
   updateThreadsView() {
-  this.totalPages = Math.ceil(this.threads.length / this.pageSize) || 1;
-  if (this.page > this.totalPages) {
-    this.page = this.totalPages;
+    this.totalPages = Math.ceil(this.threads.length / this.pageSize) || 1;
+    if (this.page > this.totalPages) {
+      this.page = this.totalPages;
+    }
+    const start = (this.page - 1) * this.pageSize;
+    this.displayedThreads = this.threads.slice(start, start + this.pageSize);
   }
-  const start = (this.page - 1) * this.pageSize;
-  this.displayedThreads = this.threads.slice(start, start + this.pageSize);
-}
 
   // Cambiar de página
   goPage(delta: number) {
-  const newPage = this.page + delta;
-  if (newPage >= 1 && newPage <= this.totalPages) {
-    this.page = newPage;
-    this.updateThreadsView();
+    const newPage = this.page + delta;
+    if (newPage >= 1 && newPage <= this.totalPages) {
+      this.page = newPage;
+      this.updateThreadsView();
+    }
   }
-}
 
-// Cambiar a la primera/última página
-goToPage(newPage: number) {
-  if (newPage >= 1 && newPage <= this.totalPages) {
-    this.page = newPage;
-    this.updateThreadsView();
+  // Cambiar a la primera/última página
+  goToPage(newPage: number) {
+    if (newPage >= 1 && newPage <= this.totalPages) {
+      this.page = newPage;
+      this.updateThreadsView();
+    }
   }
-}
 
   // Comprueba si el usuario está suscrito al hilo
   isSubscribed(threadId: number): boolean {
@@ -374,6 +384,12 @@ goToPage(newPage: number) {
         [{ text: 'Aceptar' }]
       );
 
+    }
+  }
+
+  ngOnDestroy(): void {
+    if (this.error$) {
+      this.error$.unsubscribe();
     }
   }
 

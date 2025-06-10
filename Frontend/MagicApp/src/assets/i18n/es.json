@@ -39,5 +39,127 @@
             "PASSWORD_MIN": "Mínimo 6 caracteres.",
             "PASSWORD_MISMATCH": "Las contraseñas deben coincidir."
         }
+    },
+    "REPORT": {
+        "ALERT_TITLE": "Reportar a {{nickname}}",
+        "MESSAGE": "Escribe el motivo de tu reporte",
+        "PLACEHOLDER": "Motivo del reporte…",
+        "CANCEL": "Cancelar",
+        "SEND": "Enviar"
+    },
+    "COMMON": {
+        "ACCEPT": "Aceptar",
+        "DELETE": "Eliminar",
+        "YES": "Sí",
+        "NO": "No"
+    },
+    "MODALS": {
+        "USER_BANNED": {
+            "TITLE": "Tu cuenta ha sido suspendida"
+        },
+        "CONNECTION_LOST": "Se ha perdido la conexión con el servidor",
+        "CANNOT_CONNECT": "No se ha podido conectar con el servidor",
+        "CARD_FETCH_ERROR": {
+            "SINGLE": "Se ha producido un error obteniendo la carta",
+            "DATA": "Se ha producido un error obteniendo los datos de la carta",
+            "MULTIPLE": "Se ha producido un error obteniendo las cartas"
+        },
+        "FETCH_USERS_ERROR": "Se ha producido un error al obtener todos los usuarios",
+        "FETCH_REPORTS_ERROR": "Se ha producido un error al obtener todos los reportes",
+        "MODIFY_REPORT_ERROR": "Se ha producido un error al modificar el reporte del usuario",
+        "MODIFY_ROLE_ERROR": "Se ha producido un error al modificar el rol del usuario",
+        "MODIFY_BAN_CONFIRM": "¿Estás seguro de que quieres modificar la prohibición de {{nickname}}?",
+        "MODIFY_BAN_ERROR": "Se ha producido un error al modificar la prohibición del usuario",
+        "DELETE_REPORT_CONFIRM": "¿Estás seguro de que quieres eliminar el reporte #{{id}}?",
+        "DELETE_REPORT_ERROR": "Se ha producido un error al eliminar el reporte"
+    },
+    "TOAST": {
+        "NEW_MESSAGE_FROM": "Has recibido un nuevo mensaje de {{nickname}}",
+        "NEW_THREAD_MESSAGE": "Hay un nuevo mensaje en el hilo \"{{content}}\"",
+        "BAN_MODIFIED": "Se ha modificado la prohibición de {{nickname}}",
+        "REPORT_DELETED": "Reporte #{{id}} eliminado."
+    },
+    "ADMIN": {
+        "TITLE": "Admin",
+        "REPORTS": {
+            "TITLE": "Reportes recibidos",
+            "SEARCH_PLACEHOLDER": "Nickname",
+            "TABLE": {
+                "ID": "ID",
+                "REPORTER": "Usuario reportante",
+                "REPORTED": "Usuario reportado",
+                "REASON": "Razón",
+                "STATUS": "Estado",
+                "ACTIONS": "Acciones"
+            },
+            "STATUS": {
+                "IN_REVIEW": "En Revisión",
+                "REVIEWED": "Revisado"
+            },
+            "BUTTON": {
+                "MARK_REVIEWED": "Marcar como Revisado",
+                "MARK_IN_REVIEW": "Marcar como En Revisión"
+            }
+        },
+        "USERS": {
+            "TITLE": "Usuarios registrados",
+            "SEARCH_PLACEHOLDER": "Nickname",
+            "TABLE": {
+                "ID": "ID",
+                "NICKNAME": "Apodo",
+                "EMAIL": "Correo electrónico",
+                "ROLE": "Rol",
+                "ACTIONS": "Acciones"
+            },
+            "BUTTON": {
+                "CHANGE_ROLE": "Cambiar Rol",
+                "BAN": "Prohibir",
+                "UNBAN": "Quitar Prohibición"
+            }
+        },
+        "PAGINATION": {
+            "PAGE_INFO": "Página {{page}} de {{totalPages}}"
+        }
+    },
+    "RARITY": {
+        "COMMON": "Común",
+        "UNCOMMON": "Poco Común",
+        "RARE": "Rara",
+        "MYTHIC": "Mítica"
+    },
+    "COLOR": {
+        "WHITE": "Blanco",
+        "BLUE": "Azul",
+        "BLACK": "Negro",
+        "RED": "Rojo",
+        "GREEN": "Verde"
+    },
+    "FILTER": {
+        "ALL": "Todas",
+        "SELECT_RARITY": "Selecciona rareza",
+        "COLORS": "Colores:",
+        "RARITY": "Rareza:",
+        "TYPES": "Tipos:"
+    },
+    "SEARCH": {
+        "TITLE": "Buscador de cartas",
+        "PLACEHOLDER": "Escribe nombre...",
+        "SHOW_FILTERS": "Mostrar filtros",
+        "LOADING": "Buscando cartas…",
+        "NO_RESULTS": "No se encontraron cartas."
+    },
+    "ACTIONS": {
+        "ADD_TO_DECK": "Añadir al mazo",
+        "PREVIOUS": "Anterior",
+        "NEXT": "Siguiente"
+    },
+    "CARD_TYPE": {
+        "CREATURE": "Criatura",
+        "INSTANT": "Instantáneo",
+        "SORCERY": "Conjuro",
+        "ENCHANTMENT": "Encantamiento",
+        "ARTIFACT": "Artefacto",
+        "LAND": "Tierra",
+        "PLANESWALKER": "Planeswalker"
     }
 }

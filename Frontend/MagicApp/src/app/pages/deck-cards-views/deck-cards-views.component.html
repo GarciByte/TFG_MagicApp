@@ -1,4 +1,4 @@
-<ion-content>
+<ion-content [fullscreen]="true" class="ion-padding">
   <div class="header-container">
     <ion-icon name="arrow-back-outline" class="back-icon" (click)="navCtrl.back()"></ion-icon>
     <h1 class="page-title">Cartas del mazo</h1>
@@ -8,12 +8,12 @@
   <div class="message" *ngIf="deckCards.length === 0">
     No se encontraron cartas.
   </div>
-<br>
-<br>
+  <br>
+  <br>
   <!-- Listado de cartas -->
   <div class="card-grid" *ngIf="deckCards.length > 0">
     <img *ngFor="let card of deckCards" (click)="navigateToDetails(card.id)" [src]="card.imageUrl" [alt]="card.name"
       loading="lazy" />
   </div>
-  
+
 </ion-content>

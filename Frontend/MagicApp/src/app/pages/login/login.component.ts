@@ -6,10 +6,11 @@ import { NavController } from '@ionic/angular';
 import { ModalService } from 'src/app/services/modal.service';
 import { FormsModule } from '@angular/forms';
 import { IonContent, IonItem, IonLabel, IonButton, IonCardContent, IonCard, IonInput, IonCheckbox } from "@ionic/angular/standalone";
+import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-login',
-  imports: [IonContent, IonCard, IonCardContent, IonItem, IonInput, IonCheckbox, IonLabel, IonButton, CommonModule, FormsModule],
+  imports: [IonContent, IonCard, IonCardContent, IonItem, IonInput, IonCheckbox, IonLabel, IonButton, CommonModule, FormsModule, TranslateModule],
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.css'],
   standalone: true,
@@ -28,7 +29,7 @@ export class LoginComponent implements OnInit {
   ) { }
 
   async ngOnInit(): Promise<void> {
-    if (await this.authService.isAuthenticated() && this.websocketService.isConnectedRxjs()) {
+    if ((await this.authService.isAuthenticated()) && this.websocketService.isConnectedRxjs()) {
       this.navCtrl.navigateRoot(['/menu']);
     }
   }

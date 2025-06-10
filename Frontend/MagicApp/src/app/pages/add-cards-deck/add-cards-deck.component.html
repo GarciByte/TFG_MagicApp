@@ -1,25 +1,27 @@
-<ion-content>
+<ion-content [fullscreen]="true" class="ion-padding">
   <div class="header-container">
     <ion-icon name="arrow-back-outline" class="back-icon" (click)="navCtrl.navigateRoot(['/menu'])"></ion-icon>
-    <h1 class="page-title">Buscador de cartas</h1>
+    <h1 class="page-title">{{ 'SEARCH.TITLE' | translate }}</h1>
   </div>
 
-  <!-- Buscador y botón filtro juntos -->
+  <!-- Buscador y botón filtro -->
   <div class="search-filter-container">
-    <ion-searchbar name="searchTerm" [(ngModel)]="searchTerm" placeholder="Escribe nombre..." (keyup.enter)="search()"
-      (ionInput)="realTimeSearch()">
+    <ion-searchbar name="searchTerm" [(ngModel)]="searchTerm" [placeholder]="'SEARCH.PLACEHOLDER' | translate"
+      (keyup.enter)="search()" (ionInput)="realTimeSearch()">
     </ion-searchbar>
 
-    <ion-button fill="clear" class="filter-icon-button" (click)="toggleFilters()" aria-label="Mostrar filtros">
+    <ion-button fill="clear" class="filter-icon-button" (click)="toggleFilters()"
+      [attr.aria-label]="'SEARCH.SHOW_FILTERS' | translate">
       <ion-icon name="filter-outline"></ion-icon>
     </ion-button>
   </div>
 
-  <!-- Dropdown filtros, aparece solo si showAllFilters = true -->
+  <!-- Filtros -->
   <div class="filter-dropdown" *ngIf="showAllFilters" (click)="$event.stopPropagation()">
+
     <!-- Colores -->
     <div class="filter-group">
-      <label>Colores:</label>
+      <label>{{ 'FILTER.COLORS' | translate }}</label>
       <label *ngFor="let option of cardColorOptions" class="checkbox-item">
         <ion-checkbox [(ngModel)]="option.checked" (ionChange)="cardColor(option)">
         </ion-checkbox>
@@ -29,8 +31,8 @@
 
     <!-- Rareza -->
     <div class="filter-group">
-      <label>Rareza:</label>
-      <ion-select [(ngModel)]="rarity" interface="popover" placeholder="Selecciona rareza"
+      <label>{{ 'FILTER.RARITY' | translate }}</label>
+      <ion-select [(ngModel)]="rarity" interface="popover" placeholder="'FILTER.SELECT_RARITY' | translate"
         (ionChange)="realTimeSearch()">
         <ion-select-option *ngFor="let option of rarityOptions" [value]="option.value">
           {{ option.label }}
@@ -38,40 +40,39 @@
       </ion-select>
     </div>
 
-
     <!-- Tipos -->
     <div class="filter-group">
-      <label>Tipos:</label>
+      <label>{{ 'FILTER.TYPES' | translate }}</label>
       <label *ngFor="let option of cardTypeOptions" class="checkbox-item">
         <ion-checkbox [(ngModel)]="option.checked" (ionChange)="cardType(option)">
         </ion-checkbox>
-        <span>{{ option.label }}</span>
+        <span>{{ option.label | translate }}</span>
       </label>
     </div>
   </div>
 
   <!-- Mensaje de estado -->
-  <div class="message" *ngIf="isLoading">Buscando cartas…</div>
+  <div class="message" *ngIf="isLoading">{{ 'SEARCH.LOADING' | translate }}</div>
   <div class="message" *ngIf="!isLoading && hasSearched && cards.length === 0">
-    No se encontraron cartas.
+    {{ 'SEARCH.NO_RESULTS' | translate }}
   </div>
 
   <!-- Listado de cartas -->
-<div class="card-grid" *ngIf="!isLoading && cards.length > 0">
-  <div class="card-item" *ngFor="let card of cards">
-    <img (click)="navigateToDetails(card.id)" [src]="card.imageUrl" [alt]="card.name" loading="lazy" />
-    <button class="add-to-deck-btn" (click)="selectCard(card.id)">
-      <ion-icon name="add-circle-outline"></ion-icon>
-      <span>Añadir al mazo</span>
-    </button>
+  <div class="card-grid" *ngIf="!isLoading && cards.length > 0">
+    <div class="card-item" *ngFor="let card of cards">
+      <img (click)="navigateToDetails(card.id)" [src]="card.imageUrl" [alt]="card.name" loading="lazy" />
+      <button class="add-to-deck-btn" (click)="selectCard(card.id)">
+        <ion-icon name="add-circle-outline"></ion-icon>
+        <span>{{ 'ACTIONS.ADD_TO_DECK' | translate }}</span>
+      </button>
+    </div>
   </div>
-</div>
-
 
   <!-- Paginación -->
   <div class="pagination-buttons" style="display: flex; justify-content: center; margin-top: 20px;">
-    <ion-button size="small" shape="round" (click)="prevPage()" [disabled]="page === 1">Anterior</ion-button>
-    <ion-button size="small" shape="round" (click)="nextPage()">Siguiente</ion-button>
+    <ion-button size="small" shape="round" (click)="prevPage()" [disabled]="page === 1">{{ 'ACTIONS.PREVIOUS' |
+      translate }}</ion-button>
+    <ion-button size="small" shape="round" (click)="nextPage()">{{ 'ACTIONS.NEXT' | translate }}</ion-button>
   </div>
 
 </ion-content>

@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { NavController } from '@ionic/angular';
 import { User } from 'src/app/models/user';
 import { AuthService } from 'src/app/services/auth.service';
@@ -8,6 +8,8 @@ import { UserService } from 'src/app/services/user.service';
 import { IonContent, IonButton, IonSearchbar, IonCard, IonAvatar, IonCardTitle, IonIcon } from "@ionic/angular/standalone";
 import { FormsModule } from '@angular/forms';
 import { environment } from 'src/environments/environment';
+import { Subscription } from 'rxjs';
+import { WebsocketService } from 'src/app/services/websocket.service';
 
 @Component({
   selector: 'app-user-search',
@@ -16,8 +18,8 @@ import { environment } from 'src/environments/environment';
   styleUrls: ['./user-search.component.css'],
   standalone: true,
 })
-export class UserSearchComponent implements OnInit {
-
+export class UserSearchComponent implements OnInit, OnDestroy {
+  error$: Subscription;
   searchTerm = '';
   filteredUsers: User[] = [];
   hasSearched = false;
@@ -28,13 +30,20 @@ export class UserSearchComponent implements OnInit {
     public navCtrl: NavController,
     private authService: AuthService,
     private userService: UserService,
-    private modalService: ModalService
+    private modalService: ModalService,
+    private webSocketService: WebsocketService
   ) { }
 
   async ngOnInit(): Promise<void> {
-    if (!await this.authService.isAuthenticated()) {
+    if (!(await this.authService.isAuthenticated())) {
       this.navCtrl.navigateRoot(['/']);
+      return;
     }
+
+    this.error$ = this.webSocketService.error.subscribe(async () => {
+      await this.authService.logout();
+      this.navCtrl.navigateRoot(['/']);
+    });
 
     this.user = await this.authService.getUser();
   }
@@ -103,6 +112,12 @@ export class UserSearchComponent implements OnInit {
       ['/other-users-profile'],
       { queryParams: { id: userId } }
     );
+  }
+
+  ngOnDestroy(): void {
+    if (this.error$) {
+      this.error$.unsubscribe();
+    }
   }
 
 }

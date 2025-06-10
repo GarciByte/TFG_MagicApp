@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { NavController } from '@ionic/angular';
 import { User } from 'src/app/models/user';
 import { AuthService } from 'src/app/services/auth.service';
@@ -14,17 +14,20 @@ import {
 } from '@ionic/angular/standalone';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { Subscription } from 'rxjs';
+import { TranslateService, TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-admin-profile',
   imports: [IonIcon, CommonModule, FormsModule, IonContent, IonButton, IonCard, IonCardHeader, IonCardSubtitle,
-    IonCardContent, IonSearchbar, IonSelect, IonSelectOption],
+    IonCardContent, IonSearchbar, IonSelect, IonSelectOption, TranslateModule],
   templateUrl: './admin-profile.component.html',
   styleUrls: ['./admin-profile.component.css'],
   standalone: true,
 })
-export class AdminProfileComponent implements OnInit {
+export class AdminProfileComponent implements OnInit, OnDestroy {
 
+  error$: Subscription;
   isAdmin = false;
   user: User = null;
   allUsers: User[] = [];
@@ -54,13 +57,21 @@ export class AdminProfileComponent implements OnInit {
     private userService: UserService,
     private reportService: ReportService,
     private modalService: ModalService,
-    private webSocketService: WebsocketService
+    private webSocketService: WebsocketService,
+    public translate: TranslateService
   ) { }
 
   async ngOnInit(): Promise<void> {
-    if (!await this.authService.isAuthenticated()) {
+    if (!(await this.authService.isAuthenticated())) {
       this.navCtrl.navigateRoot(['/']);
+      return;
     }
+
+    this.error$ = this.webSocketService.error.subscribe(async () => {
+      await this.authService.logout();
+      this.navCtrl.navigateRoot(['/']);
+    });
+
     await this.loadUser();
   }
 
@@ -104,8 +115,8 @@ export class AdminProfileComponent implements OnInit {
 
         this.modalService.showAlert(
           'error',
-          'Se ha producido un error al obtener todos los usuarios',
-          [{ text: 'Aceptar' }]
+          this.translate.instant('MODALS.FETCH_USERS_ERROR'),
+          [{ text: this.translate.instant('COMMON.ACCEPT') }]
         );
       }
 
@@ -114,8 +125,8 @@ export class AdminProfileComponent implements OnInit {
 
       this.modalService.showAlert(
         'error',
-        'Se ha producido un error al obtener todos los usuarios',
-        [{ text: 'Aceptar' }]
+        this.translate.instant('MODALS.FETCH_USERS_ERROR'),
+        [{ text: this.translate.instant('COMMON.ACCEPT') }]
       );
     }
   }
@@ -134,8 +145,8 @@ export class AdminProfileComponent implements OnInit {
 
         this.modalService.showAlert(
           'error',
-          'Se ha producido un error al obtener todos los reportes',
-          [{ text: 'Aceptar' }]
+          this.translate.instant('MODALS.FETCH_REPORTS_ERROR'),
+          [{ text: this.translate.instant('COMMON.ACCEPT') }]
         );
       }
 
@@ -144,8 +155,8 @@ export class AdminProfileComponent implements OnInit {
 
       this.modalService.showAlert(
         'error',
-        'Se ha producido un error al obtener todos los reportes',
-        [{ text: 'Aceptar' }]
+        this.translate.instant('MODALS.FETCH_REPORTS_ERROR'),
+        [{ text: this.translate.instant('COMMON.ACCEPT') }]
       );
     }
   }
@@ -169,8 +180,8 @@ export class AdminProfileComponent implements OnInit {
 
         this.modalService.showAlert(
           'error',
-          'Se ha producido un error al modificar el reporte del usuario',
-          [{ text: 'Aceptar' }]
+          this.translate.instant('MODALS.MODIFY_REPORT_ERROR'),
+          [{ text: this.translate.instant('COMMON.ACCEPT') }]
         );
 
       }
@@ -180,8 +191,8 @@ export class AdminProfileComponent implements OnInit {
 
       this.modalService.showAlert(
         'error',
-        'Se ha producido un error al modificar el reporte del usuario',
-        [{ text: 'Aceptar' }]
+        this.translate.instant('MODALS.MODIFY_REPORT_ERROR'),
+        [{ text: this.translate.instant('COMMON.ACCEPT') }]
       );
     }
 
@@ -207,8 +218,8 @@ export class AdminProfileComponent implements OnInit {
 
         this.modalService.showAlert(
           'error',
-          'Se ha producido un error al modificar el rol del usuario',
-          [{ text: 'Aceptar' }]
+          this.translate.instant('MODALS.MODIFY_ROLE_ERROR'),
+          [{ text: this.translate.instant('COMMON.ACCEPT') }]
         );
 
       }
@@ -218,8 +229,8 @@ export class AdminProfileComponent implements OnInit {
 
       this.modalService.showAlert(
         'error',
-        'Se ha producido un error al modificar el rol del usuario',
-        [{ text: 'Aceptar' }]
+        this.translate.instant('MODALS.MODIFY_ROLE_ERROR'),
+        [{ text: this.translate.instant('COMMON.ACCEPT') }]
       );
     }
 
@@ -231,15 +242,13 @@ export class AdminProfileComponent implements OnInit {
 
     await this.modalService.showAlert(
       'warning',
-      `¿Estás seguro de que quieres modificar la prohibición de ${user.nickname}?`,
+      this.translate.instant('MODALS.MODIFY_BAN_CONFIRM', { nickname: user.nickname }),
       [
         {
-          text: 'Sí',
-          handler: async () => {
-            await this.modifyUserBan(user);
-          }
+          text: this.translate.instant('COMMON.YES'),
+          handler: async () => { await this.modifyUserBan(user); }
         },
-        { text: 'No' }
+        { text: this.translate.instant('COMMON.NO') }
       ]
     );
   }
@@ -258,7 +267,10 @@ export class AdminProfileComponent implements OnInit {
       const result = await this.userService.modifyBan(user.userId, isBanned);
 
       if (result.success) {
-        this.modalService.showToast(`Se ha modificado la prohibición de ${user.nickname}`, "success");
+        this.modalService.showToast(
+          this.translate.instant('TOAST.BAN_MODIFIED', { nickname: user.nickname }),
+          'success'
+        );
 
         if (isBanned) {
 
@@ -275,8 +287,8 @@ export class AdminProfileComponent implements OnInit {
 
         this.modalService.showAlert(
           'error',
-          'Se ha producido un error al modificar la prohibición del usuario',
-          [{ text: 'Aceptar' }]
+          this.translate.instant('MODALS.MODIFY_BAN_ERROR'),
+          [{ text: this.translate.instant('COMMON.ACCEPT') }]
         );
 
       }
@@ -286,8 +298,8 @@ export class AdminProfileComponent implements OnInit {
 
       this.modalService.showAlert(
         'error',
-        'Se ha producido un error al modificar la prohibición del usuario',
-        [{ text: 'Aceptar' }]
+        this.translate.instant('MODALS.MODIFY_BAN_ERROR'),
+        [{ text: this.translate.instant('COMMON.ACCEPT') }]
       );
     }
 
@@ -298,15 +310,13 @@ export class AdminProfileComponent implements OnInit {
   async confirmDeleteReport(report: Report) {
     await this.modalService.showAlert(
       'warning',
-      `¿Estás seguro de que quieres eliminar el reporte #${report.id}?`,
+      this.translate.instant('MODALS.DELETE_REPORT_CONFIRM', { id: report.id }),
       [
         {
-          text: 'Sí',
-          handler: async () => {
-            await this.deleteReport(report.id);
-          }
+          text: this.translate.instant('COMMON.YES'),
+          handler: async () => { await this.deleteReport(report.id); }
         },
-        { text: 'No' }
+        { text: this.translate.instant('COMMON.NO') }
       ]
     );
   }
@@ -317,15 +327,18 @@ export class AdminProfileComponent implements OnInit {
       const result = await this.reportService.deleteReport(id);
 
       if (result.success) {
-        this.modalService.showToast(`Reporte #${id} eliminado.`, 'success');
+        this.modalService.showToast(
+          this.translate.instant('TOAST.REPORT_DELETED', { id: id }),
+          'success'
+        );
 
       } else {
         console.error("Error al eliminar el reporte:", result.error);
 
         this.modalService.showAlert(
           'error',
-          'Se ha producido un error al eliminar el reporte',
-          [{ text: 'Aceptar' }]
+          this.translate.instant('MODALS.DELETE_REPORT_ERROR'),
+          [{ text: this.translate.instant('COMMON.ACCEPT') }]
         );
 
       }
@@ -335,8 +348,8 @@ export class AdminProfileComponent implements OnInit {
 
       this.modalService.showAlert(
         'error',
-        'Se ha producido un error al eliminar el reporte',
-        [{ text: 'Aceptar' }]
+        this.translate.instant('MODALS.DELETE_REPORT_ERROR'),
+        [{ text: this.translate.instant('COMMON.ACCEPT') }]
       );
     }
 
@@ -426,6 +439,12 @@ export class AdminProfileComponent implements OnInit {
     if (newPage >= 1 && newPage <= this.userTotalPages) {
       this.userPage = newPage;
       this.updateUsersView();
+    }
+  }
+
+  ngOnDestroy(): void {
+    if (this.error$) {
+      this.error$.unsubscribe();
     }
   }
 
