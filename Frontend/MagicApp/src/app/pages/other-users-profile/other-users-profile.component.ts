@@ -13,10 +13,11 @@ import { IonContent, IonButton, IonCard, IonAvatar, IonIcon } from "@ionic/angul
 import { ReportService } from 'src/app/services/report.service';
 import { NewReport } from 'src/app/models/new-report';
 import { WebsocketService } from 'src/app/services/websocket.service';
+import { TranslateService, TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-other-users-profile',
-  imports: [IonIcon, IonAvatar, IonCard, IonButton, IonContent, CommonModule, FormsModule],
+  imports: [IonIcon, IonAvatar, IonCard, IonButton, IonContent, CommonModule, FormsModule, TranslateModule],
   templateUrl: './other-users-profile.component.html',
   styleUrls: ['./other-users-profile.component.css'],
   standalone: true,
@@ -35,7 +36,8 @@ export class OtherUsersProfileComponent implements OnInit, OnDestroy {
     private userService: UserService,
     private modalService: ModalService,
     private reportService: ReportService,
-    private webSocketService: WebsocketService
+    private webSocketService: WebsocketService,
+    public translate: TranslateService
   ) { }
 
   async ngOnInit(): Promise<void> {
@@ -93,9 +95,10 @@ export class OtherUsersProfileComponent implements OnInit, OnDestroy {
 
         this.modalService.showAlert(
           'error',
-          'Se ha producido un error al obtener los datos del usuario',
-          [{ text: 'Aceptar' }]
+          this.translate.instant('OTHER_USERS_PROFILE.ERROR_GET_USER_DATA'),
+          [{ text: this.translate.instant('COMMON.ACCEPT') }]
         );
+
       }
 
     } catch (error) {
@@ -103,9 +106,10 @@ export class OtherUsersProfileComponent implements OnInit, OnDestroy {
 
       this.modalService.showAlert(
         'error',
-        'Se ha producido un error al obtener los datos del usuario',
-        [{ text: 'Aceptar' }]
+        this.translate.instant('OTHER_USERS_PROFILE.ERROR_GET_USER_DATA'),
+        [{ text: this.translate.instant('COMMON.ACCEPT') }]
       );
+
     }
   }
 
@@ -130,7 +134,12 @@ export class OtherUsersProfileComponent implements OnInit, OnDestroy {
     const reason = await this.modalService.promptReportReason(this.user.nickname);
 
     if (!reason) {
-      this.modalService.showToast('Reporte cancelado', 'warning');
+
+      this.modalService.showToast(
+        this.translate.instant('OTHER_USERS_PROFILE.REPORT_CANCELLED'),
+        'warning'
+      );
+
       return;
     }
 
@@ -143,7 +152,11 @@ export class OtherUsersProfileComponent implements OnInit, OnDestroy {
       const result = await this.reportService.createReport(newReport);
 
       if (result.success) {
-        this.modalService.showToast(`Has reportado a ${this.user.nickname} con éxito`, "success");
+
+        this.modalService.showToast(
+          this.translate.instant('OTHER_USERS_PROFILE.REPORT_SUCCESS', { nickname: this.user.nickname }),
+          'success'
+        );
 
       } else {
 
@@ -151,8 +164,8 @@ export class OtherUsersProfileComponent implements OnInit, OnDestroy {
 
           this.modalService.showAlert(
             'warning',
-            'Ya has reportado a este usuario',
-            [{ text: 'Aceptar' }]
+            this.translate.instant('OTHER_USERS_PROFILE.ALREADY_REPORTED'),
+            [{ text: this.translate.instant('COMMON.ACCEPT') }]
           );
 
         } else {
@@ -160,8 +173,8 @@ export class OtherUsersProfileComponent implements OnInit, OnDestroy {
 
           this.modalService.showAlert(
             'error',
-            'Se ha producido un error al enviar el reporte',
-            [{ text: 'Aceptar' }]
+            this.translate.instant('OTHER_USERS_PROFILE.ERROR_SEND_REPORT'),
+            [{ text: this.translate.instant('COMMON.ACCEPT') }]
           );
 
         }
@@ -172,8 +185,8 @@ export class OtherUsersProfileComponent implements OnInit, OnDestroy {
 
       this.modalService.showAlert(
         'error',
-        'Se ha producido un error al enviar el reporte',
-        [{ text: 'Aceptar' }]
+        this.translate.instant('OTHER_USERS_PROFILE.ERROR_SEND_REPORT'),
+        [{ text: this.translate.instant('COMMON.ACCEPT') }]
       );
 
     }

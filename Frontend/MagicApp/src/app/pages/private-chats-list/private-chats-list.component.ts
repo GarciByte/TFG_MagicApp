@@ -10,10 +10,11 @@ import { UserService } from 'src/app/services/user.service';
 import { WebsocketService } from 'src/app/services/websocket.service';
 import { ChatList } from 'src/app/models/chat-list';
 import { IonCardContent, IonCardHeader, IonAvatar, IonCardTitle, IonCard, IonContent, IonButton, IonIcon } from "@ionic/angular/standalone";
+import { TranslateService, TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-private-chats-list',
-  imports: [IonIcon, IonButton, IonContent, IonCard, IonCardTitle, IonAvatar, IonCardHeader, IonCardContent, CommonModule],
+  imports: [IonIcon, IonButton, IonContent, IonCard, IonCardTitle, IonAvatar, IonCardHeader, IonCardContent, CommonModule, TranslateModule],
   templateUrl: './private-chats-list.component.html',
   styleUrls: ['./private-chats-list.component.css'],
   standalone: true,
@@ -30,7 +31,8 @@ export class PrivateChatsListComponent implements OnInit, OnDestroy {
     private webSocketService: WebsocketService,
     private userService: UserService,
     private chatMessageService: ChatMessageService,
-    private modalService: ModalService
+    private modalService: ModalService,
+    public translate: TranslateService
   ) { }
 
   async ngOnInit(): Promise<void> {
@@ -52,10 +54,7 @@ export class PrivateChatsListComponent implements OnInit, OnDestroy {
     // Nuevos mensajes en el chat
     this.chatSubscription = this.webSocketService.chatSubject.subscribe(async () => {
       await this.getChatsList();
-      console.log("Actualización de chats:", this.chatList);
     });
-
-    console.log(this.chatList);
   }
 
   ngOnDestroy(): void {
@@ -94,8 +93,8 @@ export class PrivateChatsListComponent implements OnInit, OnDestroy {
 
         this.modalService.showAlert(
           'error',
-          'Se ha producido un error al obtener la lista de chats del usuario',
-          [{ text: 'Aceptar' }]
+          this.translate.instant('PRIVATE_CHATS_LIST.ERROR_GET_LIST'),
+          [{ text: this.translate.instant('COMMON.ACCEPT') }]
         );
 
       }
@@ -105,8 +104,8 @@ export class PrivateChatsListComponent implements OnInit, OnDestroy {
 
       this.modalService.showAlert(
         'error',
-        'Se ha producido un error al obtener la lista de chats del usuario',
-        [{ text: 'Aceptar' }]
+        this.translate.instant('PRIVATE_CHATS_LIST.ERROR_GET_LIST'),
+        [{ text: this.translate.instant('COMMON.ACCEPT') }]
       );
 
     }
@@ -126,15 +125,15 @@ export class PrivateChatsListComponent implements OnInit, OnDestroy {
 
     await this.modalService.showAlert(
       'warning',
-      '¿Estás seguro de que quieres eliminar esta conversación?',
+      this.translate.instant('PRIVATE_CHATS_LIST.CONFIRM_DELETE_TITLE'),
       [
         {
-          text: 'Borrar',
+          text: this.translate.instant('PRIVATE_CHATS_LIST.DELETE'),
           handler: async () => {
             await this.deleteChat(otherUserId);
           }
         },
-        { text: 'Cancelar' }
+        { text: this.translate.instant('PRIVATE_CHATS_LIST.CANCEL') }
       ]
     );
   }
@@ -146,16 +145,21 @@ export class PrivateChatsListComponent implements OnInit, OnDestroy {
 
       if (result.success) {
         await this.getChatsList();
-        this.modalService.showToast("La conversación ha sido borrada", "success");
+
+        this.modalService.showToast(
+          this.translate.instant('PRIVATE_CHATS_LIST.TOAST_DELETED'),
+          'success'
+        );
 
       } else {
         console.error("Error al borrar la conversación:", result.error);
 
         this.modalService.showAlert(
           'error',
-          'Se ha producido un error al borrar la conversación',
-          [{ text: 'Aceptar' }]
+          this.translate.instant('PRIVATE_CHATS_LIST.ERROR_DELETE'),
+          [{ text: this.translate.instant('COMMON.ACCEPT') }]
         );
+
       }
 
     } catch (error) {
@@ -163,8 +167,8 @@ export class PrivateChatsListComponent implements OnInit, OnDestroy {
 
       this.modalService.showAlert(
         'error',
-        'Se ha producido un error al borrar la conversación',
-        [{ text: 'Aceptar' }]
+        this.translate.instant('PRIVATE_CHATS_LIST.ERROR_DELETE'),
+        [{ text: this.translate.instant('COMMON.ACCEPT') }]
       );
 
     }

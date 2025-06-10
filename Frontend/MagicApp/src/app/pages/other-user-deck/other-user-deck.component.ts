@@ -8,10 +8,11 @@ import { AuthService } from 'src/app/services/auth.service';
 import { DeckCardsService } from 'src/app/services/deck-cards.service';
 import { DeckServiceService } from 'src/app/services/deck-service.service';
 import { WebsocketService } from 'src/app/services/websocket.service';
+import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-other-user-deck',
-  imports: [CommonModule, RouterModule, IonContent, IonIcon, IonGrid, IonRow, IonCol],
+  imports: [CommonModule, RouterModule, IonContent, IonIcon, IonGrid, IonRow, IonCol, TranslateModule],
   templateUrl: './other-user-deck.component.html',
   styleUrls: ['./other-user-deck.component.css'],
   standalone: true,
@@ -43,18 +44,15 @@ export class OtherUserDeckComponent implements OnInit, OnDestroy {
 
     this.deckCardsService.clear();
     const userId = Number(this.route.snapshot.queryParamMap.get('id'));
-    console.log(userId);
     await this.getUserDecks(userId);
   }
 
   async getUserDecks(id: number) {
     const result = await this.deckService.GetAllUserDecks(id);
-    console.log(result)
     this.decks = result.data;
   }
 
   viewDeck(id: number) {
-    console.log("View deck:", id)
     const deckId = "" + id;
     this.navCtrl.navigateRoot(['/other-user-deck-view'], {
       queryParams: { deckId }

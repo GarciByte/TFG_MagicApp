@@ -61,6 +61,22 @@
         "INPUT_PLACEHOLDER": "Escribe un mensaje...",
         "FETCH_MESSAGES": "Se ha producido un error al obtener todos los mensajes"
     },
+    "PRIVATE_CHAT": {
+        "TITLE": "Chat Privado",
+        "PLACEHOLDER_MESSAGE": "Escribe un mensaje...",
+        "ERROR_USER_DATA": "Se ha producido un error al obtener los datos del usuario",
+        "ERROR_MESSAGES": "Se ha producido un error al obtener todos los mensajes"
+    },
+    "PRIVATE_CHATS_LIST": {
+        "TITLE": "Chats Privados",
+        "NO_CHATS": "No tienes ningún chat disponible.",
+        "ERROR_GET_LIST": "Se ha producido un error al obtener la lista de chats del usuario",
+        "CONFIRM_DELETE_TITLE": "¿Estás seguro de que quieres eliminar esta conversación?",
+        "DELETE": "Borrar",
+        "CANCEL": "Cancelar",
+        "TOAST_DELETED": "La conversación ha sido borrada",
+        "ERROR_DELETE": "Se ha producido un error al borrar la conversación"
+    },
     "MENU": {
         "TITLE": "MENU PRINCIPAL",
         "SEARCH_CARDS": "BUSCADOR DE CARTAS",
@@ -147,6 +163,47 @@
         "BAN_MODIFIED": "Se ha modificado la prohibición de {{nickname}}",
         "REPORT_DELETED": "Reporte #{{id}} eliminado."
     },
+    "OTHER_USERS_PROFILE": {
+        "TITLE": "Perfil de Usuario",
+        "REPORT_USER": "Reportar usuario",
+        "VIEW_DECKS": "Ver mazos",
+        "PRIVATE_MESSAGE": "Mensaje privado",
+        "ERROR_GET_USER_DATA": "Se ha producido un error al obtener los datos del usuario",
+        "REPORT_CANCELLED": "Reporte cancelado",
+        "REPORT_SUCCESS": "Has reportado a {{nickname}} con éxito",
+        "ALREADY_REPORTED": "Ya has reportado a este usuario",
+        "ERROR_SEND_REPORT": "Se ha producido un error al enviar el reporte"
+    },
+    "USER_SEARCH": {
+        "TITLE": "Buscar Usuario",
+        "PLACEHOLDER": "Escribe el nombre del usuario...",
+        "SEARCH": "Buscar",
+        "LOADING": "Buscando usuarios…",
+        "NO_RESULTS": "No se encontraron usuarios.",
+        "ERROR_LOADING_USERS": "Se ha producido un error obteniendo los usuarios",
+        "AVATAR_ALT": "Avatar de {{nickname}}"
+    },
+    "USER_PROFILE": {
+        "TITLE": "Perfil de Usuario",
+        "MY_PROFILE": "Mi perfil",
+        "AVATAR_ALT": "Avatar seleccionado",
+        "SELECT": "Seleccionar",
+        "CANCEL": "Cancelar",
+        "NICKNAME": "Apodo",
+        "EMAIL": "Correo electrónico",
+        "SAVE_CHANGES": "Guardar cambios",
+        "VIEW_DECKS": "Ver mis mazos",
+        "CHANGE_PASSWORD": "Cambiar contraseña",
+        "PASSWORD": "Contraseña",
+        "REPEAT_PASSWORD": "Repetir contraseña",
+        "SUBMIT_PASSWORD": "Cambiar contraseña",
+        "FILL_ALL_FIELDS": "Tienes que rellenar todos los campos correctamente",
+        "SUCCESS_UPDATE": "Datos actualizados con éxito",
+        "ERROR_UPDATE": "Se ha producido un error al actualizar los datos",
+        "FILL_PASSWORD": "Tienes que rellenar la contraseña correctamente",
+        "SUCCESS_PASSWORD": "Contraseña actualizada correctamente, tienes que volver a iniciar sesión",
+        "ERROR_PASSWORD": "Se ha producido un error al actualizar la contraseña"
+    },
     "ADMIN": {
         "TITLE": "Admin",
         "REPORTS": {
@@ -214,6 +271,31 @@
         "DELETE_SUCCESS": "Has eliminado el hilo",
         "ERROR_DELETE": "Se ha producido un error al borrar el hilo"
     },
+    "THREAD_DETAIL": {
+        "PAGE_TITLE": "Hilo",
+        "REFRESH_THREAD": "Refrescar hilo",
+        "COMMENTS": "Comentarios ({{count}})",
+        "NO_COMMENTS": "No hay comentarios",
+        "YOUR_COMMENT_LABEL": "Tu comentario",
+        "YOUR_COMMENT_PLACEHOLDER": "Escribe tu comentario aquí",
+        "SEND": "Enviar",
+        "LOADING": "Cargando hilo…",
+        "ERROR_LOADING": "Se ha producido un error al cargar el hilo",
+        "ERROR_ADD_COMMENT": "Se ha producido un error al añadir el comentario",
+        "COMMENT_ADDED": "Comentario añadido",
+        "SUBSCRIBE_SUCCESS": "Te has suscrito al hilo",
+        "UNSUBSCRIBE_SUCCESS": "Has cancelado la suscripción del hilo",
+        "ERROR_TOGGLE_SUBSCRIBE": "Se ha producido un error al cambiar el estado de suscripción del hilo",
+        "CONFIRM_CLOSE": "¿Cerrar el hilo “{{title}}”?",
+        "CONFIRM_REOPEN": "¿Reabrir el hilo “{{title}}”?",
+        "THREAD_CLOSED": "Has cerrado el hilo",
+        "THREAD_REOPENED": "Has reabierto el hilo",
+        "ERROR_CLOSE": "Se ha producido un error al cerrar el hilo",
+        "ERROR_REOPEN": "Se ha producido un error al reabrir el hilo",
+        "CONFIRM_DELETE_COMMENT": "¿Borrar este comentario?",
+        "COMMENT_DELETED": "Has eliminado el comentario",
+        "ERROR_DELETE_COMMENT": "Se ha producido un error al borrar el comentario"
+    },
     "DECKS": {
         "TITLE": "Mazos",
         "PAGE_TITLE": "Mazos",
@@ -261,6 +343,23 @@
         "LABEL_VICTORY_RATE": "Porcentaje de victoria",
         "BUTTON_SAVE": "Guardar",
         "BUTTON_DELETE": "Eliminar"
+    },
+    "OTHER_USER_DECK": {
+        "TITLE": "Mazos",
+        "NO_DECKS": "El usuario no tiene ningún mazo aún.",
+        "CARDS": "cartas"
+    },
+    "OTHER_USER_DECK_VIEW": {
+        "TITLE": "Detalles del mazo",
+        "NAME_LABEL": "Nombre del mazo",
+        "DESCRIPTION_LABEL": "Descripción del mazo",
+        "NAME_PLACEHOLDER": "nombre",
+        "DESCRIPTION_PLACEHOLDER": "descripción",
+        "CARD_COUNT": "Cartas en el mazo",
+        "VIEW_CARDS": "Ver cartas",
+        "VICTORIES": "Victorias",
+        "DEFEATS": "Derrotas",
+        "VICTORY_RATE": "Porcentaje de victoria"
     },
     "RARITY": {
         "COMMON": "Común",

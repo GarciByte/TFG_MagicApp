@@ -10,10 +10,11 @@ import { AuthService } from 'src/app/services/auth.service';
 import { DeckCardsService } from 'src/app/services/deck-cards.service';
 import { DeckServiceService } from 'src/app/services/deck-service.service';
 import { WebsocketService } from 'src/app/services/websocket.service';
+import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-other-user-deck-view',
-  imports: [IonIcon, CommonModule, FormsModule, IonContent],
+  imports: [IonIcon, CommonModule, FormsModule, IonContent, TranslateModule],
   templateUrl: './other-user-deck-view.component.html',
   styleUrls: ['./other-user-deck-view.component.css'],
   standalone: true,
@@ -59,8 +60,7 @@ export class OtherUserDeckViewComponent implements OnInit, OnDestroy {
   }
 
   cardDetails() {
-    console.log("View deck cards")
-    this.navCtrl.navigateRoot("/deck-cards-views")
+    this.navCtrl.navigateRoot("/deck-cards-views");
   }
 
   deckSize(): number {

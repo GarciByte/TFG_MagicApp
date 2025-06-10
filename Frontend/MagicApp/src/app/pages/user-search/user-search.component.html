@@ -3,20 +3,26 @@
   <!-- Botón para volver al menú principal -->
   <div class="header-container">
     <ion-icon name="arrow-back-outline" class="back-icon" (click)="navCtrl.navigateRoot(['/menu'])"></ion-icon>
-    <h1 class="page-title">Buscar Usuario</h1>
+    <h1 class="page-title">{{ 'USER_SEARCH.TITLE' | translate }}</h1>
   </div>
 
   <!-- Buscador de usuarios -->
   <div class="search-container">
-    <ion-searchbar name="searchTerm" [(ngModel)]="searchTerm" placeholder="Escribe el nombre del usuario..."
-      (keyup.enter)="search()"></ion-searchbar>
-    <ion-button size="small" shape="round" (click)="search()">Buscar</ion-button>
+    <ion-searchbar name="searchTerm" [(ngModel)]="searchTerm" [placeholder]="'USER_SEARCH.PLACEHOLDER' | translate"
+      (keyup.enter)="search()">
+    </ion-searchbar>
+    <ion-button size="small" shape="round" (click)="search()">
+      {{ 'USER_SEARCH.SEARCH' | translate }}
+    </ion-button>
   </div>
 
   <!-- Mensaje de estado -->
-  <div class="message" *ngIf="isLoading">Buscando usuarios…</div>
+  <div class="message" *ngIf="isLoading">
+    {{ 'USER_SEARCH.LOADING' | translate }}
+  </div>
+
   <div class="message" *ngIf="!isLoading && hasSearched && filteredUsers.length === 0">
-    No se encontraron usuarios.
+    {{ 'USER_SEARCH.NO_RESULTS' | translate }}
   </div>
 
   <ng-container *ngIf="!isLoading && filteredUsers.length > 0">
@@ -29,7 +35,7 @@
         <div class="user-header">
 
           <ion-avatar class="user-avatar">
-            <img [src]="user.avatarUrl" alt="Avatar de {{ user.nickname }}">
+            <img [src]="user.avatarUrl" [alt]="'USER_SEARCH.AVATAR_ALT' | translate:{ nickname: user.nickname }">
           </ion-avatar>
 
           <div class="user-header-text">

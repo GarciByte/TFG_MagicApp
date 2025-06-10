@@ -10,10 +10,11 @@ import { FormsModule } from '@angular/forms';
 import { environment } from 'src/environments/environment';
 import { Subscription } from 'rxjs';
 import { WebsocketService } from 'src/app/services/websocket.service';
+import { TranslateService, TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-user-search',
-  imports: [IonIcon, IonCardTitle, IonAvatar, IonCard, IonSearchbar, IonButton, IonContent, CommonModule, FormsModule],
+  imports: [IonIcon, IonCardTitle, IonAvatar, IonCard, IonSearchbar, IonButton, IonContent, CommonModule, FormsModule, TranslateModule],
   templateUrl: './user-search.component.html',
   styleUrls: ['./user-search.component.css'],
   standalone: true,
@@ -31,7 +32,8 @@ export class UserSearchComponent implements OnInit, OnDestroy {
     private authService: AuthService,
     private userService: UserService,
     private modalService: ModalService,
-    private webSocketService: WebsocketService
+    private webSocketService: WebsocketService,
+    public translate: TranslateService
   ) { }
 
   async ngOnInit(): Promise<void> {
@@ -71,8 +73,8 @@ export class UserSearchComponent implements OnInit, OnDestroy {
 
         this.modalService.showAlert(
           'error',
-          'Se ha producido un error obteniendo los usuarios',
-          [{ text: 'Aceptar' }]
+          this.translate.instant('USER_SEARCH.ERROR_LOADING_USERS'),
+          [{ text: this.translate.instant('COMMON.ACCEPT') }]
         );
 
         this.filteredUsers = [];
@@ -83,8 +85,8 @@ export class UserSearchComponent implements OnInit, OnDestroy {
 
       this.modalService.showAlert(
         'error',
-        'Se ha producido un error obteniendo los usuarios',
-        [{ text: 'Aceptar' }]
+        this.translate.instant('USER_SEARCH.ERROR_LOADING_USERS'),
+        [{ text: this.translate.instant('COMMON.ACCEPT') }]
       );
 
       this.filteredUsers = [];
