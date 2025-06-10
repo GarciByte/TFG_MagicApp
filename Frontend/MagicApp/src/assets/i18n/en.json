@@ -11,13 +11,17 @@
         "LOGIN": "Log in"
     },
     "LOGIN": {
-        "TITLE": "Log in",
+        "TITLE": "Login",
         "NICKNAME": "Nickname",
         "PASSWORD": "Password",
         "REMEMBER": "Remember me",
-        "BUTTON": "Login",
+        "BUTTON": "Log in",
         "NO_ACCOUNT": "Don't have an account?",
-        "SIGNUP": "Sign up"
+        "SIGNUP": "Sign up",
+        "SUCCESS": "Login successful",
+        "ERROR_SERVER": "An error occurred while connecting to the server",
+        "ERROR_SUSPENDED": "Your account has been suspended",
+        "ERROR_CREDENTIALS": "Incorrect username or password"
     },
     "SIGNUP": {
         "SELECT_AVATAR_OK": "Select",
@@ -30,9 +34,14 @@
         "BUTTON": "Sign up",
         "ALREADY_ACCOUNT": "Already have an account?",
         "LOGIN": "Log in",
+        "SUCCESS": "You have successfully registered",
+        "ERROR_FORM": "Invalid form",
+        "ERROR_SIGNUP": "Registration error",
+        "ERROR_LOGIN": "Login error",
+        "ERROR_SERVER": "An error occurred while connecting to the server",
         "ERRORS": {
             "NICKNAME_REQUIRED": "Nickname is required.",
-            "NICKNAME_PATTERN": "@ character is not allowed.",
+            "NICKNAME_PATTERN": "Character @ is not allowed.",
             "EMAIL_REQUIRED": "Email is required.",
             "EMAIL_INVALID": "Must be a valid email.",
             "PASSWORD_REQUIRED": "Password is required.",
@@ -46,6 +55,26 @@
         "PLACEHOLDER": "Reason for the report…",
         "CANCEL": "Cancel",
         "SEND": "Send"
+    },
+    "GLOBAL_CHAT": {
+        "PAGE_TITLE": "Global Chat",
+        "INPUT_PLACEHOLDER": "Type a message...",
+        "FETCH_MESSAGES": "An error occurred while fetching all messages"
+    },
+    "MENU": {
+        "TITLE": "MAIN MENU",
+        "SEARCH_CARDS": "CARD SEARCH",
+        "DECKS": "DECKS",
+        "FORUM": "FORUM",
+        "MAGIC_CHAT": "MAGIC CHAT",
+        "GLOBAL_CHAT": "GLOBAL CHAT",
+        "PRIVATE_CHAT": "PRIVATE CHAT",
+        "USER_SEARCH": "USER SEARCH",
+        "MY_PROFILE": "MY PROFILE",
+        "ADMIN_PROFILE": "ADMIN PROFILE",
+        "LOGOUT": "LOGOUT",
+        "RENEW_TOKEN": "Unable to renew user token",
+        "LOGOUT_SUCCESS": "You have successfully logged out"
     },
     "COMMON": {
         "ACCEPT": "Accept",
@@ -159,6 +188,31 @@
         "PAGINATION": {
             "PAGE_INFO": "Page {{page}} of {{totalPages}}"
         }
+    },
+    "FORUM": {
+        "TITLE": "Forum",
+        "NEW_THREAD": "New thread",
+        "REFRESH": "Refresh",
+        "NO_THREADS": "There are no threads in the forum.",
+        "PAGE_INFO": "Page {{page}} of {{totalPages}}",
+        "COMMENT": "{{count}} comment",
+        "COMMENTS": "{{count}} comments",
+        "ERROR_FETCH_THREADS": "An error occurred while fetching all forum threads",
+        "ERROR_FETCH_SUBSCRIBED": "An error occurred while fetching all subscribed forum threads",
+        "SUBSCRIBE_SUCCESS": "You have subscribed to the thread",
+        "ERROR_SUBSCRIBE": "An error occurred while subscribing to the thread",
+        "UNSUBSCRIBE_SUCCESS": "You have unsubscribed from the thread",
+        "ERROR_UNSUBSCRIBE": "An error occurred while unsubscribing from the thread",
+        "ERROR_TOGGLE_SUBSCRIPTION": "An error occurred while toggling thread subscription status",
+        "CONFIRM_CLOSE": "Are you sure you want to close the thread \"{{title}}\"?",
+        "CLOSE_SUCCESS": "You have closed the thread",
+        "ERROR_CLOSE": "An error occurred while closing the thread",
+        "CONFIRM_OPEN": "Are you sure you want to reopen the thread \"{{title}}\"?",
+        "OPEN_SUCCESS": "You have reopened the thread",
+        "ERROR_OPEN": "An error occurred while reopening the thread",
+        "CONFIRM_DELETE": "Are you sure you want to delete the thread \"{{title}}\"?",
+        "DELETE_SUCCESS": "You have deleted the thread",
+        "ERROR_DELETE": "An error occurred while deleting the thread"
     },
     "DECKS": {
         "TITLE": "Decks",

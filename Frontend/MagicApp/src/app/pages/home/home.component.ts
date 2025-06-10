@@ -1,6 +1,5 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
-import { RouterModule } from '@angular/router';
 import { NavController } from '@ionic/angular';
 import { AuthService } from 'src/app/services/auth.service';
 import { WebsocketService } from 'src/app/services/websocket.service';
@@ -9,7 +8,8 @@ import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-home',
-  imports: [IonText, IonTitle, IonCardContent, IonCard, IonLabel, IonIcon, IonItem, IonList, IonButton, IonContent, CommonModule, RouterModule, TranslateModule],
+  imports: [IonText, IonTitle, IonCardContent, IonCard, IonLabel, IonIcon, IonItem, IonList, IonButton, IonContent, 
+    CommonModule, TranslateModule],
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.css'],
   standalone: true,

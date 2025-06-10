@@ -17,7 +17,11 @@
         "REMEMBER": "Recuérdame",
         "BUTTON": "Entrar",
         "NO_ACCOUNT": "¿No tienes cuenta?",
-        "SIGNUP": "Regístrate"
+        "SIGNUP": "Regístrate",
+        "SUCCESS": "Inicio de sesión con éxito",
+        "ERROR_SERVER": "Se ha producido un error en la conexión con el servidor",
+        "ERROR_SUSPENDED": "Tu cuenta ha sido suspendida",
+        "ERROR_CREDENTIALS": "El nombre de usuario o la contraseña son incorrectos"
     },
     "SIGNUP": {
         "SELECT_AVATAR_OK": "Seleccionar",
@@ -30,6 +34,11 @@
         "BUTTON": "Registrarse",
         "ALREADY_ACCOUNT": "¿Ya tienes cuenta?",
         "LOGIN": "Inicia sesión",
+        "SUCCESS": "Te has registrado con éxito",
+        "ERROR_FORM": "Formulario no válido",
+        "ERROR_SIGNUP": "Error en el registro",
+        "ERROR_LOGIN": "Error en el inicio de sesión",
+        "ERROR_SERVER": "Se ha producido un error en la conexión con el servidor",
         "ERRORS": {
             "NICKNAME_REQUIRED": "El apodo es obligatorio.",
             "NICKNAME_PATTERN": "No se permite el carácter @.",
@@ -46,6 +55,26 @@
         "PLACEHOLDER": "Motivo del reporte…",
         "CANCEL": "Cancelar",
         "SEND": "Enviar"
+    },
+    "GLOBAL_CHAT": {
+        "PAGE_TITLE": "Chat Global",
+        "INPUT_PLACEHOLDER": "Escribe un mensaje...",
+        "FETCH_MESSAGES": "Se ha producido un error al obtener todos los mensajes"
+    },
+    "MENU": {
+        "TITLE": "MENU PRINCIPAL",
+        "SEARCH_CARDS": "BUSCADOR DE CARTAS",
+        "DECKS": "MAZOS",
+        "FORUM": "FORO",
+        "MAGIC_CHAT": "MAGIC CHAT",
+        "GLOBAL_CHAT": "CHAT GLOBAL",
+        "PRIVATE_CHAT": "CHAT PRIVADO",
+        "USER_SEARCH": "BUSCADOR DE USUARIOS",
+        "MY_PROFILE": "MI PERFIL",
+        "ADMIN_PROFILE": "PERFIL ADMIN",
+        "LOGOUT": "CERRAR SESIÓN",
+        "RENEW_TOKEN": "No se ha podido renovar el token del usuario",
+        "LOGOUT_SUCCESS": "Has cerrado sesión con éxito"
     },
     "COMMON": {
         "ACCEPT": "Aceptar",
@@ -159,6 +188,31 @@
         "PAGINATION": {
             "PAGE_INFO": "Página {{page}} de {{totalPages}}"
         }
+    },
+    "FORUM": {
+        "TITLE": "Foro",
+        "NEW_THREAD": "Nuevo hilo",
+        "REFRESH": "Refrescar",
+        "NO_THREADS": "No hay hilos en el foro.",
+        "PAGE_INFO": "Página {{page}} de {{totalPages}}",
+        "COMMENT": "{{count}} comentario",
+        "COMMENTS": "{{count}} comentarios",
+        "ERROR_FETCH_THREADS": "Se ha producido un error al obtener todos los hilos del foro",
+        "ERROR_FETCH_SUBSCRIBED": "Se ha producido un error al obtener todos los hilos suscritos del foro",
+        "SUBSCRIBE_SUCCESS": "Te has suscrito al hilo",
+        "ERROR_SUBSCRIBE": "Se ha producido un error al suscribirse al hilo",
+        "UNSUBSCRIBE_SUCCESS": "Has cancelado la suscripción",
+        "ERROR_UNSUBSCRIBE": "Se ha producido un error al cancelar la suscripción del hilo",
+        "ERROR_TOGGLE_SUBSCRIPTION": "Se ha producido un error al cambiar el estado de suscripción del hilo",
+        "CONFIRM_CLOSE": "¿Estás seguro de que quieres cerrar el hilo \"{{title}}\"?",
+        "CLOSE_SUCCESS": "Has cerrado el hilo",
+        "ERROR_CLOSE": "Se ha producido un error al cerrar el hilo",
+        "CONFIRM_OPEN": "¿Estás seguro de que quieres reabrir el hilo \"{{title}}\"?",
+        "OPEN_SUCCESS": "Has reabierto el hilo",
+        "ERROR_OPEN": "Se ha producido un error al reabrir el hilo",
+        "CONFIRM_DELETE": "¿Estás seguro de que quieres borrar el hilo \"{{title}}\"?",
+        "DELETE_SUCCESS": "Has eliminado el hilo",
+        "ERROR_DELETE": "Se ha producido un error al borrar el hilo"
     },
     "DECKS": {
         "TITLE": "Mazos",

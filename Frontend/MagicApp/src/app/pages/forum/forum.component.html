@@ -2,23 +2,22 @@
 
     <!-- Botón para volver al menú principal -->
     <div class="header-container">
-        <ion-icon name="arrow-back-outline" class="back-icon" (click)="navCtrl.navigateRoot(['/menu'])"></ion-icon>
-        <h1 class="page-title">Foro</h1>
+        <ion-icon name="arrow-back-outline" class="back-icon" (click)="navCtrl.navigateRoot(['/menu'])">
+        </ion-icon>
+        <h1 class="page-title">{{ 'FORUM.TITLE' | translate }}</h1>
     </div>
 
     <!-- Botones crear hilo y refrescar -->
     <div class="button-container">
-
         <ion-button size="small" shape="round" (click)="goToCreateThread()">
             <ion-icon name="add-outline"></ion-icon>
-            &nbsp;Nuevo hilo
+            &nbsp;{{ 'FORUM.NEW_THREAD' | translate }}
         </ion-button>
 
         <ion-button size="small" shape="round" (click)="refreshList()">
             <ion-icon name="refresh-outline"></ion-icon>
-            &nbsp;Refrescar
+            &nbsp;{{ 'FORUM.REFRESH' | translate }}
         </ion-button>
-
     </div>
 
     <ng-container *ngIf="displayedThreads.length; else noThreads">
@@ -26,10 +25,7 @@
             <ion-card *ngFor="let thread of displayedThreads" class="thread-card" (click)="openThread(thread.id)"
                 button>
                 <ion-card-header class="thread-card-header">
-
                     <div class="header-top">
-
-                        <!-- Título del hilo -->
                         <div class="title-container">
                             <ion-icon name="albums-outline" class="title-icon"></ion-icon>
                             <span class="title-text">{{ thread.title }}</span>
@@ -44,7 +40,8 @@
                             </ion-button>
 
                             <ng-container *ngIf="thread.isClosed">
-                                <ion-icon *ngIf="!isAdmin" name="lock-closed-outline" class="lock-icon"></ion-icon>
+                                <ion-icon *ngIf="!isAdmin" name="lock-closed-outline" class="lock-icon">
+                                </ion-icon>
 
                                 <!-- Reabrir hilo -->
                                 <ion-button *ngIf="isAdmin" fill="clear" size="small" class="open-btn"
@@ -56,8 +53,8 @@
                             <!-- Suscribirse/Desuscribirse -->
                             <ion-button fill="clear" size="small" class="subscribe-btn"
                                 (click)="toggleSubscribe(thread.id); $event.stopPropagation()">
-                                <ion-icon
-                                    [name]="isSubscribed(thread.id) ? 'notifications' : 'notifications-outline'"></ion-icon>
+                                <ion-icon [name]="isSubscribed(thread.id) ? 'notifications' : 'notifications-outline'">
+                                </ion-icon>
                             </ion-button>
 
                             <!-- Eliminar hilo -->
@@ -71,10 +68,13 @@
                     <!-- Autor y fecha -->
                     <div class="thread-meta">
                         <span class="thread-nickname">{{ thread.user.nickname }}</span>
-                        <span class="thread-date">{{ thread.createdAt | date: 'dd/MM/yyyy HH:mm' }}</span>
+                        <span class="thread-date">
+                            {{ thread.createdAt | date:'dd/MM/yyyy HH:mm' }}
+                        </span>
                         <span class="thread-comment-count">
-                            {{ thread.commentCount - 1 }}
-                            {{ (thread.commentCount - 1) === 1 ? 'comentario' : 'comentarios' }}
+                            {{ (thread.commentCount - 1) === 1
+                            ? ('FORUM.COMMENT' | translate:{ count: thread.commentCount - 1 })
+                            : ('FORUM.COMMENTS' | translate:{ count: thread.commentCount - 1 }) }}
                         </span>
                     </div>
                 </ion-card-header>
@@ -83,7 +83,6 @@
 
         <!-- Controles de paginación -->
         <div class="pagination-container" *ngIf="totalPages > 1">
-
             <ion-button class="pagination-btn" [disabled]="page === 1" (click)="goToPage(1)" fill="clear" size="small">
                 «
             </ion-button>
@@ -93,7 +92,7 @@
             </ion-button>
 
             <span class="page-info">
-                Página {{ page }} de {{ totalPages }}
+                {{ 'FORUM.PAGE_INFO' | translate:{ page: page, totalPages: totalPages } }}
             </span>
 
             <ion-button class="pagination-btn" [disabled]="page === totalPages" (click)="goPage(+1)" fill="clear"
@@ -110,7 +109,7 @@
 
     <ng-template #noThreads>
         <div class="no-threads-message">
-            No hay hilos en el foro.
+            {{ 'FORUM.NO_THREADS' | translate }}
         </div>
     </ng-template>
 </ion-content>

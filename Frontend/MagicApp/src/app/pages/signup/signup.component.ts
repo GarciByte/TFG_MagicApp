@@ -7,7 +7,7 @@ import { AuthService } from 'src/app/services/auth.service';
 import { ModalService } from 'src/app/services/modal.service';
 import { WebsocketService } from 'src/app/services/websocket.service';
 import { IonContent, IonCard, IonCardContent, IonItem, IonInput, IonButton, IonSelect, IonSelectOption } from "@ionic/angular/standalone";
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslateService, TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-signup',
@@ -18,7 +18,6 @@ import { TranslateModule } from '@ngx-translate/core';
   standalone: true,
 })
 export class SignupComponent implements OnInit {
-
   signupForm: FormGroup;
 
   avatars: string[] = [
@@ -35,7 +34,8 @@ export class SignupComponent implements OnInit {
     private authService: AuthService,
     public navCtrl: NavController,
     private websocketService: WebsocketService,
-    private modalService: ModalService
+    private modalService: ModalService,
+    public translate: TranslateService
   ) {
     this.signupForm = this.fb.group({
       avatarName: [this.avatars[0], Validators.required],
@@ -69,8 +69,8 @@ export class SignupComponent implements OnInit {
     if (this.signupForm.invalid) {
       this.modalService.showAlert(
         'error',
-        'Formulario no válido',
-        [{ text: 'Aceptar' }]
+        this.translate.instant('SIGNUP.ERROR_FORM'),
+        [{ text: this.translate.instant('COMMON.ACCEPT') }]
       );
       return;
     }
@@ -82,39 +82,40 @@ export class SignupComponent implements OnInit {
     formData.append('avatarName', this.signupForm.get('avatarName')?.value);
 
     const signupResult = await this.authService.signup(formData); // Registro
-    console.log(signupResult);
 
     if (!signupResult.success) {
       this.modalService.showAlert(
         'error',
-        'Error en el registro',
-        [{ text: 'Aceptar' }]
+        this.translate.instant('SIGNUP.ERROR_SIGNUP'),
+        [{ text: this.translate.instant('COMMON.ACCEPT') }]
       );
       return;
     }
 
     const authData = { nickname: this.signupForm.get('nickname').value, password: this.signupForm.get('password').value };
     const loginResult = await this.authService.login(authData, true); // Login
-    console.log(loginResult);
 
     if (!loginResult.success) {
       this.modalService.showAlert(
         'error',
-        'Error en el inicio de sesión',
-        [{ text: 'Aceptar' }]
+        this.translate.instant('SIGNUP.ERROR_LOGIN'),
+        [{ text: this.translate.instant('COMMON.ACCEPT') }]
       );
       return;
     }
 
     if (this.websocketService.isConnectedRxjs()) {
-      this.modalService.showToast("Te has registrado con éxito", "success");
+      this.modalService.showToast(
+        this.translate.instant('SIGNUP.SUCCESS'),
+        'success'
+      );
       this.navCtrl.navigateRoot('/menu');
 
     } else {
       this.modalService.showAlert(
         'error',
-        'Se ha producido un error en la conexión con el servidor',
-        [{ text: 'Aceptar' }]
+        this.translate.instant('SIGNUP.ERROR_SERVER'),
+        [{ text: this.translate.instant('COMMON.ACCEPT') }]
       );
     }
   }

@@ -12,10 +12,12 @@ import { User } from 'src/app/models/user';
 import { UserService } from 'src/app/services/user.service';
 import { ChatMessageService } from 'src/app/services/chat-message.service';
 import { ModalService } from 'src/app/services/modal.service';
+import { TranslateService, TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-global-chat',
-  imports: [IonCardContent, IonCard, IonAvatar, IonFooter, IonLabel, IonList, IonIcon, IonButton, IonItem, IonInput, IonContent, FormsModule, CommonModule],
+  imports: [IonCardContent, IonCard, IonAvatar, IonFooter, IonLabel, IonList, IonIcon, IonButton, IonItem, IonInput, IonContent,
+    FormsModule, CommonModule, TranslateModule],
   templateUrl: './global-chat.component.html',
   styleUrls: ['./global-chat.component.css'],
   standalone: true,
@@ -33,7 +35,8 @@ export class GlobalChatComponent implements OnInit, OnDestroy {
     private webSocketService: WebsocketService,
     private userService: UserService,
     private chatMessageService: ChatMessageService,
-    private modalService: ModalService
+    private modalService: ModalService,
+    public translate: TranslateService
   ) { }
 
   async ngOnInit(): Promise<void> {
@@ -119,8 +122,8 @@ export class GlobalChatComponent implements OnInit, OnDestroy {
 
         this.modalService.showAlert(
           'error',
-          'Se ha producido un error al obtener todos los mensajes',
-          [{ text: 'Aceptar' }]
+          this.translate.instant('GLOBAL_CHAT.FETCH_MESSAGES'),
+          [{ text: this.translate.instant('COMMON.ACCEPT') }]
         );
 
       }
@@ -130,8 +133,8 @@ export class GlobalChatComponent implements OnInit, OnDestroy {
 
       this.modalService.showAlert(
         'error',
-        'Se ha producido un error al obtener todos los mensajes',
-        [{ text: 'Aceptar' }]
+        this.translate.instant('GLOBAL_CHAT.FETCH_MESSAGES'),
+        [{ text: this.translate.instant('COMMON.ACCEPT') }]
       );
 
     }
