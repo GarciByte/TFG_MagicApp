@@ -1,4 +1,4 @@
-<ion-content class="signup-container">
+<ion-content [fullscreen]="true" class="signup-container ion-padding">
   <div class="signup-wrapper">
     <ion-card class="signup-card">
       <ion-card-content>
@@ -6,9 +6,10 @@
 
           <!-- Avatar -->
           <div class="avatar-section">
-
             <ion-item lines="full" class="form-item">
-              <ion-select formControlName="avatarName" interface="popover" okText="Seleccionar" cancelText="Cancelar">
+              <ion-select formControlName="avatarName" interface="popover"
+                [okText]="'SIGNUP.SELECT_AVATAR_OK' | translate"
+                [cancelText]="'SIGNUP.SELECT_AVATAR_CANCEL' | translate">
                 <ion-select-option *ngFor="let av of avatars" [value]="av">
                   {{ av }}
                 </ion-select-option>
@@ -17,78 +18,78 @@
 
             <div class="avatar-preview">
               <img [src]="'assets/images/avatars/' + signupForm.get('avatarName')!.value + '.jpg'"
-                alt="Avatar seleccionado" />
+                [alt]="'SIGNUP.AVATAR_PREVIEW' | translate" />
             </div>
           </div>
 
           <!-- Nickname -->
           <ion-item lines="full" class="form-item">
-            <ion-input label="Apodo" labelPlacement="floating" formControlName="nickname" required
-              autocomplete="nickname" enterkeyhint="next">
+            <ion-input [label]="'SIGNUP.NICKNAME' | translate" labelPlacement="floating" formControlName="nickname"
+              required autocomplete="nickname" enterkeyhint="next">
             </ion-input>
           </ion-item>
           <div class="error" *ngIf="signupForm.get('nickname')?.invalid && signupForm.get('nickname')?.touched">
             <div *ngIf="signupForm.get('nickname')?.hasError('required')">
-              El apodo es obligatorio.
+              {{ 'SIGNUP.ERRORS.NICKNAME_REQUIRED' | translate }}
             </div>
             <div *ngIf="signupForm.get('nickname')?.hasError('pattern')">
-              No se permite el carácter &#64;.
+              {{ 'SIGNUP.ERRORS.NICKNAME_PATTERN' | translate }}
             </div>
           </div>
 
           <!-- Email -->
           <ion-item lines="full" class="form-item">
-            <ion-input label="Correo electrónico" labelPlacement="floating" type="email" formControlName="email"
-              required autocomplete="email" enterkeyhint="next">
+            <ion-input [label]="'SIGNUP.EMAIL' | translate" labelPlacement="floating" type="email"
+              formControlName="email" required autocomplete="email" enterkeyhint="next">
             </ion-input>
           </ion-item>
           <div class="error" *ngIf="signupForm.get('email')?.invalid && signupForm.get('email')?.touched">
             <div *ngIf="signupForm.get('email')?.hasError('required')">
-              El correo es obligatorio.
+              {{ 'SIGNUP.ERRORS.EMAIL_REQUIRED' | translate }}
             </div>
             <div *ngIf="signupForm.get('email')?.hasError('email')">
-              Debe ser un correo válido.
+              {{ 'SIGNUP.ERRORS.EMAIL_INVALID' | translate }}
             </div>
           </div>
 
           <!-- Password -->
           <ion-item lines="full" class="form-item">
-            <ion-input label="Contraseña" labelPlacement="floating" type="password" formControlName="password" required
-              autocomplete="new-password" enterkeyhint="next">
+            <ion-input [label]="'SIGNUP.PASSWORD' | translate" labelPlacement="floating" type="password"
+              formControlName="password" required autocomplete="new-password" enterkeyhint="next">
             </ion-input>
           </ion-item>
           <div class="error" *ngIf="signupForm.get('password')?.invalid && signupForm.get('password')?.touched">
             <div *ngIf="signupForm.get('password')?.hasError('required')">
-              La contraseña es obligatoria.
+              {{ 'SIGNUP.ERRORS.PASSWORD_REQUIRED' | translate }}
             </div>
             <div *ngIf="signupForm.get('password')?.hasError('minlength')">
-              Mínimo 6 caracteres.
+              {{ 'SIGNUP.ERRORS.PASSWORD_MIN' | translate }}
             </div>
           </div>
 
           <!-- Confirm Password -->
           <ion-item lines="full" class="form-item">
-            <ion-input label="Repetir contraseña" labelPlacement="floating" type="password"
+            <ion-input [label]="'SIGNUP.CONFIRM_PASSWORD' | translate" labelPlacement="floating" type="password"
               formControlName="confirmPassword" required autocomplete="new-password" enterkeyhint="done">
             </ion-input>
           </ion-item>
           <div class="error"
             *ngIf="signupForm.get('confirmPassword')?.invalid && signupForm.get('confirmPassword')?.touched">
             <div *ngIf="signupForm.get('confirmPassword')?.hasError('mismatch')">
-              Las contraseñas deben coincidir.
+              {{ 'SIGNUP.ERRORS.PASSWORD_MISMATCH' | translate }}
             </div>
           </div>
 
           <!-- Botón -->
           <ion-button type="submit" expand="block" shape="round" class="signup-button" [disabled]="signupForm.invalid">
-            Registrarse
+            {{ 'SIGNUP.BUTTON' | translate }}
           </ion-button>
 
           <!-- Login -->
           <div class="login-container">
-            <span class="login-text">¿Ya tienes cuenta?</span>
+            <span class="login-text">{{ 'SIGNUP.ALREADY_ACCOUNT' | translate }}</span>
             <ion-button fill="clear" (click)="navCtrl.navigateRoot(['/login'])" class="login-button">
-              Inicia sesión
+              {{ 'SIGNUP.LOGIN' | translate }}
             </ion-button>
           </div>
 

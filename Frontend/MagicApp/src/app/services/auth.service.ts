@@ -48,7 +48,6 @@ export class AuthService {
         }
 
       } else {
-        console.warn("No se han podido refrescar los tokens");
         await this.logout();
       }
 
@@ -210,7 +209,7 @@ export class AuthService {
         }
 
         this.api.accessToken = response.data.accessToken;
-        console.log("Tokens refrescados con éxito.");
+        //console.log("Tokens refrescados con éxito.");
         return true;
       }
 

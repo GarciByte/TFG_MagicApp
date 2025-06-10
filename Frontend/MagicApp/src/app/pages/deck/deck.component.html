@@ -1,15 +1,16 @@
-<ion-content>
+<ion-content [fullscreen]="true" class="ion-padding">
   <div class="header-container">
     <ion-icon name="arrow-back-outline" class="back-icon" (click)="navCtrl.navigateRoot(['/menu'])"></ion-icon>
-    <h1 class="page-title">Mazos</h1>
+    <h1 class="page-title">{{ 'DECKS.PAGE_TITLE' | translate }}</h1>
   </div>
 
   <div class="content-container">
-    <div class="decks-title">MAZOS</div>
+    <div class="decks-title">{{ 'DECKS.TITLE' | translate }}</div>
 
     <ion-grid class="decks-grid">
       <ion-row>
-        <!-- Button to create a new deck -->
+
+        <!-- Botón para crear nuevo mazo -->
         <ion-col size="6" size-md="4" size-lg="3">
           <div class="deck-card add-card" (click)="createDeck()">
             <div class="add-icon">
@@ -18,14 +19,14 @@
           </div>
         </ion-col>
 
-        <!-- Existing decks -->
+        <!-- Mazos existentes -->
         <ion-col size="6" size-md="4" size-lg="3" *ngFor="let deck of decks">
           <div class="deck-card" (click)="viewDeck(deck.id)">
             <ion-icon name="layers-outline" class="deck-icon"></ion-icon>
             <div class="deck-name">{{ deck.name }}</div>
             <div class="deck-cards">
               <ion-icon name="albums-outline"></ion-icon>
-              {{ deck.deckCards?.length ?? 0 }} cartas
+              {{ 'DECKS.CARD_COUNT' | translate:{ count: deck.deckCards?.length ?? 0 } }}
             </div>
           </div>
         </ion-col>

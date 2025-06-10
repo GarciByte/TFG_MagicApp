@@ -1,75 +1,120 @@
-<ion-content>
-  <div class="header-container">
-    <ion-icon name="arrow-back-outline" class="back-icon" (click)="navCtrl.back()"></ion-icon>
-    <h1 class="page-title">Detalles del mazo</h1>
-  </div>
+<ion-content [fullscreen]="true" class="ion-padding">
+  <form #editForm="ngForm" (ngSubmit)="updateDeck(editForm)">
 
-  <div class="content-container">
-    <div class="create-deck-title">CREAR MAZO</div>
-
-    <div class="form-container">
-      <!-- Deck Icon -->
-      <div class="deck-icon-container">
-        <div class="deck-icon icon-sun"></div>
-      </div>
-
-      <!-- Form -->
-      <div class="form-group">
-        <label class="form-label">Nombre del mazo</label>
-        <input type="text" class="form-input" [(ngModel)]="deckCardsService.name" placeholder="nombre">
-      </div>
-
-      <div class="form-group">
-        <label class="form-label">Descripción del mazo</label>
-        <input type="text" class="form-input" [(ngModel)]="deckCardsService.description" placeholder="descripción">
-      </div>
-
-      <!-- Contador de cartas -->
-      <div class="card-counter">
-        <p class="counter-text">Cartas en el mazo: {{ deckSize() }}/150</p>
-      </div>
-
-      <!-- Action Buttons -->
-      <div class="action-buttons">
-        <button class="action-button" (click)="addCard()">Añadir cartas</button>
-        <button class="action-button" (click)="cardDetails()">Ver cartas</button>
-      </div>
-
-      <!-- Victories -->
-      <div class="counter-box">
-        <label class="form-label">Victorias</label>
-        <div class="counter-controls">
-          <button class="counter-button" (click)="decrementVictories()">-</button>
-          <span class="counter-value">{{ deckCardsService.victories }}</span>
-          <button class="counter-button" (click)="incrementVictories()">+</button>
-        </div>
-      </div>
-
-      <!-- Defeats -->
-      <div class="counter-box">
-        <label class="form-label">Derrotas</label>
-        <div class="counter-controls">
-          <button class="counter-button" (click)="decrementDefeats()">-</button>
-          <span class="counter-value">{{ deckCardsService.defeats }}</span>
-          <button class="counter-button" (click)="incrementDefeats()">+</button>
-        </div>
-      </div>
-
-      <div class="form-group">
-        <label class="form-label">Porcentaje de victoria</label>
-        <div class="counter-value victory-rate">{{ getVictoryRate() }}</div>
-      </div>
-
-
-
-      <!-- Save-Delete Buttons -->
-      <button class="create-button" (click)="updateDeck()">Guardar</button>
-      <button class="create-button" (click)="deleteDeck()">Eliminar</button>
+    <div class="header-container">
+      <ion-icon name="arrow-back-outline" class="back-icon" (click)="navCtrl.back()"></ion-icon>
+      <h1 class="page-title">
+        {{ 'DECK_VIEW.PAGE_TITLE' | translate }}
+      </h1>
     </div>
-  </div>
 
-  <div class="footer-logo">
-    <img src="assets/images/logo.png" alt="MagicHub Logo" />
-  </div>
+    <div class="content-container">
+      <div class="create-deck-title">
+        {{ 'DECK_VIEW.CREATE_TITLE' | translate }}
+      </div>
+
+      <div class="form-container">
+
+        <!-- Deck Icon -->
+        <div class="deck-icon-container">
+          <div class="deck-icon icon-sun"></div>
+        </div>
+
+        <!-- Nombre -->
+        <div class="form-group">
+          <label class="form-label">{{ 'DECK_VIEW.LABEL_NAME' | translate }}</label>
+          <input name="name" type="text" class="form-input" required minlength="4" [(ngModel)]="deckCardsService.name"
+            #name="ngModel" [placeholder]="'DECK_VIEW.PLACEHOLDER_NAME' | translate" />
+          <div class="warning-message" *ngIf="name.touched && name.invalid">
+            <small *ngIf="name.errors?.['required']">
+              {{ 'DECK_VIEW.ERROR_REQUIRED' | translate }}
+            </small>
+            <small *ngIf="name.errors?.['minlength']">
+              {{ 'DECK_VIEW.ERROR_NAME_LENGTH' | translate }}
+            </small>
+          </div>
+        </div>
+
+        <!-- Descripción -->
+        <div class="form-group">
+          <label class="form-label">{{ 'DECK_VIEW.LABEL_DESCRIPTION' | translate }}</label>
+          <input name="description" type="text" class="form-input" required minlength="4"
+            [(ngModel)]="deckCardsService.description" #desc="ngModel"
+            [placeholder]="'DECK_VIEW.PLACEHOLDER_DESCRIPTION' | translate" />
+          <div class="warning-message" *ngIf="desc.touched && desc.invalid">
+            <small *ngIf="desc.errors?.['required']">
+              {{ 'DECK_VIEW.ERROR_REQUIRED' | translate }}
+            </small>
+            <small *ngIf="desc.errors?.['minlength']">
+              {{ 'DECK_VIEW.ERROR_DESC_LENGTH' | translate }}
+            </small>
+          </div>
+        </div>
+
+        <!-- Contador de cartas -->
+        <div class="card-counter">
+          <p class="counter-text">
+            {{ 'DECK_VIEW.CARDS_COUNT' | translate:{ count: deckSize() } }}
+          </p>
+        </div>
+
+        <!-- Action Buttons -->
+        <div class="action-buttons">
+          <button type="button" class="action-button" (click)="addCard()">
+            {{ 'DECK_VIEW.BUTTON_ADD_CARDS' | translate }}
+          </button>
+          <button type="button" class="action-button" (click)="cardDetails()">
+            {{ 'DECK_VIEW.BUTTON_VIEW_CARDS' | translate }}
+          </button>
+        </div>
+
+        <!-- Victories -->
+        <div class="counter-box">
+          <label class="form-label">
+            {{ 'DECK_VIEW.LABEL_VICTORIES' | translate }}
+          </label>
+          <div class="counter-controls">
+            <button type="button" class="counter-button" (click)="decrementVictories()">-</button>
+            <span class="counter-value">{{ deckCardsService.victories }}</span>
+            <button type="button" class="counter-button" (click)="incrementVictories()">+</button>
+          </div>
+        </div>
+
+        <!-- Defeats -->
+        <div class="counter-box">
+          <label class="form-label">
+            {{ 'DECK_VIEW.LABEL_DEFEATS' | translate }}
+          </label>
+          <div class="counter-controls">
+            <button type="button" class="counter-button" (click)="decrementDefeats()">-</button>
+            <span class="counter-value">{{ deckCardsService.defeats }}</span>
+            <button type="button" class="counter-button" (click)="incrementDefeats()">+</button>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">
+            {{ 'DECK_VIEW.LABEL_VICTORY_RATE' | translate }}
+          </label>
+          <div class="counter-value victory-rate">
+            {{ getVictoryRate() }}
+          </div>
+        </div>
+
+        <!-- Save-Delete Buttons -->
+        <button type="submit" class="create-button" [disabled]="editForm.invalid">
+          {{ 'DECK_VIEW.BUTTON_SAVE' | translate }}
+        </button>
+
+        <button type="button" class="create-button" (click)="deleteDeck()">
+          {{ 'DECK_VIEW.BUTTON_DELETE' | translate }}
+        </button>
+      </div>
+    </div>
+
+    <div class="footer-logo">
+      <img src="assets/images/logo.png" alt="MagicHub Logo" />
+    </div>
+  </form>
   <app-sidebar></app-sidebar>
 </ion-content>

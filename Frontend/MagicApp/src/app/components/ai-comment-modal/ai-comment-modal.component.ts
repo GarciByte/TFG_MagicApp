@@ -11,10 +11,11 @@ import { CardDetail } from 'src/app/models/card-detail';
 import { ChatWithAiResponse } from 'src/app/models/chat-with-ai-response';
 import { MsgType } from 'src/app/models/web-socket-message';
 import { WebsocketService } from 'src/app/services/websocket.service';
+import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-ai-comment-modal',
-  imports: [IonButton, IonButtons, IonTitle, IonToolbar, IonHeader, IonIcon, CommonModule, FormsModule, IonContent],
+  imports: [IonButton, IonButtons, IonTitle, IonToolbar, IonHeader, IonIcon, CommonModule, FormsModule, IonContent, TranslateModule],
   templateUrl: './ai-comment-modal.component.html',
   styleUrls: ['./ai-comment-modal.component.css'],
   standalone: true,

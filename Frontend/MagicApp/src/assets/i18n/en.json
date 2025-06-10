@@ -11,13 +11,17 @@
         "LOGIN": "Log in"
     },
     "LOGIN": {
-        "TITLE": "Log in",
+        "TITLE": "Login",
         "NICKNAME": "Nickname",
         "PASSWORD": "Password",
         "REMEMBER": "Remember me",
-        "BUTTON": "Login",
+        "BUTTON": "Log in",
         "NO_ACCOUNT": "Don't have an account?",
-        "SIGNUP": "Sign up"
+        "SIGNUP": "Sign up",
+        "SUCCESS": "Login successful",
+        "ERROR_SERVER": "An error occurred while connecting to the server",
+        "ERROR_SUSPENDED": "Your account has been suspended",
+        "ERROR_CREDENTIALS": "Incorrect username or password"
     },
     "SIGNUP": {
         "SELECT_AVATAR_OK": "Select",
@@ -30,14 +34,377 @@
         "BUTTON": "Sign up",
         "ALREADY_ACCOUNT": "Already have an account?",
         "LOGIN": "Log in",
+        "SUCCESS": "You have successfully registered",
+        "ERROR_FORM": "Invalid form",
+        "ERROR_SIGNUP": "Registration error",
+        "ERROR_LOGIN": "Login error",
+        "ERROR_SERVER": "An error occurred while connecting to the server",
         "ERRORS": {
             "NICKNAME_REQUIRED": "Nickname is required.",
-            "NICKNAME_PATTERN": "@ character is not allowed.",
+            "NICKNAME_PATTERN": "Character @ is not allowed.",
             "EMAIL_REQUIRED": "Email is required.",
             "EMAIL_INVALID": "Must be a valid email.",
             "PASSWORD_REQUIRED": "Password is required.",
             "PASSWORD_MIN": "Minimum 6 characters.",
             "PASSWORD_MISMATCH": "Passwords must match."
         }
+    },
+    "REPORT": {
+        "ALERT_TITLE": "Report {{nickname}}",
+        "MESSAGE": "Write the reason for your report",
+        "PLACEHOLDER": "Reason for the report…",
+        "CANCEL": "Cancel",
+        "SEND": "Send"
+    },
+    "GLOBAL_CHAT": {
+        "PAGE_TITLE": "Global Chat",
+        "INPUT_PLACEHOLDER": "Type a message...",
+        "FETCH_MESSAGES": "An error occurred while fetching all messages"
+    },
+    "PRIVATE_CHAT": {
+        "TITLE": "Private Chat",
+        "PLACEHOLDER_MESSAGE": "Write a message...",
+        "ERROR_USER_DATA": "An error occurred while fetching user data",
+        "ERROR_MESSAGES": "An error occurred while fetching all messages"
+    },
+    "PRIVATE_CHATS_LIST": {
+        "TITLE": "Private Chats",
+        "NO_CHATS": "You don't have any chats available.",
+        "ERROR_GET_LIST": "An error occurred while fetching the user's chat list",
+        "CONFIRM_DELETE_TITLE": "Are you sure you want to delete this conversation?",
+        "DELETE": "Delete",
+        "CANCEL": "Cancel",
+        "TOAST_DELETED": "The conversation has been deleted",
+        "ERROR_DELETE": "An error occurred while deleting the conversation"
+    },
+    "MENU": {
+        "TITLE": "MAIN MENU",
+        "SEARCH_CARDS": "CARD SEARCH",
+        "DECKS": "DECKS",
+        "FORUM": "FORUM",
+        "MAGIC_CHAT": "MAGIC CHAT",
+        "GLOBAL_CHAT": "GLOBAL CHAT",
+        "PRIVATE_CHAT": "PRIVATE CHAT",
+        "USER_SEARCH": "USER SEARCH",
+        "MY_PROFILE": "MY PROFILE",
+        "ADMIN_PROFILE": "ADMIN PROFILE",
+        "LOGOUT": "LOGOUT",
+        "RENEW_TOKEN": "Unable to renew user token",
+        "LOGOUT_SUCCESS": "You have successfully logged out"
+    },
+    "COMMON": {
+        "ACCEPT": "Accept",
+        "DELETE": "Delete",
+        "YES": "Yes",
+        "NO": "No",
+        "CLOSE": "Close"
+    },
+    "AI_MODAL": {
+        "TITLE": "AI Analysis",
+        "ASSISTANT_NAME": "AI Assistant",
+        "ANALYZING": "Analyzing card...",
+        "GENERATING": "Generating analysis"
+    },
+    "MODALS": {
+        "USER_BANNED": {
+            "TITLE": "Your account has been suspended"
+        },
+        "CONNECTION_LOST": "The connection to the server was lost",
+        "CANNOT_CONNECT": "Unable to connect to the server",
+        "CARD_FETCH_ERROR": {
+            "SINGLE": "An error occurred while fetching the card",
+            "DATA": "An error occurred while fetching the card data",
+            "MULTIPLE": "An error occurred while fetching the cards"
+        },
+        "FETCH_USERS_ERROR": "An error occurred while fetching all users",
+        "FETCH_REPORTS_ERROR": "An error occurred while fetching all reports",
+        "MODIFY_REPORT_ERROR": "An error occurred while updating the user report",
+        "MODIFY_ROLE_ERROR": "An error occurred while updating the user role",
+        "MODIFY_BAN_CONFIRM": "Are you sure you want to change the ban for {{nickname}}?",
+        "MODIFY_BAN_ERROR": "An error occurred while changing the user ban",
+        "DELETE_REPORT_CONFIRM": "Are you sure you want to delete report #{{id}}?",
+        "DELETE_REPORT_ERROR": "An error occurred while deleting the report",
+        "FETCH_CHAT_ERROR": "An error occurred while loading all messages"
+    },
+    "CHAT": {
+        "TITLE": "Magic Chat",
+        "INPUT_PLACEHOLDER": "Type your question...",
+        "LOADING": "Thinking…"
+    },
+    "DETAIL": {
+        "TITLE": "Details",
+        "ANALYZE": "Analyze card",
+        "MANA_COST": "Mana cost:",
+        "TYPE": "Type:",
+        "TEXT": "Text:",
+        "POWER_TOUGHNESS": "Power/Toughness:",
+        "SET": "Set:",
+        "RARITY": "Rarity:",
+        "PRICE": "Price:",
+        "BUY": "Buy:",
+        "LINK_TEXT": "Cardmarket"
+    },
+    "CREATE_THREAD": {
+        "PAGE_TITLE": "Create Thread",
+        "NEW_THREAD": "Create new thread",
+        "TITLE_LABEL": "Title",
+        "TITLE_PLACEHOLDER": "Enter thread title",
+        "TITLE_REQUIRED": "Title is required.",
+        "CONTENT_LABEL": "Content",
+        "CONTENT_PLACEHOLDER": "Write description",
+        "CONTENT_REQUIRED": "Content is required.",
+        "SUBMIT_BUTTON": "Create thread",
+        "TOAST_SUCCESS": "Thread created successfully",
+        "ERROR_CREATING_THREAD": "An error occurred while creating the thread"
+    },
+    "TOAST": {
+        "NEW_MESSAGE_FROM": "You’ve received a new message from {{nickname}}",
+        "NEW_THREAD_MESSAGE": "There’s a new message in the thread \"{{content}}\"",
+        "BAN_MODIFIED": "The ban for {{nickname}} has been updated",
+        "REPORT_DELETED": "Report #{{id}} deleted."
+    },
+    "OTHER_USERS_PROFILE": {
+        "TITLE": "User Profile",
+        "REPORT_USER": "Report user",
+        "VIEW_DECKS": "View decks",
+        "PRIVATE_MESSAGE": "Private message",
+        "ERROR_GET_USER_DATA": "An error occurred while fetching user data",
+        "REPORT_CANCELLED": "Report cancelled",
+        "REPORT_SUCCESS": "You have successfully reported {{nickname}}",
+        "ALREADY_REPORTED": "You have already reported this user",
+        "ERROR_SEND_REPORT": "An error occurred while sending the report"
+    },
+    "USER_SEARCH": {
+        "TITLE": "Search User",
+        "PLACEHOLDER": "Enter the user's name...",
+        "SEARCH": "Search",
+        "LOADING": "Searching users…",
+        "NO_RESULTS": "No users found.",
+        "ERROR_LOADING_USERS": "An error occurred while fetching users",
+        "AVATAR_ALT": "Avatar of {{nickname}}"
+    },
+    "USER_PROFILE": {
+        "TITLE": "User Profile",
+        "MY_PROFILE": "My Profile",
+        "AVATAR_ALT": "Selected avatar",
+        "SELECT": "Select",
+        "CANCEL": "Cancel",
+        "NICKNAME": "Nickname",
+        "EMAIL": "Email",
+        "SAVE_CHANGES": "Save changes",
+        "VIEW_DECKS": "View my decks",
+        "CHANGE_PASSWORD": "Change password",
+        "PASSWORD": "Password",
+        "REPEAT_PASSWORD": "Repeat password",
+        "SUBMIT_PASSWORD": "Change password",
+        "FILL_ALL_FIELDS": "You must fill in all fields correctly",
+        "SUCCESS_UPDATE": "Data updated successfully",
+        "ERROR_UPDATE": "An error occurred while updating the data",
+        "FILL_PASSWORD": "You must fill in the password correctly",
+        "SUCCESS_PASSWORD": "Password updated successfully, you must log in again",
+        "ERROR_PASSWORD": "An error occurred while updating the password"
+    },
+    "ADMIN": {
+        "TITLE": "Admin",
+        "REPORTS": {
+            "TITLE": "Received Reports",
+            "SEARCH_PLACEHOLDER": "Nickname",
+            "TABLE": {
+                "ID": "ID",
+                "REPORTER": "Reporting User",
+                "REPORTED": "Reported User",
+                "REASON": "Reason",
+                "STATUS": "Status",
+                "ACTIONS": "Actions"
+            },
+            "STATUS": {
+                "IN_REVIEW": "In Review",
+                "REVIEWED": "Reviewed"
+            },
+            "BUTTON": {
+                "MARK_REVIEWED": "Mark as Reviewed",
+                "MARK_IN_REVIEW": "Mark as In Review"
+            }
+        },
+        "USERS": {
+            "TITLE": "Registered Users",
+            "SEARCH_PLACEHOLDER": "Nickname",
+            "TABLE": {
+                "ID": "ID",
+                "NICKNAME": "Nickname",
+                "EMAIL": "Email",
+                "ROLE": "Role",
+                "ACTIONS": "Actions"
+            },
+            "BUTTON": {
+                "CHANGE_ROLE": "Change Role",
+                "BAN": "Ban",
+                "UNBAN": "Unban"
+            }
+        },
+        "PAGINATION": {
+            "PAGE_INFO": "Page {{page}} of {{totalPages}}"
+        }
+    },
+    "FORUM": {
+        "TITLE": "Forum",
+        "NEW_THREAD": "New thread",
+        "REFRESH": "Refresh",
+        "NO_THREADS": "There are no threads in the forum.",
+        "PAGE_INFO": "Page {{page}} of {{totalPages}}",
+        "COMMENT": "{{count}} comment",
+        "COMMENTS": "{{count}} comments",
+        "ERROR_FETCH_THREADS": "An error occurred while fetching all forum threads",
+        "ERROR_FETCH_SUBSCRIBED": "An error occurred while fetching all subscribed forum threads",
+        "SUBSCRIBE_SUCCESS": "You have subscribed to the thread",
+        "ERROR_SUBSCRIBE": "An error occurred while subscribing to the thread",
+        "UNSUBSCRIBE_SUCCESS": "You have unsubscribed from the thread",
+        "ERROR_UNSUBSCRIBE": "An error occurred while unsubscribing from the thread",
+        "ERROR_TOGGLE_SUBSCRIPTION": "An error occurred while toggling thread subscription status",
+        "CONFIRM_CLOSE": "Are you sure you want to close the thread \"{{title}}\"?",
+        "CLOSE_SUCCESS": "You have closed the thread",
+        "ERROR_CLOSE": "An error occurred while closing the thread",
+        "CONFIRM_OPEN": "Are you sure you want to reopen the thread \"{{title}}\"?",
+        "OPEN_SUCCESS": "You have reopened the thread",
+        "ERROR_OPEN": "An error occurred while reopening the thread",
+        "CONFIRM_DELETE": "Are you sure you want to delete the thread \"{{title}}\"?",
+        "DELETE_SUCCESS": "You have deleted the thread",
+        "ERROR_DELETE": "An error occurred while deleting the thread"
+    },
+    "THREAD_DETAIL": {
+        "PAGE_TITLE": "Thread",
+        "REFRESH_THREAD": "Refresh thread",
+        "COMMENTS": "Comments ({{count}})",
+        "NO_COMMENTS": "No comments",
+        "YOUR_COMMENT_LABEL": "Your comment",
+        "YOUR_COMMENT_PLACEHOLDER": "Write your comment here",
+        "SEND": "Send",
+        "LOADING": "Loading thread…",
+        "ERROR_LOADING": "An error occurred while loading the thread",
+        "ERROR_ADD_COMMENT": "An error occurred while adding the comment",
+        "COMMENT_ADDED": "Comment added",
+        "SUBSCRIBE_SUCCESS": "You have subscribed to the thread",
+        "UNSUBSCRIBE_SUCCESS": "You have unsubscribed from the thread",
+        "ERROR_TOGGLE_SUBSCRIBE": "An error occurred while changing subscription status",
+        "CONFIRM_CLOSE": "Close thread “{{title}}”?",
+        "CONFIRM_REOPEN": "Reopen thread “{{title}}”?",
+        "THREAD_CLOSED": "You have closed the thread",
+        "THREAD_REOPENED": "You have reopened the thread",
+        "ERROR_CLOSE": "An error occurred while closing the thread",
+        "ERROR_REOPEN": "An error occurred while reopening the thread",
+        "CONFIRM_DELETE_COMMENT": "Delete this comment?",
+        "COMMENT_DELETED": "You have deleted the comment",
+        "ERROR_DELETE_COMMENT": "An error occurred while deleting the comment"
+    },
+    "DECKS": {
+        "TITLE": "Decks",
+        "PAGE_TITLE": "Decks",
+        "CARD_COUNT": "{{count}} cards"
+    },
+    "DECK_CARDS": {
+        "PAGE_TITLE": "Deck Cards",
+        "NO_CARDS_FOUND": "No cards found"
+    },
+    "DECK": {
+        "TITLE": "Create Deck",
+        "TITLE_UPPER": "CREATE DECK",
+        "FORM": {
+            "LABEL_NAME": "Deck Name",
+            "LABEL_DESCRIPTION": "Deck Description"
+        },
+        "PLACEHOLDER": {
+            "NAME": "name",
+            "DESCRIPTION": "description"
+        },
+        "CARD_COUNTER": "Cards in deck: {{count}}/150",
+        "ACTION": {
+            "ADD_CARDS": "Add cards",
+            "VIEW_CARDS": "View cards"
+        },
+        "WARNING": {
+            "MAX_CARDS": "You’ve reached the 150‑card limit."
+        },
+        "CREATE_BUTTON": "Create",
+        "ERROR_HEADER": "Error",
+        "ERROR_SIZE": "Invalid deck size",
+        "ERROR_NAME_LENGTH": "Name must be at least 4 characters",
+        "ERROR_DESC_LENGTH": "Description must be at least 4 characters"
+    },
+    "DECK_VIEW": {
+        "PAGE_TITLE": "Deck Details",
+        "CREATE_TITLE": "CREATE DECK",
+        "LABEL_NAME": "Deck Name",
+        "PLACEHOLDER_NAME": "name",
+        "LABEL_DESCRIPTION": "Deck Description",
+        "PLACEHOLDER_DESCRIPTION": "description",
+        "CARDS_COUNT": "Cards in deck: {{count}}/150",
+        "BUTTON_ADD_CARDS": "Add cards",
+        "BUTTON_VIEW_CARDS": "View cards",
+        "LABEL_VICTORIES": "Victories",
+        "LABEL_DEFEATS": "Defeats",
+        "LABEL_VICTORY_RATE": "Victory rate",
+        "BUTTON_SAVE": "Save",
+        "BUTTON_DELETE": "Delete",
+        "ERROR_NAME_LENGTH": "Name must be at least 4 characters",
+        "ERROR_DESC_LENGTH": "Description must be at least 4 characters",
+        "ERROR_REQUIRED": "This field is required"
+    },
+    "OTHER_USER_DECK": {
+        "TITLE": "Decks",
+        "NO_DECKS": "This user has no decks yet.",
+        "CARDS": "cards"
+    },
+    "OTHER_USER_DECK_VIEW": {
+        "TITLE": "Deck Details",
+        "NAME_LABEL": "Deck Name",
+        "DESCRIPTION_LABEL": "Deck Description",
+        "NAME_PLACEHOLDER": "name",
+        "DESCRIPTION_PLACEHOLDER": "description",
+        "CARD_COUNT": "Cards in deck",
+        "VIEW_CARDS": "View cards",
+        "VICTORIES": "Victories",
+        "DEFEATS": "Defeats",
+        "VICTORY_RATE": "Victory Rate"
+    },
+    "RARITY": {
+        "COMMON": "Common",
+        "UNCOMMON": "Uncommon",
+        "RARE": "Rare",
+        "MYTHIC": "Mythic"
+    },
+    "COLOR": {
+        "WHITE": "White",
+        "BLUE": "Blue",
+        "BLACK": "Black",
+        "RED": "Red",
+        "GREEN": "Green"
+    },
+    "FILTER": {
+        "ALL": "All",
+        "SELECT_RARITY": "Select rarity",
+        "COLORS": "Colors:",
+        "RARITY": "Rarity:",
+        "TYPES": "Types:"
+    },
+    "SEARCH": {
+        "TITLE": "Card Search",
+        "PLACEHOLDER": "Enter name...",
+        "SHOW_FILTERS": "Show filters",
+        "LOADING": "Searching for cards…",
+        "NO_RESULTS": "No cards found."
+    },
+    "ACTIONS": {
+        "ADD_TO_DECK": "Add to deck",
+        "PREVIOUS": "Previous",
+        "NEXT": "Next"
+    },
+    "CARD_TYPE": {
+        "CREATURE": "Creature",
+        "INSTANT": "Instant",
+        "SORCERY": "Sorcery",
+        "ENCHANTMENT": "Enchantment",
+        "ARTIFACT": "Artifact",
+        "LAND": "Land",
+        "PLANESWALKER": "Planeswalker"
     }
 }

@@ -1,23 +1,28 @@
-<ion-content class="chat-page">
+<ion-content [fullscreen]="true" class="chat-page ion-padding">
 
   <!-- Botón para volver al menú principal -->
   <div class="header-container">
-    <ion-icon name="arrow-back-outline" class="back-icon" (click)="navCtrl.navigateRoot(['/menu'])"></ion-icon>
-    <h1 class="page-title">Chat Global</h1>
+    <ion-icon name="arrow-back-outline" class="back-icon" [attr.aria-label]="'COMMON.CLOSE' | translate"
+      (click)="navCtrl.navigateRoot(['/menu'])">
+    </ion-icon>
+    <h1 class="page-title">
+      {{ 'GLOBAL_CHAT.PAGE_TITLE' | translate }}
+    </h1>
   </div>
 
   <!-- Chat -->
   <div class="card-container">
-
     <ion-card class="chat-card">
       <ion-card-content class="messages-container">
         <ion-list lines="none" class="messages-list">
-          <ion-item *ngFor="let msg of chatMessages" class="message-item"
-            [ngClass]="{'own': msg.UserId === user.userId, 'other': msg.UserId !== user.userId}">
+          <ion-item *ngFor="let msg of chatMessages" class="message-item" [ngClass]="{
+              'own': msg.UserId === user.userId,
+              'other': msg.UserId !== user.userId
+            }">
 
             <!-- Avatar -->
             <ion-avatar slot="start">
-              <img [src]="msg.AvatarUrl">
+              <img [src]="msg.AvatarUrl" />
             </ion-avatar>
 
             <ion-label class="message-content">
@@ -40,8 +45,9 @@
         <form (ngSubmit)="sendMessage()">
           <ion-item lines="none" class="input-container">
 
-            <ion-input [(ngModel)]="chatInput" name="chatInput" placeholder="Escribe un mensaje..." clearInput required
-              autocomplete="off" class="chat-input">
+            <ion-input [(ngModel)]="chatInput" name="chatInput"
+              [placeholder]="'GLOBAL_CHAT.INPUT_PLACEHOLDER' | translate" clearInput required autocomplete="off"
+              class="chat-input">
             </ion-input>
 
             <ion-button slot="end" type="submit" fill="clear" [disabled]="!chatInput.trim()" class="send-button">
@@ -51,8 +57,8 @@
           </ion-item>
         </form>
       </ion-footer>
-    </ion-card>
 
+    </ion-card>
   </div>
   <app-sidebar></app-sidebar>
 </ion-content>

@@ -1,16 +1,18 @@
 import { Injectable } from '@angular/core';
 import { CardDetail } from '../models/card-detail';
 
-@Injectable({ providedIn: 'root' })
+@Injectable({
+  providedIn: 'root'
+})
 export class DeckCardsService {
-  private _deckId: number;//Deck Id
-  private _deckCards: CardDetail[] = [];//Deck cards
-  private _name: string;//Deck name
-  private _description: string;//Deck description
-  private _userId: number;//Deck user id
-  private _victories: number;//Deck victories
-  private _defeats: number;//Deck defeats
 
+  private _deckId: number; // Deck Id
+  private _deckCards: CardDetail[] = []; // Deck cards
+  private _name: string; // Deck name
+  private _description: string; // Deck description
+  private _userId: number; // Deck user id
+  private _victories: number; // Deck victories
+  private _defeats: number; // Deck defeats
 
   clear() {
     this._deckCards = [];
@@ -22,7 +24,7 @@ export class DeckCardsService {
     this._defeats = 0;
   }
 
-  //DECK CARDS
+  // DECK CARDS
   get deckCards(): CardDetail[] {
     return this._deckCards;
   }
@@ -44,7 +46,7 @@ remove(card: CardDetail) {
 
 
 
-  //DECK ID
+  // DECK ID
   get deckId(): number {
     return this._deckId;
   }
@@ -53,7 +55,7 @@ remove(card: CardDetail) {
     this._deckId = deckId;
   }
 
-  //VICTORIES
+  // VICTORIES
   get victories(): number {
     return this._victories;
   }
@@ -62,7 +64,7 @@ remove(card: CardDetail) {
     this._victories = victories;
   }
 
-  //DEFEATS
+  // DEFEATS
   get defeats(): number {
     return this._defeats;
   }
@@ -71,7 +73,7 @@ remove(card: CardDetail) {
     this._defeats = defeats;
   }
 
-  //NAME
+  // NAME
   get name(): string {
     return this._name;
   }
@@ -80,7 +82,7 @@ remove(card: CardDetail) {
     this._name = name
   }
 
-  //DESCRIPTION
+  // DESCRIPTION
   get description(): string {
     return this._description
   }
@@ -89,7 +91,7 @@ remove(card: CardDetail) {
     this._description = description
   }
 
-  //USER
+  // USER
   get userId(): number {
     return this._userId;
   }

@@ -5,7 +5,9 @@ export enum MsgType {
     UserBanned = 'UserBanned',
     ForumNotification = 'ForumNotification',
     ChatNotification = 'ChatNotification',
-    ChatWithAI = 'ChatWithAI'
+    ChatWithAI = 'ChatWithAI',
+    CardDetailsWithAI = 'CardDetailsWithAI',
+    CancelAIMessage = 'CancelAIMessage'
 }
 
 export interface WebSocketMessage {

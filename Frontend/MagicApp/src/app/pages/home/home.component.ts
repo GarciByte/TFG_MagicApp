@@ -1,15 +1,17 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
-import { RouterModule } from '@angular/router';
 import { NavController } from '@ionic/angular';
 import { AuthService } from 'src/app/services/auth.service';
 import { WebsocketService } from 'src/app/services/websocket.service';
 import { IonContent, IonButton, IonList, IonItem, IonIcon, IonLabel, IonCard, IonCardContent, IonTitle, IonText } from "@ionic/angular/standalone";
+import { TranslateModule } from '@ngx-translate/core';
 import { SidebarComponent } from "../../components/sidebar/sidebar.component";
+import { RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-home',
-  imports: [IonText, IonTitle, IonCardContent, IonCard, IonLabel, IonIcon, IonItem, IonList, IonButton, IonContent, CommonModule, RouterModule, SidebarComponent],
+  imports: [IonText, IonTitle, IonCardContent, IonCard, IonLabel, IonIcon, IonItem, IonList, IonButton, IonContent, 
+    CommonModule, TranslateModule, RouterModule, SidebarComponent],
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.css'],
   standalone: true,
@@ -23,7 +25,7 @@ export class HomeComponent implements OnInit {
   ) { }
 
   async ngOnInit(): Promise<void> {
-    if (await this.authService.isAuthenticated() && this.websocketService.isConnectedRxjs()) {
+    if ((await this.authService.isAuthenticated()) && this.websocketService.isConnectedRxjs()) {
       this.navCtrl.navigateRoot(['/menu']);
     }
   }
