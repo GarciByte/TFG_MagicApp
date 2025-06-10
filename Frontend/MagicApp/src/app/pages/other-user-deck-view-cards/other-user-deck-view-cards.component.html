@@ -14,10 +14,6 @@
   <div class="card-grid" *ngIf="deckCards.length > 0">
     <div class="card-item" *ngFor="let card of deckCards">
       <img (click)="navigateToDetails(card.id)" [src]="card.imageUrl" [alt]="card.name" loading="lazy" />
-      <button class="remove-to-deck-btn" (click)="removeCard(card.id)">
-        <ion-icon name="remove-circle-outline"></ion-icon>
-        <span>Elimar del mazo</span>
-      </button>
     </div>
   </div>
   <app-sidebar></app-sidebar>

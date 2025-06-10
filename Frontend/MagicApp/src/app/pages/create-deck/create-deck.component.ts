@@ -57,8 +57,8 @@ export class CreateDeckComponent implements OnInit {
   }
 
   cardDetails() {
-    console.log(this.deckCards)
-    // Navigation to the view cards page
+    console.log("View deck cards")
+    this.navCtrl.navigateRoot("/deck-cards-views")
   }
 
   async createDeck() {

@@ -56,7 +56,7 @@ export class OtherUserDeckViewComponent  implements OnInit {
 
   cardDetails() {
     console.log("View deck cards")
-    this.navCtrl.navigateRoot("/deck-cards-views")
+    this.navCtrl.navigateRoot("/other-user-deck-view-cards")
   }
 
   deckSize(): number {

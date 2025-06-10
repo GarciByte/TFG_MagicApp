@@ -9,7 +9,6 @@ import { IonButton, NavController, IonContent, IonSearchbar, IonIcon, IonSelectO
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { CardImage } from 'src/app/models/card-image';
-import { CardTransferService } from 'src/app/services/card-transfer.service';
 import { CardFilter } from 'src/app/models/card-filter';
 import { CardType } from 'src/app/models/enums/card-type';
 import { Color } from 'src/app/models/enums/color';
@@ -18,6 +17,7 @@ import { AuthService } from 'src/app/services/auth.service';
 import { CardColorService } from 'src/app/services/card-color.service';
 import { CardTypeService } from 'src/app/services/card-type.service';
 import { SidebarComponent } from "../../components/sidebar/sidebar.component";
+import { DeckCardsService } from 'src/app/services/deck-cards.service';
 
 @Component({
   selector: 'app-add-cards-deck',
@@ -54,8 +54,8 @@ export class AddCardsDeckComponent implements OnInit {
     private modalService: ModalService,
     private cardColorService: CardColorService,
     private cardTypeService: CardTypeService,
-    private cardTransfer: CardTransferService,
     private router: Router,
+    private deckCardsService: DeckCardsService,
     private sanitizer: DomSanitizer,
   ) {}
 
@@ -69,10 +69,8 @@ export class AddCardsDeckComponent implements OnInit {
 
   async selectCard(cardId: string) {
     await this.loadCardDetails(cardId)
-    this.cardTransfer.setCard(this.card)
+    this.deckCardsService.addCard(this.card)
     this.navCtrl.back()
-
-    this.search()
   }
 
   private async loadCardDetails(cardId: string) {

@@ -33,31 +33,33 @@ export class DeckViewComponent implements OnInit {
     public deckCardsService: DeckCardsService
   ) { }
 
-  async ngOnInit(): Promise<void> {
-    if (!await this.authService.isAuthenticated()) {
-      this.navCtrl.navigateRoot(['/']);
-      return;
-    }
-
-    this.deckId = Number(this.route.snapshot.queryParamMap.get('deckId'));
-
-    if (this.deckCardsService.deckCards.length === 0) {
-      this.deck = (await this.deckService.GetDeckById(this.deckId)).data;
-
-      this.deckCardsService.deckcards = this.deck.deckCards;
-      this.deckCardsService.name = this.deck.name;
-      this.deckCardsService.description = this.deck.description;
-      this.deckCardsService.userId = this.deck.userId;
-      this.deckCardsService.deckId = this.deck.id;
-      this.deckCardsService.victories = this.deck.victories;
-      this.deckCardsService.defeats = this.deck.defeats;
-    }
-
-    const navigation = history.state;
-    if (navigation?.selectCard) {
-      this.deckCardsService.addCard(navigation.selectCard);
-    }
+async ngOnInit(): Promise<void> {
+  if (!await this.authService.isAuthenticated()) {
+    this.navCtrl.navigateRoot(['/']);
+    return;
   }
+
+  this.deckId = Number(this.route.snapshot.queryParamMap.get('deckId'));
+
+  // Solo inicializa si aún no lo está (no sobreescribe ediciones locales)
+  if (!this.deckCardsService.deckId) {
+    this.deck = (await this.deckService.GetDeckById(this.deckId)).data;
+
+    this.deckCardsService.deckcards = this.deck.deckCards;
+    this.deckCardsService.name = this.deck.name;
+    this.deckCardsService.description = this.deck.description;
+    this.deckCardsService.userId = this.deck.userId;
+    this.deckCardsService.deckId = this.deck.id;
+    this.deckCardsService.victories = this.deck.victories;
+    this.deckCardsService.defeats = this.deck.defeats;
+  }
+
+  const navigation = history.state;
+  if (navigation?.selectCard) {
+    this.deckCardsService.addCard(navigation.selectCard);
+  }
+}
+
 
 
   addCard() {
