@@ -48,10 +48,17 @@
         "SEND": "Send"
     },
     "COMMON": {
-        "ACCEPT": "OK",
+        "ACCEPT": "Accept",
         "DELETE": "Delete",
         "YES": "Yes",
-        "NO": "No"
+        "NO": "No",
+        "CLOSE": "Close"
+    },
+    "AI_MODAL": {
+        "TITLE": "AI Analysis",
+        "ASSISTANT_NAME": "AI Assistant",
+        "ANALYZING": "Analyzing card...",
+        "GENERATING": "Generating analysis"
     },
     "MODALS": {
         "USER_BANNED": {
@@ -71,7 +78,39 @@
         "MODIFY_BAN_CONFIRM": "Are you sure you want to change the ban for {{nickname}}?",
         "MODIFY_BAN_ERROR": "An error occurred while changing the user ban",
         "DELETE_REPORT_CONFIRM": "Are you sure you want to delete report #{{id}}?",
-        "DELETE_REPORT_ERROR": "An error occurred while deleting the report"
+        "DELETE_REPORT_ERROR": "An error occurred while deleting the report",
+        "FETCH_CHAT_ERROR": "An error occurred while loading all messages"
+    },
+    "CHAT": {
+        "TITLE": "Magic Chat",
+        "INPUT_PLACEHOLDER": "Type your question...",
+        "LOADING": "Thinking…"
+    },
+    "DETAIL": {
+        "TITLE": "Details",
+        "ANALYZE": "Analyze card",
+        "MANA_COST": "Mana cost:",
+        "TYPE": "Type:",
+        "TEXT": "Text:",
+        "POWER_TOUGHNESS": "Power/Toughness:",
+        "SET": "Set:",
+        "RARITY": "Rarity:",
+        "PRICE": "Price:",
+        "BUY": "Buy:",
+        "LINK_TEXT": "Cardmarket"
+    },
+    "CREATE_THREAD": {
+        "PAGE_TITLE": "Create Thread",
+        "NEW_THREAD": "Create new thread",
+        "TITLE_LABEL": "Title",
+        "TITLE_PLACEHOLDER": "Enter thread title",
+        "TITLE_REQUIRED": "Title is required.",
+        "CONTENT_LABEL": "Content",
+        "CONTENT_PLACEHOLDER": "Write description",
+        "CONTENT_REQUIRED": "Content is required.",
+        "SUBMIT_BUTTON": "Create thread",
+        "TOAST_SUCCESS": "Thread created successfully",
+        "ERROR_CREATING_THREAD": "An error occurred while creating the thread"
     },
     "TOAST": {
         "NEW_MESSAGE_FROM": "You’ve received a new message from {{nickname}}",
@@ -120,6 +159,54 @@
         "PAGINATION": {
             "PAGE_INFO": "Page {{page}} of {{totalPages}}"
         }
+    },
+    "DECKS": {
+        "TITLE": "Decks",
+        "PAGE_TITLE": "Decks",
+        "CARD_COUNT": "{{count}} cards"
+    },
+    "DECK_CARDS": {
+        "PAGE_TITLE": "Deck Cards",
+        "NO_CARDS_FOUND": "No cards found"
+    },
+    "DECK": {
+        "TITLE": "Create Deck",
+        "TITLE_UPPER": "CREATE DECK",
+        "FORM": {
+            "LABEL_NAME": "Deck Name",
+            "LABEL_DESCRIPTION": "Deck Description"
+        },
+        "PLACEHOLDER": {
+            "NAME": "name",
+            "DESCRIPTION": "description"
+        },
+        "CARD_COUNTER": "Cards in deck: {{count}}/150",
+        "ACTION": {
+            "ADD_CARDS": "Add cards",
+            "VIEW_CARDS": "View cards"
+        },
+        "WARNING": {
+            "MAX_CARDS": "You’ve reached the 150‑card limit."
+        },
+        "CREATE_BUTTON": "Create",
+        "ERROR_HEADER": "Error",
+        "ERROR_SIZE": "Invalid deck size"
+    },
+    "DECK_VIEW": {
+        "PAGE_TITLE": "Deck Details",
+        "CREATE_TITLE": "CREATE DECK",
+        "LABEL_NAME": "Deck Name",
+        "PLACEHOLDER_NAME": "name",
+        "LABEL_DESCRIPTION": "Deck Description",
+        "PLACEHOLDER_DESCRIPTION": "description",
+        "CARDS_COUNT": "Cards in deck: {{count}}/150",
+        "BUTTON_ADD_CARDS": "Add cards",
+        "BUTTON_VIEW_CARDS": "View cards",
+        "LABEL_VICTORIES": "Victories",
+        "LABEL_DEFEATS": "Defeats",
+        "LABEL_VICTORY_RATE": "Victory rate",
+        "BUTTON_SAVE": "Save",
+        "BUTTON_DELETE": "Delete"
     },
     "RARITY": {
         "COMMON": "Common",

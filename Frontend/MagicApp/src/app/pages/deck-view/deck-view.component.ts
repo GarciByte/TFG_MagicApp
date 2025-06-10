@@ -11,10 +11,11 @@ import { FormsModule } from '@angular/forms';
 import { DeckCardsService } from 'src/app/services/deck-cards.service';
 import { Subscription } from 'rxjs';
 import { WebsocketService } from 'src/app/services/websocket.service';
+import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-deck-view',
-  imports: [IonIcon, CommonModule, FormsModule, IonContent],
+  imports: [IonIcon, CommonModule, FormsModule, IonContent, TranslateModule],
   templateUrl: './deck-view.component.html',
   styleUrls: ['./deck-view.component.css'],
   standalone: true,
@@ -64,14 +65,12 @@ export class DeckViewComponent implements OnInit, OnDestroy {
     }
   }
 
-
   addCard() {
-    this.navCtrl.navigateRoot("/add-cards-deck")
+    this.navCtrl.navigateRoot("/add-cards-deck");
   }
 
   cardDetails() {
-    console.log("View deck cards")
-    this.navCtrl.navigateRoot("/deck-cards-views")
+    this.navCtrl.navigateRoot("/deck-cards-views");
   }
 
   async updateDeck() {
@@ -85,19 +84,18 @@ export class DeckViewComponent implements OnInit, OnDestroy {
     }
 
     // Save the deck
-    const response = await this.deckService.UpdateDeck(deckData, this.deckCardsService.deckId)
-    this.deckCardsService.clear()
-    this.navCtrl.navigateRoot("/decks")
-
+    await this.deckService.UpdateDeck(deckData, this.deckCardsService.deckId);
+    this.deckCardsService.clear();
+    this.navCtrl.navigateRoot("/decks");
   }
 
   async deleteDeck() {
-    const response = await this.deckService.DeleteDeck(this.deckId)
-    this.navCtrl.navigateRoot("/decks")
+    await this.deckService.DeleteDeck(this.deckId);
+    this.navCtrl.navigateRoot("/decks");
   }
 
   deckSize(): number {
-    return this.deckCardsService.deckCards.length
+    return this.deckCardsService.deckCards.length;
   }
 
   incrementVictories() {

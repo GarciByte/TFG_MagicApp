@@ -17,10 +17,11 @@ import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 import { marked } from 'marked';
 import { Capacitor } from '@capacitor/core';
 import { Browser } from '@capacitor/browser';
+import { TranslateService, TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-chat-with-ai',
-  imports: [IonItem, IonIcon, IonCardContent, IonCard, IonButton, CommonModule, FormsModule, IonContent, IonFooter, IonSpinner],
+  imports: [IonItem, IonIcon, IonCardContent, IonCard, IonButton, CommonModule, FormsModule, IonContent, IonFooter, IonSpinner, TranslateModule],
   templateUrl: './chat-with-ai.component.html',
   styleUrls: ['./chat-with-ai.component.css'],
   standalone: true,
@@ -44,7 +45,8 @@ export class ChatWithAiComponent implements OnInit, OnDestroy {
     private chatWithAiService: ChatWithAiService,
     private webSocketService: WebsocketService,
     private sanitizer: DomSanitizer,
-    private cdr: ChangeDetectorRef
+    private cdr: ChangeDetectorRef,
+    public translate: TranslateService
   ) { }
 
   async ngOnInit(): Promise<void> {
@@ -88,8 +90,8 @@ export class ChatWithAiComponent implements OnInit, OnDestroy {
 
         this.modalService.showAlert(
           'error',
-          'Se ha producido un error al obtener todos los mensajes',
-          [{ text: 'Aceptar' }]
+          this.translate.instant('MODALS.FETCH_CHAT_ERROR'),
+          [{ text: this.translate.instant('COMMON.ACCEPT') }]
         );
 
       }
@@ -99,8 +101,8 @@ export class ChatWithAiComponent implements OnInit, OnDestroy {
 
       this.modalService.showAlert(
         'error',
-        'Se ha producido un error al obtener todos los mensajes',
-        [{ text: 'Aceptar' }]
+        this.translate.instant('MODALS.FETCH_CHAT_ERROR'),
+        [{ text: this.translate.instant('COMMON.ACCEPT') }]
       );
 
     }
@@ -181,7 +183,7 @@ export class ChatWithAiComponent implements OnInit, OnDestroy {
     if (this.error$) {
       this.error$.unsubscribe();
     }
-    
+
     this.CancelAiRequest();
   }
 

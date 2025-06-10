@@ -8,10 +8,11 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Subscription } from 'rxjs';
 import { WebsocketService } from 'src/app/services/websocket.service';
+import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-deck-cards-views',
-  imports: [IonIcon, IonContent, CommonModule, FormsModule],
+  imports: [IonIcon, IonContent, CommonModule, FormsModule, TranslateModule],
   templateUrl: './deck-cards-views.component.html',
   styleUrls: ['./deck-cards-views.component.css'],
   standalone: true,
@@ -39,7 +40,6 @@ export class DeckCardsViewsComponent implements OnInit, OnDestroy {
     });
 
     this.deckCards = this.deckCardsService.deckCards;
-    console.log(this.deckCards);
   }
 
   navigateToDetails(cardId: string) {

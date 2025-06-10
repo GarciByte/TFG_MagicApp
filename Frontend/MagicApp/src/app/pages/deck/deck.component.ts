@@ -9,11 +9,12 @@ import { DeckResponse } from "src/app/models/deck-response"
 import { Subscription } from "rxjs"
 import { WebsocketService } from "src/app/services/websocket.service"
 import { DeckCardsService } from "src/app/services/deck-cards.service"
+import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: "app-decks",
   standalone: true,
-  imports: [CommonModule, RouterModule, IonContent, IonIcon, IonGrid, IonRow, IonCol],
+  imports: [CommonModule, RouterModule, IonContent, IonIcon, IonGrid, IonRow, IonCol, TranslateModule],
   templateUrl: "./deck.component.html",
   styleUrls: ["./deck.component.css"],
 })
@@ -40,7 +41,7 @@ export class DeckComponent implements OnInit, OnDestroy {
       this.navCtrl.navigateRoot(['/']);
     });
 
-    this.deckCardsService.clear()
+    this.deckCardsService.clear();
     await this.getUserDecks();
   }
 
@@ -51,11 +52,10 @@ export class DeckComponent implements OnInit, OnDestroy {
   }
 
   createDeck() {
-    this.navCtrl.navigateRoot("/create-deck")
+    this.navCtrl.navigateRoot("/create-deck");
   }
 
   viewDeck(id: number) {
-    console.log("View deck:", id)
     const deckId = "" + id;
     this.navCtrl.navigateRoot(['/deck-view'], {
       queryParams: { deckId }

@@ -10,10 +10,11 @@ import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 import { AiCommentModalComponent } from 'src/app/components/ai-comment-modal/ai-comment-modal.component';
 import { Subscription } from 'rxjs';
 import { WebsocketService } from 'src/app/services/websocket.service';
+import { TranslateService, TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-card-details',
-  imports: [CommonModule, IonicModule],
+  imports: [CommonModule, IonicModule, TranslateModule],
   templateUrl: './card-details.component.html',
   styleUrls: ['./card-details.component.css'],
   standalone: true,
@@ -33,7 +34,8 @@ export class CardDetailsComponent implements OnInit, OnDestroy {
     private route: ActivatedRoute,
     private sanitizer: DomSanitizer,
     private modalCtrl: ModalController,
-    private webSocketService: WebsocketService
+    private webSocketService: WebsocketService,
+    public translate: TranslateService
   ) { }
 
   async ngOnInit(): Promise<void> {
@@ -51,7 +53,6 @@ export class CardDetailsComponent implements OnInit, OnDestroy {
 
     if (this.cardId) {
       await this.loadCardDetails();
-      console.log(this.card);
 
     } else {
       console.error("No se ha podido obtener el cardId");
@@ -76,8 +77,8 @@ export class CardDetailsComponent implements OnInit, OnDestroy {
 
         this.modalService.showAlert(
           'error',
-          'Se ha producido un error obteniendo la carta',
-          [{ text: 'Aceptar' }]
+          this.translate.instant('MODALS.CARD_FETCH_ERROR.SINGLE'),
+          [{ text: this.translate.instant('COMMON.ACCEPT') }]
         );
 
         this.navCtrl.navigateRoot(['/menu']);
@@ -88,8 +89,8 @@ export class CardDetailsComponent implements OnInit, OnDestroy {
 
       this.modalService.showAlert(
         'error',
-        'Se ha producido un error obteniendo los datos de la carta',
-        [{ text: 'Aceptar' }]
+        this.translate.instant('MODALS.CARD_FETCH_ERROR.DATA'),
+        [{ text: this.translate.instant('COMMON.ACCEPT') }]
       );
 
       this.navCtrl.navigateRoot(['/menu']);

@@ -51,7 +51,14 @@
         "ACCEPT": "Aceptar",
         "DELETE": "Eliminar",
         "YES": "Sí",
-        "NO": "No"
+        "NO": "No",
+        "CLOSE": "Cerrar"
+    },
+    "AI_MODAL": {
+        "TITLE": "Análisis con la IA",
+        "ASSISTANT_NAME": "Asistente IA",
+        "ANALYZING": "Analizando carta...",
+        "GENERATING": "Generando análisis"
     },
     "MODALS": {
         "USER_BANNED": {
@@ -71,7 +78,39 @@
         "MODIFY_BAN_CONFIRM": "¿Estás seguro de que quieres modificar la prohibición de {{nickname}}?",
         "MODIFY_BAN_ERROR": "Se ha producido un error al modificar la prohibición del usuario",
         "DELETE_REPORT_CONFIRM": "¿Estás seguro de que quieres eliminar el reporte #{{id}}?",
-        "DELETE_REPORT_ERROR": "Se ha producido un error al eliminar el reporte"
+        "DELETE_REPORT_ERROR": "Se ha producido un error al eliminar el reporte",
+        "FETCH_CHAT_ERROR": "Se ha producido un error al obtener todos los mensajes"
+    },
+    "CHAT": {
+        "TITLE": "Magic Chat",
+        "INPUT_PLACEHOLDER": "Escribe tu pregunta...",
+        "LOADING": "Pensando…"
+    },
+    "DETAIL": {
+        "TITLE": "Detalles",
+        "ANALYZE": "Analizar carta",
+        "MANA_COST": "Coste de maná:",
+        "TYPE": "Tipo:",
+        "TEXT": "Texto:",
+        "POWER_TOUGHNESS": "Fuerza/Resistencia:",
+        "SET": "Colección:",
+        "RARITY": "Rareza:",
+        "PRICE": "Precio:",
+        "BUY": "Comprar:",
+        "LINK_TEXT": "Cardmarket"
+    },
+    "CREATE_THREAD": {
+        "PAGE_TITLE": "Crear Hilo",
+        "NEW_THREAD": "Crear nuevo hilo",
+        "TITLE_LABEL": "Título",
+        "TITLE_PLACEHOLDER": "Introduce el título del hilo",
+        "TITLE_REQUIRED": "El título es obligatorio.",
+        "CONTENT_LABEL": "Contenido",
+        "CONTENT_PLACEHOLDER": "Escribe la descripción",
+        "CONTENT_REQUIRED": "El contenido es obligatorio.",
+        "SUBMIT_BUTTON": "Crear hilo",
+        "TOAST_SUCCESS": "Hilo creado con éxito",
+        "ERROR_CREATING_THREAD": "Se ha producido un error al crear el hilo"
     },
     "TOAST": {
         "NEW_MESSAGE_FROM": "Has recibido un nuevo mensaje de {{nickname}}",
@@ -120,6 +159,54 @@
         "PAGINATION": {
             "PAGE_INFO": "Página {{page}} de {{totalPages}}"
         }
+    },
+    "DECKS": {
+        "TITLE": "Mazos",
+        "PAGE_TITLE": "Mazos",
+        "CARD_COUNT": "{{count}} cartas"
+    },
+    "DECK_CARDS": {
+        "PAGE_TITLE": "Cartas del mazo",
+        "NO_CARDS_FOUND": "No se encontraron cartas."
+    },
+    "DECK": {
+        "TITLE": "Crear Mazo",
+        "TITLE_UPPER": "CREAR MAZO",
+        "FORM": {
+            "LABEL_NAME": "Nombre del mazo",
+            "LABEL_DESCRIPTION": "Descripción del mazo"
+        },
+        "PLACEHOLDER": {
+            "NAME": "nombre",
+            "DESCRIPTION": "descripción"
+        },
+        "CARD_COUNTER": "Cartas en el mazo: {{count}}/150",
+        "ACTION": {
+            "ADD_CARDS": "Añadir cartas",
+            "VIEW_CARDS": "Ver cartas"
+        },
+        "WARNING": {
+            "MAX_CARDS": "Has alcanzado el límite máximo de 150 cartas."
+        },
+        "CREATE_BUTTON": "Crear",
+        "ERROR_HEADER": "Error",
+        "ERROR_SIZE": "Tamaño del mazo inadecuado"
+    },
+    "DECK_VIEW": {
+        "PAGE_TITLE": "Detalles del mazo",
+        "CREATE_TITLE": "CREAR MAZO",
+        "LABEL_NAME": "Nombre del mazo",
+        "PLACEHOLDER_NAME": "nombre",
+        "LABEL_DESCRIPTION": "Descripción del mazo",
+        "PLACEHOLDER_DESCRIPTION": "descripción",
+        "CARDS_COUNT": "Cartas en el mazo: {{count}}/150",
+        "BUTTON_ADD_CARDS": "Añadir cartas",
+        "BUTTON_VIEW_CARDS": "Ver cartas",
+        "LABEL_VICTORIES": "Victorias",
+        "LABEL_DEFEATS": "Derrotas",
+        "LABEL_VICTORY_RATE": "Porcentaje de victoria",
+        "BUTTON_SAVE": "Guardar",
+        "BUTTON_DELETE": "Eliminar"
     },
     "RARITY": {
         "COMMON": "Común",

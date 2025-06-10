@@ -1,13 +1,15 @@
 <ion-content [fullscreen]="true" class="ion-padding">
   <div class="header-container">
-    <ion-icon name="arrow-back-outline" class="back-icon" (click)="navCtrl.back()"></ion-icon>
-    <h1 class="page-title">Crear Mazo</h1>
+    <ion-icon name="arrow-back-outline" class="back-icon" (click)="navCtrl.back()">
+    </ion-icon>
+    <h1 class="page-title">{{ 'DECK.TITLE' | translate }}</h1>
   </div>
 
   <div class="content-container">
-    <div class="create-deck-title">CREAR MAZO</div>
+    <div class="create-deck-title">{{ 'DECK.TITLE_UPPER' | translate }}</div>
 
     <div class="form-container">
+
       <!-- Deck Icon -->
       <div class="deck-icon-container">
         <div class="deck-icon icon-sun"></div>
@@ -15,46 +17,42 @@
 
       <!-- Form -->
       <div class="form-group">
-        <label class="form-label">Nombre del mazo</label>
-        <input
-          type="text"
-          class="form-input"
-          [(ngModel)]="deckName"
-          (ngModelChange)="setDeckName($event)"
-          placeholder="nombre"
-        />
+        <label class="form-label">{{ 'DECK.FORM.LABEL_NAME' | translate }}</label>
+        <input type="text" class="form-input" [(ngModel)]="deckName" (ngModelChange)="setDeckName($event)"
+          [placeholder]="'DECK.PLACEHOLDER.NAME' | translate" />
       </div>
 
       <div class="form-group">
-        <label class="form-label">Descripción del mazo</label>
-        <input
-          type="text"
-          class="form-input"
-          [(ngModel)]="deckDescription"
-          (ngModelChange)="setDeckDescription($event)"
-          placeholder="descripción"
-        />
+        <label class="form-label">{{ 'DECK.FORM.LABEL_DESCRIPTION' | translate }}</label>
+        <input type="text" class="form-input" [(ngModel)]="deckDescription" (ngModelChange)="setDeckDescription($event)"
+          [placeholder]="'DECK.PLACEHOLDER.DESCRIPTION' | translate" />
       </div>
 
       <!-- Contador de cartas -->
       <div class="card-counter">
-        <p class="counter-text">Cartas en el mazo: {{ deckCards.length }}/150</p>
+        <p class="counter-text">
+          {{ 'DECK.CARD_COUNTER' | translate:{ count: deckCards.length } }}
+        </p>
       </div>
 
       <!-- Action Buttons -->
       <div class="action-buttons">
         <button class="action-button" (click)="addCard()" [disabled]="deckCards.length >= 150">
-          Añadir cartas
+          {{ 'DECK.ACTION.ADD_CARDS' | translate }}
         </button>
-        <button class="action-button" (click)="cardDetails()">Ver cartas</button>
+        <button class="action-button" (click)="cardDetails()">
+          {{ 'DECK.ACTION.VIEW_CARDS' | translate }}
+        </button>
       </div>
 
       <div *ngIf="deckCards.length >= 150" class="warning-message">
-        Has alcanzado el límite máximo de 150 cartas.
+        {{ 'DECK.WARNING.MAX_CARDS' | translate }}
       </div>
 
       <!-- Create Button -->
-      <button class="create-button" (click)="createDeck()">Crear</button>
+      <button class="create-button" (click)="createDeck()">
+        {{ 'DECK.CREATE_BUTTON' | translate }}
+      </button>
     </div>
   </div>
 

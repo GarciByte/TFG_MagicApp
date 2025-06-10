@@ -3,7 +3,9 @@
   <!-- Botón para volver al foro -->
   <div class="header-container">
     <ion-icon name="arrow-back-outline" class="back-icon" (click)="navCtrl.back()"></ion-icon>
-    <h1 class="page-title">Crear Hilo</h1>
+    <h1 class="page-title">
+      {{ 'CREATE_THREAD.PAGE_TITLE' | translate }}
+    </h1>
   </div>
 
   <ng-container>
@@ -12,37 +14,48 @@
 
         <ion-card-header class="page-title">
           <ion-icon name="document" class="page-icon"></ion-icon>
-          Crear nuevo hilo
+          {{ 'CREATE_THREAD.NEW_THREAD' | translate }}
         </ion-card-header>
 
         <form [formGroup]="threadForm" (ngSubmit)="submitThread()">
 
           <!-- Campo de título -->
           <ion-item class="input-item">
-            <ion-label position="stacked">Título</ion-label>
-            <ion-input type="text" formControlName="title" placeholder="Introduce el título del hilo"></ion-input>
+            <ion-label position="stacked">
+              {{ 'CREATE_THREAD.TITLE_LABEL' | translate }}
+            </ion-label>
+            <ion-input type="text" formControlName="title"
+              [placeholder]="'CREATE_THREAD.TITLE_PLACEHOLDER' | translate"></ion-input>
           </ion-item>
 
-          <ion-note class="error-note" *ngIf="threadForm.get('title')?.touched && threadForm.get('title')?.invalid">
-            El título es obligatorio.
+          <ion-note class="error-note" *ngIf="
+              threadForm.get('title')?.touched &&
+              threadForm.get('title')?.invalid
+            ">
+            {{ 'CREATE_THREAD.TITLE_REQUIRED' | translate }}
           </ion-note>
 
           <!-- Campo de contenido -->
           <ion-item class="input-item">
-            <ion-label position="stacked">Contenido</ion-label>
+            <ion-label position="stacked">
+              {{ 'CREATE_THREAD.CONTENT_LABEL' | translate }}
+            </ion-label>
             <ion-textarea formControlName="content" rows="6"
-              placeholder="Escribe la descripción"></ion-textarea>
+              [placeholder]="'CREATE_THREAD.CONTENT_PLACEHOLDER' | translate"></ion-textarea>
           </ion-item>
 
-          <ion-note class="error-note" *ngIf="threadForm.get('content')?.touched && threadForm.get('content')?.invalid">
-            El contenido es obligatorio.
+          <ion-note class="error-note" *ngIf="
+              threadForm.get('content')?.touched &&
+              threadForm.get('content')?.invalid
+            ">
+            {{ 'CREATE_THREAD.CONTENT_REQUIRED' | translate }}
           </ion-note>
 
           <!-- Botón de envío -->
           <div class="submit-container">
             <ion-button type="submit" shape="round" [disabled]="threadForm.invalid || isSubmitting">
               <ion-icon name="send"></ion-icon>
-              &nbsp;Crear hilo
+              &nbsp;{{ 'CREATE_THREAD.SUBMIT_BUTTON' | translate }}
             </ion-button>
           </div>
 

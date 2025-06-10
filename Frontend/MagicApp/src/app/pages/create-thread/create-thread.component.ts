@@ -9,10 +9,12 @@ import { ModalService } from 'src/app/services/modal.service';
 import { IonContent, IonIcon, IonItem, IonLabel, IonNote, IonButton, IonInput, IonTextarea, IonCard, IonCardHeader } from "@ionic/angular/standalone";
 import { Subscription } from 'rxjs';
 import { WebsocketService } from 'src/app/services/websocket.service';
+import { TranslateService, TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-create-thread',
-  imports: [IonCardHeader, IonCard, CommonModule, ReactiveFormsModule, IonContent, IonItem, IonLabel, IonInput, IonTextarea, IonButton, IonIcon, IonNote],
+  imports: [IonCardHeader, IonCard, CommonModule, ReactiveFormsModule, IonContent, IonItem, IonLabel, IonInput,
+    IonTextarea, IonButton, IonIcon, IonNote, TranslateModule],
   templateUrl: './create-thread.component.html',
   styleUrls: ['./create-thread.component.css'],
   standalone: true,
@@ -29,7 +31,8 @@ export class CreateThreadComponent implements OnInit, OnDestroy {
     private authService: AuthService,
     private modalService: ModalService,
     private forumService: ForumService,
-    private webSocketService: WebsocketService
+    private webSocketService: WebsocketService,
+    public translate: TranslateService
   ) {
     this.threadForm = this.fb.group({
       title: ['', [Validators.required, Validators.minLength(3)]],
@@ -66,7 +69,12 @@ export class CreateThreadComponent implements OnInit, OnDestroy {
       console.log(result);
 
       if (result.success) {
-        this.modalService.showToast('Hilo creado con éxito', "success");
+
+        this.modalService.showToast(
+          this.translate.instant('CREATE_THREAD.TOAST_SUCCESS'),
+          'success'
+        );
+
         this.navCtrl.navigateRoot(['/thread-detail', result.data.id]);
 
       } else {
@@ -74,8 +82,12 @@ export class CreateThreadComponent implements OnInit, OnDestroy {
 
         this.modalService.showAlert(
           'error',
-          'Se ha producido un error al crear el hilo',
-          [{ text: 'Aceptar' }]
+          this.translate.instant('CREATE_THREAD.ERROR_CREATING_THREAD'),
+          [
+            {
+              text: this.translate.instant('COMMON.ACCEPT')
+            }
+          ]
         );
 
       }
@@ -85,8 +97,12 @@ export class CreateThreadComponent implements OnInit, OnDestroy {
 
       this.modalService.showAlert(
         'error',
-        'Se ha producido un error al crear el hilo',
-        [{ text: 'Aceptar' }]
+        this.translate.instant('CREATE_THREAD.ERROR_CREATING_THREAD'),
+        [
+          {
+            text: this.translate.instant('COMMON.ACCEPT')
+          }
+        ]
       );
 
     } finally {
