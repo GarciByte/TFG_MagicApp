@@ -32,6 +32,8 @@ public class MagicAppContext : DbContext
 
     public DbSet<GlobalChatMessage> GlobalChatMessage { get; set; }
 
+    public DbSet<ChatWithAiMessage> ChatWithAiMessage { get; set; }
+
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
 #if DEBUG

@@ -1,9 +1,7 @@
 <ion-content *ngIf="card">
-
-  <div class="button-container">
-    <ion-button size="small" shape="round" (click)="navCtrl.back()">
-      Volver al buscador de Cartas
-    </ion-button>
+  <div class="header-container">
+    <ion-icon name="arrow-back-outline" class="back-icon" (click)="navCtrl.back()"></ion-icon>
+    <h1 class="page-title">Detalles</h1>
   </div>
 
   <div class="detail-container">
@@ -75,4 +73,5 @@
 
     </div>
   </div>
+  <app-sidebar></app-sidebar>
 </ion-content>

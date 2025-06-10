@@ -15,7 +15,7 @@ public class ForumThreadRepository : Repository<ForumThread, int>
             .Include(t => t.User)
             .Include(t => t.Comments).ThenInclude(c => c.User)
             .Include(t => t.Subscriptions)
-            .OrderByDescending(t => t.CreatedAt)
+            .OrderByDescending(t => t.Comments.Max(c => c.CreatedAt))
             .ToListAsync();
     }
 

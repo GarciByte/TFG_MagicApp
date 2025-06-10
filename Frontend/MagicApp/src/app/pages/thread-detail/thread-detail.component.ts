@@ -10,10 +10,19 @@ import { AuthService } from 'src/app/services/auth.service';
 import { ForumService } from 'src/app/services/forum.service';
 import { ModalService } from 'src/app/services/modal.service';
 import { UserService } from 'src/app/services/user.service';
+import { environment } from 'src/environments/environment';
+import {
+  IonButton, IonCardContent, IonLabel, IonItem, IonIcon, IonCardHeader,
+  IonAvatar, IonCard, IonContent, IonTextarea
+} from "@ionic/angular/standalone";
+import { MsgType, WebSocketMessage } from 'src/app/models/web-socket-message';
+import { WebsocketService } from 'src/app/services/websocket.service';
+import { SidebarComponent } from "../../components/sidebar/sidebar.component";
 
 @Component({
   selector: 'app-thread-detail',
-  imports: [CommonModule, ReactiveFormsModule],
+  imports: [IonContent, IonCard, IonAvatar, IonCardHeader, IonIcon, IonItem, IonLabel,
+    IonCardContent, IonButton, CommonModule, ReactiveFormsModule, IonTextarea, SidebarComponent],
   templateUrl: './thread-detail.component.html',
   styleUrls: ['./thread-detail.component.css'],
   standalone: true,
@@ -22,10 +31,14 @@ export class ThreadDetailComponent implements OnInit {
 
   threadId!: number;
   threadDetail!: ForumThreadDetail;
-  isLoading = false;
   isAdmin = false;
-
+  apiImg = environment.apiImg;
   commentForm: FormGroup;
+
+  // Paginación
+  page = 1;
+  pageSize = 5;
+  totalPages = 1;
 
   constructor(
     private route: ActivatedRoute,
@@ -34,7 +47,8 @@ export class ThreadDetailComponent implements OnInit {
     private authService: AuthService,
     private userService: UserService,
     private modalService: ModalService,
-    private forumService: ForumService
+    private forumService: ForumService,
+    private webSocketService: WebsocketService
   ) {
     this.commentForm = this.fb.group({
       content: ['', [Validators.required, Validators.minLength(1)]]
@@ -44,13 +58,10 @@ export class ThreadDetailComponent implements OnInit {
   async ngOnInit(): Promise<void> {
     if (!await this.authService.isAuthenticated()) {
       this.navCtrl.navigateRoot(['/']);
+      return;
     }
-    await this.loadThreadDetail();
     await this.checkAdmin();
-
-    console.log(this.threadId);
-    console.log(this.threadDetail);
-    console.log(this.isAdmin);
+    await this.loadThreadDetail();
   }
 
   // Comprueba si el usuario actual tiene rol Admin
@@ -79,7 +90,7 @@ export class ThreadDetailComponent implements OnInit {
     const isValid = threadIdParam !== null && Number.isInteger(numericId) && numericId > 0;
 
     if (!isValid) {
-      
+
       this.modalService.showAlert(
         'error',
         'Se ha producido un error al cargar el hilo',
@@ -90,14 +101,27 @@ export class ThreadDetailComponent implements OnInit {
       return
     }
 
-    this.threadId = numericId
-    this.isLoading = true;
+    this.threadId = numericId;
     try {
 
       const result = await this.forumService.getThreadDetail(this.threadId);
 
       if (result.success) {
         this.threadDetail = result.data;
+
+        if (!this.threadDetail) {
+
+          this.modalService.showAlert(
+            'error',
+            'Se ha producido un error al cargar el hilo',
+            [{ text: 'Aceptar' }]
+          );
+
+          this.navCtrl.navigateRoot(['/forum']);
+          return
+        }
+
+        this.setupPagination();
 
       } else {
         console.error("Error al cargar el hilo:", result.error);
@@ -122,9 +146,40 @@ export class ThreadDetailComponent implements OnInit {
 
       this.navCtrl.navigateRoot(['/forum']);
 
-    } finally {
-      this.isLoading = false;
     }
+  }
+
+  // Calcular paginación
+  private setupPagination(): void {
+    const totalCommentsExcludingFirst = (this.threadDetail.comments?.length || 0) - 1;
+    this.totalPages = totalCommentsExcludingFirst > 0 ? Math.ceil(totalCommentsExcludingFirst / this.pageSize) : 1;
+
+    if (this.page > this.totalPages) {
+      this.page = this.totalPages;
+    }
+  }
+
+  // Comentarios de la página actual
+  get paginatedComments(): ForumComment[] {
+    if (!this.threadDetail?.comments) {
+      return [];
+    }
+    const allCommentsExcludingFirst = this.threadDetail.comments.slice(1);
+    const startIndex = (this.page - 1) * this.pageSize;
+    return allCommentsExcludingFirst.slice(startIndex, startIndex + this.pageSize);
+  }
+
+  // Cambio de página
+  goToPage(newPage: number): void {
+    if (newPage >= 1 && newPage <= this.totalPages) {
+      this.page = newPage;
+    }
+  }
+
+  // Refrescar el hilo
+  async refreshThread(): Promise<void> {
+    this.page = 1;
+    await this.loadThreadDetail();
   }
 
   // Crear un nuevo comentario
@@ -144,6 +199,14 @@ export class ThreadDetailComponent implements OnInit {
       if (result.success) {
         this.modalService.showToast('Comentario añadido', "success");
         this.commentForm.reset();
+
+        const message: WebSocketMessage = {
+          Type: MsgType.ForumNotification,
+          Content: this.threadId,
+        };
+
+        this.webSocketService.sendRxjs(message);
+
         await this.loadThreadDetail();
 
       } else {

@@ -87,7 +87,7 @@ public class UserController : ControllerBase
         _logger.LogInformation("Es admin: {isAdmin}", isAdmin);
 
         if (!isAdmin)
-            return Forbid();
+            return Ok(new { isAdmin = false });
 
         return Ok(new { isAdmin = true });
     }

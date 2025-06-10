@@ -6,10 +6,12 @@ import { CreateForumThread } from 'src/app/models/create-forum-thread';
 import { AuthService } from 'src/app/services/auth.service';
 import { ForumService } from 'src/app/services/forum.service';
 import { ModalService } from 'src/app/services/modal.service';
+import { IonContent, IonIcon, IonItem, IonLabel, IonNote, IonButton, IonInput, IonTextarea, IonCard, IonCardHeader } from "@ionic/angular/standalone";
+import { SidebarComponent } from "../../components/sidebar/sidebar.component";
 
 @Component({
   selector: 'app-create-thread',
-  imports: [CommonModule, ReactiveFormsModule],
+  imports: [IonCardHeader, IonCard, CommonModule, ReactiveFormsModule, IonContent, IonItem, IonLabel, IonInput, IonTextarea, IonButton, IonIcon, IonNote, SidebarComponent],
   templateUrl: './create-thread.component.html',
   styleUrls: ['./create-thread.component.css'],
   standalone: true,
@@ -55,11 +57,7 @@ export class CreateThreadComponent implements OnInit {
 
       if (result.success) {
         this.modalService.showToast('Hilo creado con éxito', "success");
-
-        this.navCtrl.navigateRoot(
-          ['/thread-detail'],
-          { queryParams: { id: result.data.id } }
-        );
+        this.navCtrl.navigateRoot(['/thread-detail', result.data.id]);
 
       } else {
         console.error("Error al crear el hilo:", result.error);

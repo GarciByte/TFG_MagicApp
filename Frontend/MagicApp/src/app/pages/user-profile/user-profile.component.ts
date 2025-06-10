@@ -7,12 +7,13 @@ import { User } from 'src/app/models/user';
 import { AuthService } from 'src/app/services/auth.service';
 import { ModalService } from 'src/app/services/modal.service';
 import { UserService } from 'src/app/services/user.service';
-import { IonButton, IonCard, IonCardContent, IonInput, IonItem, IonSelect, IonSelectOption, IonCardHeader, IonCardTitle, IonContent } from "@ionic/angular/standalone";
+import { IonButton, IonCard, IonCardContent, IonInput, IonItem, IonSelect, IonSelectOption, IonCardHeader, IonCardTitle, IonContent, IonIcon } from "@ionic/angular/standalone";
+import { SidebarComponent } from "../../components/sidebar/sidebar.component";
 
 @Component({
   selector: 'app-user-profile',
-  imports: [IonContent, IonCardTitle, IonCardHeader, IonButton, IonInput, IonItem, IonCardContent, IonCard,
-      CommonModule, RouterModule, ReactiveFormsModule, IonSelect, IonSelectOption],
+  imports: [IonIcon, IonContent, IonCardTitle, IonCardHeader, IonButton, IonInput, IonItem, IonCardContent, IonCard,
+    CommonModule, RouterModule, ReactiveFormsModule, IonSelect, IonSelectOption, SidebarComponent],
   templateUrl: './user-profile.component.html',
   styleUrls: ['./user-profile.component.css'],
   standalone: true,

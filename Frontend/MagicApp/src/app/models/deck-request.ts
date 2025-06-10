@@ -1,8 +1,10 @@
-import { DeckCard } from "./deck-card";
+import { CardDetail } from "./card-detail";
 
 export interface DeckRequest{
     Name : string;
     Description : string;
     UserId : number;
-    DeckCards : DeckCard[];
+    DeckCards : CardDetail[];
+    Victories : number;
+    Defeats : number;
 }

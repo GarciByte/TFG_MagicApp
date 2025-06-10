@@ -22,6 +22,8 @@ namespace MagicApp.Models.Database
 
         public DeckRepository DeckRepository { get; init; }
 
+        public ChatWithAiMessageRepository ChatWithAiMessageRepository { get; init; }
+
         public UnitOfWork(
             MagicAppContext context,
             UserRepository userRepository,
@@ -31,7 +33,8 @@ namespace MagicApp.Models.Database
             ForumThreadRepository forumThreadRepository,
             ForumCommentRepository forumCommentRepository,
             ThreadSubscriptionRepository threadSubscriptionRepository,
-            DeckRepository deckRepository)
+            DeckRepository deckRepository,
+            ChatWithAiMessageRepository chatWithAiMessageRepository)
         {
             _context = context;
             UserRepository = userRepository;
@@ -42,6 +45,7 @@ namespace MagicApp.Models.Database
             ForumCommentRepository = forumCommentRepository;
             ThreadSubscriptionRepository = threadSubscriptionRepository;
             DeckRepository = deckRepository;
+            ChatWithAiMessageRepository = chatWithAiMessageRepository;
         }
 
         public async Task<bool> SaveAsync()

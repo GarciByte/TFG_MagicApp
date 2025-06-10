@@ -42,8 +42,6 @@ public class DeckService
             Victories = 0,
             Defeats = 0,
             DeckCards = model.DeckCards
-               .Select(dc => new DeckCard { CardId = dc.CardId })
-               .ToList()
         };
 
 
@@ -57,19 +55,35 @@ public class DeckService
 
 
     //Editar deck
-    public async Task<Deck> UpdateDeckAsync(DeckDto model, int id)
+public async Task<Deck> UpdateDeckAsync(DeckDto model, int id)
+{
+    var updatedDeck = await _unitOfWork.DeckRepository.GetDeckById(id);
+    updatedDeck.Name = model.Name;
+    updatedDeck.Description = model.Description;
+
+    // Limpiar todas las cartas actuales del mazo para después agregar las nuevas (evita confusión con duplicados)
+    foreach(var card in updatedDeck.DeckCards.ToList())
     {
-        var updatedDeck = await _unitOfWork.DeckRepository.GetDeckById(id);
-        updatedDeck.Name = model.Name;
-        updatedDeck.Description = model.Description;
-        updatedDeck.DeckCards = model.DeckCards;
-
-        await _unitOfWork.DeckRepository.UpdateDeckAsync(updatedDeck);
-        await _unitOfWork.SaveAsync();
-
-        return updatedDeck;
-
+        updatedDeck.DeckCards.Remove(card);
+        _unitOfWork.DeckRepository.DeleteCard(card);
     }
+
+    // Añadir todas las cartas que vienen en el modelo, sin filtrar duplicados
+    foreach (var newCard in model.DeckCards)
+    {
+        updatedDeck.DeckCards.Add(newCard);
+    }
+
+    updatedDeck.Victories = model.Victories;
+    updatedDeck.Defeats = model.Defeats;
+
+    await _unitOfWork.DeckRepository.UpdateDeckAsync(updatedDeck);
+    await _unitOfWork.SaveAsync();
+
+    return updatedDeck;
+}
+
+
 
     //Eliminar deck
     public async Task<Deck> DeleteDeckAsync(int id)

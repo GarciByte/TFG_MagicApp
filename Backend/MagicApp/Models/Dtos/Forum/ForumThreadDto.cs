@@ -8,7 +8,9 @@ public class ForumThreadDto
 
     public DateTime CreatedAt { get; set; }
 
-    public string UserNickname { get; set; } = null!;
+    public UserDto User { get; set; } = null!;
 
     public bool IsClosed { get; set; }
+
+    public int CommentCount { get; set; }
 }

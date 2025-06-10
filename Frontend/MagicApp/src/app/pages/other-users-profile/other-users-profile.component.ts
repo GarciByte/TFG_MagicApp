@@ -9,13 +9,14 @@ import { AuthService } from 'src/app/services/auth.service';
 import { ModalService } from 'src/app/services/modal.service';
 import { UserService } from 'src/app/services/user.service';
 import { environment } from 'src/environments/environment';
-import { IonContent, IonButton, IonCard, IonAvatar } from "@ionic/angular/standalone";
+import { IonContent, IonButton, IonCard, IonAvatar, IonIcon } from "@ionic/angular/standalone";
 import { ReportService } from 'src/app/services/report.service';
 import { NewReport } from 'src/app/models/new-report';
+import { SidebarComponent } from "../../components/sidebar/sidebar.component";
 
 @Component({
   selector: 'app-other-users-profile',
-  imports: [IonAvatar, IonCard, IonButton, IonContent, CommonModule, FormsModule],
+  imports: [IonIcon, IonAvatar, IonCard, IonButton, IonContent, CommonModule, FormsModule, SidebarComponent],
   templateUrl: './other-users-profile.component.html',
   styleUrls: ['./other-users-profile.component.css'],
   standalone: true,
@@ -108,6 +109,10 @@ export class OtherUsersProfileComponent implements OnInit {
   // Ver mazos del usuario
   viewDecks(): void {
     console.log('Ver mazos de', this.user.userId);
+    this.navCtrl.navigateRoot(
+      ['/other-user-deck'],
+      { queryParams: { id: this.user.userId } }
+    );
   }
 
   // Reportar al usuario

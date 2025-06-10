@@ -1,0 +1,140 @@
+ion-content {
+    --background: var(--ion-background-color);
+    padding: 32px 16px;
+}
+
+.header-container {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 16px;
+    background-color: var(--ion-background-color);
+}
+
+.back-icon {
+    font-size: 24px;
+    color: var(--ion-color-primary);
+    cursor: pointer;
+    transition: transform 0.2s ease;
+}
+
+.back-icon:hover {
+    transform: scale(1.1);
+}
+
+.page-title {
+    font-size: 1.5rem;
+    margin: 0;
+    color: var(--ion-text-color);
+    font-weight: bold;
+}
+
+.back-button-container {
+    display: flex;
+    justify-content: center;
+    margin: 16px 0 32px 0;
+}
+
+.create-container {
+    display: flex;
+    justify-content: center;
+    padding: 0 1.5rem;
+}
+
+.create-card {
+    --background: var(--ion-card-background);
+    width: 100%;
+    max-width: 600px;
+    margin: 0 auto 2.5rem;
+    padding: 2rem 1.5rem;
+    border-radius: 12px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+}
+
+.page-icon {
+    font-size: 1.8rem;
+}
+
+.input-item {
+    --inner-padding-top: 0.5rem;
+    --inner-padding-bottom: 0.5rem;
+    --inner-padding-start: 0.75rem;
+    --inner-padding-end: 0.75rem;
+    margin-bottom: 1.5rem;
+    --background: #f6f4f4;
+    --border-radius: 12px;
+    --highlight-color-focused: #d12c1e;
+    --border-color: #666;
+}
+
+.input-item.ion-focused {
+    box-shadow: 0 0 0 2px #d12c1e;
+    border-radius: 4px;
+}
+
+.error-note {
+    display: block;
+    color: var(--ion-color-danger);
+    font-size: 0.85rem;
+    margin: 0 0 1.5rem 0.75rem;
+}
+
+.submit-container {
+    display: flex;
+    justify-content: center;
+    margin-top: 1rem;
+    margin-bottom: 1.5rem;
+}
+
+.submit-container ion-button {
+    --padding-top: 6px;
+    --padding-bottom: 6px;
+    --padding-start: 16px;
+    --padding-end: 16px;
+    --background: var(--ion-color-secondary);
+    --color: #ffffff;
+    font-weight: 500;
+    border-radius: 8px;
+}
+
+@media (max-width: 480px) {
+    ion-content {
+        padding: 24px 12px;
+    }
+
+    .create-card {
+        padding: 1.5rem 1rem;
+    }
+
+    .page-title {
+        font-size: 1.4rem;
+    }
+
+    .page-icon {
+        font-size: 1.6rem;
+    }
+
+    .input-item {
+        --inner-padding-top: 0.4rem;
+        --inner-padding-bottom: 0.4rem;
+        --inner-padding-start: 0.5rem;
+        --inner-padding-end: 0.5rem;
+        margin-bottom: 0.6rem;
+    }
+
+    .input-item ion-input,
+    .input-item ion-textarea {
+        padding: 0.4rem 0.5rem;
+    }
+
+    .error-note {
+        font-size: 0.8rem;
+        margin-left: 0.5rem;
+    }
+
+    .submit-container ion-button {
+        --padding-start: 12px;
+        --padding-end: 12px;
+        font-size: 0.9rem;
+    }
+}

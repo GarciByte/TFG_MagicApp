@@ -3,8 +3,10 @@ using MagicApp.Models.Dtos.Forum;
 
 namespace MagicApp.Models.Mappers;
 
-public class ForumMapper
+public class ForumMapper(UserMapper userMapper)
 {
+    private readonly UserMapper _userMapper = userMapper;
+
     public ForumThreadDto ToThreadDto(ForumThread thread)
     {
         return new ForumThreadDto
@@ -12,8 +14,9 @@ public class ForumMapper
             Id = thread.Id,
             Title = thread.Title,
             CreatedAt = thread.CreatedAt,
-            UserNickname = thread.User.Nickname,
-            IsClosed = thread.IsClosed
+            User = _userMapper.UserToDto(thread.User),
+            IsClosed = thread.IsClosed,
+            CommentCount = thread.Comments.Count
         };
     }
 
@@ -24,7 +27,7 @@ public class ForumMapper
             Id = comment.Id,
             ThreadId = comment.ThreadId,
             CreatedAt = comment.CreatedAt,
-            UserNickname = comment.User.Nickname,
+            User = _userMapper.UserToDto(comment.User),
             Content = comment.Content
         };
     }
@@ -44,7 +47,7 @@ public class ForumMapper
             Id = thread.Id,
             Title = thread.Title,
             CreatedAt = thread.CreatedAt,
-            UserNickname = thread.User.Nickname,
+            User = _userMapper.UserToDto(thread.User),
             IsClosed = thread.IsClosed,
             Comments = ToCommentDtoList(thread.Comments),
             Subscribed = (currentUserId.HasValue && thread.Subscriptions.Any(s => s.UserId == currentUserId.Value))

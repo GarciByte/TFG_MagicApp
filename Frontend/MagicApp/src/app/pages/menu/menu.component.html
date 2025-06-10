@@ -34,16 +34,16 @@
 
         <!-- Right side column -->
         <div class="half-width-right">
-          <!-- Foros -->
+          <!-- Foro -->
           <ion-button class="menu-button quarter-height" (click)="navCtrl.navigateRoot(['/forum'])">
             <div class="button-content">
               <div class="magic-icon forum-icon"></div>
-              <span>FOROS</span>
+              <span>FORO</span>
             </div>
           </ion-button>
 
           <!-- Magic Chat -->
-          <ion-button class="menu-button quarter-height">
+          <ion-button class="menu-button quarter-height" (click)="navCtrl.navigateRoot(['/magic-chat'])">
             <div class="button-content">
               <div class="magic-icon chat-icon"></div>
               <span>MAGIC CHAT</span>
@@ -92,19 +92,7 @@
         </div>
       </ion-button>
 
-      <!-- Cerrar sesión -->
-      <ion-button class="menu-button full-width" (click)="logout()">
-        <div class="button-content">
-          <div class="magic-icon"></div>
-          <span>CERRAR SESIÓN</span>
-        </div>
-      </ion-button>
-
-    </div>
-
-    <!-- Footer Logo -->
-    <div class="footer-logo">
-      <img src="assets/images/logo.png" alt="MagicHub Logo" />
     </div>
   </div>
+  <app-sidebar></app-sidebar>
 </ion-content>

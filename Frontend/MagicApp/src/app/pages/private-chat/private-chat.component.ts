@@ -14,10 +14,11 @@ import { WebsocketService } from 'src/app/services/websocket.service';
 import { CommonModule, Location } from '@angular/common';
 import { IonContent, IonButton, IonCard, IonCardContent, IonFooter, IonInput, IonIcon, IonItem, IonLabel, IonAvatar, IonList } from "@ionic/angular/standalone";
 import { FormsModule } from '@angular/forms';
+import { SidebarComponent } from "../../components/sidebar/sidebar.component";
 
 @Component({
   selector: 'app-private-chat',
-  imports: [IonList, IonAvatar, IonLabel, IonItem, IonIcon, IonInput, IonFooter, IonCardContent, IonCard, IonButton, IonContent, CommonModule, FormsModule],
+  imports: [IonList, IonAvatar, IonLabel, IonItem, IonIcon, IonInput, IonFooter, IonCardContent, IonCard, IonButton, IonContent, CommonModule, FormsModule, SidebarComponent],
   templateUrl: './private-chat.component.html',
   styleUrls: ['./private-chat.component.css'],
   standalone: true,
@@ -82,6 +83,9 @@ export class PrivateChatComponent implements OnInit {
     // Obtener datos del otro usuario
     await this.getUser(userId);
 
+    // Marcar el chat activo
+    this.webSocketService.activePrivateChatUserId = this.otherUser.userId;
+
     // Obtener todos los mensajes
     await this.getAllMessages();
 
@@ -94,6 +98,8 @@ export class PrivateChatComponent implements OnInit {
   }
 
   ngOnDestroy(): void {
+    this.webSocketService.activePrivateChatUserId = null;
+    
     if (this.chatSubscription) {
       this.chatSubscription.unsubscribe();
     }
@@ -122,6 +128,21 @@ export class PrivateChatComponent implements OnInit {
 
       this.webSocketService.sendRxjs(message);
       this.chatInput = "";
+
+      const notification: ChatMessage = {
+        SenderId: this.user.userId,
+        SenderNickname: this.user.nickname,
+        ReceiverId: this.otherUser.userId,
+        ReceiverNickname: this.otherUser.nickname,
+        Content: ""
+      }
+
+      const messageNotification: WebSocketMessage = {
+        Type: MsgType.ChatNotification,
+        Content: notification
+      };
+
+      this.webSocketService.sendRxjs(messageNotification);
     }
   }
 

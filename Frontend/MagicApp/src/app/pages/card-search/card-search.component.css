@@ -1,71 +1,194 @@
 ion-content {
-    --background: var(--ion-background-color);
-    padding: 32px 16px;
-    display: flex;
-    justify-content: center;
+  --background: var(--ion-background-color);
+  padding: 32px 16px;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+}
+.header-container {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 16px;
+  background-color: var(--ion-background-color);
 }
 
-.button-container {
-    display: flex;
-    justify-content: center;
-    padding: 0 16px;
-    margin: 16px 0;
+.back-icon {
+  font-size: 24px;
+  color: var(--ion-color-primary);
+  cursor: pointer;
+  transition: transform 0.2s ease;
 }
 
-.button-container ion-button {
-    --padding-top: 4px;
-    --padding-bottom: 4px;
-    --padding-start: 12px;
-    --padding-end: 12px;
+.back-icon:hover {
+  transform: scale(1.1);
 }
 
-.search-container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin: 24px 0;
+.page-title {
+  font-size: 1.5rem;
+  margin: 0;
+  color: var(--ion-text-color);
+  font-weight: bold;
 }
 
-.search-container ion-searchbar {
-    width: 50%;
+
+/* Contenedor buscador + botón filtro */
+.search-filter-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 16px;
+  margin-bottom: 16px;
 }
 
-.search-container ion-button {
-    margin-left: 8px;
-    flex-shrink: 0;
+ion-searchbar {
+  flex-grow: 1;
+  max-width: 600px;
 }
 
+.search-filter-container ion-searchbar {
+  width: 50%;
+  min-width: 250px;
+}
+
+/* Botón filtro: sin fondo blanco, solo color primario */
+.filter-icon-button {
+  --padding-start: 0;
+  --padding-end: 0;
+  --padding-top: 4px;
+  --padding-bottom: 4px;
+  --color: var(--ion-color-primary);
+  font-size: 24px;
+}
+
+
+/* Dropdown filtros */
+.filter-dropdown {
+  position: absolute;
+  top: 10wh; /* justo debajo de la barra de búsqueda */
+  right: 16px;
+  background: var(--ion-background-color);
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  padding: 16px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+  z-index: 10;
+  max-width: 320px;
+}
+
+
+/* Cada grupo de filtros */
+.filter-group {
+  margin: 1rem 0;
+  padding: 0.5rem;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  background-color: #f9f9f9;
+  max-width: 100%;
+}
+
+.filter-group label {
+  font-weight: bold;
+  display: block;
+  margin-bottom: 0.5rem;
+  font-size: 1.1rem;
+  color: #333;
+}
+
+/* Contenedor para cada checkbox + texto */
+.filter-group .checkbox-item {
+  display: flex;
+  align-items: center;
+  margin-bottom: 6px;
+  cursor: pointer;
+}
+
+/* El checkbox con un margen pequeño a la derecha para que quede pegado al texto */
+.filter-group ion-checkbox {
+  --background: #e0e0e0;
+  --border-radius: 4px;
+  --checked-background: #3880ff;
+  --checked-border-color: #3880ff;
+  margin-right: 6px;
+  flex-shrink: 0;
+}
+
+/* El texto */
+.filter-group .checkbox-item span {
+  font-size: 1rem;
+  user-select: none;
+}
+
+/* Mensajes */
 .message {
-    text-align: center;
-    color: var(--ion-text-color);
-    margin: 24px 0;
-    font-size: 1.1em;
-    font-style: italic;
+  text-align: center;
+  color: var(--ion-text-color);
+  margin: 24px 0;
+  font-size: 1.1em;
+  font-style: italic;
 }
 
+/* Cartas más pequeñas y con efecto hover */
 .card-grid {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 16px;
-    justify-content: center;
-    padding: 0 16px 48px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  justify-content: flex-start; 
+  padding: 0 16px 48px;
+  max-width: 100%;
 }
+
 
 .card-grid img {
-    width: 250px;
-    height: auto;
-    border-radius: 6px;
-    background: var(--ion-card-background);
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
-    cursor: pointer;
+  width: 180px;
+  height: auto;
+  border-radius: 6px;
+  background: var(--ion-card-background);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+  cursor: pointer;
+  transition: transform 0.3s ease;
 }
 
-@media (max-width: 600px) {
-    .search-container ion-searchbar {
-        width: 70%;
-    }
+.card-grid img:hover {
+  transform: scale(1.05);
+}
 
-    .card-grid img {
-        width: 150px;
-    }
+/* Botones generales */
+ion-button {
+  --padding-top: 4px;
+  --padding-bottom: 4px;
+  --padding-start: 12px;
+  --padding-end: 12px;
+}
+
+/* Botón volver al menú */
+.button-container {
+  display: flex;
+  justify-content: center;
+  padding: 0 16px;
+  margin: 16px 0;
+}
+
+/* Contenedor paginación */
+.pagination-buttons {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+  gap: 12px;
+}
+
+/* Responsivo */
+@media (max-width: 600px) {
+  .search-filter-container ion-searchbar {
+    width: 70%;
+  }
+
+  .filter-dropdown {
+    width: 90vw;
+  }
+
+  .card-grid img {
+    width: 120px;
+  }
 }

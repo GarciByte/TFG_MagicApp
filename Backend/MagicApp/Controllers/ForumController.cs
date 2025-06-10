@@ -3,7 +3,6 @@ using MagicApp.Models.Dtos.Forum;
 using MagicApp.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using System.Threading;
 
 namespace MagicApp.Controllers;
 

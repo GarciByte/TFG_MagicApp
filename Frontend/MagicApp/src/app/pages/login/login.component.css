@@ -51,6 +51,7 @@
     --highlight-color-focused: #d12c1e;
     --border-color: #666;
     position: relative;
+    --border-radius: 12px;
 }
 
 .form-item.ion-focused {

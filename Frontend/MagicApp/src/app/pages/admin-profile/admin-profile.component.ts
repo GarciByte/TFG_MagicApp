@@ -10,14 +10,16 @@ import { Report, ReportStatus } from 'src/app/models/report';
 import { MsgType, WebSocketMessage } from 'src/app/models/web-socket-message';
 import {
   IonContent, IonButton, IonCard, IonCardHeader, IonCardSubtitle, IonCardContent, IonSearchbar,
-  IonSelect, IonSelectOption, IonIcon } from '@ionic/angular/standalone';
+  IonSelect, IonSelectOption, IonIcon
+} from '@ionic/angular/standalone';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { SidebarComponent } from "../../components/sidebar/sidebar.component";
 
 @Component({
   selector: 'app-admin-profile',
   imports: [IonIcon, CommonModule, FormsModule, IonContent, IonButton, IonCard, IonCardHeader, IonCardSubtitle,
-    IonCardContent, IonSearchbar, IonSelect, IonSelectOption],
+    IonCardContent, IonSearchbar, IonSelect, IonSelectOption, SidebarComponent],
   templateUrl: './admin-profile.component.html',
   styleUrls: ['./admin-profile.component.css'],
   standalone: true,
@@ -396,6 +398,13 @@ export class AdminProfileComponent implements OnInit {
     }
   }
 
+  goReportToPage(newPage: number) {
+    if (newPage >= 1 && newPage <= this.reportTotalPages) {
+      this.reportPage = newPage;
+      this.updateReportsView();
+    }
+  }
+
   onUserSearchChange() {
     this.userPage = 1;
     this.updateUsersView();
@@ -408,6 +417,13 @@ export class AdminProfileComponent implements OnInit {
 
   goUserPage(delta: number) {
     const newPage = this.userPage + delta;
+    if (newPage >= 1 && newPage <= this.userTotalPages) {
+      this.userPage = newPage;
+      this.updateUsersView();
+    }
+  }
+
+  goUserToPage(newPage: number) {
     if (newPage >= 1 && newPage <= this.userTotalPages) {
       this.userPage = newPage;
       this.updateUsersView();

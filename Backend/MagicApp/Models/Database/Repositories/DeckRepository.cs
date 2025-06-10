@@ -10,12 +10,12 @@ public class DeckRepository : Repository<Deck, int>
     public DeckRepository(MagicAppContext context) : base(context) { }
 
     //Obtener deck mediante Id
-public async Task<Deck> GetDeckById(int id)
-{
-    return await GetQueryable()
-        .Include(deck => deck.DeckCards)
-        .FirstOrDefaultAsync(deck => deck.Id == id);
-}
+    public async Task<Deck> GetDeckById(int id)
+    {
+        return await GetQueryable()
+            .Include(deck => deck.DeckCards)
+            .FirstOrDefaultAsync(deck => deck.Id == id);
+    }
 
 
     //Obtener todas las deck de un usuario
@@ -33,6 +33,11 @@ public async Task<Deck> GetDeckById(int id)
     {
         await InsertAsync(newDeck);
         return newDeck;
+    }
+
+    public void DeleteCard(DeckCard card)
+    {
+        _context.Set<DeckCard>().Remove(card);
     }
 
     //Editar deck

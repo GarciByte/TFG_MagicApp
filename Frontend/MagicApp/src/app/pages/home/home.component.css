@@ -1,62 +1,196 @@
-.toolbar-dark {
-  background: var(--ion-background-color);
-  --color: var(--ion-color-primary);
-  border-bottom: none;
+.home-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  --background: var(--ion-color-light);
 }
 
-.title-hidden {
-  display: none;
+.home-wrapper {
+  width: 100%;
+  margin: 0 auto;
 }
 
-.home-content {
-  background: var(--ion-background-color);
+.home-card {
+  --background: transparent;
+  box-shadow: none;
+  margin: 0;
+  border-radius: 0;
+}
+
+.card-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 20px;
+  padding: 32px 0px;
+}
+
+.logo-section {
   display: flex;
   justify-content: center;
-  align-items: center;
+  width: 100%;
+  margin-bottom: 8px;
+}
+
+.logo-section img {
+  width: 70%;
+  max-width: 240px;
+  height: auto;
+  border-radius: 8px;
+}
+
+.header-section {
+  display: flex;
   flex-direction: column;
-  height: 100%;
-  text-align: center;
+  align-items: center;
+  gap: 20px;
+  width: 100%;
+  margin-bottom: 16px;
+}
+
+.main-title h1 {
+  font-size: 2.8rem;
+  font-weight: 700;
+  margin: 0;
+  letter-spacing: -0.02em;
+  line-height: 1.1;
+  color: var(--ion-color-primary);
+}
+
+.subtitle {
+  font-size: 1.1rem;
+  margin: 0;
+  font-style: italic;
+  opacity: 0.9;
+  line-height: 1.4;
+}
+
+.features-list {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  --background: transparent;
+  box-shadow: none;
+  width: 100%;
+  max-width: 360px;
+  border-radius: 0;
+  overflow: hidden;
+  margin: 0 auto;
   padding: 0;
 }
 
-.home-container {
-  margin-top: 20vh;
+.feature-item {
+  --background: var(--ion-color-light);
+  --padding-top: 8px;
+  --padding-bottom: 8px;
+  --padding-start: 20px;
+  --padding-end: 20px;
+  --border-color: var(--ion-color-light-shade);
+  border-bottom: 1px solid var(--ion-color-light-shade);
+  width: 100%;
+  max-width: 360px;
   display: flex;
-  flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 32px;
 }
 
-.logo-image {
-  width: 80%;
-  max-width: 260px;
-  height: auto;
+.feature-item ion-icon {
+  font-size: 1.4rem;
+  margin-right: 12px;
+  color: var(--ion-color-secondary);
 }
 
-.app-name {
-  font-size: 2.8rem;
-  color: var(--ion-color-primary);
-  margin: 0;
-  font-weight: 700;
-  letter-spacing: 3px;
-}
-
-.home-button {
-  --background: transparent;
-  --border-color: var(--ion-color-secondary);
-  --border-width: 1px;
-  --border-style: solid;
-  --color: var(--ion-color-secondary);
-  --border-radius: 12px;
+.feature-label p {
   font-size: 1rem;
   font-weight: 500;
-  text-transform: none;
-  width: 160px;
-  padding: 8px 12px;
-  transition: all 0.3s ease;
+  color: var(--ion-text-color);
+  margin: 0;
+  line-height: 1.5;
+}
 
-  &:hover {
-    --border-color: var(--ion-color-tertiary);
+.button-section {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  margin-top: 8px;
+}
+
+.login-button {
+  --background: var(--ion-color-primary);
+  --color: white;
+  --border-radius: 24px;
+  --padding-top: 16px;
+  --padding-bottom: 16px;
+  --box-shadow: 0 6px 18px rgba(var(--ion-color-primary-rgb), 0.25);
+  width: 60%;
+  max-width: 260px;
+  font-size: 1.2rem;
+  font-weight: 600;
+  text-transform: none;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.login-button:hover {
+  --box-shadow: 0 8px 24px rgba(var(--ion-color-primary-rgb), 0.35);
+}
+
+.login-button ion-icon {
+  font-size: 1.6rem;
+  margin-right: 10px;
+}
+
+@media (max-width: 480px) {
+
+  .home-container {
+    padding: 24px 16px;
+  }
+
+  .card-content {
+    gap: 24px;
+    padding: 24px 20px;
+  }
+
+  .logo-section img {
+    width: 80%;
+    max-width: 200px;
+  }
+
+  .main-title h1 {
+    font-size: 2.4rem;
+  }
+
+  .subtitle {
+    font-size: 1rem;
+    max-width: 90%;
+  }
+
+  .feature-item {
+    --padding-top: 12px;
+    --padding-bottom: 12px;
+    --padding-start: 16px;
+    --padding-end: 16px;
+    border-bottom-width: 1px;
+  }
+
+  .feature-item ion-icon {
+    font-size: 1.3rem;
+    margin-right: 8px;
+  }
+
+  .feature-label p {
+    font-size: 1rem;
+  }
+
+  .login-button {
+    width: 80%;
+    font-size: 1.1rem;
+    --padding-top: 14px;
+    --padding-bottom: 14px;
+  }
+
+  .login-button ion-icon {
+    font-size: 1.4rem;
+    margin-right: 8px;
   }
 }

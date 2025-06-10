@@ -1,0 +1,43 @@
+{
+    "HOME": {
+        "APP_NAME": "MagicHub",
+        "SUBTITLE": "Your Magic: The Gathering community",
+        "FEATURES": {
+            "CHAT": "Chats and forums to discuss strategies",
+            "DECKS": "Manage and share your decks",
+            "AI": "Talk to the AI about the game",
+            "NOTIFICATIONS": "Real‑time notifications"
+        },
+        "LOGIN": "Log in"
+    },
+    "LOGIN": {
+        "TITLE": "Log in",
+        "NICKNAME": "Nickname",
+        "PASSWORD": "Password",
+        "REMEMBER": "Remember me",
+        "BUTTON": "Login",
+        "NO_ACCOUNT": "Don't have an account?",
+        "SIGNUP": "Sign up"
+    },
+    "SIGNUP": {
+        "SELECT_AVATAR_OK": "Select",
+        "SELECT_AVATAR_CANCEL": "Cancel",
+        "AVATAR_PREVIEW": "Selected avatar",
+        "NICKNAME": "Nickname",
+        "EMAIL": "Email",
+        "PASSWORD": "Password",
+        "CONFIRM_PASSWORD": "Repeat password",
+        "BUTTON": "Sign up",
+        "ALREADY_ACCOUNT": "Already have an account?",
+        "LOGIN": "Log in",
+        "ERRORS": {
+            "NICKNAME_REQUIRED": "Nickname is required.",
+            "NICKNAME_PATTERN": "@ character is not allowed.",
+            "EMAIL_REQUIRED": "Email is required.",
+            "EMAIL_INVALID": "Must be a valid email.",
+            "PASSWORD_REQUIRED": "Password is required.",
+            "PASSWORD_MIN": "Minimum 6 characters.",
+            "PASSWORD_MISMATCH": "Passwords must match."
+        }
+    }
+}

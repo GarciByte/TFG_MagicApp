@@ -27,6 +27,11 @@ export const routes: Routes = [
     pathMatch: "full",
   },
   {
+    path: "magic-chat", // Ruta del chat con la IA
+    loadComponent: () => import("./pages/chat-with-ai/chat-with-ai.component").then((m) => m.ChatWithAiComponent),
+    pathMatch: "full",
+  },
+  {
     path: "private-chat-list", // Ruta de la lista de chats privados
     loadComponent: () => import("./pages/private-chats-list/private-chats-list.component").then((m) => m.PrivateChatsListComponent),
     pathMatch: "full",
@@ -72,7 +77,7 @@ export const routes: Routes = [
     pathMatch: 'full'
   },
   {
-    path: 'thread-detail', // Ruta dentro de un hilo del foro
+    path: 'thread-detail/:id', // Ruta dentro de un hilo del foro
     loadComponent: () => import('./pages/thread-detail/thread-detail.component').then(m => m.ThreadDetailComponent),
     pathMatch: 'full'
   },
@@ -104,6 +109,21 @@ export const routes: Routes = [
   {
     path: "deck-view", // Ruta de Ver Mazo
     loadComponent: () => import("./pages/deck-view/deck-view.component").then((m) => m.DeckViewComponent),
+    pathMatch: "full",
+  },
+  {
+    path: "other-user-deck", // Ruta de Ver Mazo otro usuario
+    loadComponent: () => import("./pages/other-user-deck/other-user-deck.component").then((m) => m.OtherUserDeckComponent),
+    pathMatch: "full",
+  },
+  {
+    path: "other-user-deck-view", // Ruta de Ver Detalles del mazo de otro usuario
+    loadComponent: () => import("./pages/other-user-deck-view/other-user-deck-view.component").then((m) => m.OtherUserDeckViewComponent),
+    pathMatch: "full",
+  },
+  {
+    path: "other-user-deck-view-cards", // Ruta de Ver Detalles de las cartas del mazo de otro usuario
+    loadComponent: () => import("./pages/other-user-deck-view-cards/other-user-deck-view-cards.component").then((m) => m.OtherUserDeckViewCardsComponent),
     pathMatch: "full",
   },
   {

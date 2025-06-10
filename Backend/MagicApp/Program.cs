@@ -2,6 +2,7 @@ using MagicApp.Models.Database;
 using MagicApp.Models.Database.Repositories;
 using MagicApp.Models.Mappers;
 using MagicApp.Services;
+using MagicApp.Services.IA;
 using MagicApp.Services.Scryfall;
 using MagicApp.WebSocketComunication;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -10,6 +11,7 @@ using Microsoft.Extensions.FileProviders;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using Polly;
 using Serilog;
 using Serilog.Events;
 using Swashbuckle.AspNetCore.Filters;
@@ -33,6 +35,7 @@ namespace MagicApp
 
             // Leer la configuraci�n
             builder.Services.Configure<Settings>(builder.Configuration.GetSection("Settings"));
+            builder.Services.Configure<OpenRouterSettings>(builder.Configuration.GetSection(OpenRouterSettings.SECTION_NAME));
             builder.Services.AddSingleton(sp => sp.GetRequiredService<IOptions<Settings>>().Value);
 
             // Registrar HttpClient para ScryfallService
@@ -41,12 +44,29 @@ namespace MagicApp
                 Settings settings = builder.Configuration.GetSection(Settings.SECTION_NAME).Get<Settings>();
                 var baseUrl = settings.Scryfall;
                 client.BaseAddress = new Uri(baseUrl);
-
-                client.DefaultRequestHeaders.Accept.Add(
-                    new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/json")
-                );
-
+                client.DefaultRequestHeaders.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/json"));
                 client.DefaultRequestHeaders.UserAgent.ParseAdd("MagicHub/1.0");
+            });
+
+            // Registrar HttpClient para OpenRouter
+            builder.Services.AddHttpClient<OpenRouterGenerator>((sp, client) =>
+            {
+                var orSettings = sp.GetRequiredService<IOptions<OpenRouterSettings>>().Value;
+                client.BaseAddress = new Uri(orSettings.BaseUrl);
+                client.Timeout = TimeSpan.FromMinutes(5);
+                client.DefaultRequestHeaders.Add("Authorization", $"Bearer {orSettings.ApiKey}");
+            })
+            
+            .AddPolicyHandler(Policy<HttpResponseMessage>
+                .Handle<HttpRequestException>()
+                .OrResult(r => (int)r.StatusCode == 429)
+                .WaitAndRetryAsync(2, retryAttempt => TimeSpan.FromSeconds(2))
+            )
+
+            .AddTypedClient((httpClient, sp) =>
+            {
+                var orSettings = sp.GetRequiredService<IOptions<OpenRouterSettings>>().Value;
+                return new OpenRouterGenerator(httpClient, orSettings.Model);
             });
 
             // Inyectamos el DbContext
@@ -62,6 +82,7 @@ namespace MagicApp
             builder.Services.AddScoped<ThreadSubscriptionRepository>();
             builder.Services.AddScoped<ForumCommentRepository>();
             builder.Services.AddScoped<ForumThreadRepository>();
+            builder.Services.AddScoped<ChatWithAiMessageRepository>();
 
             // Inyecci�n de Mappers
             builder.Services.AddScoped<UserMapper>();
@@ -69,6 +90,7 @@ namespace MagicApp
             builder.Services.AddScoped<ChatMessageMapper>();
             builder.Services.AddScoped<ReportMapper>();
             builder.Services.AddScoped<ForumMapper>();
+            builder.Services.AddScoped<ChatWithAiMessageMapper>();
 
             // Inyecci�n de Servicios
             builder.Services.AddScoped<UserService>();
@@ -77,8 +99,18 @@ namespace MagicApp
             builder.Services.AddScoped<ChatMessageService>();
             builder.Services.AddScoped<ReportService>();
             builder.Services.AddScoped<ForumService>();
+            builder.Services.AddScoped<ChatWithAiMessageService>();
             builder.Services.AddSingleton<WebSocketNetwork>();
             builder.Services.AddSingleton<IWebSocketMessageSender>(provider => provider.GetRequiredService<WebSocketNetwork>());
+
+            // Servicio de la IA
+            builder.Services.AddScoped<ChatWithAiService>(sp =>
+            {
+                var orService = sp.GetRequiredService<OpenRouterGenerator>();
+                var historySvc = sp.GetRequiredService<ChatWithAiMessageService>();
+                var orSettings = sp.GetRequiredService<IOptions<OpenRouterSettings>>().Value;
+                return new ChatWithAiService(orService, historySvc, orSettings.SystemPrompt, orSettings.SystemPromptCardDetail);
+            });
 
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
