@@ -11,11 +11,12 @@ import { CardDetail } from "src/app/models/card-detail"
 import { Subscription } from "rxjs"
 import { WebsocketService } from "src/app/services/websocket.service"
 import { TranslateService, TranslateModule } from '@ngx-translate/core';
+import { SidebarComponent } from "../../components/sidebar/sidebar.component";
 
 @Component({
   selector: "app-create-deck",
   standalone: true,
-  imports: [IonIcon, CommonModule, FormsModule, IonContent, TranslateModule, ReactiveFormsModule],
+  imports: [IonIcon, CommonModule, FormsModule, IonContent, TranslateModule, ReactiveFormsModule, SidebarComponent],
   templateUrl: "./create-deck.component.html",
   styleUrls: ["./create-deck.component.css"],
 })
@@ -59,6 +60,8 @@ export class CreateDeckComponent implements OnInit, OnDestroy {
 
   cardDetails() {
     this.navCtrl.navigateRoot("/deck-cards-views");
+    console.log("View deck cards")
+    this.navCtrl.navigateRoot("/deck-cards-views")
   }
 
   async createDeck(form: NgForm) {

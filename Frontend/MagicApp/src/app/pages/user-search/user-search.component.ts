@@ -11,10 +11,12 @@ import { environment } from 'src/environments/environment';
 import { Subscription } from 'rxjs';
 import { WebsocketService } from 'src/app/services/websocket.service';
 import { TranslateService, TranslateModule } from '@ngx-translate/core';
+import { SidebarComponent } from "../../components/sidebar/sidebar.component";
 
 @Component({
   selector: 'app-user-search',
-  imports: [IonIcon, IonCardTitle, IonAvatar, IonCard, IonSearchbar, IonButton, IonContent, CommonModule, FormsModule, TranslateModule],
+  imports: [IonIcon, IonCardTitle, IonAvatar, IonCard, IonSearchbar, IonButton, IonContent, CommonModule, 
+    FormsModule, SidebarComponent, TranslateModule],
   templateUrl: './user-search.component.html',
   styleUrls: ['./user-search.component.css'],
   standalone: true,

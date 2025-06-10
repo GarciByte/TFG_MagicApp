@@ -3,17 +3,18 @@ import { RouterModule } from '@angular/router';
 import { AuthService } from 'src/app/services/auth.service';
 import { WebsocketService } from 'src/app/services/websocket.service';
 import { CommonModule } from '@angular/common';
-import { NavController } from '@ionic/angular';
-import { IonContent, IonButton } from "@ionic/angular/standalone";
+import { IonicModule, NavController } from '@ionic/angular';
+import { IonContent, IonButton, IonFabButton, IonFab, IonFabList, IonIcon } from "@ionic/angular/standalone";
 import { Subscription } from 'rxjs';
 import { User } from 'src/app/models/user';
 import { ModalService } from 'src/app/services/modal.service';
 import { environment } from '../../../environments/environment';
 import { TranslateService, TranslateModule } from '@ngx-translate/core';
+import { SidebarComponent } from "../../components/sidebar/sidebar.component";
 
 @Component({
   selector: 'app-menu',
-  imports: [IonContent, IonButton, CommonModule, RouterModule, TranslateModule],
+  imports: [IonContent, IonButton, CommonModule, RouterModule, IonicModule, SidebarComponent, TranslateModule],
   templateUrl: './menu.component.html',
   styleUrls: ['./menu.component.css'],
   standalone: true,
@@ -86,5 +87,6 @@ export class MenuComponent implements OnInit, OnDestroy {
     );
     this.navCtrl.navigateRoot(['/login']);
   }
+
 
 }

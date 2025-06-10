@@ -11,11 +11,12 @@ import { IonButton, IonCard, IonCardContent, IonInput, IonItem, IonSelect, IonSe
 import { Subscription } from 'rxjs';
 import { WebsocketService } from 'src/app/services/websocket.service';
 import { TranslateService, TranslateModule } from '@ngx-translate/core';
+import { SidebarComponent } from "../../components/sidebar/sidebar.component";
 
 @Component({
   selector: 'app-user-profile',
   imports: [IonIcon, IonContent, IonCardTitle, IonCardHeader, IonButton, IonInput, IonItem, IonCardContent, IonCard,
-    CommonModule, RouterModule, ReactiveFormsModule, IonSelect, IonSelectOption, TranslateModule],
+    CommonModule, RouterModule, ReactiveFormsModule, IonSelect, IonSelectOption, SidebarComponent, TranslateModule],
   templateUrl: './user-profile.component.html',
   styleUrls: ['./user-profile.component.css'],
   standalone: true,

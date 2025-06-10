@@ -37,6 +37,15 @@ export class DeckCardsService {
     this._deckCards.push(card);
   }
 
+remove(card: CardDetail) {
+  const index = this._deckCards.findIndex(c => c.id === card.id);
+  if (index !== -1) {
+    this._deckCards.splice(index, 1);
+  }
+}
+
+
+
   // DECK ID
   get deckId(): number {
     return this._deckId;

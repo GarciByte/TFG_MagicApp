@@ -11,10 +11,11 @@ import { AiCommentModalComponent } from 'src/app/components/ai-comment-modal/ai-
 import { Subscription } from 'rxjs';
 import { WebsocketService } from 'src/app/services/websocket.service';
 import { TranslateService, TranslateModule } from '@ngx-translate/core';
+import { SidebarComponent } from "../../components/sidebar/sidebar.component";
 
 @Component({
   selector: 'app-card-details',
-  imports: [CommonModule, IonicModule, TranslateModule],
+  imports: [IonicModule, CommonModule, SidebarComponent, TranslateModule],
   templateUrl: './card-details.component.html',
   styleUrls: ['./card-details.component.css'],
   standalone: true,

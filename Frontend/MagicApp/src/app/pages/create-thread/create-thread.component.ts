@@ -10,11 +10,12 @@ import { IonContent, IonIcon, IonItem, IonLabel, IonNote, IonButton, IonInput, I
 import { Subscription } from 'rxjs';
 import { WebsocketService } from 'src/app/services/websocket.service';
 import { TranslateService, TranslateModule } from '@ngx-translate/core';
+import { SidebarComponent } from "../../components/sidebar/sidebar.component";
 
 @Component({
   selector: 'app-create-thread',
   imports: [IonCardHeader, IonCard, CommonModule, ReactiveFormsModule, IonContent, IonItem, IonLabel, IonInput,
-    IonTextarea, IonButton, IonIcon, IonNote, TranslateModule],
+    IonTextarea, IonButton, IonIcon, IonNote, TranslateModule, SidebarComponent],
   templateUrl: './create-thread.component.html',
   styleUrls: ['./create-thread.component.css'],
   standalone: true,

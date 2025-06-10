@@ -10,11 +10,12 @@ import { Subscription } from "rxjs"
 import { WebsocketService } from "src/app/services/websocket.service"
 import { DeckCardsService } from "src/app/services/deck-cards.service"
 import { TranslateModule } from '@ngx-translate/core';
+import { SidebarComponent } from "../../components/sidebar/sidebar.component";
 
 @Component({
   selector: "app-decks",
   standalone: true,
-  imports: [CommonModule, RouterModule, IonContent, IonIcon, IonGrid, IonRow, IonCol, TranslateModule],
+  imports: [CommonModule, RouterModule, IonContent, IonIcon, IonGrid, IonRow, IonCol, TranslateModule, SidebarComponent],
   templateUrl: "./deck.component.html",
   styleUrls: ["./deck.component.css"],
 })

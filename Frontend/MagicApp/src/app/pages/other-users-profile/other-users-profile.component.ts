@@ -14,10 +14,11 @@ import { ReportService } from 'src/app/services/report.service';
 import { NewReport } from 'src/app/models/new-report';
 import { WebsocketService } from 'src/app/services/websocket.service';
 import { TranslateService, TranslateModule } from '@ngx-translate/core';
+import { SidebarComponent } from "../../components/sidebar/sidebar.component";
 
 @Component({
   selector: 'app-other-users-profile',
-  imports: [IonIcon, IonAvatar, IonCard, IonButton, IonContent, CommonModule, FormsModule, TranslateModule],
+  imports: [IonIcon, IonAvatar, IonCard, IonButton, IonContent, CommonModule, FormsModule, SidebarComponent, TranslateModule],
   templateUrl: './other-users-profile.component.html',
   styleUrls: ['./other-users-profile.component.css'],
   standalone: true,

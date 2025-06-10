@@ -7,7 +7,6 @@ import { IonButton, NavController, IonContent, IonSearchbar, IonIcon, IonSelectO
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { CardImage } from 'src/app/models/card-image';
-import { CardTransferService } from 'src/app/services/card-transfer.service';
 import { CardFilter } from 'src/app/models/card-filter';
 import { CardType } from 'src/app/models/enums/card-type';
 import { Color } from 'src/app/models/enums/color';
@@ -15,13 +14,18 @@ import { Rarity } from 'src/app/models/enums/rarity';
 import { AuthService } from 'src/app/services/auth.service';
 import { CardColorService } from 'src/app/services/card-color.service';
 import { CardTypeService } from 'src/app/services/card-type.service';
+import { SidebarComponent } from "../../components/sidebar/sidebar.component";
+import { DeckCardsService } from 'src/app/services/deck-cards.service';
 import { Subscription } from 'rxjs';
 import { WebsocketService } from 'src/app/services/websocket.service';
 import { TranslateService, TranslateModule } from '@ngx-translate/core';
+import { CardTransferService } from 'src/app/services/card-transfer.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-add-cards-deck',
-  imports: [IonIcon, IonCheckbox, IonSearchbar, IonButton, IonContent, CommonModule, FormsModule, IonSelectOption, IonSelect, TranslateModule],
+  imports: [IonIcon, IonCheckbox, IonSearchbar, IonButton, IonContent, CommonModule, FormsModule, 
+    IonSelectOption, IonSelect, TranslateModule, SidebarComponent],
   templateUrl: './add-cards-deck.component.html',
   styleUrls: ['./add-cards-deck.component.css'],
   standalone: true,
@@ -53,8 +57,10 @@ export class AddCardsDeckComponent implements OnInit, OnDestroy {
     private modalService: ModalService,
     private cardColorService: CardColorService,
     private cardTypeService: CardTypeService,
-    private cardTransfer: CardTransferService,
+    private router: Router,
+    private deckCardsService: DeckCardsService,
     private sanitizer: DomSanitizer,
+    private cardTransfer: CardTransferService,
     private webSocketService: WebsocketService,
     public translate: TranslateService
   ) { }
@@ -74,10 +80,9 @@ export class AddCardsDeckComponent implements OnInit, OnDestroy {
   }
 
   async selectCard(cardId: string) {
-    await this.loadCardDetails(cardId);
-    this.cardTransfer.setCard(this.card);
-    this.search();
-    this.navCtrl.back();
+    await this.loadCardDetails(cardId)
+    this.deckCardsService.addCard(this.card)
+    this.navCtrl.back()
   }
 
   private async loadCardDetails(cardId: string) {

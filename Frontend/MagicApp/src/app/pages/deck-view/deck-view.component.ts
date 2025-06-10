@@ -12,10 +12,12 @@ import { DeckCardsService } from 'src/app/services/deck-cards.service';
 import { Subscription } from 'rxjs';
 import { WebsocketService } from 'src/app/services/websocket.service';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
+import { CardDetail } from 'src/app/models/card-detail';
+import { SidebarComponent } from "../../components/sidebar/sidebar.component";
 
 @Component({
   selector: 'app-deck-view',
-  imports: [IonIcon, CommonModule, FormsModule, IonContent, TranslateModule, ReactiveFormsModule, FormsModule],
+  imports: [IonIcon, CommonModule, FormsModule, IonContent, SidebarComponent, TranslateModule, ReactiveFormsModule, FormsModule],
   templateUrl: './deck-view.component.html',
   styleUrls: ['./deck-view.component.css'],
   standalone: true,
@@ -47,25 +49,28 @@ export class DeckViewComponent implements OnInit, OnDestroy {
       this.navCtrl.navigateRoot(['/']);
     });
 
-    this.deckId = Number(this.route.snapshot.queryParamMap.get('deckId'));
+  this.deckId = Number(this.route.snapshot.queryParamMap.get('deckId'));
 
-    if (this.deckCardsService.deckCards.length === 0) {
-      this.deck = (await this.deckService.GetDeckById(this.deckId)).data;
+  // Solo inicializa si aún no lo está (no sobreescribe ediciones locales)
+  if (!this.deckCardsService.deckId) {
+    this.deck = (await this.deckService.GetDeckById(this.deckId)).data;
 
-      this.deckCardsService.deckcards = this.deck.deckCards;
-      this.deckCardsService.name = this.deck.name;
-      this.deckCardsService.description = this.deck.description;
-      this.deckCardsService.userId = this.deck.userId;
-      this.deckCardsService.deckId = this.deck.id;
-      this.deckCardsService.victories = this.deck.victories;
-      this.deckCardsService.defeats = this.deck.defeats;
-    }
-
-    const navigation = history.state;
-    if (navigation?.selectCard) {
-      this.deckCardsService.addCard(navigation.selectCard);
-    }
+    this.deckCardsService.deckcards = this.deck.deckCards;
+    this.deckCardsService.name = this.deck.name;
+    this.deckCardsService.description = this.deck.description;
+    this.deckCardsService.userId = this.deck.userId;
+    this.deckCardsService.deckId = this.deck.id;
+    this.deckCardsService.victories = this.deck.victories;
+    this.deckCardsService.defeats = this.deck.defeats;
   }
+
+  const navigation = history.state;
+  if (navigation?.selectCard) {
+    this.deckCardsService.addCard(navigation.selectCard);
+  }
+}
+
+
 
   addCard() {
     this.navCtrl.navigateRoot("/add-cards-deck");

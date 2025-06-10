@@ -15,11 +15,11 @@ import { CommonModule, Location } from '@angular/common';
 import { IonContent, IonButton, IonCard, IonCardContent, IonFooter, IonInput, IonIcon, IonItem, IonLabel, IonAvatar, IonList } from "@ionic/angular/standalone";
 import { FormsModule } from '@angular/forms';
 import { TranslateService, TranslateModule } from '@ngx-translate/core';
+import { SidebarComponent } from "../../components/sidebar/sidebar.component";
 
 @Component({
   selector: 'app-private-chat',
-  imports: [IonList, IonAvatar, IonLabel, IonItem, IonIcon, IonInput, IonFooter, IonCardContent, IonCard, IonButton,
-    IonContent, CommonModule, FormsModule, TranslateModule],
+  imports: [IonList, IonAvatar, IonLabel, IonItem, IonIcon, IonInput, IonFooter, IonCardContent, IonCard, IonButton, IonContent, CommonModule, FormsModule, SidebarComponent, TranslateModule],
   templateUrl: './private-chat.component.html',
   styleUrls: ['./private-chat.component.css'],
   standalone: true,

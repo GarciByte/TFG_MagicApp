@@ -11,10 +11,11 @@ import { WebsocketService } from 'src/app/services/websocket.service';
 import { ChatList } from 'src/app/models/chat-list';
 import { IonCardContent, IonCardHeader, IonAvatar, IonCardTitle, IonCard, IonContent, IonButton, IonIcon } from "@ionic/angular/standalone";
 import { TranslateService, TranslateModule } from '@ngx-translate/core';
+import { SidebarComponent } from "../../components/sidebar/sidebar.component";
 
 @Component({
   selector: 'app-private-chats-list',
-  imports: [IonIcon, IonButton, IonContent, IonCard, IonCardTitle, IonAvatar, IonCardHeader, IonCardContent, CommonModule, TranslateModule],
+  imports: [IonIcon, IonButton, IonContent, IonCard, IonCardTitle, IonAvatar, IonCardHeader, IonCardContent, CommonModule, SidebarComponent, TranslateModule],
   templateUrl: './private-chats-list.component.html',
   styleUrls: ['./private-chats-list.component.css'],
   standalone: true,

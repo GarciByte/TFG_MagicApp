@@ -16,11 +16,12 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Subscription } from 'rxjs';
 import { TranslateService, TranslateModule } from '@ngx-translate/core';
+import { SidebarComponent } from "../../components/sidebar/sidebar.component";
 
 @Component({
   selector: 'app-admin-profile',
   imports: [IonIcon, CommonModule, FormsModule, IonContent, IonButton, IonCard, IonCardHeader, IonCardSubtitle,
-    IonCardContent, IonSearchbar, IonSelect, IonSelectOption, TranslateModule],
+    IonCardContent, IonSearchbar, IonSelect, IonSelectOption, TranslateModule, SidebarComponent],
   templateUrl: './admin-profile.component.html',
   styleUrls: ['./admin-profile.component.css'],
   standalone: true,

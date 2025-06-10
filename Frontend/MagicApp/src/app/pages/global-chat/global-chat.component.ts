@@ -13,11 +13,12 @@ import { UserService } from 'src/app/services/user.service';
 import { ChatMessageService } from 'src/app/services/chat-message.service';
 import { ModalService } from 'src/app/services/modal.service';
 import { TranslateService, TranslateModule } from '@ngx-translate/core';
+import { SidebarComponent } from "../../components/sidebar/sidebar.component";
 
 @Component({
   selector: 'app-global-chat',
   imports: [IonCardContent, IonCard, IonAvatar, IonFooter, IonLabel, IonList, IonIcon, IonButton, IonItem, IonInput, IonContent,
-    FormsModule, CommonModule, TranslateModule],
+    FormsModule, CommonModule, TranslateModule, SidebarComponent],
   templateUrl: './global-chat.component.html',
   styleUrls: ['./global-chat.component.css'],
   standalone: true,

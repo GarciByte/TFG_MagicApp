@@ -18,10 +18,11 @@ import { marked } from 'marked';
 import { Capacitor } from '@capacitor/core';
 import { Browser } from '@capacitor/browser';
 import { TranslateService, TranslateModule } from '@ngx-translate/core';
+import { SidebarComponent } from "../../components/sidebar/sidebar.component";
 
 @Component({
   selector: 'app-chat-with-ai',
-  imports: [IonItem, IonIcon, IonCardContent, IonCard, IonButton, CommonModule, FormsModule, IonContent, IonFooter, IonSpinner, TranslateModule],
+  imports: [IonItem, IonIcon, IonCardContent, IonCard, IonButton, CommonModule, FormsModule, IonContent, IonFooter, IonSpinner, SidebarComponent, TranslateModule],
   templateUrl: './chat-with-ai.component.html',
   styleUrls: ['./chat-with-ai.component.css'],
   standalone: true,

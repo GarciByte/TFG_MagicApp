@@ -122,6 +122,11 @@ export const routes: Routes = [
     pathMatch: "full",
   },
   {
+    path: "other-user-deck-view-cards", // Ruta de Ver Detalles de las cartas del mazo de otro usuario
+    loadComponent: () => import("./pages/other-user-deck-view-cards/other-user-deck-view-cards.component").then((m) => m.OtherUserDeckViewCardsComponent),
+    pathMatch: "full",
+  },
+  {
     path: '**',
     redirectTo: '',
     pathMatch: 'full'

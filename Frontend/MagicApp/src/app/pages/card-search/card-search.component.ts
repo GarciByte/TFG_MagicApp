@@ -16,10 +16,11 @@ import { CardTypeService } from 'src/app/services/card-type.service';
 import { Subscription } from 'rxjs';
 import { WebsocketService } from 'src/app/services/websocket.service'
 import { TranslateService, TranslateModule } from '@ngx-translate/core';
+import { SidebarComponent } from "../../components/sidebar/sidebar.component";
 
 @Component({
   selector: 'app-card-search',
-  imports: [IonIcon, IonCheckbox, IonSearchbar, IonButton, IonContent, CommonModule, FormsModule, IonSelectOption, IonSelect, TranslateModule],
+  imports: [IonIcon, IonCheckbox, IonSearchbar, IonButton, IonContent, CommonModule, FormsModule, IonSelectOption, IonSelect, SidebarComponent, TranslateModule],
   templateUrl: './card-search.component.html',
   styleUrls: ['./card-search.component.css'],
   standalone: true,

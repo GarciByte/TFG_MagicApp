@@ -19,11 +19,12 @@ import { MsgType, WebSocketMessage } from 'src/app/models/web-socket-message';
 import { WebsocketService } from 'src/app/services/websocket.service';
 import { Subscription } from 'rxjs';
 import { TranslateService, TranslateModule } from '@ngx-translate/core';
+import { SidebarComponent } from "../../components/sidebar/sidebar.component";
 
 @Component({
   selector: 'app-thread-detail',
   imports: [IonContent, IonCard, IonAvatar, IonCardHeader, IonIcon, IonItem, IonLabel,
-    IonCardContent, IonButton, CommonModule, ReactiveFormsModule, IonTextarea, TranslateModule],
+    IonCardContent, IonButton, CommonModule, ReactiveFormsModule, IonTextarea, SidebarComponent, TranslateModule],
   templateUrl: './thread-detail.component.html',
   styleUrls: ['./thread-detail.component.css'],
   standalone: true,

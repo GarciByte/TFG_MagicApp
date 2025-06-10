@@ -9,10 +9,11 @@ import { DeckCardsService } from 'src/app/services/deck-cards.service';
 import { DeckServiceService } from 'src/app/services/deck-service.service';
 import { WebsocketService } from 'src/app/services/websocket.service';
 import { TranslateModule } from '@ngx-translate/core';
+import { SidebarComponent } from "../../components/sidebar/sidebar.component";
 
 @Component({
   selector: 'app-other-user-deck',
-  imports: [CommonModule, RouterModule, IonContent, IonIcon, IonGrid, IonRow, IonCol, TranslateModule],
+  imports: [CommonModule, RouterModule, IonContent, IonIcon, IonGrid, IonRow, IonCol, SidebarComponent, TranslateModule],
   templateUrl: './other-user-deck.component.html',
   styleUrls: ['./other-user-deck.component.css'],
   standalone: true,
