@@ -1,21 +1,21 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
-import { NavController } from '@ionic/angular';
+import { ActivatedRoute } from '@angular/router';
+import { AlertController, NavController } from '@ionic/angular';
 import { DeckRequest } from 'src/app/models/deck-request';
 import { DeckResponse } from 'src/app/models/deck-response';
 import { AuthService } from 'src/app/services/auth.service';
 import { DeckServiceService } from 'src/app/services/deck-service.service';
 import { IonContent, IonIcon } from "@ionic/angular/standalone";
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, NgForm, ReactiveFormsModule } from '@angular/forms';
 import { DeckCardsService } from 'src/app/services/deck-cards.service';
 import { Subscription } from 'rxjs';
 import { WebsocketService } from 'src/app/services/websocket.service';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-deck-view',
-  imports: [IonIcon, CommonModule, FormsModule, IonContent, TranslateModule],
+  imports: [IonIcon, CommonModule, FormsModule, IonContent, TranslateModule, ReactiveFormsModule, FormsModule],
   templateUrl: './deck-view.component.html',
   styleUrls: ['./deck-view.component.css'],
   standalone: true,
@@ -30,8 +30,10 @@ export class DeckViewComponent implements OnInit, OnDestroy {
     private authService: AuthService,
     private deckService: DeckServiceService,
     private route: ActivatedRoute,
+    private alertController: AlertController,
     public deckCardsService: DeckCardsService,
-    private webSocketService: WebsocketService
+    private webSocketService: WebsocketService,
+    public translate: TranslateService
   ) { }
 
   async ngOnInit(): Promise<void> {
@@ -73,7 +75,15 @@ export class DeckViewComponent implements OnInit, OnDestroy {
     this.navCtrl.navigateRoot("/deck-cards-views");
   }
 
-  async updateDeck() {
+  async updateDeck(form: NgForm) {
+    if (form.invalid) {
+      await this.presentAlert(
+        this.translate.instant('DECK_VIEW.ERROR_REQUIRED'),
+        this.translate.instant('DECK_VIEW.ERROR_NAME_LENGTH')
+      );
+      return;
+    }
+
     const deckData: DeckRequest = {
       Name: this.deckCardsService.name,
       Description: this.deckCardsService.description,
@@ -81,7 +91,7 @@ export class DeckViewComponent implements OnInit, OnDestroy {
       DeckCards: this.deckCardsService.deckCards,
       Victories: this.deckCardsService.victories,
       Defeats: this.deckCardsService.defeats
-    }
+    };
 
     // Save the deck
     await this.deckService.UpdateDeck(deckData, this.deckCardsService.deckId);
@@ -125,6 +135,16 @@ export class DeckViewComponent implements OnInit, OnDestroy {
 
     const rate = (victories / totalGames) * 100;
     return rate.toFixed(1) + '%';
+  }
+
+  async presentAlert(header: string, message: string) {
+    const alert = await this.alertController.create({
+      header,
+      message,
+      buttons: [this.translate.instant('COMMON.ACCEPT')]
+    });
+
+    await alert.present();
   }
 
   ngOnDestroy(): void {

@@ -214,3 +214,9 @@ ion-content {
   color: green;
   text-align: center;
 }
+
+.warning-message {
+  color: red;
+  margin-top: 8px;
+  font-weight: bold;
+}

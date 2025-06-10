@@ -326,7 +326,9 @@
         },
         "CREATE_BUTTON": "Crear",
         "ERROR_HEADER": "Error",
-        "ERROR_SIZE": "Tamaño del mazo inadecuado"
+        "ERROR_SIZE": "Tamaño del mazo inadecuado",
+        "ERROR_NAME_LENGTH": "El nombre debe tener al menos 4 caracteres",
+        "ERROR_DESC_LENGTH": "La descripción debe tener al menos 4 caracteres"
     },
     "DECK_VIEW": {
         "PAGE_TITLE": "Detalles del mazo",
@@ -342,7 +344,10 @@
         "LABEL_DEFEATS": "Derrotas",
         "LABEL_VICTORY_RATE": "Porcentaje de victoria",
         "BUTTON_SAVE": "Guardar",
-        "BUTTON_DELETE": "Eliminar"
+        "BUTTON_DELETE": "Eliminar",
+        "ERROR_NAME_LENGTH": "El nombre debe tener al menos 4 caracteres",
+        "ERROR_DESC_LENGTH": "La descripción debe tener al menos 4 caracteres",
+        "ERROR_REQUIRED": "Este campo es obligatorio"
     },
     "OTHER_USER_DECK": {
         "TITLE": "Mazos",

@@ -326,7 +326,9 @@
         },
         "CREATE_BUTTON": "Create",
         "ERROR_HEADER": "Error",
-        "ERROR_SIZE": "Invalid deck size"
+        "ERROR_SIZE": "Invalid deck size",
+        "ERROR_NAME_LENGTH": "Name must be at least 4 characters",
+        "ERROR_DESC_LENGTH": "Description must be at least 4 characters"
     },
     "DECK_VIEW": {
         "PAGE_TITLE": "Deck Details",
@@ -342,7 +344,10 @@
         "LABEL_DEFEATS": "Defeats",
         "LABEL_VICTORY_RATE": "Victory rate",
         "BUTTON_SAVE": "Save",
-        "BUTTON_DELETE": "Delete"
+        "BUTTON_DELETE": "Delete",
+        "ERROR_NAME_LENGTH": "Name must be at least 4 characters",
+        "ERROR_DESC_LENGTH": "Description must be at least 4 characters",
+        "ERROR_REQUIRED": "This field is required"
     },
     "OTHER_USER_DECK": {
         "TITLE": "Decks",

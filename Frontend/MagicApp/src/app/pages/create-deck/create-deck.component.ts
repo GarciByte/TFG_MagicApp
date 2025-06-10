@@ -1,6 +1,6 @@
 import { Component, OnDestroy, type OnInit } from "@angular/core"
 import { CommonModule } from "@angular/common"
-import { FormsModule } from "@angular/forms"
+import { FormsModule, NgForm, ReactiveFormsModule } from "@angular/forms"
 import { AlertController, NavController } from "@ionic/angular"
 import { IonContent, IonIcon } from "@ionic/angular/standalone"
 import { AuthService } from "src/app/services/auth.service"
@@ -15,7 +15,7 @@ import { TranslateService, TranslateModule } from '@ngx-translate/core';
 @Component({
   selector: "app-create-deck",
   standalone: true,
-  imports: [IonIcon, CommonModule, FormsModule, IonContent, TranslateModule],
+  imports: [IonIcon, CommonModule, FormsModule, IonContent, TranslateModule, ReactiveFormsModule],
   templateUrl: "./create-deck.component.html",
   styleUrls: ["./create-deck.component.css"],
 })
@@ -53,14 +53,6 @@ export class CreateDeckComponent implements OnInit, OnDestroy {
     this.deckDescription = this.deckCardsService.description;
   }
 
-  setDeckName(name: string) {
-    this.deckCardsService.name = this.deckName;
-  }
-
-  setDeckDescription(description: string) {
-    this.deckCardsService.description = this.deckDescription;
-  }
-
   addCard() {
     this.navCtrl.navigateRoot("/add-cards-deck");
   }
@@ -69,7 +61,18 @@ export class CreateDeckComponent implements OnInit, OnDestroy {
     this.navCtrl.navigateRoot("/deck-cards-views");
   }
 
-  async createDeck() {
+  async createDeck(form: NgForm) {
+    if (form.invalid) {
+      await this.presentAlert(
+        this.translate.instant('DECK.ERROR_HEADER'),
+        this.translate.instant('DECK.ERROR_NAME_LENGTH')
+      );
+      return;
+    }
+
+    this.deckCardsService.name = this.deckName;
+    this.deckCardsService.description = this.deckDescription;
+
     const deckData: DeckRequest = {
       Name: this.deckName,
       Description: this.deckDescription,
@@ -84,7 +87,7 @@ export class CreateDeckComponent implements OnInit, OnDestroy {
     if (response.success) {
       this.deckCardsService.clear();
       this.navCtrl.navigateRoot(['/decks']);
-
+      
     } else {
       await this.presentAlert(
         this.translate.instant('DECK.ERROR_HEADER'),
