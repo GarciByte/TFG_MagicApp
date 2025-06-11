@@ -68,6 +68,10 @@ export class MenuComponent implements OnInit, OnDestroy {
     });
   }
 
+  isAdmin(): boolean {
+    return this.user?.role === "Admin";
+  }
+
   ngOnDestroy(): void {
     if (this.disconnected$) {
       this.disconnected$.unsubscribe();

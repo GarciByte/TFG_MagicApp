@@ -93,14 +93,14 @@
       </ion-button>
 
       <!-- Perfil admin -->
-       @if (user.role == "Admin") {
+      @if (isAdmin()) {
       <ion-button class="menu-button full-width" (click)="navCtrl.navigateRoot(['/admin-profile'])">
         <div class="button-content">
           <div class="magic-icon"></div>
           <span>PERFIL ADMIN</span>
         </div>
       </ion-button>
-       }
+      }
 
     </div>
   </div>
