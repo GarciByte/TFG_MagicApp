@@ -60,8 +60,6 @@ export class CreateDeckComponent implements OnInit, OnDestroy {
 
   cardDetails() {
     this.navCtrl.navigateRoot("/deck-cards-views");
-    console.log("View deck cards")
-    this.navCtrl.navigateRoot("/deck-cards-views")
   }
 
   async createDeck(form: NgForm) {
@@ -90,7 +88,7 @@ export class CreateDeckComponent implements OnInit, OnDestroy {
     if (response.success) {
       this.deckCardsService.clear();
       this.navCtrl.navigateRoot(['/decks']);
-      
+
     } else {
       await this.presentAlert(
         this.translate.instant('DECK.ERROR_HEADER'),
@@ -103,7 +101,7 @@ export class CreateDeckComponent implements OnInit, OnDestroy {
     const alert = await this.alertController.create({
       header,
       message,
-      buttons: [ this.translate.instant('COMMON.ACCEPT') ]
+      buttons: [this.translate.instant('COMMON.ACCEPT')]
     });
 
     await alert.present();

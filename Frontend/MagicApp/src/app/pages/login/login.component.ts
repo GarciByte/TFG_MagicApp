@@ -59,7 +59,7 @@ export class LoginComponent implements OnInit {
     } else {
       // Prohibición del usuario
       if (result.statusCode === 403) {
-        
+
         this.modalService.showAlert(
           'error',
           this.translate.instant('LOGIN.ERROR_SUSPENDED'),

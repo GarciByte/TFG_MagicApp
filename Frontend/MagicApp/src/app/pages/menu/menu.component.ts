@@ -76,15 +76,4 @@ export class MenuComponent implements OnInit, OnDestroy {
     }
   }
 
-  // Cerrar sesión
-  async logout(): Promise<void> {
-    await this.authService.logout();
-    this.modalService.showToast(
-      this.translate.instant('MENU.LOGOUT_SUCCESS'),
-      'success'
-    );
-    this.navCtrl.navigateRoot(['/login']);
-  }
-
-
 }

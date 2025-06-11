@@ -61,9 +61,7 @@ export class OtherUserDeckViewComponent implements OnInit, OnDestroy {
   }
 
   cardDetails() {
-    this.navCtrl.navigateRoot("/deck-cards-views");
-    console.log("View deck cards")
-    this.navCtrl.navigateRoot("/other-user-deck-view-cards")
+    this.navCtrl.navigateRoot("/other-user-deck-view-cards");
   }
 
   deckSize(): number {

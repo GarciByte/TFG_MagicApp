@@ -141,6 +141,7 @@ ion-searchbar {
 .card-grid img:hover {
   transform: scale(1.05);
 }
+
 .card-item {
   display: flex;
   flex-direction: column;
@@ -168,8 +169,6 @@ ion-searchbar {
 .remove-to-deck-btn ion-icon {
   font-size: 18px;
 }
-
-
 
 ion-button {
   --padding-top: 4px;

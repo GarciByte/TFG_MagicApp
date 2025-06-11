@@ -25,7 +25,6 @@ ion-content {
 
 .back-icon:hover {
     transform: scale(1.1);
-    color: var(--ion-color-primary-shade);
 }
 
 .page-title {

@@ -22,8 +22,8 @@ import { TranslateService, TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-add-cards-deck',
-  imports: [IonIcon, IonCheckbox, IonSearchbar, IonButton, IonContent, CommonModule, FormsModule, 
-    IonSelectOption, IonSelect, TranslateModule, SidebarComponent],
+  imports: [IonIcon, IonCheckbox, IonSearchbar, IonButton, IonContent, CommonModule, FormsModule, IonSelectOption, IonSelect,
+    TranslateModule, SidebarComponent],
   templateUrl: './add-cards-deck.component.html',
   styleUrls: ['./add-cards-deck.component.css'],
   standalone: true,
@@ -76,9 +76,9 @@ export class AddCardsDeckComponent implements OnInit, OnDestroy {
   }
 
   async selectCard(cardId: string) {
-    await this.loadCardDetails(cardId)
-    this.deckCardsService.addCard(this.card)
-    this.navCtrl.back()
+    await this.loadCardDetails(cardId);
+    this.deckCardsService.addCard(this.card);
+    this.navCtrl.back();
   }
 
   private async loadCardDetails(cardId: string) {
