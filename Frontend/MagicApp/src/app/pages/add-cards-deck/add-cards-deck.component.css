@@ -33,8 +33,6 @@ ion-content {
   font-weight: bold;
 }
 
-
-/* Contenedor buscador + botón filtro */
 .search-filter-container {
   display: flex;
   align-items: center;
@@ -53,7 +51,6 @@ ion-searchbar {
   min-width: 250px;
 }
 
-/* Botón filtro: sin fondo blanco, solo color primario */
 .filter-icon-button {
   --padding-start: 0;
   --padding-end: 0;
@@ -63,23 +60,19 @@ ion-searchbar {
   font-size: 24px;
 }
 
-
-/* Dropdown filtros */
 .filter-dropdown {
   position: absolute;
-  top: 10wh; /* justo debajo de la barra de búsqueda */
+  top: 10wh;
   right: 16px;
   background: var(--ion-background-color);
   border: 1px solid #ccc;
   border-radius: 8px;
   padding: 16px;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
   z-index: 10;
   max-width: 320px;
 }
 
-
-/* Cada grupo de filtros */
 .filter-group {
   margin: 1rem 0;
   padding: 0.5rem;
@@ -97,7 +90,6 @@ ion-searchbar {
   color: #333;
 }
 
-/* Contenedor para cada checkbox + texto */
 .filter-group .checkbox-item {
   display: flex;
   align-items: center;
@@ -105,7 +97,6 @@ ion-searchbar {
   cursor: pointer;
 }
 
-/* El checkbox con un margen pequeño a la derecha para que quede pegado al texto */
 .filter-group ion-checkbox {
   --background: #e0e0e0;
   --border-radius: 4px;
@@ -115,13 +106,11 @@ ion-searchbar {
   flex-shrink: 0;
 }
 
-/* El texto */
 .filter-group .checkbox-item span {
   font-size: 1rem;
   user-select: none;
 }
 
-/* Mensajes */
 .message {
   text-align: center;
   color: var(--ion-text-color);
@@ -130,16 +119,14 @@ ion-searchbar {
   font-style: italic;
 }
 
-/* Cartas más pequeñas y con efecto hover */
 .card-grid {
   display: flex;
   flex-wrap: wrap;
   gap: 16px;
-  justify-content: flex-start; 
+  justify-content: flex-start;
   padding: 0 16px 48px;
   max-width: 100%;
 }
-
 
 .card-grid img {
   width: 180px;
@@ -154,6 +141,7 @@ ion-searchbar {
 .card-grid img:hover {
   transform: scale(1.05);
 }
+
 .card-item {
   display: flex;
   flex-direction: column;
@@ -182,9 +170,6 @@ ion-searchbar {
   font-size: 18px;
 }
 
-
-
-/* Botones generales */
 ion-button {
   --padding-top: 4px;
   --padding-bottom: 4px;
@@ -192,7 +177,6 @@ ion-button {
   --padding-end: 12px;
 }
 
-/* Botón volver al menú */
 .button-container {
   display: flex;
   justify-content: center;
@@ -200,7 +184,6 @@ ion-button {
   margin: 16px 0;
 }
 
-/* Contenedor paginación */
 .pagination-buttons {
   display: flex;
   justify-content: center;
@@ -208,7 +191,6 @@ ion-button {
   gap: 12px;
 }
 
-/* Responsivo */
 @media (max-width: 600px) {
   .search-filter-container ion-searchbar {
     width: 70%;

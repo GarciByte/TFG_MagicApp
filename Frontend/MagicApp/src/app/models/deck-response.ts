@@ -1,5 +1,4 @@
 import { CardDetail } from "./card-detail";
-import { User } from "./user";
 
 export interface DeckResponse{
     id : number;

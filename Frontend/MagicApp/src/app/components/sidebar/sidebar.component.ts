@@ -1,12 +1,13 @@
 import { Component, OnInit } from '@angular/core';
-import { IonTitle, IonFab, IonFabButton, IonFabList, IonIcon, NavController } from "@ionic/angular/standalone";
+import { IonFab, IonFabButton, IonFabList, IonIcon, NavController } from "@ionic/angular/standalone";
 import { AuthService } from 'src/app/services/auth.service';
 import { ModalService } from 'src/app/services/modal.service';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-sidebar',
   standalone: true,
-  imports: [IonIcon, IonFabList, IonFabButton, IonFab, IonTitle],
+  imports: [IonIcon, IonFabList, IonFabButton, IonFab],
   templateUrl: './sidebar.component.html',
   styleUrls: ['./sidebar.component.css'],
 })
@@ -15,7 +16,8 @@ export class SidebarComponent implements OnInit {
   constructor(
     public navCtrl: NavController,
     private authService: AuthService,
-    private modalService: ModalService
+    private modalService: ModalService,
+    public translate: TranslateService
   ) { }
 
   ngOnInit() { }
@@ -24,9 +26,13 @@ export class SidebarComponent implements OnInit {
     this.navCtrl.navigateRoot(['/settings']);
   }
 
+  // Cerrar sesión
   async logout(): Promise<void> {
     await this.authService.logout();
-    this.modalService.showToast("Has cerrado sesión con éxito", "success");
+    this.modalService.showToast(
+      this.translate.instant('MENU.LOGOUT_SUCCESS'),
+      'success'
+    );
     this.navCtrl.navigateRoot(['/login']);
   }
 

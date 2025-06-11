@@ -3,7 +3,7 @@
   <!-- Botón para volver al menú -->
   <div class="header-container">
     <ion-icon name="arrow-back-outline" class="back-icon" (click)="navCtrl.back()"></ion-icon>
-    <h1 class="page-title">Perfil de Usuario</h1>
+    <h1 class="page-title">{{ 'USER_PROFILE.TITLE' | translate }}</h1>
   </div>
 
   <ng-container *ngIf="user">
@@ -13,7 +13,7 @@
       <ion-card class="card-profile">
 
         <ion-card-header>
-          <ion-card-title>Mi perfil</ion-card-title>
+          <ion-card-title>{{ 'USER_PROFILE.MY_PROFILE' | translate }}</ion-card-title>
         </ion-card-header>
 
         <ion-card-content [formGroup]="userProfileForm">
@@ -22,10 +22,11 @@
           <div class="avatar-container">
             <div class="avatar-preview">
               <img [src]="'assets/images/avatars/' + userProfileForm.get('avatarName')!.value + '.jpg'"
-                alt="Avatar seleccionado">
+                [alt]="'USER_PROFILE.AVATAR_ALT' | translate">
             </div>
             <ion-item lines="full" class="form-item">
-              <ion-select formControlName="avatarName" interface="popover" okText="Seleccionar" cancelText="Cancelar">
+              <ion-select formControlName="avatarName" interface="popover" [okText]="'USER_PROFILE.SELECT' | translate"
+                [cancelText]="'USER_PROFILE.CANCEL' | translate">
                 <ion-select-option *ngFor="let av of avatars" [value]="av">
                   {{ av }}
                 </ion-select-option>
@@ -35,22 +36,26 @@
 
           <!-- Nickname -->
           <ion-item lines="full" class="form-item">
-            <ion-input label="Apodo" labelPlacement="floating" formControlName="nickname" required
-              autocomplete="nickname" enterkeyhint="next">
+            <ion-input [label]="'USER_PROFILE.NICKNAME' | translate" labelPlacement="floating"
+              formControlName="nickname" required autocomplete="nickname" enterkeyhint="next">
             </ion-input>
           </ion-item>
 
           <!-- Email -->
           <ion-item lines="full" class="form-item">
-            <ion-input label="Correo electrónico" labelPlacement="floating" type="email" formControlName="email"
-              required autocomplete="email" enterkeyhint="next">
+            <ion-input [label]="'USER_PROFILE.EMAIL' | translate" labelPlacement="floating" type="email"
+              formControlName="email" required autocomplete="email" enterkeyhint="next">
             </ion-input>
           </ion-item>
 
           <!-- Botones de acción -->
           <div class="action-buttons">
-            <ion-button expand="block" (click)="onSubmitProfile()">Guardar cambios</ion-button>
-            <ion-button fill="outline" expand="block" (click)="viewDecks()">Ver mis mazos</ion-button>
+            <ion-button expand="block" (click)="onSubmitProfile()">
+              {{ 'USER_PROFILE.SAVE_CHANGES' | translate }}
+            </ion-button>
+            <ion-button fill="outline" expand="block" (click)="viewDecks()">
+              {{ 'USER_PROFILE.VIEW_DECKS' | translate }}
+            </ion-button>
           </div>
 
         </ion-card-content>
@@ -60,7 +65,7 @@
       <ion-card class="card-password">
 
         <ion-card-header>
-          <ion-card-title>Cambiar contraseña</ion-card-title>
+          <ion-card-title>{{ 'USER_PROFILE.CHANGE_PASSWORD' | translate }}</ion-card-title>
         </ion-card-header>
 
         <ion-card-content [formGroup]="passwordForm">
@@ -69,20 +74,20 @@
 
             <!-- Nueva contraseña -->
             <ion-item lines="full" class="form-item">
-              <ion-input label="Contraseña" labelPlacement="floating" type="password" formControlName="newPassword"
-                required autocomplete="new-password" enterkeyhint="next">
+              <ion-input [label]="'USER_PROFILE.PASSWORD' | translate" labelPlacement="floating" type="password"
+                formControlName="newPassword" required autocomplete="new-password" enterkeyhint="next">
               </ion-input>
             </ion-item>
 
             <!-- Confirmar contraseña -->
             <ion-item lines="full" class="form-item">
-              <ion-input label="Repetir contraseña" labelPlacement="floating" type="password"
+              <ion-input [label]="'USER_PROFILE.REPEAT_PASSWORD' | translate" labelPlacement="floating" type="password"
                 formControlName="confirmPassword" required autocomplete="new-password" enterkeyhint="done">
               </ion-input>
             </ion-item>
 
             <ion-button expand="block" (click)="onSubmitPassword()">
-              Cambiar contraseña
+              {{ 'USER_PROFILE.SUBMIT_PASSWORD' | translate }}
             </ion-button>
 
           </div>
@@ -91,5 +96,6 @@
     </div>
 
   </ng-container>
+  
   <app-sidebar></app-sidebar>
 </ion-content>

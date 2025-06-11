@@ -11,10 +11,11 @@ import { CardDetail } from 'src/app/models/card-detail';
 import { ChatWithAiResponse } from 'src/app/models/chat-with-ai-response';
 import { MsgType } from 'src/app/models/web-socket-message';
 import { WebsocketService } from 'src/app/services/websocket.service';
+import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-ai-comment-modal',
-  imports: [IonButton, IonButtons, IonTitle, IonToolbar, IonHeader, IonIcon, CommonModule, FormsModule, IonContent],
+  imports: [IonButton, IonButtons, IonTitle, IonToolbar, IonHeader, IonIcon, CommonModule, FormsModule, IonContent, TranslateModule],
   templateUrl: './ai-comment-modal.component.html',
   styleUrls: ['./ai-comment-modal.component.css'],
   standalone: true,
@@ -23,6 +24,7 @@ export class AiCommentModalComponent implements OnInit {
 
   @ViewChild('chatContent', { static: false, read: IonContent }) private chatContent: IonContent;
   @Input() card!: CardDetail;
+  @Input() lang!: string;
 
   commentMsg: { role: 'assistant', content: string, timestamp: string };
   waitingResponse = true;
@@ -46,10 +48,17 @@ export class AiCommentModalComponent implements OnInit {
 
   // Solicitar comentario de la carta
   async sendAiRequest() {
+
+    const message = {
+      card: this.card,
+      lang: this.lang
+    }
+
     const wsMessage = {
       Type: MsgType.CardDetailsWithAI,
-      Content: this.card
+      Content: message
     };
+
     this.webSocketService.sendRxjs(wsMessage);
   }
 
