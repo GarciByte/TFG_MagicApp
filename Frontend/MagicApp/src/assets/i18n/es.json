@@ -367,12 +367,6 @@
         "DEFEATS": "Derrotas",
         "VICTORY_RATE": "Porcentaje de victoria"
     },
-    "RARITY": {
-        "COMMON": "Común",
-        "UNCOMMON": "Poco Común",
-        "RARE": "Rara",
-        "MYTHIC": "Mítica"
-    },
     "COLOR": {
         "WHITE": "Blanco",
         "BLUE": "Azul",
@@ -399,6 +393,19 @@
         "PREVIOUS": "Anterior",
         "NEXT": "Siguiente"
     },
+    "RARITY": {
+        "COMMON": "Común",
+        "UNCOMMON": "Poco Común",
+        "RARE": "Rara",
+        "MYTHIC": "Mítica"
+    },
+    "SUPERTYPE": {
+        "BASIC": "Básica",
+        "LEGENDARY": "Legendaria",
+        "SNOW": "Nieve",
+        "WORLD": "Mundial",
+        "Ongoing": "Permanente"
+    },
     "CARD_TYPE": {
         "CREATURE": "Criatura",
         "INSTANT": "Instantáneo",
@@ -406,6 +413,64 @@
         "ENCHANTMENT": "Encantamiento",
         "ARTIFACT": "Artefacto",
         "LAND": "Tierra",
-        "PLANESWALKER": "Planeswalker"
+        "PLANESWALKER": "Planeswalker",
+        "TRIBAL": "Tribal"
+    },
+    "SUBTYPE": {
+        "ELF": "Elfo",
+        "GOBLIN": "Duende",
+        "ZOMBIE": "Zombie",
+        "DRAGON": "Dragón",
+        "HUMAN": "Humano",
+        "EQUIPMENT": "Equipo",
+        "VEHICLE": "Vehículo",
+        "CLUE": "Pista",
+        "TREASURE": "Tesoro",
+        "FOOD": "Comida",
+        "AURA": "Aura",
+        "SAGA": "Saga",
+        "CURSE": "Maldición",
+        "SHRINE": "Santuario",
+        "PLAINS": "Llanura",
+        "ISLAND": "Isla",
+        "SWAMP": "Pantano",
+        "MOUNTAIN": "Montaña",
+        "FOREST": "Bosque",
+        "DESERT": "Desierto",
+        "ADVENTURE": "Aventura",
+        "ARCANE": "Arcano",
+        "LESSON": "Lección",
+        "TRAP": "Trampa",
+        "MERFOLK": "Merfolk",
+        "ANGEL": "Ángel",
+        "VAMPIRE": "Vampiro",
+        "SOLDIER": "Soldado",
+        "BEAST": "Bestia",
+        "FORTIFICATION": "Fortificación",
+        "POWERSTONE": "Piedra de poder",
+        "INCUBATOR": "Incubador",
+        "MAP": "Mapa",
+        "JUNK": "Chatarra",
+        "CARTOUCHE": "Cartucho",
+        "RUNE": "Runa",
+        "CASE": "Caso",
+        "ROLE": "Rol",
+        "BACKGROUND": "Trasfondo",
+        "CLASS": "Clase",
+        "GATE": "Puerta",
+        "LAIR": "Guarida",
+        "LOCUS": "Locus",
+        "URZAS": "Urza's",
+        "AJANI": "Ajani",
+        "CHANDRA": "Chandra",
+        "JACE": "Jace",
+        "LILIANA": "Liliana",
+        "GIDEON": "Gideon",
+        "NISSA": "Nissa",
+        "TEFERI": "Teferi",
+        "BOLAS": "Bolas",
+        "ELSPETH": "Elspeth",
+        "SORIN": "Sorin",
+        "OMEN": "Omen"
     }
 }
