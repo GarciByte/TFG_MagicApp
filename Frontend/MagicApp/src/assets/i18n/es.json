@@ -95,7 +95,12 @@
         "ADMIN_PROFILE": "PERFIL ADMIN",
         "LOGOUT": "CERRAR SESIÓN",
         "RENEW_TOKEN": "No se ha podido renovar el token del usuario",
-        "LOGOUT_SUCCESS": "Has cerrado sesión con éxito"
+        "LOGOUT_SUCCESS": "Has cerrado sesión con éxito",
+        "SEARCH_DECKS": "Buscar mazos"
+    },
+    "SIDEBAR": {
+        "SETTINGS": "Ajustes",
+        "LOGOUT": "Cerrar sesión"
     },
     "COMMON": {
         "ACCEPT": "Aceptar",
@@ -304,7 +309,9 @@
     "DECKS": {
         "TITLE": "Mazos",
         "PAGE_TITLE": "Mazos",
-        "CARD_COUNT": "{{count}} cartas"
+        "CARD_COUNT": "{{count}} cartas",
+        "SEARCH_PLACEHOLDER": "Escribe nombre...",
+        "CARDS": "cartas"
     },
     "DECK_CARDS": {
         "PAGE_TITLE": "Cartas del mazo",

@@ -95,7 +95,12 @@
         "ADMIN_PROFILE": "ADMIN PROFILE",
         "LOGOUT": "LOGOUT",
         "RENEW_TOKEN": "Unable to renew user token",
-        "LOGOUT_SUCCESS": "You have successfully logged out"
+        "LOGOUT_SUCCESS": "You have successfully logged out",
+        "SEARCH_DECKS": "Search for decks"
+    },
+    "SIDEBAR": {
+        "SETTINGS": "Settings",
+        "LOGOUT": "Log out"
     },
     "COMMON": {
         "ACCEPT": "Accept",
@@ -304,7 +309,9 @@
     "DECKS": {
         "TITLE": "Decks",
         "PAGE_TITLE": "Decks",
-        "CARD_COUNT": "{{count}} cards"
+        "CARD_COUNT": "{{count}} cards",
+        "SEARCH_PLACEHOLDER": "Type a name...",
+        "CARDS": "cards"
     },
     "DECK_CARDS": {
         "PAGE_TITLE": "Deck Cards",
