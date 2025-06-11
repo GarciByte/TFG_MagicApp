@@ -166,7 +166,7 @@ export class AuthService {
       } else {
         console.error("No se han podido actualizar los datos del usuario.");
       }
-      
+
     } catch (error) {
       console.error("No se han podido actualizar los datos del usuario.");
     }

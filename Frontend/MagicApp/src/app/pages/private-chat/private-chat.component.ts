@@ -172,7 +172,7 @@ export class PrivateChatComponent implements OnInit, OnDestroy {
           this.translate.instant('PRIVATE_CHAT.ERROR_USER_DATA'),
           [{ text: this.translate.instant('COMMON.ACCEPT') }]
         );
-        
+
       }
 
     } catch (error) {

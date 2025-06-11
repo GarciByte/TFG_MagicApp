@@ -1,10 +1,8 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { RouterModule } from '@angular/router';
 import { AuthService } from 'src/app/services/auth.service';
 import { WebsocketService } from 'src/app/services/websocket.service';
 import { CommonModule } from '@angular/common';
 import { IonicModule, NavController } from '@ionic/angular';
-import { IonContent, IonButton, IonFabButton, IonFab, IonFabList, IonIcon } from "@ionic/angular/standalone";
 import { Subscription } from 'rxjs';
 import { User } from 'src/app/models/user';
 import { ModalService } from 'src/app/services/modal.service';
@@ -14,7 +12,7 @@ import { SidebarComponent } from "../../components/sidebar/sidebar.component";
 
 @Component({
   selector: 'app-menu',
-  imports: [IonContent, IonButton, CommonModule, RouterModule, IonicModule, SidebarComponent, TranslateModule],
+  imports: [CommonModule, IonicModule, SidebarComponent, TranslateModule],
   templateUrl: './menu.component.html',
   styleUrls: ['./menu.component.css'],
   standalone: true,
@@ -77,16 +75,5 @@ export class MenuComponent implements OnInit, OnDestroy {
       this.error$.unsubscribe();
     }
   }
-
-  // Cerrar sesión
-  async logout(): Promise<void> {
-    await this.authService.logout();
-    this.modalService.showToast(
-      this.translate.instant('MENU.LOGOUT_SUCCESS'),
-      'success'
-    );
-    this.navCtrl.navigateRoot(['/login']);
-  }
-
 
 }

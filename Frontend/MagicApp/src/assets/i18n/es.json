@@ -303,7 +303,8 @@
     },
     "DECK_CARDS": {
         "PAGE_TITLE": "Cartas del mazo",
-        "NO_CARDS_FOUND": "No se encontraron cartas."
+        "NO_CARDS_FOUND": "No se encontraron cartas.",
+        "REMOVE_FROM_DECK": "Eliminar del mazo"
     },
     "DECK": {
         "TITLE": "Crear Mazo",

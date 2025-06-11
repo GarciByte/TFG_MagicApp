@@ -303,7 +303,8 @@
     },
     "DECK_CARDS": {
         "PAGE_TITLE": "Deck Cards",
-        "NO_CARDS_FOUND": "No cards found"
+        "NO_CARDS_FOUND": "No cards found",
+        "REMOVE_FROM_DECK": "Remove from deck"
     },
     "DECK": {
         "TITLE": "Create Deck",

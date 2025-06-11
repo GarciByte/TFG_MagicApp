@@ -1,5 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { AlertController, NavController } from '@ionic/angular';
+import { NavController } from '@ionic/angular';
 import { CardDetail } from 'src/app/models/card-detail';
 import { AuthService } from 'src/app/services/auth.service';
 import { DeckCardsService } from 'src/app/services/deck-cards.service';
@@ -8,12 +8,11 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Subscription } from 'rxjs';
 import { WebsocketService } from 'src/app/services/websocket.service';
-import { TranslateModule } from '@ngx-translate/core';
 import { SidebarComponent } from "../../components/sidebar/sidebar.component";
 import { CardService } from 'src/app/services/card.service';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 import { ModalService } from 'src/app/services/modal.service';
-import { DeckServiceService } from 'src/app/services/deck-service.service';
+import { TranslateService, TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-deck-cards-views',
@@ -28,17 +27,15 @@ export class DeckCardsViewsComponent implements OnInit, OnDestroy {
   card: CardDetail;
   safeOracleHtml: SafeHtml;
 
-
   constructor(
     public navCtrl: NavController,
     private authService: AuthService,
     private webSocketService: WebsocketService,
-    private deckService: DeckServiceService,
-    private alertController: AlertController,
     private deckCardsService: DeckCardsService,
     private cardService: CardService,
     private sanitizer: DomSanitizer,
-    private modalService: ModalService
+    private modalService: ModalService,
+    public translate: TranslateService
   ) { }
 
   async ngOnInit(): Promise<void> {
@@ -52,23 +49,15 @@ export class DeckCardsViewsComponent implements OnInit, OnDestroy {
       this.navCtrl.navigateRoot(['/']);
     });
 
-    this.error$ = this.webSocketService.error.subscribe(async () => {
-      await this.authService.logout();
-      this.navCtrl.navigateRoot(['/']);
-    });
-
     this.deckCards = this.deckCardsService.deckCards;
   }
 
   async removeCard(cardId: string) {
-    await this.loadCardDetails(cardId)
-    this.deckCardsService.remove(this.card)
+    await this.loadCardDetails(cardId);
+    this.deckCardsService.remove(this.card);
     this.deckCards = this.deckCardsService.deckCards;
-    console.log("hola")
-    console.log(this.deckCards)
-    this.navCtrl.back()
+    this.navCtrl.back();
   }
-
 
   private async loadCardDetails(cardId: string) {
     try {
@@ -86,8 +75,8 @@ export class DeckCardsViewsComponent implements OnInit, OnDestroy {
 
         this.modalService.showAlert(
           'error',
-          'Se ha producido un error obteniendo la carta',
-          [{ text: 'Aceptar' }]
+          this.translate.instant('MODALS.CARD_FETCH_ERROR.SINGLE'),
+          [{ text: this.translate.instant('COMMON.ACCEPT') }]
         );
       }
 
@@ -96,8 +85,8 @@ export class DeckCardsViewsComponent implements OnInit, OnDestroy {
 
       this.modalService.showAlert(
         'error',
-        'Se ha producido un error obteniendo los datos de la carta',
-        [{ text: 'Aceptar' }]
+        this.translate.instant('MODALS.CARD_FETCH_ERROR.DATA'),
+        [{ text: this.translate.instant('COMMON.ACCEPT') }]
       );
     }
   }

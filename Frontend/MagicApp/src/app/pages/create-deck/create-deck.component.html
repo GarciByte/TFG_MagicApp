@@ -9,6 +9,7 @@
       <div class="create-deck-title">{{ 'DECK.TITLE_UPPER' | translate }}</div>
 
       <div class="form-container">
+
         <!-- Deck Icon -->
         <div class="deck-icon-container">
           <div class="deck-icon icon-sun"></div>
@@ -70,8 +71,10 @@
         <button type="submit" class="create-button" [disabled]="deckForm.invalid || deckCards.length === 0">
           {{ 'DECK.CREATE_BUTTON' | translate }}
         </button>
+
       </div>
     </div>
-</form>
+  </form>
+
   <app-sidebar></app-sidebar>
 </ion-content>

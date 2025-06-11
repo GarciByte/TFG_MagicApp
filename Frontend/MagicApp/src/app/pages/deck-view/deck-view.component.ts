@@ -12,7 +12,6 @@ import { DeckCardsService } from 'src/app/services/deck-cards.service';
 import { Subscription } from 'rxjs';
 import { WebsocketService } from 'src/app/services/websocket.service';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
-import { CardDetail } from 'src/app/models/card-detail';
 import { SidebarComponent } from "../../components/sidebar/sidebar.component";
 
 @Component({
@@ -49,28 +48,25 @@ export class DeckViewComponent implements OnInit, OnDestroy {
       this.navCtrl.navigateRoot(['/']);
     });
 
-  this.deckId = Number(this.route.snapshot.queryParamMap.get('deckId'));
+    this.deckId = Number(this.route.snapshot.queryParamMap.get('deckId'));
 
-  // Solo inicializa si aún no lo está (no sobreescribe ediciones locales)
-  if (!this.deckCardsService.deckId) {
-    this.deck = (await this.deckService.GetDeckById(this.deckId)).data;
+    if (!this.deckCardsService.deckId) {
+      this.deck = (await this.deckService.GetDeckById(this.deckId)).data;
 
-    this.deckCardsService.deckcards = this.deck.deckCards;
-    this.deckCardsService.name = this.deck.name;
-    this.deckCardsService.description = this.deck.description;
-    this.deckCardsService.userId = this.deck.userId;
-    this.deckCardsService.deckId = this.deck.id;
-    this.deckCardsService.victories = this.deck.victories;
-    this.deckCardsService.defeats = this.deck.defeats;
+      this.deckCardsService.deckcards = this.deck.deckCards;
+      this.deckCardsService.name = this.deck.name;
+      this.deckCardsService.description = this.deck.description;
+      this.deckCardsService.userId = this.deck.userId;
+      this.deckCardsService.deckId = this.deck.id;
+      this.deckCardsService.victories = this.deck.victories;
+      this.deckCardsService.defeats = this.deck.defeats;
+    }
+
+    const navigation = history.state;
+    if (navigation?.selectCard) {
+      this.deckCardsService.addCard(navigation.selectCard);
+    }
   }
-
-  const navigation = history.state;
-  if (navigation?.selectCard) {
-    this.deckCardsService.addCard(navigation.selectCard);
-  }
-}
-
-
 
   addCard() {
     this.navCtrl.navigateRoot("/add-cards-deck");

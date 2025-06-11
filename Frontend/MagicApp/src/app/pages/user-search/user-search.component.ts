@@ -15,7 +15,7 @@ import { SidebarComponent } from "../../components/sidebar/sidebar.component";
 
 @Component({
   selector: 'app-user-search',
-  imports: [IonIcon, IonCardTitle, IonAvatar, IonCard, IonSearchbar, IonButton, IonContent, CommonModule, 
+  imports: [IonIcon, IonCardTitle, IonAvatar, IonCard, IonSearchbar, IonButton, IonContent, CommonModule,
     FormsModule, SidebarComponent, TranslateModule],
   templateUrl: './user-search.component.html',
   styleUrls: ['./user-search.component.css'],
