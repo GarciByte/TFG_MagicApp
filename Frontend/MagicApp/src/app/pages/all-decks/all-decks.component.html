@@ -1,22 +1,22 @@
 <ion-content>
   <div class="header-container">
     <ion-icon name="arrow-back-outline" class="back-icon" (click)="navCtrl.navigateRoot(['/menu'])"></ion-icon>
-    <h1 class="page-title">Mazos</h1>
+    <h1 class="page-title">{{ 'DECKS.TITLE' | translate }}</h1>
   </div>
 
   <div class="content-container">
 
     <!-- Buscador y botón filtro juntos -->
     <div class="search-filter-container">
-      <ion-searchbar name="searchTerm" [(ngModel)]="searchTerm" placeholder="Escribe nombre..." (keyup.enter)="getAllDecks()"
-        (ionInput)="realTimeSearch()">
+      <ion-searchbar name="searchTerm" [(ngModel)]="searchTerm" [placeholder]="'DECKS.SEARCH_PLACEHOLDER' | translate"
+        (keyup.enter)="getAllDecks()" (ionInput)="realTimeSearch()">
       </ion-searchbar>
     </div>
 
     <ion-grid class="decks-grid">
       <ion-row>
 
-        <!-- Existing decks -->
+        <!-- Mazos existentes -->
         <ion-col size="6" size-md="4" size-lg="3" *ngFor="let deck of decks">
           <div class="deck-card" (click)="viewDeck(deck.id)">
             <ion-icon name="layers-outline" class="deck-icon"></ion-icon>
@@ -24,7 +24,7 @@
             <div class="deck-name">{{ userNames[deck.userId] }}</div>
             <div class="deck-cards">
               <ion-icon name="albums-outline"></ion-icon>
-              {{ deck.deckCards?.length ?? 0 }} cartas
+              {{ deck.deckCards?.length ?? 0 }} {{ 'DECKS.CARDS' | translate }}
             </div>
           </div>
         </ion-col>
@@ -33,8 +33,5 @@
     </ion-grid>
   </div>
 
-  <div class="footer-logo">
-    <img src="assets/images/logo.png" alt="MagicHub Logo" />
-  </div>
 </ion-content>
 <app-sidebar></app-sidebar>

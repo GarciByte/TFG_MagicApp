@@ -1,30 +1,54 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { IonContent, IonHeader, IonToolbar, IonTitle, IonList, IonItem, IonLabel, IonToggle, IonSelectOption, IonSelect, IonIcon, NavController } from "@ionic/angular/standalone";
+import { IonContent, IonList, IonItem, IonLabel, IonToggle, IonSelectOption, IonSelect, IonIcon, NavController } from "@ionic/angular/standalone";
 import { TranslateModule } from '@ngx-translate/core';
 import { AppConfig } from 'src/app/models/app-config';
 import { ConfigService } from 'src/app/services/config.service';
 import { SidebarComponent } from "../../components/sidebar/sidebar.component";
+import { Subscription } from 'rxjs';
+import { AuthService } from 'src/app/services/auth.service';
+import { WebsocketService } from 'src/app/services/websocket.service';
 
 @Component({
   selector: 'app-settings',
-  imports: [IonIcon, IonToggle, IonLabel, IonItem, IonList, IonTitle, IonToolbar, IonHeader, IonContent, FormsModule, IonSelectOption, IonSelect, TranslateModule, CommonModule, SidebarComponent],
+  imports: [IonIcon, IonToggle, IonLabel, IonItem, IonList, IonContent, FormsModule, IonSelectOption, IonSelect, TranslateModule, CommonModule, SidebarComponent],
   templateUrl: './settings.component.html',
   styleUrls: ['./settings.component.css'],
   standalone: true,
 })
-export class SettingsComponent implements OnInit {
+export class SettingsComponent implements OnInit, OnDestroy {
   config: AppConfig;
+  error$: Subscription;
 
-  constructor(private configService: ConfigService,public navCtrl: NavController,) {
+  constructor(
+    private configService: ConfigService,
+    public navCtrl: NavController,
+    private webSocketService: WebsocketService,
+    private authService: AuthService) {
     this.config = this.configService.config;
   }
 
-  ngOnInit(): void {
+  async ngOnInit(): Promise<void> {
+    if (!(await this.authService.isAuthenticated())) {
+      this.navCtrl.navigateRoot(['/']);
+      return;
+    }
+
     this.configService.config$.subscribe(cfg => {
       this.config = cfg;
     });
+
+    this.error$ = this.webSocketService.error.subscribe(async () => {
+      await this.authService.logout();
+      this.navCtrl.navigateRoot(['/']);
+    });
+  }
+
+  ngOnDestroy(): void {
+    if (this.error$) {
+      this.error$.unsubscribe();
+    }
   }
 
   toggleTheme(isDark: boolean) {

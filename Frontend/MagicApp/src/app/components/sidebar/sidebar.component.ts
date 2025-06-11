@@ -2,12 +2,12 @@ import { Component, OnInit } from '@angular/core';
 import { IonFab, IonFabButton, IonFabList, IonIcon, NavController } from "@ionic/angular/standalone";
 import { AuthService } from 'src/app/services/auth.service';
 import { ModalService } from 'src/app/services/modal.service';
-import { TranslateService } from '@ngx-translate/core';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-sidebar',
   standalone: true,
-  imports: [IonIcon, IonFabList, IonFabButton, IonFab],
+  imports: [IonIcon, IonFabList, IonFabButton, IonFab, TranslateModule],
   templateUrl: './sidebar.component.html',
   styleUrls: ['./sidebar.component.css'],
 })
