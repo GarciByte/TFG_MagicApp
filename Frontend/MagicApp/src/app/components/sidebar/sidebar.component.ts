@@ -22,6 +22,10 @@ export class SidebarComponent implements OnInit {
 
   ngOnInit() { }
 
+  async settings(){
+    this.navCtrl.navigateRoot(['/settings']);
+  }
+
   // Cerrar sesión
   async logout(): Promise<void> {
     await this.authService.logout();

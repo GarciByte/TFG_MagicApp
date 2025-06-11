@@ -49,6 +49,11 @@
             "PASSWORD_MISMATCH": "Las contraseñas deben coincidir."
         }
     },
+    "SETTINGS": {
+        "TITLE": "Ajustes",
+        "THEME": "Tema oscuro",
+        "LANGUAGE": "Idioma"
+    },
     "REPORT": {
         "ALERT_TITLE": "Reportar a {{nickname}}",
         "MESSAGE": "Escribe el motivo de tu reporte",

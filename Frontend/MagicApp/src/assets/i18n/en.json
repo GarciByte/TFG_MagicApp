@@ -49,6 +49,11 @@
             "PASSWORD_MISMATCH": "Passwords must match."
         }
     },
+    "SETTINGS": {
+        "TITLE": "Settings",
+        "THEME": "Dark theme",
+        "LANGUAGE": "Language"
+    },
     "REPORT": {
         "ALERT_TITLE": "Report {{nickname}}",
         "MESSAGE": "Write the reason for your report",
