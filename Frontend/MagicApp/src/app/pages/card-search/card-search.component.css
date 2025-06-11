@@ -124,7 +124,6 @@ ion-searchbar {
   flex-wrap: wrap;
   gap: 16px;
   justify-content: flex-start;
-  padding: 0 16px 48px;
   max-width: 100%;
 }
 
