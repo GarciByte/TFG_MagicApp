@@ -1,0 +1,197 @@
+<ion-content [fullscreen]="true" class="ion-padding">
+
+  <!-- Botón para volver al menú -->
+  <div class="header-container">
+    <ion-icon name="arrow-back-outline" class="back-icon" (click)="navCtrl.navigateRoot(['/menu'])">
+    </ion-icon>
+    <h1 class="page-title">{{ 'ADMIN.TITLE' | translate }}</h1>
+  </div>
+
+  <ng-container *ngIf="isAdmin">
+    <div class="admin-container">
+
+      <!-- Card de Reportes -->
+      <ion-card class="card-reports">
+        <ion-card-header>
+          <ion-card-subtitle>{{ 'ADMIN.REPORTS.TITLE' | translate }}</ion-card-subtitle>
+        </ion-card-header>
+
+        <ion-card-content>
+
+          <!-- Filtro y paginación de reportes -->
+          <div class="filter-pagination-row">
+            <ion-searchbar [(ngModel)]="reportSearchTerm" (ionInput)="onReportSearchChange()"
+              [placeholder]="'ADMIN.REPORTS.SEARCH_PLACEHOLDER' | translate">
+            </ion-searchbar>
+
+            <div class="pagination-select-container">
+              <ion-select [(ngModel)]="reportPageSize" (ionChange)="onReportPageSizeChange()" class="custom-select">
+                <ion-select-option [value]="5">5</ion-select-option>
+                <ion-select-option [value]="10">10</ion-select-option>
+                <ion-select-option [value]="20">20</ion-select-option>
+              </ion-select>
+            </div>
+          </div>
+
+          <!-- Tabla de Reportes -->
+          <div class="table-container">
+            <table class="report-table">
+              <thead>
+                <tr>
+                  <th>{{ 'ADMIN.REPORTS.TABLE.ID' | translate }}</th>
+                  <th>{{ 'ADMIN.REPORTS.TABLE.REPORTER' | translate }}</th>
+                  <th>{{ 'ADMIN.REPORTS.TABLE.REPORTED' | translate }}</th>
+                  <th>{{ 'ADMIN.REPORTS.TABLE.REASON' | translate }}</th>
+                  <th>{{ 'ADMIN.REPORTS.TABLE.STATUS' | translate }}</th>
+                  <th>{{ 'ADMIN.REPORTS.TABLE.ACTIONS' | translate }}</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let report of displayedReports">
+                  <td class="id">{{ report.id }}</td>
+                  <td class="reporter">{{ report.reporterNickname }}</td>
+                  <td class="reported">{{ report.reportedUserNickname }}</td>
+                  <td class="reason">
+                    <div class="reason-content">{{ report.reason }}</div>
+                  </td>
+                  <td class="status" [ngClass]="report.status">
+                    {{ report.status === ReportStatus.InReview
+                    ? ('ADMIN.REPORTS.STATUS.IN_REVIEW' | translate)
+                    : ('ADMIN.REPORTS.STATUS.REVIEWED' | translate) }}
+                  </td>
+                  <td class="actions">
+                    <div class="actions-button-container">
+                      <ion-button size="small" shape="round" fill="solid" (click)="updateReportStatus(report)">
+                        {{ report.status === ReportStatus.InReview
+                        ? ('ADMIN.REPORTS.BUTTON.MARK_REVIEWED' | translate)
+                        : ('ADMIN.REPORTS.BUTTON.MARK_IN_REVIEW' | translate) }}
+                      </ion-button>
+
+                      <ion-button size="small" shape="round" fill="solid" class="ban-button"
+                        (click)="confirmDeleteReport(report)">
+                        {{ 'COMMON.DELETE' | translate }}
+                      </ion-button>
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <!-- Paginación de reportes -->
+          <div class="pagination-container">
+            <ion-button class="pagination-btn" [disabled]="reportPage === 1" (click)="goReportToPage(1)" fill="clear"
+              size="small">
+              «
+            </ion-button>
+            <ion-button class="pagination-btn" [disabled]="reportPage === 1" (click)="goReportPage(-1)" fill="clear"
+              size="small">
+              <ion-icon name="chevron-back" slot="icon-only"></ion-icon>
+            </ion-button>
+            <span class="page-info">
+              {{ 'ADMIN.PAGINATION.PAGE_INFO' | translate:{ page: reportPage, totalPages: reportTotalPages } }}
+            </span>
+            <ion-button class="pagination-btn" [disabled]="reportPage === reportTotalPages" (click)="goReportPage(1)"
+              fill="clear" size="small">
+              <ion-icon name="chevron-forward" slot="icon-only"></ion-icon>
+            </ion-button>
+            <ion-button class="pagination-btn" [disabled]="reportPage === reportTotalPages"
+              (click)="goReportToPage(reportTotalPages)" fill="clear" size="small">
+              »
+            </ion-button>
+          </div>
+
+        </ion-card-content>
+      </ion-card>
+
+      <!-- Card de Usuarios -->
+      <ion-card class="card-users">
+        <ion-card-header>
+          <ion-card-subtitle>{{ 'ADMIN.USERS.TITLE' | translate }}</ion-card-subtitle>
+        </ion-card-header>
+
+        <ion-card-content>
+
+          <!-- Filtro y paginación de usuarios -->
+          <div class="filter-pagination-row">
+            <ion-searchbar [(ngModel)]="userSearchTerm" (ionInput)="onUserSearchChange()"
+              [placeholder]="'ADMIN.USERS.SEARCH_PLACEHOLDER' | translate">
+            </ion-searchbar>
+
+            <div class="pagination-select-container">
+              <ion-select [(ngModel)]="userPageSize" (ionChange)="onUserPageSizeChange()" class="custom-select">
+                <ion-select-option [value]="5">5</ion-select-option>
+                <ion-select-option [value]="10">10</ion-select-option>
+                <ion-select-option [value]="20">20</ion-select-option>
+              </ion-select>
+            </div>
+          </div>
+
+          <!-- Tabla de Usuarios -->
+          <div class="table-container">
+            <table class="user-table">
+              <thead>
+                <tr>
+                  <th>{{ 'ADMIN.USERS.TABLE.ID' | translate }}</th>
+                  <th>{{ 'ADMIN.USERS.TABLE.NICKNAME' | translate }}</th>
+                  <th>{{ 'ADMIN.USERS.TABLE.EMAIL' | translate }}</th>
+                  <th>{{ 'ADMIN.USERS.TABLE.ROLE' | translate }}</th>
+                  <th>{{ 'ADMIN.USERS.TABLE.ACTIONS' | translate }}</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let user of displayedUsers">
+                  <td class="id">{{ user.userId }}</td>
+                  <td class="nickname">{{ user.nickname }}</td>
+                  <td class="email">{{ user.email }}</td>
+                  <td class="role">{{ user.role }}</td>
+                  <td class="actions">
+                    <div class="actions-button-container">
+                      <ion-button size="small" shape="round" fill="solid" class="role-button"
+                        (click)="modifyUserRole(user)" [disabled]="user.userId === this.user.userId">
+                        {{ 'ADMIN.USERS.BUTTON.CHANGE_ROLE' | translate }}
+                      </ion-button>
+                      <ion-button size="small" shape="round" fill="solid" class="ban-button"
+                        (click)="confirmModifyUserBan(user)" [disabled]="user.userId === this.user.userId">
+                        {{ user.isBanned
+                        ? ('ADMIN.USERS.BUTTON.UNBAN' | translate)
+                        : ('ADMIN.USERS.BUTTON.BAN' | translate) }}
+                      </ion-button>
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <!-- Paginación de usuarios -->
+          <div class="pagination-container" *ngIf="userTotalPages > 1">
+            <ion-button class="pagination-btn" [disabled]="userPage === 1" (click)="goUserToPage(1)" fill="clear"
+              size="small">
+              «
+            </ion-button>
+            <ion-button class="pagination-btn" [disabled]="userPage === 1" (click)="goUserPage(-1)" fill="clear"
+              size="small">
+              <ion-icon name="chevron-back" slot="icon-only"></ion-icon>
+            </ion-button>
+            <span class="page-info">
+              {{ 'ADMIN.PAGINATION.PAGE_INFO' | translate:{ page: userPage, totalPages: userTotalPages } }}
+            </span>
+            <ion-button class="pagination-btn" [disabled]="userPage === userTotalPages" (click)="goUserPage(1)"
+              fill="clear" size="small">
+              <ion-icon name="chevron-forward" slot="icon-only"></ion-icon>
+            </ion-button>
+            <ion-button class="pagination-btn" [disabled]="userPage === userTotalPages"
+              (click)="goUserToPage(userTotalPages)" fill="clear" size="small">
+              »
+            </ion-button>
+          </div>
+
+        </ion-card-content>
+      </ion-card>
+
+    </div>
+  </ng-container>
+
+  <app-sidebar></app-sidebar>
+</ion-content>

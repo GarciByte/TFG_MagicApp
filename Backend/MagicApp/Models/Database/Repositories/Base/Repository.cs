@@ -34,10 +34,10 @@ public abstract class Repository<TEntity, TId> : IRepository<TEntity, TId> where
         return entry.Entity;
     }
 
-    public TEntity Update(TEntity entity)
+    public Task Update(TEntity entity)
     {
         _context.Set<TEntity>().Update(entity);
-        return entity;
+        return Task.CompletedTask;
     }
 
     public Task Delete(TEntity entity)

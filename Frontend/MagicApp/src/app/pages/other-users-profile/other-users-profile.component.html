@@ -1,0 +1,53 @@
+<ion-content [fullscreen]="true" class="ion-padding">
+
+  <!-- Botón para volver al buscador de usuarios -->
+  <div class="header-container">
+    <ion-icon name="arrow-back-outline" class="back-icon" (click)="navCtrl.back()"></ion-icon>
+    <h1 class="page-title">{{ 'OTHER_USERS_PROFILE.TITLE' | translate }}</h1>
+  </div>
+
+  <!-- Card del usuario -->
+  <ng-container *ngIf="user">
+
+    <div class="users-container">
+      <ion-card class="user-card">
+
+        <div class="card-inner">
+
+          <!-- Información del usuario -->
+          <div class="user-info">
+            <ion-avatar class="user-avatar">
+              <img [src]="avatarUrl" alt="{{ 'OTHER_USERS_PROFILE.TITLE' | translate }} {{ user.nickname }}">
+            </ion-avatar>
+            <div class="user-details">
+              <h2>{{ user.nickname }}</h2>
+              <p class="user-email">{{ user.email }}</p>
+            </div>
+          </div>
+
+          <div class="action-buttons">
+
+            <!-- Botón para reportar al usuario -->
+            <ion-button fill="solid" (click)="reportUser()">
+              {{ 'OTHER_USERS_PROFILE.REPORT_USER' | translate }}
+            </ion-button>
+
+            <!-- Botón para ver los mazos creados del usuario -->
+            <ion-button fill="solid" (click)="viewDecks()">
+              {{ 'OTHER_USERS_PROFILE.VIEW_DECKS' | translate }}
+            </ion-button>
+
+            <!-- Botón para enviar un mensaje privado -->
+            <ion-button fill="solid" (click)="sendMessage()">
+              {{ 'OTHER_USERS_PROFILE.PRIVATE_MESSAGE' | translate }}
+            </ion-button>
+          </div>
+
+        </div>
+      </ion-card>
+    </div>
+
+  </ng-container>
+
+  <app-sidebar></app-sidebar>
+</ion-content>

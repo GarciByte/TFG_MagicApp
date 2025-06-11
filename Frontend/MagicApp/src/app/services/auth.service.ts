@@ -48,7 +48,6 @@ export class AuthService {
         }
 
       } else {
-        console.warn("No se han podido refrescar los tokens");
         await this.logout();
       }
 
@@ -154,6 +153,25 @@ export class AuthService {
     return await this.storageService.getObject<User>(this.USER_KEY);
   }
 
+  // Actualizar datos del usuario logeado
+  async updateUser(userId: Number): Promise<void> {
+    try {
+      const result = await this.api.get<User>(`User/${userId}`);
+
+      if (result.success) {
+        const user = result.data;
+        await this.storageService.removeObject(this.USER_KEY);
+        await this.storageService.saveObject(this.USER_KEY, user);
+
+      } else {
+        console.error("No se han podido actualizar los datos del usuario.");
+      }
+
+    } catch (error) {
+      console.error("No se han podido actualizar los datos del usuario.");
+    }
+  }
+
   // Refrescar el token
   async refreshTokens(): Promise<boolean> {
     try {
@@ -191,14 +209,13 @@ export class AuthService {
         }
 
         this.api.accessToken = response.data.accessToken;
-        console.log("Tokens refrescados con éxito.");
+        //console.log("Tokens refrescados con éxito.");
         return true;
       }
 
       return false;
 
     } catch (error) {
-      console.warn("No se han podido refrescar los tokens");
       return false;
     }
   }

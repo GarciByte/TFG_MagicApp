@@ -1,61 +1,101 @@
-<ion-content>
+<ion-content [fullscreen]="true" class="ion-padding">
   <div class="menu-container">
+
     <!-- Header -->
-    <h1 class="menu-title">MENU PRINCIPAL</h1>
+    <h1 class="menu-title">{{ 'MENU.TITLE' | translate }}</h1>
 
     <!-- Profile Section -->
     <div class="profile-section">
       <div class="avatar-container">
         <div class="avatar-glow"></div>
-        <img *ngIf="this.user" [src]="apiImg + this.user.avatarUrl" alt="Avatar" class="avatar-img" />
+        <img *ngIf="user" [src]="apiImg + user.avatarUrl" alt="Avatar" class="avatar-img" />
       </div>
-      <h2 *ngIf="this.user" class="username">{{ this.user.nickname }}</h2>
+      <h2 *ngIf="user" class="username">{{ user.nickname }}</h2>
     </div>
 
     <!-- Menu Buttons -->
     <div class="menu-buttons">
-      <!-- Buscador de Cartas - Full width button -->
+
+      <!-- Buscador de Cartas -->
       <ion-button class="menu-button full-width" (click)="navCtrl.navigateRoot(['/card-search'])">
         <div class="button-content">
           <div class="magic-icon search-icon"></div>
-          <span>BUSCADOR DE CARTAS</span>
+          <span>{{ 'MENU.SEARCH_CARDS' | translate }}</span>
         </div>
       </ion-button>
 
-      <!-- Bottom row with split buttons -->
       <div class="button-row">
-        <!-- Mazos - Left side -->
-        <ion-button class="menu-button half-width-left" (click)="navCtrl.navigateRoot(['/mazos'])">
+
+        <!-- Mazos -->
+        <ion-button class="menu-button half-width-left" (click)="navCtrl.navigateRoot(['/decks'])">
           <div class="button-content">
             <div class="magic-icon deck-icon"></div>
-            <span>MAZOS</span>
+            <span>{{ 'MENU.DECKS' | translate }}</span>
           </div>
         </ion-button>
 
-        <!-- Right side column -->
         <div class="half-width-right">
-          <!-- Foros - Top right -->
-          <ion-button class="menu-button quarter-height">
+
+          <!-- Foro -->
+          <ion-button class="menu-button quarter-height" (click)="navCtrl.navigateRoot(['/forum'])">
             <div class="button-content">
               <div class="magic-icon forum-icon"></div>
-              <span>FOROS</span>
+              <span>{{ 'MENU.FORUM' | translate }}</span>
             </div>
           </ion-button>
 
-          <!-- Magic Chat - Bottom right -->
-          <ion-button class="menu-button quarter-height">
+          <!-- Magic Chat -->
+          <ion-button class="menu-button quarter-height" (click)="navCtrl.navigateRoot(['/magic-chat'])">
             <div class="button-content">
               <div class="magic-icon chat-icon"></div>
-              <span>MAGIC CHAT</span>
+              <span>{{ 'MENU.MAGIC_CHAT' | translate }}</span>
             </div>
           </ion-button>
         </div>
       </div>
-    </div>
 
-    <!-- Footer Logo -->
-    <div class="footer-logo">
-      <img src="assets/images/logo.png" alt="MagicHub Logo" />
+      <!-- Chat global -->
+      <ion-button class="menu-button full-width" (click)="navCtrl.navigateRoot(['/global-chat'])">
+        <div class="button-content">
+          <div class="magic-icon chat-icon"></div>
+          <span>{{ 'MENU.GLOBAL_CHAT' | translate }}</span>
+        </div>
+      </ion-button>
+
+      <!-- Chat privado -->
+      <ion-button class="menu-button full-width" (click)="navCtrl.navigateRoot(['/private-chat-list'])">
+        <div class="button-content">
+          <div class="magic-icon chat-icon"></div>
+          <span>{{ 'MENU.PRIVATE_CHAT' | translate }}</span>
+        </div>
+      </ion-button>
+
+      <!-- Buscador de usuarios -->
+      <ion-button class="menu-button full-width" (click)="navCtrl.navigateRoot(['/user-search'])">
+        <div class="button-content">
+          <div class="magic-icon"></div>
+          <span>{{ 'MENU.USER_SEARCH' | translate }}</span>
+        </div>
+      </ion-button>
+
+      <!-- Perfil del usuario -->
+      <ion-button class="menu-button full-width" (click)="navCtrl.navigateRoot(['/user-profile'])">
+        <div class="button-content">
+          <div class="magic-icon"></div>
+          <span>{{ 'MENU.MY_PROFILE' | translate }}</span>
+        </div>
+      </ion-button>
+
+      <!-- Perfil admin -->
+      <ion-button class="menu-button full-width" (click)="navCtrl.navigateRoot(['/admin-profile'])">
+        <div class="button-content">
+          <div class="magic-icon"></div>
+          <span>{{ 'MENU.ADMIN_PROFILE' | translate }}</span>
+        </div>
+      </ion-button>
+
     </div>
   </div>
+
+  <app-sidebar></app-sidebar>
 </ion-content>

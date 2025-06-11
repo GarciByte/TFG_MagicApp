@@ -1,0 +1,181 @@
+<ion-content [fullscreen]="true" class="ion-padding">
+
+  <div class="back-button-container">
+
+    <!-- Botón para volver al foro -->
+    <div class="header-container">
+      <ion-icon name="arrow-back-outline" class="back-icon" (click)="navCtrl.navigateRoot(['/forum'])"></ion-icon>
+      <h1 class="page-title">{{ 'THREAD_DETAIL.PAGE_TITLE' | translate }}</h1>
+    </div>
+
+    <!-- Botón para Refrescar Hilo -->
+    <ion-button size="small" shape="round" (click)="refreshThread()">
+      <ion-icon name="refresh-outline"></ion-icon>
+      &nbsp;{{ 'THREAD_DETAIL.REFRESH_THREAD' | translate }}
+    </ion-button>
+  </div>
+
+  <ng-container *ngIf="threadDetail; else loadingTpl">
+    <div class="threadDetail-container">
+
+      <!-- Card del primer comentario -->
+      <ion-card class="thread-card">
+
+        <ion-card-header class="thread-header">
+
+          <!-- Título del hilo -->
+          <div class="thread-info">
+            <h2 class="thread-title">{{ threadDetail.title }}</h2>
+          </div>
+
+          <!-- Autor del hilo -->
+          <div class="thread-meta-admin">
+            <ion-avatar class="thread-avatar">
+              <img [src]="apiImg + threadDetail.user.avatarUrl" [alt]="'Avatar de ' + threadDetail.user.nickname">
+            </ion-avatar>
+            <div class="thread-author-date">
+              <div class="thread-author">{{ threadDetail.user.nickname }}</div>
+              <div class="thread-date">{{ threadDetail.createdAt | date:'dd/MM/yyyy HH:mm' }}</div>
+            </div>
+          </div>
+
+        </ion-card-header>
+
+        <!-- Descripción del hilo -->
+        <ion-card-content class="thread-description">
+          {{ threadDetail.comments?.[0]?.content }}
+        </ion-card-content>
+
+        <div class="thread-actions">
+
+          <!-- Suscribirse/Desuscribirse -->
+          <ion-button fill="clear" size="small" class="subscribe-btn"
+            (click)="toggleSubscribe(); $event.stopPropagation()">
+            <ion-icon [name]="threadDetail.subscribed ? 'notifications' : 'notifications-outline'"></ion-icon>
+          </ion-button>
+
+          <!-- Cerrar hilo -->
+          <ion-button *ngIf="isAdmin && !threadDetail.isClosed" fill="clear" size="small" class="close-btn"
+            (click)="confirmToggleCloseThread(); $event.stopPropagation()">
+            <ion-icon name="lock-open-outline"></ion-icon>
+          </ion-button>
+
+          <ng-container *ngIf="threadDetail.isClosed">
+            <ion-icon *ngIf="!isAdmin" class="lock-icon" name="lock-closed-outline"></ion-icon>
+
+            <!-- Reabrir hilo -->
+            <ion-button *ngIf="isAdmin" fill="clear" size="small" class="open-btn"
+              (click)="confirmToggleCloseThread(); $event.stopPropagation()">
+              <ion-icon name="lock-closed-outline"></ion-icon>
+            </ion-button>
+          </ng-container>
+
+        </div>
+      </ion-card>
+
+      <!-- Lista de comentarios -->
+      <div class="comments-section">
+
+        <h3 class="comments-title">
+          {{ 'THREAD_DETAIL.COMMENTS' | translate:{ count: (threadDetail.comments?.length || 1) - 1 } }}
+        </h3>
+
+        <ng-container *ngIf="threadDetail.comments?.length > 1; else noExtraTpl">
+          <ng-container *ngFor="let comment of paginatedComments">
+
+            <!-- Card del comentario -->
+            <ion-card class="comment-card">
+
+              <ion-card-header class="comment-header">
+                <ion-avatar class="comment-avatar">
+                  <img [src]="apiImg + comment.user.avatarUrl" [alt]="'Avatar de ' + comment.user.nickname">
+                </ion-avatar>
+
+                <div class="comment-info">
+                  <div class="comment-author">{{ comment.user.nickname }}</div>
+                  <div class="comment-date">{{ comment.createdAt | date:'dd/MM/yyyy HH:mm' }}</div>
+                </div>
+              </ion-card-header>
+
+              <ion-card-content class="comment-content">
+                {{ comment.content }}
+              </ion-card-content>
+
+              <!-- Borrar comentario -->
+              <ion-button *ngIf="isAdmin" fill="clear" size="small" class="delete-comment-btn"
+                (click)="confirmDeleteComment(comment); $event.stopPropagation()">
+                <ion-icon name="trash-outline"></ion-icon>
+              </ion-button>
+
+            </ion-card>
+
+          </ng-container>
+
+          <!-- Controles de paginación -->
+          <div class="pagination-container">
+
+            <ion-button class="pagination-btn" [disabled]="page === 1" (click)="goToPage(1)" fill="clear" size="small">
+              «
+            </ion-button>
+
+            <ion-button class="pagination-btn" [disabled]="page === 1" (click)="goToPage(page - 1)" fill="clear"
+              size="small">
+              <ion-icon name="chevron-back" slot="icon-only"></ion-icon>
+            </ion-button>
+
+            <span class="page-info">
+              {{ 'FORUM.PAGE_INFO' | translate:{ page: page, totalPages: totalPages } }}
+            </span>
+
+            <ion-button class="pagination-btn" [disabled]="page === totalPages" (click)="goToPage(page + 1)"
+              fill="clear" size="small">
+              <ion-icon name="chevron-forward" slot="icon-only"></ion-icon>
+            </ion-button>
+
+            <ion-button class="pagination-btn" [disabled]="page === totalPages" (click)="goToPage(totalPages)"
+              fill="clear" size="small">
+              »
+            </ion-button>
+          </div>
+
+        </ng-container>
+
+        <ng-template #noExtraTpl>
+          <div class="no-comments-message">
+            {{ 'THREAD_DETAIL.NO_COMMENTS' | translate }}
+          </div>
+        </ng-template>
+      </div>
+
+      <!-- Añadir nuevo comentario -->
+      <div *ngIf="!threadDetail.isClosed" class="new-comment-container">
+        <form [formGroup]="commentForm" (ngSubmit)="submitComment()">
+
+          <ion-item class="input-item">
+            <ion-label position="stacked">
+              {{ 'THREAD_DETAIL.YOUR_COMMENT_LABEL' | translate }}
+            </ion-label>
+            <ion-textarea formControlName="content" rows="4"
+              [placeholder]="'THREAD_DETAIL.YOUR_COMMENT_PLACEHOLDER' | translate">
+            </ion-textarea>
+          </ion-item>
+
+          <div class="submit-container">
+            <ion-button type="submit" shape="round" [disabled]="commentForm.invalid">
+              <ion-icon name="send"></ion-icon>
+              &nbsp;{{ 'THREAD_DETAIL.SEND' | translate }}
+            </ion-button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </ng-container>
+
+  <ng-template #loadingTpl>
+    <div class="loading-message">
+      {{ 'THREAD_DETAIL.LOADING' | translate }}
+    </div>
+  </ng-template>
+
+  <app-sidebar></app-sidebar>
+</ion-content>

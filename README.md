@@ -109,6 +109,12 @@ En el cliente se empleará una persistencia de datos para almacenar opciones de 
 - **25/04/2025**: Resto de vistas terminadas.
 - **27/04/2025**: Ajustes esteticos en el inicio, el login y el menu principal.
 - **29/04/2025**: Ajustes esteticos en el menu principal y el registro más la creación de los componentes mazos y crear mazos con sus respectivos estilos.
+- **16/05/2025**: Logica de los mazos en el backend.
+- **1/06/2025**: Mazos completado.
+- **2/06/2025 - 7/06/2025**: Mejora en la vista de busqueda de cartas(filtros, paginación, cargar cartas al entrar en la vista)
+- **8/06/2025**: Flechas de navegación entre vistas.
+- **9/06/2025**: Vistas para ver mazos de otros usuarios.
+- **10/06/2025**: Menu desplegable completado + eliminar cartas de un mazo.
 ---
 
 ## Bibliografía

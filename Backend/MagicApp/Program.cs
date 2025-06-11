@@ -2,6 +2,7 @@ using MagicApp.Models.Database;
 using MagicApp.Models.Database.Repositories;
 using MagicApp.Models.Mappers;
 using MagicApp.Services;
+using MagicApp.Services.IA;
 using MagicApp.Services.Scryfall;
 using MagicApp.WebSocketComunication;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -10,6 +11,7 @@ using Microsoft.Extensions.FileProviders;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using Polly;
 using Serilog;
 using Serilog.Events;
 using Swashbuckle.AspNetCore.Filters;
@@ -28,11 +30,12 @@ namespace MagicApp
             // Cultura invariante
             CultureInfo.DefaultThreadCurrentCulture = CultureInfo.InvariantCulture;
 
-            // Configuración del directorio
+            // Configuraciï¿½n del directorio
             Directory.SetCurrentDirectory(AppContext.BaseDirectory);
 
-            // Leer la configuración
+            // Leer la configuraciï¿½n
             builder.Services.Configure<Settings>(builder.Configuration.GetSection("Settings"));
+            builder.Services.Configure<OpenRouterSettings>(builder.Configuration.GetSection(OpenRouterSettings.SECTION_NAME));
             builder.Services.AddSingleton(sp => sp.GetRequiredService<IOptions<Settings>>().Value);
 
             // Registrar HttpClient para ScryfallService
@@ -41,43 +44,92 @@ namespace MagicApp
                 Settings settings = builder.Configuration.GetSection(Settings.SECTION_NAME).Get<Settings>();
                 var baseUrl = settings.Scryfall;
                 client.BaseAddress = new Uri(baseUrl);
-
-                client.DefaultRequestHeaders.Accept.Add(
-                    new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/json")
-                );
-
+                client.DefaultRequestHeaders.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/json"));
                 client.DefaultRequestHeaders.UserAgent.ParseAdd("MagicHub/1.0");
+            });
+
+            // Registrar HttpClient para OpenRouter
+            builder.Services.AddHttpClient<OpenRouterGenerator>((sp, client) =>
+            {
+                var orSettings = sp.GetRequiredService<IOptions<OpenRouterSettings>>().Value;
+                client.BaseAddress = new Uri(orSettings.BaseUrl);
+                client.Timeout = TimeSpan.FromMinutes(5);
+                client.DefaultRequestHeaders.Add("Authorization", $"Bearer {orSettings.ApiKey}");
+            })
+            
+            .AddPolicyHandler(Policy<HttpResponseMessage>
+                .Handle<HttpRequestException>()
+                .OrResult(r => (int)r.StatusCode == 429)
+                .WaitAndRetryAsync(2, retryAttempt => TimeSpan.FromSeconds(2))
+            )
+
+            .AddTypedClient((httpClient, sp) =>
+            {
+                var orSettings = sp.GetRequiredService<IOptions<OpenRouterSettings>>().Value;
+                return new OpenRouterGenerator(httpClient, orSettings.Model);
             });
 
             // Inyectamos el DbContext
             builder.Services.AddScoped<MagicAppContext>();
             builder.Services.AddScoped<UnitOfWork>();
 
-            // Inyección de todos los repositorios
+            // Inyecciï¿½n de todos los repositorios
             builder.Services.AddScoped<UserRepository>();
+            builder.Services.AddScoped<DeckRepository>();
+            builder.Services.AddScoped<GlobalChatMessageRepository>();
+            builder.Services.AddScoped<ChatMessageRepository>();
+            builder.Services.AddScoped<ReportRepository>();
+            builder.Services.AddScoped<ThreadSubscriptionRepository>();
+            builder.Services.AddScoped<ForumCommentRepository>();
+            builder.Services.AddScoped<ForumThreadRepository>();
+            builder.Services.AddScoped<ChatWithAiMessageRepository>();
 
-            // Inyección de Mappers
+            // Inyecciï¿½n de Mappers
             builder.Services.AddScoped<UserMapper>();
+            builder.Services.AddScoped<GlobalChatMessageMapper>();
+            builder.Services.AddScoped<ChatMessageMapper>();
+            builder.Services.AddScoped<ReportMapper>();
+            builder.Services.AddScoped<ForumMapper>();
+            builder.Services.AddScoped<ChatWithAiMessageMapper>();
 
-            // Inyección de Servicios
+            // Inyecciï¿½n de Servicios
             builder.Services.AddScoped<UserService>();
+            builder.Services.AddScoped<DeckService>();
+            builder.Services.AddScoped<GlobalChatMessageService>();
+            builder.Services.AddScoped<ChatMessageService>();
+            builder.Services.AddScoped<ReportService>();
+            builder.Services.AddScoped<ForumService>();
+            builder.Services.AddScoped<ChatWithAiMessageService>();
             builder.Services.AddSingleton<WebSocketNetwork>();
             builder.Services.AddSingleton<IWebSocketMessageSender>(provider => provider.GetRequiredService<WebSocketNetwork>());
+
+            // Servicio de la IA
+            builder.Services.AddScoped<ChatWithAiService>(sp =>
+            {
+                var orService = sp.GetRequiredService<OpenRouterGenerator>();
+                var historySvc = sp.GetRequiredService<ChatWithAiMessageService>();
+                var orSettings = sp.GetRequiredService<IOptions<OpenRouterSettings>>().Value;
+                return new ChatWithAiService(orService, historySvc, orSettings.SystemPrompt, orSettings.SystemPromptCardDetail);
+            });
 
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
 
-            // Configuración para el WebSocket
+            // Configuraciï¿½n para el WebSocket
             builder.WebHost.ConfigureKestrel(options =>
             {
                 options.ConfigureEndpointDefaults(lo =>
                 {
                     lo.Protocols = HttpProtocols.Http1;
                 });
+                options.ListenLocalhost(7012, listenOptions =>
+                {
+                    listenOptions.UseHttps();
+                });
             });
 
-            // Configuración de CORS
+            // Configuraciï¿½n de CORS
             builder.Services.AddCors(options =>
             {
                 options.AddPolicy("AllowAllOrigins", builder =>
@@ -88,14 +140,16 @@ namespace MagicApp
                 });
             });
 
-            // Añadir controladores
-            builder.Services.AddControllers();
-            builder.Services.AddControllers().AddJsonOptions(options =>
-            {
-                options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles;
-            });
+            // Aï¿½adir controladores
+            builder.Services
+                .AddControllers()
+                .AddJsonOptions(options =>
+                {
+                    options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles;
+                    options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
+                });
 
-            // Configuración de Swagger
+            // Configuraciï¿½n de Swagger
             builder.Services.AddSwaggerGen(options =>
             {
                 options.AddSecurityDefinition(JwtBearerDefaults.AuthenticationScheme, new OpenApiSecurityScheme
@@ -111,7 +165,7 @@ namespace MagicApp
                 options.OperationFilter<SecurityRequirementsOperationFilter>(true, JwtBearerDefaults.AuthenticationScheme);
             });
 
-            // Configuración de autenticación
+            // Configuraciï¿½n de autenticaciï¿½n
             builder.Services.AddAuthentication()
             .AddJwtBearer(options =>
             {
@@ -126,7 +180,7 @@ namespace MagicApp
                 };
             });
 
-            // Configuración de Serilog
+            // Configuraciï¿½n de Serilog
             Log.Logger = new LoggerConfiguration()
                 .MinimumLevel.Information()
                 .MinimumLevel.Override("Microsoft", LogEventLevel.Warning)

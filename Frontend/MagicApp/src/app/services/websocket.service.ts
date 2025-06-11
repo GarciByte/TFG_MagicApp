@@ -4,15 +4,21 @@ import { Subject } from 'rxjs';
 import { webSocket, WebSocketSubject } from 'rxjs/webSocket';
 import { environment } from 'src/environments/environment';
 import { ModalService } from './modal.service';
+import { GlobalChatMessage } from '../models/global-chat-message';
+import { ChatMessage } from '../models/chat-message';
+import { ChatWithAiResponse } from '../models/chat-with-ai-response';
+import { ApiService } from './api.service';
+import { TranslateService } from '@ngx-translate/core';
 
 @Injectable({
   providedIn: 'root'
 })
 export class WebsocketService {
 
-  constructor(private modalService: ModalService) { }
+  constructor(private modalService: ModalService, private api: ApiService, private translate: TranslateService) { }
 
   rxjsSocket: WebSocketSubject<WebSocketMessage> | null = null;
+  public activePrivateChatUserId: number | null = null;
 
   // Eventos de conexión
   public connected = new Subject<void>();
@@ -20,14 +26,23 @@ export class WebsocketService {
   public error = new Subject<void>();
 
   // Notificar mensajes del chat global
-  public globalChatSubject = new Subject<string>();
+  public globalChatSubject = new Subject<GlobalChatMessage>();
+
+  // Notificar mensajes del chat de la IA
+  public chatWithAiSubject = new Subject<ChatWithAiResponse>();
+
+  // Notificar comentario sobre una carta de la IA
+  public CardDetailsWithAiSubject = new Subject<ChatWithAiResponse>();
+
+  // Notificar mensajes del chat privado
+  public chatSubject = new Subject<ChatMessage>();
 
   private onConnected() {
     this.connected.next();
   }
 
   private onMessageReceived(message: WebSocketMessage) {
-    console.log('Mensaje recibido:', message);
+    //console.log('Mensaje recibido:', message);
 
     // Según el tipo de mensaje
     switch (message.Type) {
@@ -37,7 +52,31 @@ export class WebsocketService {
         break;
 
       case MsgType.GlobalChat:
-        this.globalChatSubject.next(message.Content.Content);
+        this.globalChatSubject.next(message.Content);
+        break;
+
+      case MsgType.PrivateChat:
+        this.chatSubject.next(message.Content);
+        break;
+
+      case MsgType.UserBanned:
+        this.handleUserBan();
+        break;
+
+      case MsgType.ForumNotification:
+        this.handleForumNotification(message);
+        break;
+
+      case MsgType.ChatNotification:
+        this.handleChatNotification(message.Content);
+        break;
+
+      case MsgType.ChatWithAI:
+        this.chatWithAiSubject.next(message.Content);
+        break;
+
+      case MsgType.CardDetailsWithAI:
+        this.CardDetailsWithAiSubject.next(message.Content);
         break;
 
       default:
@@ -46,16 +85,72 @@ export class WebsocketService {
     }
   }
 
-  private onError(error: any) {
-    console.error("Error en WebSocket:", error);
-
+  // Prohibición de un usuario
+  async handleUserBan(): Promise<void> {
     this.modalService.showAlert(
       'error',
-      'Se ha perdido la conexión con el servidor',
-      [{ text: 'Aceptar' }]
+      this.translate.instant('MODALS.USER_BANNED.TITLE'),
+      [{ text: this.translate.instant('COMMON.ACCEPT') }]
     );
 
     this.error.next();
+  }
+
+  // Nuevo mensaje de chat
+  async handleChatNotification(message: ChatMessage): Promise<void> {
+    if (this.activePrivateChatUserId !== null && this.activePrivateChatUserId === message.SenderId) {
+      return;
+    }
+    this.modalService.showToast(this.translate.instant('TOAST.NEW_MESSAGE_FROM', { nickname: message.SenderNickname }),
+      'info'
+    );
+  }
+
+  // Nuevo mensaje del hilo al que está suscrito el usuario
+  async handleForumNotification(message: WebSocketMessage): Promise<void> {
+    this.modalService.showToast(
+      this.translate.instant('TOAST.NEW_THREAD_MESSAGE', { content: message.Content }),
+      'info'
+    );
+  }
+
+  private onError(error: any) {
+    console.error("Error en WebSocket:", error);
+    this.tryReconnect(10);
+  }
+
+  // Intentar reconectar la conexión
+  private async tryReconnect(attemptsLeft: number): Promise<void> {
+    if (attemptsLeft <= 0) {
+
+      this.modalService.showAlert(
+        'error',
+        this.translate.instant('MODALS.CONNECTION_LOST'),
+        [{ text: this.translate.instant('COMMON.ACCEPT') }]
+      );
+
+      this.error.next();
+      return;
+    }
+
+    try {
+      const token = this.api.accessToken;
+      if (!token) throw new Error('Token no disponible');
+
+      const isAuthenticated = true;
+      await this.connectRxjs(token, isAuthenticated);
+      console.log('Re-conexión exitosa');
+
+    } catch (reconError) {
+      console.error('Fallo reconexión', reconError);
+
+      await this.delay(1000);
+      return this.tryReconnect(attemptsLeft - 1);
+    }
+  }
+
+  private delay(ms: number): Promise<void> {
+    return new Promise(res => setTimeout(res, ms));
   }
 
   private onDisconnected() {
@@ -103,8 +198,7 @@ export class WebsocketService {
         });
 
       } else {
-        console.error("No se ha podido iniciar la conexión WebSocket");
-        resolve();
+        reject(new Error('Imposible iniciar conexión WebSocket'));
       }
     });
   }
@@ -114,13 +208,13 @@ export class WebsocketService {
 
     if (this.isConnectedRxjs() && this.rxjsSocket) {
       this.rxjsSocket.next(message);
-      console.log("Mensaje enviado:", message);
+      //console.log("Mensaje enviado:", message);
 
     } else {
       this.modalService.showAlert(
         'error',
-        'No se ha podido conectar con el servidor',
-        [{ text: 'Aceptar' }]
+        this.translate.instant('MODALS.CANNOT_CONNECT'),
+        [{ text: this.translate.instant('COMMON.ACCEPT') }]
       );
     }
   }

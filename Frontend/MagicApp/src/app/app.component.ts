@@ -2,10 +2,9 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { StatusBar, Style } from '@capacitor/status-bar';
 import { IonApp, IonRouterOutlet, Platform } from "@ionic/angular/standalone";
 import { WebsocketService } from './services/websocket.service';
-import { AuthService } from './services/auth.service';
-import { environment } from 'src/environments/environment';
 import { addIcons } from 'ionicons';
 import * as icons from 'ionicons/icons';
+import { Capacitor } from '@capacitor/core';
 
 @Component({
   selector: 'app-root',
@@ -18,39 +17,42 @@ export class AppComponent implements OnInit, OnDestroy {
 
   constructor(
     private platform: Platform,
-    private authService: AuthService,
     private websocketService: WebsocketService
   ) {
-    console.log('ENVIRONMENT:', environment);
-  }
-
-  async ngOnInit() {
-    await this.platform.ready();
-
-    if (this.platform.is('android')) {
-      await StatusBar.setOverlaysWebView({ overlay: false });
-      await StatusBar.setBackgroundColor({ color: '#3f51b5' });
-      await StatusBar.setStyle({ style: Style.Dark });
-    }
-
     addIcons({
       'chatbubbles-outline': icons.chatbubblesOutline,
       'albums-outline': icons.albumsOutline,
       'flash-outline': icons.flashOutline,
       'notifications-outline': icons.notificationsOutline,
+      'notifications': icons.notifications,
       'chevron-up-circle': icons.chevronUpCircle,
       'document': icons.document,
       'color-palette': icons.colorPalette,
       'globe': icons.globe,
-      'add-outline': icons.addOutline
+      'add-outline': icons.addOutline,
+      'send': icons.send,
+      'trash-outline': icons.trashOutline,
+      'chevron-back': icons.chevronBack,
+      'chevron-forward': icons.chevronForward,
+      'layers-outline': icons.layersOutline,
+      'refresh-outline': icons.refreshOutline,
+      'lock-closed-outline': icons.lockClosedOutline,
+      'lock-open-outline': icons.lockOpenOutline,
+      'log-in-outline': icons.logInOutline,
+      'arrowBackOutline': icons.arrowBackOutline,
+      'sparkles': icons.sparkles,
+      'filterOutline': icons.filterOutline,
+      'addCircleOutline': icons.addCircleOutline
     });
+  }
 
-    if (await this.authService.isAuthenticated() && this.websocketService.isConnectedRxjs()) {
-      const user = await this.authService.getUser();
-      console.log("Usuario logeado:", user);
+  async ngOnInit() {
+    await this.platform.ready();
 
-    } else {
-      console.log("Usuario no logeado");
+    if (Capacitor.getPlatform() === 'android') {
+      await StatusBar.setOverlaysWebView({ overlay: false });
+      await StatusBar.setBackgroundColor({ color: '#3f51b5' });
+      await StatusBar.setStyle({ style: Style.Dark });
     }
   }
 

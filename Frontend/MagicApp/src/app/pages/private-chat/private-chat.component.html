@@ -1,0 +1,60 @@
+<ion-content [fullscreen]="true" class="chat-page ion-padding">
+
+  <!-- Botón para volver a la lista de chats-->
+  <div class="header-container">
+    <ion-icon name="arrow-back-outline" class="back-icon" (click)="navCtrl.back()"></ion-icon>
+    <h1 class="page-title">{{ 'PRIVATE_CHAT.TITLE' | translate }}</h1>
+  </div>
+
+  <!-- Chat -->
+  <div class="card-container">
+
+    <ion-card class="chat-card">
+      <ion-card-content class="messages-container">
+        <ion-list lines="none" class="messages-list">
+          <ion-item *ngFor="let msg of chatMessages" class="message-item"
+            [ngClass]="{'own': msg.SenderId === user.userId, 'other': msg.SenderId !== user.userId}">
+
+            <!-- Avatar -->
+            <ion-avatar>
+              <img [src]="msg.AvatarUrl" />
+            </ion-avatar>
+
+            <ion-label class="message-content">
+
+              <!-- Nickname -->
+              <h3 class="nickname">{{ msg.SenderNickname }}</h3>
+
+              <!-- Mensaje -->
+              <div class="message-bubble">
+                <p>{{ msg.Content }}</p>
+              </div>
+
+            </ion-label>
+
+          </ion-item>
+        </ion-list>
+      </ion-card-content>
+
+      <ion-footer class="input-footer">
+        <form (ngSubmit)="sendMessage()">
+          <ion-item lines="none" class="input-container">
+
+            <ion-input [(ngModel)]="chatInput" name="chatInput"
+              [placeholder]="'PRIVATE_CHAT.PLACEHOLDER_MESSAGE' | translate" clearInput required autocomplete="off"
+              class="chat-input">
+            </ion-input>
+
+            <ion-button slot="end" type="submit" fill="clear" [disabled]="!chatInput.trim()" class="send-button">
+              <ion-icon slot="icon-only" name="send"></ion-icon>
+            </ion-button>
+
+          </ion-item>
+        </form>
+      </ion-footer>
+    </ion-card>
+
+  </div>
+  
+  <app-sidebar></app-sidebar>
+</ion-content>

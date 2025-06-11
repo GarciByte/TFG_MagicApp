@@ -1,0 +1,71 @@
+<ion-header class="modal-header">
+  <ion-toolbar class="custom-toolbar">
+    <ion-title class="modal-title">
+      <div class="title-content">
+        <ion-icon name="sparkles" class="header-ai-icon"></ion-icon>
+        <span>{{ 'AI_MODAL.TITLE' | translate }}</span>
+      </div>
+    </ion-title>
+    <ion-buttons slot="end">
+      <ion-button fill="clear" (click)="close()" class="close-button" [attr.aria-label]=" 'COMMON.CLOSE' | translate ">
+        <ion-icon slot="icon-only" name="close" class="close-icon"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="modal-content" #chatContent (click)="onLinkClick($event)">
+  <div class="content-wrapper">
+
+    <!-- Nombre de la carta -->
+    <div class="card-info-header">
+      <div class="card-name-container">
+        <ion-icon name="library-outline" class="card-icon"></ion-icon>
+        <h2 class="card-name">{{ card.name }}</h2>
+      </div>
+    </div>
+
+    <div class="messages-area" #messagesContainer>
+
+      <!-- Estado de carga -->
+      <div class="message-wrapper ai-message" *ngIf="waitingResponse">
+        <div class="message-header">
+          <div class="ai-avatar">
+            <ion-icon name="sparkles" class="avatar-icon"></ion-icon>
+          </div>
+          <div class="sender-info">
+            <span class="sender-name">{{ 'AI_MODAL.ASSISTANT_NAME' | translate }}</span>
+            <span class="message-status">{{ 'AI_MODAL.ANALYZING' | translate }}</span>
+          </div>
+        </div>
+        <div class="message-content loading-message">
+          <div class="typing-indicator">
+            <div class="typing-dots">
+              <span></span><span></span><span></span>
+            </div>
+            <span class="loading-text">{{ 'AI_MODAL.GENERATING' | translate }}</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Mensaje de la IA -->
+      <div class="message-wrapper ai-message" *ngIf="!waitingResponse && commentMsg">
+        <div class="message-header">
+          <div class="ai-avatar">
+            <ion-icon name="sparkles" class="avatar-icon"></ion-icon>
+          </div>
+          <div class="sender-info">
+            <span class="sender-name">{{ 'AI_MODAL.ASSISTANT_NAME' | translate }}</span>
+            <span class="message-time">
+              {{ commentMsg.timestamp | date: 'short' }}
+            </span>
+          </div>
+        </div>
+        <div class="message-content ai-response">
+          <div class="response-content" [innerHTML]="toSafeHtml(commentMsg.content)"></div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</ion-content>

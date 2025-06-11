@@ -1,20 +1,66 @@
+/* Tema claro */
 :root {
-    --ion-color-primary: #d12c1e; 
-    --ion-color-secondary: #fca311; 
-    --ion-font-family: 'Roboto', sans-serif;
-    --ion-headings-font-weight: 500;
+    --ion-color-primary: #d12c1e;
+    --ion-color-secondary: #fca311;
 
-    --ion-background-color: #f0f0f0; 
-    --ion-text-color: #121212; 
-    --ion-card-background: #ffffff; 
+    --ion-background-color: #f0f0f0;
+    --ion-text-color: #121212;
+
+    --ion-card-background: #f9f9f9;
+    --ion-card-color: var(--ion-text-color);
+
+    --ion-item-background: #ffffff;
+    --ion-item-ios-background-hover: #f2f2f2;
+    --ion-item-md-background-hover: #e5e5e5;
+
+    --ion-toolbar-background: var(--ion-color-primary);
+    --ion-toolbar-color: #ffffff;
+
+    --ion-button-background: var(--ion-color-primary);
+    --ion-button-color: #ffffff;
+
+    --ion-input-background: #f1f1f1;
+    --ion-input-color: var(--ion-text-color);
+    --ion-input-placeholder-color: #888888;
+    --ion-input-border-color: #d1d5db;
+    --ion-input-border-color-focus: var(--ion-color-primary);
+    --ion-input-border-color-hover: #9ca3af;
+    --ion-input-border-radius: 8px;
+    --ion-input-padding: 12px 16px;
+    --ion-input-box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    --ion-input-box-shadow-focus: 0 0 0 3px rgba(209, 44, 30, 0.1);
+
+    --ion-color-danger: #dc3545;
+    --ion-color-success: #28a745;
 }
 
+/* Tema oscuro */
 :root.dark {
-    --ion-background-color: #121212; 
-    --ion-text-color: #f5f5f5; 
-    --ion-card-background: #1e1e1e; 
-}
+    --ion-background-color: #121212;
+    --ion-text-color: #f5f5f5;
 
-body {
-    font-family: var(--ion-font-family);
+    --ion-card-background: #1e1e1e;
+    --ion-card-color: var(--ion-text-color);
+
+    --ion-item-background: #1e1e1e;
+    --ion-item-ios-background-hover: #2a2a2a;
+    --ion-item-md-background-hover: #2a2a2a;
+
+    --ion-toolbar-background: var(--ion-color-primary);
+    --ion-toolbar-color: #ffffff;
+
+    --ion-button-background: var(--ion-color-primary);
+    --ion-button-color: #ffffff;
+
+    --ion-input-background: #2a2a2a;
+    --ion-input-color: var(--ion-text-color);
+    --ion-input-placeholder-color: #bbbbbb;
+    --ion-input-border-color: #4b5563;
+    --ion-input-border-color-focus: var(--ion-color-secondary);
+    --ion-input-border-color-hover: #6b7280;
+    --ion-input-box-shadow-focus: 0 0 0 3px rgba(252, 163, 17, 0.2);
+
+    --ion-color-secondary: #fca311;
+    --ion-color-danger: #dc3545;
+    --ion-color-success: #28a745;
 }

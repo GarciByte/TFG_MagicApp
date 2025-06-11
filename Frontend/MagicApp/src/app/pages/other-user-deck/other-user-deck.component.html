@@ -1,0 +1,32 @@
+<ion-content [fullscreen]="true" class="ion-padding">
+  <div class="header-container">
+    <ion-icon name="arrow-back-outline" class="back-icon" (click)="navCtrl.back()"></ion-icon>
+    <h1 class="page-title">{{ 'OTHER_USER_DECK.TITLE' | translate }}</h1>
+  </div>
+
+  <div class="content-container">
+
+    <!-- Mostrar mensaje si no hay mazos -->
+    <div class="no-decks-message" *ngIf="decks?.length === 0">
+      {{ 'OTHER_USER_DECK.NO_DECKS' | translate }}
+    </div>
+
+    <ion-grid class="decks-grid" *ngIf="decks?.length > 0">
+      <ion-row>
+        <ion-col size="6" size-md="4" size-lg="3" *ngFor="let deck of decks">
+          <div class="deck-card" (click)="viewDeck(deck.id)">
+            <ion-icon name="layers-outline" class="deck-icon"></ion-icon>
+            <div class="deck-name">{{ deck.name }}</div>
+            <div class="deck-cards">
+              <ion-icon name="albums-outline"></ion-icon>
+              {{ deck.deckCards?.length ?? 0 }} {{ 'OTHER_USER_DECK.CARDS' | translate }}
+            </div>
+          </div>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+
+  </div>
+
+  <app-sidebar></app-sidebar>
+</ion-content>
