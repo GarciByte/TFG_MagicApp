@@ -1,9 +1,9 @@
-<ion-content class="chat-page" #chatContent (click)="onLinkClick($event)">
+<ion-content [fullscreen]="true" class="chat-page ion-padding" #chatContent (click)="onLinkClick($event)">
 
   <!-- Botón para volver al menú principal -->
   <div class="header-container">
     <ion-icon name="arrow-back-outline" class="back-icon" (click)="navCtrl.navigateRoot(['/menu'])"></ion-icon>
-    <h1 class="page-title">Magic Chat</h1>
+    <h1 class="page-title">{{ 'CHAT.TITLE' | translate }}</h1>
   </div>
 
   <div class="card-container">
@@ -11,12 +11,11 @@
 
       <!-- Header -->
       <div class="chat-header">
-        <h2>Magic Chat</h2>
+        <h2>{{ 'CHAT.TITLE' | translate }}</h2>
       </div>
 
       <ion-card-content #messagesContainer class="messages-container">
         <div class="messages-list">
-
           <ng-container *ngFor="let msg of chatMessages">
 
             <!-- Mensajes de usuario -->
@@ -25,7 +24,9 @@
                 <div class="message-bubble user-message">
                   <p>{{ msg.content }}</p>
                 </div>
-                <div class="timestamp">{{ msg.timestamp | date: 'shortTime' }}</div>
+                <div class="timestamp">
+                  {{ msg.timestamp | date: 'shortTime' }}
+                </div>
               </div>
             </div>
 
@@ -34,15 +35,18 @@
               <div class="message-content">
                 <div class="assistant-label">
                   <ion-icon name="sparkles" class="ai-icon"></ion-icon>
-                  <span class="ai-name">Asistente IA</span>
+                  <span class="ai-name">
+                    {{ 'AI_MODAL.ASSISTANT_NAME' | translate }}
+                  </span>
                 </div>
                 <div class="message-bubble assistant-message">
                   <div [innerHTML]="toSafeHtml(msg.content)"></div>
                 </div>
-                <div class="timestamp">{{ msg.timestamp | date: 'shortTime' }}</div>
+                <div class="timestamp">
+                  {{ msg.timestamp | date: 'shortTime' }}
+                </div>
               </div>
             </div>
-
           </ng-container>
 
           <!-- Spinner "Pensando…" -->
@@ -50,15 +54,18 @@
             <div class="message-content">
               <div class="assistant-label">
                 <ion-icon name="sparkles" class="ai-icon"></ion-icon>
-                <span class="ai-name">Asistente IA</span>
+                <span class="ai-name">
+                  {{ 'AI_MODAL.ASSISTANT_NAME' | translate }}
+                </span>
               </div>
               <div class="message-bubble assistant-message thinking">
                 <ion-spinner name="dots" class="thinking-spinner"></ion-spinner>
-                <span class="loading-text">Pensando…</span>
+                <span class="loading-text">
+                  {{ 'CHAT.LOADING' | translate }}
+                </span>
               </div>
             </div>
           </div>
-
         </div>
       </ion-card-content>
 
@@ -66,9 +73,8 @@
       <ion-footer class="input-footer">
         <form (ngSubmit)="sendMessage()" class="input-form">
           <ion-item lines="none" class="input-container">
-            <textarea [(ngModel)]="chatInput" name="chatInput" placeholder="Escribe tu pregunta..." required
-              class="chat-textarea" rows="1">
-            </textarea>
+            <textarea [(ngModel)]="chatInput" name="chatInput" [placeholder]="'CHAT.INPUT_PLACEHOLDER' | translate"
+              required class="chat-textarea" rows="1"></textarea>
             <ion-button slot="end" type="submit" fill="clear" [disabled]="chatInput.trim() === '' || waitingResponse"
               class="send-button">
               <ion-icon slot="icon-only" name="send"></ion-icon>
@@ -76,8 +82,8 @@
           </ion-item>
         </form>
       </ion-footer>
-
     </ion-card>
   </div>
-<app-sidebar></app-sidebar>
+
+  <app-sidebar></app-sidebar>
 </ion-content>

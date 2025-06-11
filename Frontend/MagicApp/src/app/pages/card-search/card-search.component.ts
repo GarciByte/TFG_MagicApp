@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { NavController } from '@ionic/angular';
 import { CardImage } from 'src/app/models/card-image';
@@ -13,17 +13,21 @@ import { Rarity } from 'src/app/models/enums/rarity';
 import { CardType } from 'src/app/models/enums/card-type';
 import { CardColorService } from 'src/app/services/card-color.service';
 import { CardTypeService } from 'src/app/services/card-type.service';
+import { Subscription } from 'rxjs';
+import { WebsocketService } from 'src/app/services/websocket.service'
+import { TranslateService, TranslateModule } from '@ngx-translate/core';
 import { SidebarComponent } from "../../components/sidebar/sidebar.component";
 
 @Component({
   selector: 'app-card-search',
-  imports: [IonIcon, IonCheckbox, IonSearchbar, IonButton, IonContent, CommonModule, FormsModule, IonSelectOption, IonSelect, SidebarComponent],
+  imports: [IonIcon, IonCheckbox, IonSearchbar, IonButton, IonContent, CommonModule, FormsModule, IonSelectOption, IonSelect, SidebarComponent, TranslateModule],
   templateUrl: './card-search.component.html',
   styleUrls: ['./card-search.component.css'],
   standalone: true,
 })
-export class CardSearchComponent implements OnInit {
+export class CardSearchComponent implements OnInit, OnDestroy {
 
+  error$: Subscription;
   searchTerm = ''; // Nombre de la carta
   cards: CardImage[] = []; // Lista de cartas
   hasSearched = false;
@@ -42,13 +46,21 @@ export class CardSearchComponent implements OnInit {
     private cardService: CardService,
     private modalService: ModalService,
     private cardColorService: CardColorService,
-    private cardTypeService: CardTypeService
+    private cardTypeService: CardTypeService,
+    private webSocketService: WebsocketService,
+    public translate: TranslateService
   ) { }
 
   async ngOnInit(): Promise<void> {
-    if (!await this.authService.isAuthenticated()) {
+    if (!(await this.authService.isAuthenticated())) {
       this.navCtrl.navigateRoot(['/']);
+      return;
     }
+
+    this.error$ = this.webSocketService.error.subscribe(async () => {
+      await this.authService.logout();
+      this.navCtrl.navigateRoot(['/']);
+    });
 
     this.search()
   }
@@ -57,23 +69,21 @@ export class CardSearchComponent implements OnInit {
     this.showAllFilters = !this.showAllFilters;
   }
 
-realTimeSearch() {
-  clearTimeout(this.debounceTimeout);
+  realTimeSearch() {
+    clearTimeout(this.debounceTimeout);
 
-  this.debounceTimeout = setTimeout(() => {
-    this.search();
-  }, 300); // Espera 3 segundos
-}
+    this.debounceTimeout = setTimeout(() => {
+      this.search();
+    }, 300); // Espera 3 segundos
+  }
 
   // Buscar cartas por nombre
   async search() {
     const term = this.searchTerm.trim();
     this.hasSearched = true;
     this.isLoading = true;
-    console.log(this.rarity)
 
     try {
-
       const cardFilter: CardFilter = {
         Page: this.page,
         Name: term,
@@ -81,8 +91,6 @@ realTimeSearch() {
         Rarity: this.rarity,
         Types: this.types || null
       };
-
-      console.log(cardFilter)
 
       const result = await this.cardService.searchCardImages(cardFilter);
 
@@ -94,8 +102,8 @@ realTimeSearch() {
 
         this.modalService.showAlert(
           'error',
-          'Se ha producido un error obteniendo las cartas',
-          [{ text: 'Aceptar' }]
+          this.translate.instant('MODALS.CARD_FETCH_ERROR.MULTIPLE'),
+          [{ text: this.translate.instant('COMMON.ACCEPT') }]
         );
 
         this.cards = [];
@@ -106,8 +114,8 @@ realTimeSearch() {
 
       this.modalService.showAlert(
         'error',
-        'Se ha producido un error obteniendo las cartas',
-        [{ text: 'Aceptar' }]
+        this.translate.instant('MODALS.CARD_FETCH_ERROR.MULTIPLE'),
+        [{ text: this.translate.instant('COMMON.ACCEPT') }]
       );
 
       this.cards = [];
@@ -124,23 +132,22 @@ realTimeSearch() {
     });
   }
 
-  //CARD RARITY
+  // CARD RARITY
   rarityOptions = [
-    { label: 'Todas', value: null },
-    { label: 'Común', value: Rarity.Common },
-    { label: 'Poco Común', value: Rarity.Uncommon },
-    { label: 'Rara', value: Rarity.Rare },
-    { label: 'Mítica', value: Rarity.Mythic },
+    { label: this.translate.instant('FILTER.ALL'), value: null },
+    { label: this.translate.instant('RARITY.COMMON'), value: Rarity.Common },
+    { label: this.translate.instant('RARITY.UNCOMMON'), value: Rarity.Uncommon },
+    { label: this.translate.instant('RARITY.RARE'), value: Rarity.Rare },
+    { label: this.translate.instant('RARITY.MYTHIC'), value: Rarity.Mythic }
   ];
 
-
-  //CARD COLOR
+  // CARD COLOR
   cardColorOptions: ColorOption[] = [
-    { label: 'Blanco', color: Color.W, checked: false },
-    { label: 'Azul', color: Color.U, checked: false },
-    { label: 'Negro', color: Color.B, checked: false },
-    { label: 'Rojo', color: Color.R, checked: false },
-    { label: 'Verde', color: Color.G, checked: false }
+    { label: this.translate.instant('COLOR.WHITE'), color: Color.W, checked: false },
+    { label: this.translate.instant('COLOR.BLUE'), color: Color.U, checked: false },
+    { label: this.translate.instant('COLOR.BLACK'), color: Color.B, checked: false },
+    { label: this.translate.instant('COLOR.RED'), color: Color.R, checked: false },
+    { label: this.translate.instant('COLOR.GREEN'), color: Color.G, checked: false }
   ];
 
   cardColor(option: ColorOption) {
@@ -148,24 +155,23 @@ realTimeSearch() {
     this.realTimeSearch();
   }
 
-  //CARD TYPE
+  // CARD TYPE
   cardTypeOptions: TypeOption[] = [
-    { label: 'Creature', type: CardType.Creature, checked: false },
-    { label: 'Instant', type: CardType.Instant, checked: false },
-    { label: 'Sorcery', type: CardType.Sorcery, checked: false },
-    { label: 'Enchantment', type: CardType.Enchantment, checked: false },
-    { label: 'Artifact', type: CardType.Artifact, checked: false },
-    { label: 'Land', type: CardType.Land, checked: false },
-    { label: 'Planeswalker', type: CardType.Planeswalker, checked: false },
+    { label: 'CARD_TYPE.CREATURE', type: CardType.Creature, checked: false },
+    { label: 'CARD_TYPE.INSTANT', type: CardType.Instant, checked: false },
+    { label: 'CARD_TYPE.SORCERY', type: CardType.Sorcery, checked: false },
+    { label: 'CARD_TYPE.ENCHANTMENT', type: CardType.Enchantment, checked: false },
+    { label: 'CARD_TYPE.ARTIFACT', type: CardType.Artifact, checked: false },
+    { label: 'CARD_TYPE.LAND', type: CardType.Land, checked: false },
+    { label: 'CARD_TYPE.PLANESWALKER', type: CardType.Planeswalker, checked: false }
   ];
-
 
   cardType(option: TypeOption) {
     this.types = this.cardTypeService.cardType(option.type, option.checked);
     this.realTimeSearch();
   }
 
-  //CAMBIAR DE PÁGINA
+  // CAMBIAR DE PÁGINA
   prevPage() {
     if (this.page > 1) {
       this.page--;
@@ -178,10 +184,15 @@ realTimeSearch() {
     this.search();
   }
 
+  ngOnDestroy(): void {
+    if (this.error$) {
+      this.error$.unsubscribe();
+    }
+  }
+
 }
 
-
-//Helpers para selecionar los filtros
+// Helpers para selecionar los filtros
 type ColorOption = {
   label: string;
   color: Color;

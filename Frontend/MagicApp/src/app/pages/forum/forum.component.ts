@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { NavController } from '@ionic/angular';
 import { ForumThread } from 'src/app/models/forum-thread';
 import { AuthService } from 'src/app/services/auth.service';
@@ -7,17 +7,20 @@ import { ForumService } from 'src/app/services/forum.service';
 import { ModalService } from 'src/app/services/modal.service';
 import { UserService } from 'src/app/services/user.service';
 import { IonButton, IonIcon, IonCard, IonCardHeader, IonContent } from "@ionic/angular/standalone";
+import { Subscription } from 'rxjs';
+import { WebsocketService } from 'src/app/services/websocket.service';
+import { TranslateService, TranslateModule } from '@ngx-translate/core';
 import { SidebarComponent } from "../../components/sidebar/sidebar.component";
 
 @Component({
   selector: 'app-forum',
-  imports: [IonContent, IonCardHeader, IonCard, IonIcon, IonButton, CommonModule, SidebarComponent],
+  imports: [IonContent, IonCardHeader, IonCard, IonIcon, IonButton, CommonModule, SidebarComponent, TranslateModule],
   templateUrl: './forum.component.html',
   styleUrls: ['./forum.component.css'],
   standalone: true,
 })
-export class ForumComponent implements OnInit {
-
+export class ForumComponent implements OnInit, OnDestroy {
+  error$: Subscription;
   threads: ForumThread[] = [];
   displayedThreads: ForumThread[] = [];
   subscribedThreadIds: Set<number> = new Set<number>();
@@ -33,13 +36,22 @@ export class ForumComponent implements OnInit {
     private authService: AuthService,
     private userService: UserService,
     private modalService: ModalService,
-    private forumService: ForumService
+    private forumService: ForumService,
+    private webSocketService: WebsocketService,
+    public translate: TranslateService
   ) { }
 
   async ngOnInit(): Promise<void> {
-    if (!await this.authService.isAuthenticated()) {
+    if (!(await this.authService.isAuthenticated())) {
       this.navCtrl.navigateRoot(['/']);
+      return;
     }
+
+    this.error$ = this.webSocketService.error.subscribe(async () => {
+      await this.authService.logout();
+      this.navCtrl.navigateRoot(['/']);
+    });
+
     await this.checkAdmin();
     await this.loadThreads();
   }
@@ -79,8 +91,8 @@ export class ForumComponent implements OnInit {
 
         this.modalService.showAlert(
           'error',
-          'Se ha producido un error al obtener todos los hilos del foro',
-          [{ text: 'Aceptar' }]
+          this.translate.instant('FORUM.ERROR_FETCH_THREADS'),
+          [{ text: this.translate.instant('COMMON.ACCEPT') }]
         );
 
       }
@@ -90,8 +102,8 @@ export class ForumComponent implements OnInit {
 
       this.modalService.showAlert(
         'error',
-        'Se ha producido un error al obtener todos los hilos del foro',
-        [{ text: 'Aceptar' }]
+        this.translate.instant('FORUM.ERROR_FETCH_THREADS'),
+        [{ text: this.translate.instant('COMMON.ACCEPT') }]
       );
 
     }
@@ -112,8 +124,8 @@ export class ForumComponent implements OnInit {
 
         this.modalService.showAlert(
           'error',
-          'Se ha producido un error al obtener todos los hilos suscritos del foro',
-          [{ text: 'Aceptar' }]
+          this.translate.instant('FORUM.ERROR_FETCH_SUBSCRIBED'),
+          [{ text: this.translate.instant('COMMON.ACCEPT') }]
         );
 
       }
@@ -123,8 +135,8 @@ export class ForumComponent implements OnInit {
 
       this.modalService.showAlert(
         'error',
-        'Se ha producido un error al obtener todos los hilos suscritos del foro',
-        [{ text: 'Aceptar' }]
+        this.translate.instant('FORUM.ERROR_FETCH_SUBSCRIBED'),
+        [{ text: this.translate.instant('COMMON.ACCEPT') }]
       );
 
     }
@@ -137,30 +149,30 @@ export class ForumComponent implements OnInit {
 
   // Actualiza la lista de hilos que se muestran
   updateThreadsView() {
-  this.totalPages = Math.ceil(this.threads.length / this.pageSize) || 1;
-  if (this.page > this.totalPages) {
-    this.page = this.totalPages;
+    this.totalPages = Math.ceil(this.threads.length / this.pageSize) || 1;
+    if (this.page > this.totalPages) {
+      this.page = this.totalPages;
+    }
+    const start = (this.page - 1) * this.pageSize;
+    this.displayedThreads = this.threads.slice(start, start + this.pageSize);
   }
-  const start = (this.page - 1) * this.pageSize;
-  this.displayedThreads = this.threads.slice(start, start + this.pageSize);
-}
 
   // Cambiar de página
   goPage(delta: number) {
-  const newPage = this.page + delta;
-  if (newPage >= 1 && newPage <= this.totalPages) {
-    this.page = newPage;
-    this.updateThreadsView();
+    const newPage = this.page + delta;
+    if (newPage >= 1 && newPage <= this.totalPages) {
+      this.page = newPage;
+      this.updateThreadsView();
+    }
   }
-}
 
-// Cambiar a la primera/última página
-goToPage(newPage: number) {
-  if (newPage >= 1 && newPage <= this.totalPages) {
-    this.page = newPage;
-    this.updateThreadsView();
+  // Cambiar a la primera/última página
+  goToPage(newPage: number) {
+    if (newPage >= 1 && newPage <= this.totalPages) {
+      this.page = newPage;
+      this.updateThreadsView();
+    }
   }
-}
 
   // Comprueba si el usuario está suscrito al hilo
   isSubscribed(threadId: number): boolean {
@@ -187,15 +199,19 @@ goToPage(newPage: number) {
 
         if (result.success) {
           this.subscribedThreadIds.add(threadId);
-          this.modalService.showToast('Te has suscrito al hilo', 'success');
+
+          this.modalService.showToast(
+            this.translate.instant('FORUM.SUBSCRIBE_SUCCESS'),
+            'success'
+          );
 
         } else {
           console.error('Error al suscribirse al hilo:', result.error);
 
           this.modalService.showAlert(
             'error',
-            'Se ha producido un error al suscribirse al hilo',
-            [{ text: 'Aceptar' }]
+            this.translate.instant('FORUM.ERROR_SUBSCRIBE'),
+            [{ text: this.translate.instant('COMMON.ACCEPT') }]
           );
 
         }
@@ -205,15 +221,19 @@ goToPage(newPage: number) {
 
         if (result.success) {
           this.subscribedThreadIds.delete(threadId);
-          this.modalService.showToast('Has cancelado la suscripción', 'success');
+
+          this.modalService.showToast(
+            this.translate.instant('FORUM.UNSUBSCRIBE_SUCCESS'),
+            'success'
+          );
 
         } else {
           console.error('Error al cancelar la suscripción del hilo:', result.error);
 
           this.modalService.showAlert(
             'error',
-            'Se ha producido un error al cancelar la suscripción del hilo',
-            [{ text: 'Aceptar' }]
+            this.translate.instant('FORUM.ERROR_UNSUBSCRIBE'),
+            [{ text: this.translate.instant('COMMON.ACCEPT') }]
           );
 
         }
@@ -224,8 +244,8 @@ goToPage(newPage: number) {
 
       this.modalService.showAlert(
         'error',
-        'Se ha producido un error al cambiar el estado de suscripción del hilo',
-        [{ text: 'Aceptar' }]
+        this.translate.instant('FORUM.ERROR_TOGGLE_SUBSCRIPTION'),
+        [{ text: this.translate.instant('COMMON.ACCEPT') }]
       );
 
     }
@@ -235,15 +255,15 @@ goToPage(newPage: number) {
   async confirmCloseThread(thread: ForumThread) {
     await this.modalService.showAlert(
       'warning',
-      `¿Estás seguro de que quieres cerrar el hilo “${thread.title}”?`,
+      this.translate.instant('FORUM.CONFIRM_CLOSE', { title: thread.title }),
       [
         {
-          text: 'Sí',
+          text: this.translate.instant('COMMON.YES'),
           handler: async () => {
             await this.closeThread(thread.id);
           }
         },
-        { text: 'No' }
+        { text: this.translate.instant('COMMON.NO') }
       ]
     );
   }
@@ -254,7 +274,12 @@ goToPage(newPage: number) {
       const result = await this.forumService.closeThread(threadId);
 
       if (result.success) {
-        this.modalService.showToast('Has cerrado el hilo', 'success');
+
+        this.modalService.showToast(
+          this.translate.instant('FORUM.CLOSE_SUCCESS'),
+          'success'
+        );
+
         await this.loadThreads();
 
       } else {
@@ -262,8 +287,8 @@ goToPage(newPage: number) {
 
         this.modalService.showAlert(
           'error',
-          'Se ha producido un error al cerrar el hilo',
-          [{ text: 'Aceptar' }]
+          this.translate.instant('FORUM.ERROR_CLOSE'),
+          [{ text: this.translate.instant('COMMON.ACCEPT') }]
         );
 
       }
@@ -273,8 +298,8 @@ goToPage(newPage: number) {
 
       this.modalService.showAlert(
         'error',
-        'Se ha producido un error al cerrar el hilo',
-        [{ text: 'Aceptar' }]
+        this.translate.instant('FORUM.ERROR_CLOSE'),
+        [{ text: this.translate.instant('COMMON.ACCEPT') }]
       );
 
     }
@@ -284,15 +309,15 @@ goToPage(newPage: number) {
   async confirmOpenThread(thread: ForumThread) {
     await this.modalService.showAlert(
       'warning',
-      `¿Estás seguro de que quieres reabrir el hilo “${thread.title}”?`,
+      this.translate.instant('FORUM.CONFIRM_OPEN', { title: thread.title }),
       [
         {
-          text: 'Sí',
+          text: this.translate.instant('COMMON.YES'),
           handler: async () => {
             await this.openThreadAdmin(thread.id);
           }
         },
-        { text: 'No' }
+        { text: this.translate.instant('COMMON.NO') }
       ]
     );
   }
@@ -303,7 +328,12 @@ goToPage(newPage: number) {
       const result = await this.forumService.openThread(threadId);
 
       if (result.success) {
-        this.modalService.showToast('Has reabierto el hilo', 'success');
+
+        this.modalService.showToast(
+          this.translate.instant('FORUM.OPEN_SUCCESS'),
+          'success'
+        );
+
         await this.loadThreads();
 
       } else {
@@ -311,8 +341,8 @@ goToPage(newPage: number) {
 
         this.modalService.showAlert(
           'error',
-          'Se ha producido un error al reabrir el hilo',
-          [{ text: 'Aceptar' }]
+          this.translate.instant('FORUM.ERROR_OPEN'),
+          [{ text: this.translate.instant('COMMON.ACCEPT') }]
         );
 
       }
@@ -322,8 +352,8 @@ goToPage(newPage: number) {
 
       this.modalService.showAlert(
         'error',
-        'Se ha producido un error al reabrir el hilo',
-        [{ text: 'Aceptar' }]
+        this.translate.instant('FORUM.ERROR_OPEN'),
+        [{ text: this.translate.instant('COMMON.ACCEPT') }]
       );
 
     }
@@ -333,15 +363,15 @@ goToPage(newPage: number) {
   async confirmDeleteThread(thread: ForumThread) {
     await this.modalService.showAlert(
       'warning',
-      `¿Estás seguro de que quieres borrar el hilo “${thread.title}”?`,
+      this.translate.instant('FORUM.CONFIRM_DELETE', { title: thread.title }),
       [
         {
-          text: 'Sí',
+          text: this.translate.instant('COMMON.YES'),
           handler: async () => {
             await this.deleteThread(thread.id);
           }
         },
-        { text: 'No' }
+        { text: this.translate.instant('COMMON.NO') }
       ]
     );
   }
@@ -352,7 +382,12 @@ goToPage(newPage: number) {
       const result = await this.forumService.deleteThread(threadId);
 
       if (result.success) {
-        this.modalService.showToast('Has eliminado el hilo', 'success');
+
+        this.modalService.showToast(
+          this.translate.instant('FORUM.DELETE_SUCCESS'),
+          'success'
+        );
+
         await this.loadThreads();
 
       } else {
@@ -360,8 +395,8 @@ goToPage(newPage: number) {
 
         this.modalService.showAlert(
           'error',
-          'Se ha producido un error al borrar el hilo',
-          [{ text: 'Aceptar' }]
+          this.translate.instant('FORUM.ERROR_DELETE'),
+          [{ text: this.translate.instant('COMMON.ACCEPT') }]
         );
 
       }
@@ -371,10 +406,16 @@ goToPage(newPage: number) {
 
       this.modalService.showAlert(
         'error',
-        'Se ha producido un error al borrar el hilo',
-        [{ text: 'Aceptar' }]
+        this.translate.instant('FORUM.ERROR_DELETE'),
+        [{ text: this.translate.instant('COMMON.ACCEPT') }]
       );
 
+    }
+  }
+
+  ngOnDestroy(): void {
+    if (this.error$) {
+      this.error$.unsubscribe();
     }
   }
 

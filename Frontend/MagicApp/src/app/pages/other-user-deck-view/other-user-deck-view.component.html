@@ -1,12 +1,12 @@
-<ion-content>
+<ion-content [fullscreen]="true" class="ion-padding">
   <div class="header-container">
     <ion-icon name="arrow-back-outline" class="back-icon" (click)="navCtrl.back()"></ion-icon>
-    <h1 class="page-title">Detalles del mazo</h1>
+    <h1 class="page-title">{{ 'OTHER_USER_DECK_VIEW.TITLE' | translate }}</h1>
   </div>
 
   <div class="content-container">
-
     <div class="form-container">
+
       <!-- Deck Icon -->
       <div class="deck-icon-container">
         <div class="deck-icon icon-sun"></div>
@@ -14,50 +14,52 @@
 
       <!-- Form -->
       <div class="form-group">
-        <label class="form-label">Nombre del mazo</label>
-        <input type="text" class="text" [(ngModel)]="deckCardsService.name" placeholder="nombre" readonly>
+        <label class="form-label">{{ 'OTHER_USER_DECK_VIEW.NAME_LABEL' | translate }}</label>
+        <input type="text" class="text" [(ngModel)]="deckCardsService.name"
+          [placeholder]="'OTHER_USER_DECK_VIEW.NAME_PLACEHOLDER' | translate" readonly>
       </div>
 
       <div class="form-group">
-        <label class="form-label">Descripción del mazo</label>
-        <input type="text" class="text" [(ngModel)]="deckCardsService.description" placeholder="descripción" readonly>
+        <label class="form-label">{{ 'OTHER_USER_DECK_VIEW.DESCRIPTION_LABEL' | translate }}</label>
+        <input type="text" class="text" [(ngModel)]="deckCardsService.description"
+          [placeholder]="'OTHER_USER_DECK_VIEW.DESCRIPTION_PLACEHOLDER' | translate" readonly>
       </div>
 
       <!-- Contador de cartas -->
       <div class="card-counter">
-        <p class="counter-text">Cartas en el mazo: {{ deckSize() }}/150</p>
+        <p class="counter-text">{{ 'OTHER_USER_DECK_VIEW.CARD_COUNT' | translate }}: {{ deckSize() }}/150</p>
       </div>
 
       <!-- Action Buttons -->
       <div class="action-buttons">
-        <button class="action-button" (click)="cardDetails()">Ver cartas</button>
+        <button class="action-button" (click)="cardDetails()">
+          {{ 'OTHER_USER_DECK_VIEW.VIEW_CARDS' | translate }}
+        </button>
       </div>
 
       <!-- Victories -->
       <div class="counter-box">
-        <label class="form-label">Victorias</label>
+        <label class="form-label">{{ 'OTHER_USER_DECK_VIEW.VICTORIES' | translate }}</label>
         <div class="counter-controls">
           <span class="counter-value">{{ deckCardsService.victories }}</span>
-         </div>
+        </div>
       </div>
 
       <!-- Defeats -->
       <div class="counter-box">
-        <label class="form-label">Derrotas</label>
+        <label class="form-label">{{ 'OTHER_USER_DECK_VIEW.DEFEATS' | translate }}</label>
         <div class="counter-controls">
           <span class="counter-value">{{ deckCardsService.defeats }}</span>
         </div>
       </div>
 
       <div class="form-group">
-        <label class="form-label">Porcentaje de victoria</label>
+        <label class="form-label">{{ 'OTHER_USER_DECK_VIEW.VICTORY_RATE' | translate }}</label>
         <div class="counter-value victory-rate">{{ getVictoryRate() }}</div>
       </div>
+
     </div>
   </div>
 
-  <div class="footer-logo">
-    <img src="assets/images/logo.png" alt="MagicHub Logo" />
-  </div>
   <app-sidebar></app-sidebar>
 </ion-content>

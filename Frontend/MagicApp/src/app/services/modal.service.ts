@@ -1,13 +1,18 @@
 import { Injectable } from '@angular/core';
 import { AlertController, ToastController } from '@ionic/angular';
 import { checkmarkCircle, closeCircle, warning, informationCircle } from 'ionicons/icons';
+import { TranslateService } from '@ngx-translate/core';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ModalService {
 
-  constructor(private alertCtrl: AlertController, private toastCtrl: ToastController) { }
+  constructor(
+    private alertCtrl: AlertController,
+    private toastCtrl: ToastController,
+    private translate: TranslateService
+  ) { }
 
   // Notificaciones breves
   async showToast(message: string, iconName: string) {
@@ -63,25 +68,31 @@ export class ModalService {
   // Alerta para pedir el motivo de reporte
   async promptReportReason(nickname: string): Promise<string | null> {
     return new Promise(async resolve => {
+      const header = this.translate.instant('REPORT.ALERT_TITLE', { nickname });
+      const message = this.translate.instant('REPORT.MESSAGE');
+      const placeholder = this.translate.instant('REPORT.PLACEHOLDER');
+      const cancelText = this.translate.instant('REPORT.CANCEL');
+      const sendText = this.translate.instant('REPORT.SEND');
+
       const alert = await this.alertCtrl.create({
-        header: `Reportar a ${nickname}`,
-        message: 'Escribe el motivo de tu reporte',
+        header,
+        message,
         cssClass: 'custom-alert',
         inputs: [
           {
             name: 'reason',
             type: 'textarea',
-            placeholder: 'Motivo del reporte…'
+            placeholder
           }
         ],
         buttons: [
           {
-            text: 'Cancelar',
+            text: cancelText,
             role: 'cancel',
             handler: () => resolve(null)
           },
           {
-            text: 'Enviar',
+            text: sendText,
             handler: (data: { reason: string }) => {
               const txt = data.reason?.trim() || '';
               resolve(txt || null);

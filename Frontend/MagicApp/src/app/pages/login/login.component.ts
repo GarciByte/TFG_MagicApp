@@ -6,16 +6,16 @@ import { NavController } from '@ionic/angular';
 import { ModalService } from 'src/app/services/modal.service';
 import { FormsModule } from '@angular/forms';
 import { IonContent, IonItem, IonLabel, IonButton, IonCardContent, IonCard, IonInput, IonCheckbox } from "@ionic/angular/standalone";
+import { TranslateService, TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-login',
-  imports: [IonContent, IonCard, IonCardContent, IonItem, IonInput, IonCheckbox, IonLabel, IonButton, CommonModule, FormsModule],
+  imports: [IonContent, IonCard, IonCardContent, IonItem, IonInput, IonCheckbox, IonLabel, IonButton, CommonModule, FormsModule, TranslateModule],
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.css'],
   standalone: true,
 })
 export class LoginComponent implements OnInit {
-
   nickname: string = '';
   password: string = '';
   rememberMe: boolean = false;
@@ -24,11 +24,12 @@ export class LoginComponent implements OnInit {
     public navCtrl: NavController,
     private authService: AuthService,
     private websocketService: WebsocketService,
-    private modalService: ModalService
+    private modalService: ModalService,
+    public translate: TranslateService
   ) { }
 
   async ngOnInit(): Promise<void> {
-    if (await this.authService.isAuthenticated() && this.websocketService.isConnectedRxjs()) {
+    if ((await this.authService.isAuthenticated()) && this.websocketService.isConnectedRxjs()) {
       this.navCtrl.navigateRoot(['/menu']);
     }
   }
@@ -37,11 +38,12 @@ export class LoginComponent implements OnInit {
     const authData = { nickname: this.nickname, password: this.password };
     const result = await this.authService.login(authData, this.rememberMe);
 
-    console.log("Datos:", authData);
-    console.log("Resultado", result);
-
     if (result.success) {
-      this.modalService.showToast("Inicio de sesión con éxito", "success");
+
+      this.modalService.showToast(
+        this.translate.instant('LOGIN.SUCCESS'),
+        'success'
+      );
 
       if (this.websocketService.isConnectedRxjs()) {
         this.navCtrl.navigateRoot(['/menu']);
@@ -49,18 +51,19 @@ export class LoginComponent implements OnInit {
       } else {
         this.modalService.showAlert(
           'error',
-          'Se ha producido un error en la conexión con el servidor',
-          [{ text: 'Aceptar' }]
+          this.translate.instant('LOGIN.ERROR_SERVER'),
+          [{ text: this.translate.instant('COMMON.ACCEPT') }]
         );
       }
 
     } else {
       // Prohibición del usuario
       if (result.statusCode === 403) {
+
         this.modalService.showAlert(
           'error',
-          'Tu cuenta ha sido suspendida',
-          [{ text: 'Aceptar' }]
+          this.translate.instant('LOGIN.ERROR_SUSPENDED'),
+          [{ text: this.translate.instant('COMMON.ACCEPT') }]
         );
 
       } else {
@@ -68,8 +71,8 @@ export class LoginComponent implements OnInit {
 
         this.modalService.showAlert(
           'error',
-          'El nombre de usuario o la contraseña son incorrectos',
-          [{ text: 'Aceptar' }]
+          this.translate.instant('LOGIN.ERROR_CREDENTIALS'),
+          [{ text: this.translate.instant('COMMON.ACCEPT') }]
         );
 
       }

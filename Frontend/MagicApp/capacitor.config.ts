@@ -4,7 +4,13 @@ const config: CapacitorConfig = {
   appId: 'com.magic.magicHub',
   appName: 'MagicHub',
   webDir: 'www',
-  plugins: {},
+  plugins: {
+    StatusBar: {
+      overlaysWebView: false,
+      backgroundColor: '#3f51b5',
+      style: 'DARK'
+    }
+  },
   android: {
     allowMixedContent: false
   }

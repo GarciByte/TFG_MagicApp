@@ -18,8 +18,12 @@
   max-width: 400px;
   border-radius: 12px;
   background: var(--ion-card-background);
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
   margin: 2rem;
+}
+
+:root.dark .signup-card {
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.6);
 }
 
 .signup-form {
@@ -35,8 +39,9 @@
 
 .avatar-item {
   width: 100%;
-  --highlight-color-focused: #d12c1e;
-  --border-color: #666666e1;
+  --highlight-color-focused: var(--ion-color-primary);
+  --border-color: var(--ion-text-color);
+  --background: var(--ion-input-background);
 }
 
 .avatar-preview {
@@ -53,19 +58,21 @@
 
 .form-item {
   margin-bottom: 1.2rem;
-  --highlight-color-focused: #d12c1e;
-  --border-color: #666;
+  --highlight-color-focused: var(--ion-color-primary);
+  --border-color: var(--ion-text-color);
+  --background: var(--ion-input-background);
+  --color: var(--ion-input-color);
   position: relative;
   --border-radius: 12px;
 }
 
 .form-item.ion-focused {
-  box-shadow: 0 0 0 2px #d12c1e;
+  box-shadow: 0 0 0 2px var(--ion-color-primary);
   border-radius: 4px;
 }
 
 .error {
-  color: rgb(255, 110, 110);
+  color: var(--ion-color-danger);
   font-size: 0.8rem;
   margin-top: -0.8rem;
   margin-bottom: 0.8rem;
@@ -74,22 +81,30 @@
 
 .form-item ion-input {
   font-size: 1.1rem;
+  --color: var(--ion-input-color);
+  --placeholder-color: var(--ion-input-placeholder-color);
+}
+
+.form-item ion-select {
+  --color: var(--ion-input-color);
+  --placeholder-color: var(--ion-input-placeholder-color);
 }
 
 .signup-button {
-  --background: #d12c1e;
-  --background-activated: #a82114;
-  --background-hover: #f04a2a;
+  --background: var(--ion-color-primary);
+  --background-activated: var(--ion-color-primary-shade);
+  --background-hover: var(--ion-color-primary-tint);
+  --color: white;
   --padding-top: 1.2rem;
   --padding-bottom: 1.2rem;
   margin: 2rem 0 1.5rem;
   font-weight: 600;
-  color: #ffffff;
   font-size: 1.1rem;
 }
 
-.signup-button:hover {
-  --background: #f04a2a;
+.signup-button:disabled {
+  opacity: 0.5;
+  --background: var(--ion-color-primary);
 }
 
 .login-container {
@@ -103,6 +118,7 @@
 
 .login-text {
   font-size: 0.9rem;
+  color: var(--ion-text-color);
 }
 
 .login-button {

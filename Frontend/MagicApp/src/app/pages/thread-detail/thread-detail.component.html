@@ -3,19 +3,19 @@
   <div class="back-button-container">
 
     <!-- Botón para volver al foro -->
-  <div class="header-container">
-    <ion-icon name="arrow-back-outline" class="back-icon" (click)="navCtrl.back()"></ion-icon>
-    <h1 class="page-title">{{ threadDetail.title }}</h1>
-  </div>
+    <div class="header-container">
+      <ion-icon name="arrow-back-outline" class="back-icon" (click)="navCtrl.navigateRoot(['/forum'])"></ion-icon>
+      <h1 class="page-title">{{ 'THREAD_DETAIL.PAGE_TITLE' | translate }}</h1>
+    </div>
 
     <!-- Botón para Refrescar Hilo -->
     <ion-button size="small" shape="round" (click)="refreshThread()">
       <ion-icon name="refresh-outline"></ion-icon>
-      &nbsp;Refrescar hilo
+      &nbsp;{{ 'THREAD_DETAIL.REFRESH_THREAD' | translate }}
     </ion-button>
   </div>
 
-  <ng-container *ngIf="threadDetail">
+  <ng-container *ngIf="threadDetail; else loadingTpl">
     <div class="threadDetail-container">
 
       <!-- Card del primer comentario -->
@@ -31,11 +31,11 @@
           <!-- Autor del hilo -->
           <div class="thread-meta-admin">
             <ion-avatar class="thread-avatar">
-              <img [src]="apiImg + threadDetail.user.avatarUrl" alt="Avatar de {{ threadDetail.user.nickname }}">
+              <img [src]="apiImg + threadDetail.user.avatarUrl" [alt]="'Avatar de ' + threadDetail.user.nickname">
             </ion-avatar>
             <div class="thread-author-date">
               <div class="thread-author">{{ threadDetail.user.nickname }}</div>
-              <div class="thread-date">{{ threadDetail.createdAt | date: 'dd/MM/yyyy HH:mm' }}</div>
+              <div class="thread-date">{{ threadDetail.createdAt | date:'dd/MM/yyyy HH:mm' }}</div>
             </div>
           </div>
 
@@ -77,10 +77,10 @@
       <div class="comments-section">
 
         <h3 class="comments-title">
-          Comentarios ({{ (threadDetail.comments?.length || 1) - 1 }})
+          {{ 'THREAD_DETAIL.COMMENTS' | translate:{ count: (threadDetail.comments?.length || 1) - 1 } }}
         </h3>
 
-        <ng-container *ngIf="threadDetail.comments?.length > 1; else noExtraComments">
+        <ng-container *ngIf="threadDetail.comments?.length > 1; else noExtraTpl">
           <ng-container *ngFor="let comment of paginatedComments">
 
             <!-- Card del comentario -->
@@ -88,7 +88,7 @@
 
               <ion-card-header class="comment-header">
                 <ion-avatar class="comment-avatar">
-                  <img [src]="apiImg + comment.user.avatarUrl" alt="Avatar de {{ comment.user.nickname }}">
+                  <img [src]="apiImg + comment.user.avatarUrl" [alt]="'Avatar de ' + comment.user.nickname">
                 </ion-avatar>
 
                 <div class="comment-info">
@@ -112,7 +112,7 @@
           </ng-container>
 
           <!-- Controles de paginación -->
-          <div class="pagination-container" >
+          <div class="pagination-container">
 
             <ion-button class="pagination-btn" [disabled]="page === 1" (click)="goToPage(1)" fill="clear" size="small">
               «
@@ -124,7 +124,7 @@
             </ion-button>
 
             <span class="page-info">
-              Página {{ page }} de {{ totalPages }}
+              {{ 'FORUM.PAGE_INFO' | translate:{ page: page, totalPages: totalPages } }}
             </span>
 
             <ion-button class="pagination-btn" [disabled]="page === totalPages" (click)="goToPage(page + 1)"
@@ -140,9 +140,9 @@
 
         </ng-container>
 
-        <ng-template #noExtraComments>
+        <ng-template #noExtraTpl>
           <div class="no-comments-message">
-            No hay comentarios
+            {{ 'THREAD_DETAIL.NO_COMMENTS' | translate }}
           </div>
         </ng-template>
       </div>
@@ -152,14 +152,18 @@
         <form [formGroup]="commentForm" (ngSubmit)="submitComment()">
 
           <ion-item class="input-item">
-            <ion-label position="stacked">Tu comentario</ion-label>
-            <ion-textarea formControlName="content" rows="4" placeholder="Escribe tu comentario aquí"></ion-textarea>
+            <ion-label position="stacked">
+              {{ 'THREAD_DETAIL.YOUR_COMMENT_LABEL' | translate }}
+            </ion-label>
+            <ion-textarea formControlName="content" rows="4"
+              [placeholder]="'THREAD_DETAIL.YOUR_COMMENT_PLACEHOLDER' | translate">
+            </ion-textarea>
           </ion-item>
 
           <div class="submit-container">
             <ion-button type="submit" shape="round" [disabled]="commentForm.invalid">
               <ion-icon name="send"></ion-icon>
-              &nbsp;Enviar
+              &nbsp;{{ 'THREAD_DETAIL.SEND' | translate }}
             </ion-button>
           </div>
         </form>
@@ -167,10 +171,11 @@
     </div>
   </ng-container>
 
-  <ng-container *ngIf="!threadDetail">
+  <ng-template #loadingTpl>
     <div class="loading-message">
-      Cargando hilo…
+      {{ 'THREAD_DETAIL.LOADING' | translate }}
     </div>
-  </ng-container>
+  </ng-template>
+
   <app-sidebar></app-sidebar>
 </ion-content>

@@ -1,62 +1,63 @@
-import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
-import { NavController, AlertController } from '@ionic/angular';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { NavController } from '@ionic/angular';
 import { CardDetail } from 'src/app/models/card-detail';
 import { AuthService } from 'src/app/services/auth.service';
 import { DeckCardsService } from 'src/app/services/deck-cards.service';
-import { DeckServiceService } from 'src/app/services/deck-service.service';
-import { IonButton, IonCheckbox, IonContent, IonIcon, IonSearchbar, IonSelect, IonSelectOption } from "@ionic/angular/standalone";
+import { IonContent, IonIcon } from "@ionic/angular/standalone";
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { Subscription } from 'rxjs';
+import { WebsocketService } from 'src/app/services/websocket.service';
 import { SidebarComponent } from "../../components/sidebar/sidebar.component";
 import { CardService } from 'src/app/services/card.service';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 import { ModalService } from 'src/app/services/modal.service';
+import { TranslateService, TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-deck-cards-views',
-  imports: [IonIcon, IonContent, CommonModule, FormsModule, SidebarComponent],
+  imports: [IonIcon, IonContent, CommonModule, FormsModule, SidebarComponent, TranslateModule],
   templateUrl: './deck-cards-views.component.html',
   styleUrls: ['./deck-cards-views.component.css'],
   standalone: true,
 })
-export class DeckCardsViewsComponent implements OnInit {
-
+export class DeckCardsViewsComponent implements OnInit, OnDestroy {
+  error$: Subscription;
   deckCards: CardDetail[] = [];
   card: CardDetail;
   safeOracleHtml: SafeHtml;
 
-
   constructor(
     public navCtrl: NavController,
     private authService: AuthService,
-    private deckService: DeckServiceService,
-    private router: Router,
-    private alertController: AlertController,
+    private webSocketService: WebsocketService,
     private deckCardsService: DeckCardsService,
     private cardService: CardService,
     private sanitizer: DomSanitizer,
     private modalService: ModalService,
+    public translate: TranslateService
   ) { }
 
   async ngOnInit(): Promise<void> {
-    if (!await this.authService.isAuthenticated()) {
+    if (!(await this.authService.isAuthenticated())) {
       this.navCtrl.navigateRoot(['/']);
+      return;
     }
 
+    this.error$ = this.webSocketService.error.subscribe(async () => {
+      await this.authService.logout();
+      this.navCtrl.navigateRoot(['/']);
+    });
+
     this.deckCards = this.deckCardsService.deckCards;
-    console.log(this.deckCards)
   }
 
   async removeCard(cardId: string) {
-    await this.loadCardDetails(cardId)
-    this.deckCardsService.remove(this.card)
+    await this.loadCardDetails(cardId);
+    this.deckCardsService.remove(this.card);
     this.deckCards = this.deckCardsService.deckCards;
-    console.log("hola")
-    console.log(this.deckCards)
-    this.navCtrl.back()
+    this.navCtrl.back();
   }
-
 
   private async loadCardDetails(cardId: string) {
     try {
@@ -74,8 +75,8 @@ export class DeckCardsViewsComponent implements OnInit {
 
         this.modalService.showAlert(
           'error',
-          'Se ha producido un error obteniendo la carta',
-          [{ text: 'Aceptar' }]
+          this.translate.instant('MODALS.CARD_FETCH_ERROR.SINGLE'),
+          [{ text: this.translate.instant('COMMON.ACCEPT') }]
         );
       }
 
@@ -84,8 +85,8 @@ export class DeckCardsViewsComponent implements OnInit {
 
       this.modalService.showAlert(
         'error',
-        'Se ha producido un error obteniendo los datos de la carta',
-        [{ text: 'Aceptar' }]
+        this.translate.instant('MODALS.CARD_FETCH_ERROR.DATA'),
+        [{ text: this.translate.instant('COMMON.ACCEPT') }]
       );
     }
   }
@@ -95,4 +96,11 @@ export class DeckCardsViewsComponent implements OnInit {
       queryParams: { cardId }
     });
   }
+
+  ngOnDestroy(): void {
+    if (this.error$) {
+      this.error$.unsubscribe();
+    }
+  }
+
 }

@@ -1,7 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
-import { Router } from '@angular/router';
-import { card, arrowBackOutline, filterOutline, addCircleOutline } from 'ionicons/icons';
 import { CardDetail } from 'src/app/models/card-detail';
 import { CardService } from 'src/app/services/card.service';
 import { ModalService } from 'src/app/services/modal.service';
@@ -18,16 +16,20 @@ import { CardColorService } from 'src/app/services/card-color.service';
 import { CardTypeService } from 'src/app/services/card-type.service';
 import { SidebarComponent } from "../../components/sidebar/sidebar.component";
 import { DeckCardsService } from 'src/app/services/deck-cards.service';
+import { Subscription } from 'rxjs';
+import { WebsocketService } from 'src/app/services/websocket.service';
+import { TranslateService, TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-add-cards-deck',
-  imports: [IonIcon, IonCheckbox, IonSearchbar, IonButton, IonContent, CommonModule, FormsModule, IonSelectOption, IonSelect, SidebarComponent],
+  imports: [IonIcon, IonCheckbox, IonSearchbar, IonButton, IonContent, CommonModule, FormsModule, IonSelectOption, IonSelect,
+    TranslateModule, SidebarComponent],
   templateUrl: './add-cards-deck.component.html',
   styleUrls: ['./add-cards-deck.component.css'],
   standalone: true,
 })
-export class AddCardsDeckComponent implements OnInit {
-
+export class AddCardsDeckComponent implements OnInit, OnDestroy {
+  error$: Subscription;
   safeOracleHtml: SafeHtml;
 
   hasSearched = false;
@@ -35,7 +37,6 @@ export class AddCardsDeckComponent implements OnInit {
   debounceTimeout: any;
   isLoading = false;
   page: number = 1;
-
 
   cards: CardImage[] = []; // Lista de cartas
   card: CardDetail;
@@ -54,23 +55,30 @@ export class AddCardsDeckComponent implements OnInit {
     private modalService: ModalService,
     private cardColorService: CardColorService,
     private cardTypeService: CardTypeService,
-    private router: Router,
     private deckCardsService: DeckCardsService,
     private sanitizer: DomSanitizer,
-  ) {}
+    private webSocketService: WebsocketService,
+    public translate: TranslateService
+  ) { }
 
   async ngOnInit(): Promise<void> {
-    if (!await this.authService.isAuthenticated()) {
+    if (!(await this.authService.isAuthenticated())) {
       this.navCtrl.navigateRoot(['/']);
+      return;
     }
 
-    this.search()
+    this.error$ = this.webSocketService.error.subscribe(async () => {
+      await this.authService.logout();
+      this.navCtrl.navigateRoot(['/']);
+    });
+
+    this.search();
   }
 
   async selectCard(cardId: string) {
-    await this.loadCardDetails(cardId)
-    this.deckCardsService.addCard(this.card)
-    this.navCtrl.back()
+    await this.loadCardDetails(cardId);
+    this.deckCardsService.addCard(this.card);
+    this.navCtrl.back();
   }
 
   private async loadCardDetails(cardId: string) {
@@ -89,9 +97,10 @@ export class AddCardsDeckComponent implements OnInit {
 
         this.modalService.showAlert(
           'error',
-          'Se ha producido un error obteniendo la carta',
-          [{ text: 'Aceptar' }]
+          this.translate.instant('MODALS.CARD_FETCH_ERROR.SINGLE'),
+          [{ text: this.translate.instant('COMMON.ACCEPT') }]
         );
+
       }
 
     } catch (error) {
@@ -99,8 +108,8 @@ export class AddCardsDeckComponent implements OnInit {
 
       this.modalService.showAlert(
         'error',
-        'Se ha producido un error obteniendo los datos de la carta',
-        [{ text: 'Aceptar' }]
+        this.translate.instant('MODALS.CARD_FETCH_ERROR.DATA'),
+        [{ text: this.translate.instant('COMMON.ACCEPT') }]
       );
     }
   }
@@ -122,10 +131,8 @@ export class AddCardsDeckComponent implements OnInit {
     const term = this.searchTerm.trim();
     this.hasSearched = true;
     this.isLoading = true;
-    console.log(this.rarity)
 
     try {
-
       const cardFilter: CardFilter = {
         Page: this.page,
         Name: term,
@@ -133,8 +140,6 @@ export class AddCardsDeckComponent implements OnInit {
         Rarity: this.rarity,
         Types: this.types || null
       };
-
-      console.log(cardFilter)
 
       const result = await this.cardService.searchCardImages(cardFilter);
 
@@ -146,8 +151,8 @@ export class AddCardsDeckComponent implements OnInit {
 
         this.modalService.showAlert(
           'error',
-          'Se ha producido un error obteniendo las cartas',
-          [{ text: 'Aceptar' }]
+          this.translate.instant('MODALS.CARD_FETCH_ERROR.MULTIPLE'),
+          [{ text: this.translate.instant('COMMON.ACCEPT') }]
         );
 
         this.cards = [];
@@ -158,8 +163,8 @@ export class AddCardsDeckComponent implements OnInit {
 
       this.modalService.showAlert(
         'error',
-        'Se ha producido un error obteniendo las cartas',
-        [{ text: 'Aceptar' }]
+        this.translate.instant('MODALS.CARD_FETCH_ERROR.MULTIPLE'),
+        [{ text: this.translate.instant('COMMON.ACCEPT') }]
       );
 
       this.cards = [];
@@ -177,23 +182,22 @@ export class AddCardsDeckComponent implements OnInit {
     });
   }
 
-  //CARD RARITY
+  // CARD RARITY
   rarityOptions = [
-    { label: 'Todas', value: null },
-    { label: 'Común', value: Rarity.Common },
-    { label: 'Poco Común', value: Rarity.Uncommon },
-    { label: 'Rara', value: Rarity.Rare },
-    { label: 'Mítica', value: Rarity.Mythic },
+    { label: this.translate.instant('FILTER.ALL'), value: null },
+    { label: this.translate.instant('RARITY.COMMON'), value: Rarity.Common },
+    { label: this.translate.instant('RARITY.UNCOMMON'), value: Rarity.Uncommon },
+    { label: this.translate.instant('RARITY.RARE'), value: Rarity.Rare },
+    { label: this.translate.instant('RARITY.MYTHIC'), value: Rarity.Mythic }
   ];
 
-
-  //CARD COLOR
+  // CARD COLOR
   cardColorOptions: ColorOption[] = [
-    { label: 'Blanco', color: Color.W, checked: false },
-    { label: 'Azul', color: Color.U, checked: false },
-    { label: 'Negro', color: Color.B, checked: false },
-    { label: 'Rojo', color: Color.R, checked: false },
-    { label: 'Verde', color: Color.G, checked: false }
+    { label: this.translate.instant('COLOR.WHITE'), color: Color.W, checked: false },
+    { label: this.translate.instant('COLOR.BLUE'), color: Color.U, checked: false },
+    { label: this.translate.instant('COLOR.BLACK'), color: Color.B, checked: false },
+    { label: this.translate.instant('COLOR.RED'), color: Color.R, checked: false },
+    { label: this.translate.instant('COLOR.GREEN'), color: Color.G, checked: false }
   ];
 
   cardColor(option: ColorOption) {
@@ -201,15 +205,15 @@ export class AddCardsDeckComponent implements OnInit {
     this.realTimeSearch();
   }
 
-  //CARD TYPE
+  // CARD TYPE
   cardTypeOptions: TypeOption[] = [
-    { label: 'Creature', type: CardType.Creature, checked: false },
-    { label: 'Instant', type: CardType.Instant, checked: false },
-    { label: 'Sorcery', type: CardType.Sorcery, checked: false },
-    { label: 'Enchantment', type: CardType.Enchantment, checked: false },
-    { label: 'Artifact', type: CardType.Artifact, checked: false },
-    { label: 'Land', type: CardType.Land, checked: false },
-    { label: 'Planeswalker', type: CardType.Planeswalker, checked: false },
+    { label: 'CARD_TYPE.CREATURE', type: CardType.Creature, checked: false },
+    { label: 'CARD_TYPE.INSTANT', type: CardType.Instant, checked: false },
+    { label: 'CARD_TYPE.SORCERY', type: CardType.Sorcery, checked: false },
+    { label: 'CARD_TYPE.ENCHANTMENT', type: CardType.Enchantment, checked: false },
+    { label: 'CARD_TYPE.ARTIFACT', type: CardType.Artifact, checked: false },
+    { label: 'CARD_TYPE.LAND', type: CardType.Land, checked: false },
+    { label: 'CARD_TYPE.PLANESWALKER', type: CardType.Planeswalker, checked: false }
   ];
 
   cardType(option: TypeOption) {
@@ -217,7 +221,7 @@ export class AddCardsDeckComponent implements OnInit {
     this.realTimeSearch();
   }
 
-  //CAMBIAR DE PÁGINA
+  // CAMBIAR DE PÁGINA
   prevPage() {
     if (this.page > 1) {
       this.page--;
@@ -230,9 +234,15 @@ export class AddCardsDeckComponent implements OnInit {
     this.search();
   }
 
+  ngOnDestroy(): void {
+    if (this.error$) {
+      this.error$.unsubscribe();
+    }
+  }
+
 }
 
-//Helpers para selecionar los filtros
+// Helpers para selecionar los filtros
 type ColorOption = {
   label: string;
   color: Color;
