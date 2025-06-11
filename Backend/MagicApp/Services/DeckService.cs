@@ -20,6 +20,12 @@ public class DeckService
         return await _unitOfWork.DeckRepository.GetDeckById(id);
     }
 
+    //Obtener todos los decks
+    public async Task<List<Deck>> GetAllDecksAsync()
+    {
+        return await _unitOfWork.DeckRepository.GetAllDecks();
+    }
+
 
     //Obtener decks de un usuario
     public async Task<List<Deck>> GetAllUserDecksAsync(int userId)
@@ -55,33 +61,33 @@ public class DeckService
 
 
     //Editar deck
-public async Task<Deck> UpdateDeckAsync(DeckDto model, int id)
-{
-    var updatedDeck = await _unitOfWork.DeckRepository.GetDeckById(id);
-    updatedDeck.Name = model.Name;
-    updatedDeck.Description = model.Description;
-
-    // Limpiar todas las cartas actuales del mazo para después agregar las nuevas (evita confusión con duplicados)
-    foreach(var card in updatedDeck.DeckCards.ToList())
+    public async Task<Deck> UpdateDeckAsync(DeckDto model, int id)
     {
-        updatedDeck.DeckCards.Remove(card);
-        _unitOfWork.DeckRepository.DeleteCard(card);
+        var updatedDeck = await _unitOfWork.DeckRepository.GetDeckById(id);
+        updatedDeck.Name = model.Name;
+        updatedDeck.Description = model.Description;
+
+        // Limpiar todas las cartas actuales del mazo para después agregar las nuevas (evita confusión con duplicados)
+        foreach (var card in updatedDeck.DeckCards.ToList())
+        {
+            updatedDeck.DeckCards.Remove(card);
+            _unitOfWork.DeckRepository.DeleteCard(card);
+        }
+
+        // Añadir todas las cartas que vienen en el modelo, sin filtrar duplicados
+        foreach (var newCard in model.DeckCards)
+        {
+            updatedDeck.DeckCards.Add(newCard);
+        }
+
+        updatedDeck.Victories = model.Victories;
+        updatedDeck.Defeats = model.Defeats;
+
+        await _unitOfWork.DeckRepository.UpdateDeckAsync(updatedDeck);
+        await _unitOfWork.SaveAsync();
+
+        return updatedDeck;
     }
-
-    // Añadir todas las cartas que vienen en el modelo, sin filtrar duplicados
-    foreach (var newCard in model.DeckCards)
-    {
-        updatedDeck.DeckCards.Add(newCard);
-    }
-
-    updatedDeck.Victories = model.Victories;
-    updatedDeck.Defeats = model.Defeats;
-
-    await _unitOfWork.DeckRepository.UpdateDeckAsync(updatedDeck);
-    await _unitOfWork.SaveAsync();
-
-    return updatedDeck;
-}
 
 
 

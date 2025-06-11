@@ -76,6 +76,14 @@
         </div>
       </ion-button>
 
+      <!-- Buscador para ver todos los mazos -->
+      <ion-button class="menu-button full-width" (click)="navCtrl.navigateRoot(['/all-decks'])">
+        <div class="button-content">
+          <div class="magic-icon"></div>
+          <span>Buscar mazos</span>
+        </div>
+      </ion-button>
+
       <!-- Perfil del usuario -->
       <ion-button class="menu-button full-width" (click)="navCtrl.navigateRoot(['/user-profile'])">
         <div class="button-content">

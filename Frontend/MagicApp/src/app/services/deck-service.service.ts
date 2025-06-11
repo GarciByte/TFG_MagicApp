@@ -24,6 +24,15 @@ export class DeckServiceService {
     return response;
   }
 
+  //Obtener todos los decks
+  async GetAllDecks(): Promise<Result<DeckResponse[]>> {
+
+    const response = await this.api.get<DeckResponse[]>(`Deck/GetAllDecks`);
+    console.log(response)
+
+    return response;
+  }
+
   //Obtener todos los decks de un usuario
   async GetAllUserDecks(userId: number): Promise<Result<DeckResponse[]>> {
 

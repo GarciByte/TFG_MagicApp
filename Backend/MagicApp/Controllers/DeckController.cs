@@ -23,11 +23,19 @@ public class DeckController : ControllerBase
         return await _deckService.GetDeckAsync(id);
     }
 
+    //Obtener todos los decks 
+    [HttpGet("GetAllDecks")]
+    public async Task<List<Deck>> GetAllDecksAsync()
+    {
+
+        return await _deckService.GetAllDecksAsync();
+    }
+
     //Obtener decks de un usuario
     [HttpGet("GetAllUserDecks")]
     public async Task<List<Deck>> GetAllUserDecksAsync([FromQuery] int userId)
     {
-        
+
         return await _deckService.GetAllUserDecksAsync(userId);
     }
 
@@ -48,7 +56,7 @@ public class DeckController : ControllerBase
 
     //Actualizar deck
     [HttpPost("UpdateDeck")]
-    public async Task<ActionResult<DeckDto>> UpdateDeck([FromBody] DeckDto model, [FromQuery]int id)
+    public async Task<ActionResult<DeckDto>> UpdateDeck([FromBody] DeckDto model, [FromQuery] int id)
     {
         await _deckService.UpdateDeckAsync(model, id);
 
