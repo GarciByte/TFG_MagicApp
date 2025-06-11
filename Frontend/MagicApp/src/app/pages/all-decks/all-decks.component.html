@@ -5,7 +5,13 @@
   </div>
 
   <div class="content-container">
-    <div class="decks-title">MAZOS</div>
+
+    <!-- Buscador y botón filtro juntos -->
+    <div class="search-filter-container">
+      <ion-searchbar name="searchTerm" [(ngModel)]="searchTerm" placeholder="Escribe nombre..." (keyup.enter)="getAllDecks()"
+        (ionInput)="realTimeSearch()">
+      </ion-searchbar>
+    </div>
 
     <ion-grid class="decks-grid">
       <ion-row>

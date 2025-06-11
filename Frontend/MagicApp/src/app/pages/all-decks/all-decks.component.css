@@ -10,6 +10,24 @@ ion-content {
   background-color: var(--ion-background-color);
 }
 
+.search-filter-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 16px;
+  margin-bottom: 16px;
+}
+
+ion-searchbar {
+  flex-grow: 1;
+  max-width: 600px;
+}
+
+.search-filter-container ion-searchbar {
+  width: 50%;
+  min-width: 250px;
+}
+
 .back-icon {
   font-size: 24px;
   color: var(--ion-color-primary);
@@ -89,8 +107,10 @@ ion-col {
 }
 
 .deck-icon {
-  font-size: 2.5rem; /* tamaño grande para ícono */
-  color: #3880ff; /* azul Ionic */
+  font-size: 2.5rem;
+  /* tamaño grande para ícono */
+  color: #3880ff;
+  /* azul Ionic */
   margin-bottom: 12px;
 }
 
@@ -99,7 +119,8 @@ ion-col {
   font-weight: 500;
   text-align: center;
   margin-bottom: 6px;
-  color: #1a1a1a; /* mismo gris que tenías, si quieres más contraste, cambia a #fff */
+  color: #1a1a1a;
+  /* mismo gris que tenías, si quieres más contraste, cambia a #fff */
 }
 
 .deck-cards {

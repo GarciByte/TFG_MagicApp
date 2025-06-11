@@ -25,9 +25,9 @@ export class DeckServiceService {
   }
 
   //Obtener todos los decks
-  async GetAllDecks(): Promise<Result<DeckResponse[]>> {
+  async GetAllDecks(query: string): Promise<Result<DeckResponse[]>> {
 
-    const response = await this.api.get<DeckResponse[]>(`Deck/GetAllDecks`);
+    const response = await this.api.get<DeckResponse[]>(`Deck/GetAllDecks?query=${query}`);
     console.log(response)
 
     return response;

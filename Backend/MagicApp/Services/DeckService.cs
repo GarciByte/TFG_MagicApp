@@ -21,9 +21,9 @@ public class DeckService
     }
 
     //Obtener todos los decks
-    public async Task<List<Deck>> GetAllDecksAsync()
+    public async Task<List<Deck>> GetAllDecksAsync(string query)
     {
-        return await _unitOfWork.DeckRepository.GetAllDecks();
+        return await _unitOfWork.DeckRepository.GetAllDecks(query);
     }
 
 

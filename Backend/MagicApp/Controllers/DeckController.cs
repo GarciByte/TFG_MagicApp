@@ -25,10 +25,10 @@ public class DeckController : ControllerBase
 
     //Obtener todos los decks 
     [HttpGet("GetAllDecks")]
-    public async Task<List<Deck>> GetAllDecksAsync()
+    public async Task<List<Deck>> GetAllDecksAsync([FromQuery] string query)
     {
 
-        return await _deckService.GetAllDecksAsync();
+        return await _deckService.GetAllDecksAsync(query);
     }
 
     //Obtener decks de un usuario
