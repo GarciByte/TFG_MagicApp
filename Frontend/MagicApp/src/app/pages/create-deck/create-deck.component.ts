@@ -25,7 +25,6 @@ export class CreateDeckComponent implements OnInit, OnDestroy {
   deckId: number;
   deckName = "";
   deckDescription = "";
-  size = 60;
   deckCards: CardDetail[] = [];
 
   constructor(
@@ -34,7 +33,7 @@ export class CreateDeckComponent implements OnInit, OnDestroy {
     private deckService: DeckServiceService,
     private webSocketService: WebsocketService,
     private alertController: AlertController,
-    private deckCardsService: DeckCardsService,
+    public deckCardsService: DeckCardsService,
     public translate: TranslateService
   ) { }
 
