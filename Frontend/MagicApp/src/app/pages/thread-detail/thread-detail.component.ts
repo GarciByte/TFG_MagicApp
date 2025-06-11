@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { NavController } from '@ionic/angular';
@@ -17,20 +17,22 @@ import {
 } from "@ionic/angular/standalone";
 import { MsgType, WebSocketMessage } from 'src/app/models/web-socket-message';
 import { WebsocketService } from 'src/app/services/websocket.service';
+import { Subscription } from 'rxjs';
+import { TranslateService, TranslateModule } from '@ngx-translate/core';
 import { SidebarComponent } from "../../components/sidebar/sidebar.component";
 
 @Component({
   selector: 'app-thread-detail',
   imports: [IonContent, IonCard, IonAvatar, IonCardHeader, IonIcon, IonItem, IonLabel,
-    IonCardContent, IonButton, CommonModule, ReactiveFormsModule, IonTextarea, SidebarComponent],
+    IonCardContent, IonButton, CommonModule, ReactiveFormsModule, IonTextarea, SidebarComponent, TranslateModule],
   templateUrl: './thread-detail.component.html',
   styleUrls: ['./thread-detail.component.css'],
   standalone: true,
 })
-export class ThreadDetailComponent implements OnInit {
-
+export class ThreadDetailComponent implements OnInit, OnDestroy {
+  error$: Subscription;
   threadId!: number;
-  threadDetail!: ForumThreadDetail;
+  threadDetail: ForumThreadDetail;
   isAdmin = false;
   apiImg = environment.apiImg;
   commentForm: FormGroup;
@@ -48,7 +50,8 @@ export class ThreadDetailComponent implements OnInit {
     private userService: UserService,
     private modalService: ModalService,
     private forumService: ForumService,
-    private webSocketService: WebsocketService
+    private webSocketService: WebsocketService,
+    public translate: TranslateService
   ) {
     this.commentForm = this.fb.group({
       content: ['', [Validators.required, Validators.minLength(1)]]
@@ -56,10 +59,16 @@ export class ThreadDetailComponent implements OnInit {
   }
 
   async ngOnInit(): Promise<void> {
-    if (!await this.authService.isAuthenticated()) {
+    if (!(await this.authService.isAuthenticated())) {
       this.navCtrl.navigateRoot(['/']);
       return;
     }
+
+    this.error$ = this.webSocketService.error.subscribe(async () => {
+      await this.authService.logout();
+      this.navCtrl.navigateRoot(['/']);
+    });
+
     await this.checkAdmin();
     await this.loadThreadDetail();
   }
@@ -93,8 +102,8 @@ export class ThreadDetailComponent implements OnInit {
 
       this.modalService.showAlert(
         'error',
-        'Se ha producido un error al cargar el hilo',
-        [{ text: 'Aceptar' }]
+        this.translate.instant('THREAD_DETAIL.ERROR_LOADING'),
+        [{ text: this.translate.instant('COMMON.ACCEPT') }]
       );
 
       this.navCtrl.navigateRoot(['/forum']);
@@ -113,8 +122,8 @@ export class ThreadDetailComponent implements OnInit {
 
           this.modalService.showAlert(
             'error',
-            'Se ha producido un error al cargar el hilo',
-            [{ text: 'Aceptar' }]
+            this.translate.instant('THREAD_DETAIL.ERROR_LOADING'),
+            [{ text: this.translate.instant('COMMON.ACCEPT') }]
           );
 
           this.navCtrl.navigateRoot(['/forum']);
@@ -128,8 +137,8 @@ export class ThreadDetailComponent implements OnInit {
 
         this.modalService.showAlert(
           'error',
-          'Se ha producido un error al cargar el hilo',
-          [{ text: 'Aceptar' }]
+          this.translate.instant('THREAD_DETAIL.ERROR_LOADING'),
+          [{ text: this.translate.instant('COMMON.ACCEPT') }]
         );
 
         this.navCtrl.navigateRoot(['/forum']);
@@ -140,8 +149,8 @@ export class ThreadDetailComponent implements OnInit {
 
       this.modalService.showAlert(
         'error',
-        'Se ha producido un error al cargar el hilo',
-        [{ text: 'Aceptar' }]
+        this.translate.instant('THREAD_DETAIL.ERROR_LOADING'),
+        [{ text: this.translate.instant('COMMON.ACCEPT') }]
       );
 
       this.navCtrl.navigateRoot(['/forum']);
@@ -197,7 +206,10 @@ export class ThreadDetailComponent implements OnInit {
       const result = await this.forumService.addComment(this.threadId, createForumComment);
 
       if (result.success) {
-        this.modalService.showToast('Comentario añadido', "success");
+        this.modalService.showToast(
+          this.translate.instant('THREAD_DETAIL.COMMENT_ADDED'),
+          "success"
+        );
         this.commentForm.reset();
 
         const message: WebSocketMessage = {
@@ -214,8 +226,8 @@ export class ThreadDetailComponent implements OnInit {
 
         this.modalService.showAlert(
           'error',
-          'Se ha producido un error al añadir el comentario',
-          [{ text: 'Aceptar' }]
+          this.translate.instant('THREAD_DETAIL.ERROR_ADD_COMMENT'),
+          [{ text: this.translate.instant('COMMON.ACCEPT') }]
         );
 
       }
@@ -225,8 +237,8 @@ export class ThreadDetailComponent implements OnInit {
 
       this.modalService.showAlert(
         'error',
-        'Se ha producido un error al añadir el comentario',
-        [{ text: 'Aceptar' }]
+        this.translate.instant('THREAD_DETAIL.ERROR_ADD_COMMENT'),
+        [{ text: this.translate.instant('COMMON.ACCEPT') }]
       );
 
     }
@@ -243,15 +255,18 @@ export class ThreadDetailComponent implements OnInit {
 
         if (result.success) {
           this.threadDetail.subscribed = true;
-          this.modalService.showToast('Te has suscrito al hilo', "success");
+          this.modalService.showToast(
+            this.translate.instant('THREAD_DETAIL.SUBSCRIBE_SUCCESS'),
+            "success"
+          );
 
         } else {
           console.error("Error al suscribirse al hilo:", result.error);
 
           this.modalService.showAlert(
             'error',
-            'Se ha producido un error al suscribirse al hilo',
-            [{ text: 'Aceptar' }]
+            this.translate.instant('THREAD_DETAIL.ERROR_TOGGLE_SUBSCRIBE'),
+            [{ text: this.translate.instant('COMMON.ACCEPT') }]
           );
 
         }
@@ -261,15 +276,18 @@ export class ThreadDetailComponent implements OnInit {
 
         if (result.success) {
           this.threadDetail.subscribed = false;
-          this.modalService.showToast('Has cancelado la suscripción del hilo', "success");
+          this.modalService.showToast(
+            this.translate.instant('THREAD_DETAIL.UNSUBSCRIBE_SUCCESS'),
+            "success"
+          );
 
         } else {
           console.error("Error al cancelar la suscripción del hilo:", result.error);
 
           this.modalService.showAlert(
             'error',
-            'Se ha producido un error al cancelar la suscripción del hilo',
-            [{ text: 'Aceptar' }]
+            this.translate.instant('THREAD_DETAIL.ERROR_TOGGLE_SUBSCRIBE'),
+            [{ text: this.translate.instant('COMMON.ACCEPT') }]
           );
 
         }
@@ -280,8 +298,8 @@ export class ThreadDetailComponent implements OnInit {
 
       this.modalService.showAlert(
         'error',
-        'Se ha producido un error al cambiar el estado de suscripción del hilo',
-        [{ text: 'Aceptar' }]
+        this.translate.instant('THREAD_DETAIL.ERROR_TOGGLE_SUBSCRIBE'),
+        [{ text: this.translate.instant('COMMON.ACCEPT') }]
       );
 
     }
@@ -294,15 +312,10 @@ export class ThreadDetailComponent implements OnInit {
       // Reabrir
       await this.modalService.showAlert(
         'warning',
-        `¿Reabrir el hilo “${this.threadDetail.title}”?`,
+        this.translate.instant('THREAD_DETAIL.CONFIRM_REOPEN', { title: this.threadDetail.title }),
         [
-          {
-            text: 'Sí',
-            handler: async () => {
-              await this.openThreadAdmin();
-            }
-          },
-          { text: 'No' }
+          { text: this.translate.instant('COMMON.YES'), handler: async () => await this.openThreadAdmin() },
+          { text: this.translate.instant('COMMON.NO') }
         ]
       );
 
@@ -311,15 +324,10 @@ export class ThreadDetailComponent implements OnInit {
       // Cerrar
       await this.modalService.showAlert(
         'warning',
-        `¿Cerrar el hilo “${this.threadDetail.title}”?`,
+        this.translate.instant('THREAD_DETAIL.CONFIRM_CLOSE', { title: this.threadDetail.title }),
         [
-          {
-            text: 'Sí',
-            handler: async () => {
-              await this.closeThreadAdmin();
-            }
-          },
-          { text: 'No' }
+          { text: this.translate.instant('COMMON.YES'), handler: async () => await this.closeThreadAdmin() },
+          { text: this.translate.instant('COMMON.NO') }
         ]
       );
 
@@ -332,7 +340,10 @@ export class ThreadDetailComponent implements OnInit {
       const result = await this.forumService.closeThread(this.threadId);
 
       if (result.success) {
-        this.modalService.showToast('Has cerrado el hilo', "success");
+        this.modalService.showToast(
+          this.translate.instant('THREAD_DETAIL.THREAD_CLOSED'),
+          "success"
+        );
         this.threadDetail.isClosed = true;
 
       } else {
@@ -340,8 +351,8 @@ export class ThreadDetailComponent implements OnInit {
 
         this.modalService.showAlert(
           'error',
-          'Se ha producido un error al cerrar el hilo',
-          [{ text: 'Aceptar' }]
+          this.translate.instant('THREAD_DETAIL.ERROR_CLOSE'),
+          [{ text: this.translate.instant('COMMON.ACCEPT') }]
         );
 
       }
@@ -351,8 +362,8 @@ export class ThreadDetailComponent implements OnInit {
 
       this.modalService.showAlert(
         'error',
-        'Se ha producido un error al cerrar el hilo',
-        [{ text: 'Aceptar' }]
+        this.translate.instant('THREAD_DETAIL.ERROR_CLOSE'),
+        [{ text: this.translate.instant('COMMON.ACCEPT') }]
       );
 
     }
@@ -364,7 +375,10 @@ export class ThreadDetailComponent implements OnInit {
       const result = await this.forumService.openThread(this.threadId);
 
       if (result.success) {
-        this.modalService.showToast('Has reabierto el hilo', "success");
+        this.modalService.showToast(
+          this.translate.instant('THREAD_DETAIL.THREAD_REOPENED'),
+          "success"
+        );
         this.threadDetail.isClosed = false;
 
       } else {
@@ -372,8 +386,8 @@ export class ThreadDetailComponent implements OnInit {
 
         this.modalService.showAlert(
           'error',
-          'Se ha producido un error al reabrir el hilo',
-          [{ text: 'Aceptar' }]
+          this.translate.instant('THREAD_DETAIL.ERROR_REOPEN'),
+          [{ text: this.translate.instant('COMMON.ACCEPT') }]
         );
 
       }
@@ -383,8 +397,8 @@ export class ThreadDetailComponent implements OnInit {
 
       this.modalService.showAlert(
         'error',
-        'Se ha producido un error al reabrir el hilo',
-        [{ text: 'Aceptar' }]
+        this.translate.instant('THREAD_DETAIL.ERROR_REOPEN'),
+        [{ text: this.translate.instant('COMMON.ACCEPT') }]
       );
 
     }
@@ -394,15 +408,10 @@ export class ThreadDetailComponent implements OnInit {
   async confirmDeleteComment(comment: ForumComment) {
     await this.modalService.showAlert(
       'warning',
-      `¿Borrar este comentario?`,
+      this.translate.instant('THREAD_DETAIL.CONFIRM_DELETE_COMMENT'),
       [
-        {
-          text: 'Sí',
-          handler: async () => {
-            await this.deleteCommentAdmin(comment.id);
-          }
-        },
-        { text: 'No' }
+        { text: this.translate.instant('COMMON.YES'), handler: async () => await this.deleteCommentAdmin(comment.id) },
+        { text: this.translate.instant('COMMON.NO') }
       ]
     );
   }
@@ -413,7 +422,10 @@ export class ThreadDetailComponent implements OnInit {
       const result = await this.forumService.deleteComment(commentId);
 
       if (result.success) {
-        this.modalService.showToast('Has eliminado el comentario', "success");
+        this.modalService.showToast(
+          this.translate.instant('THREAD_DETAIL.COMMENT_DELETED'),
+          "success"
+        );
         await this.loadThreadDetail();
 
       } else {
@@ -421,8 +433,8 @@ export class ThreadDetailComponent implements OnInit {
 
         this.modalService.showAlert(
           'error',
-          'Se ha producido un error al borrar el comentario',
-          [{ text: 'Aceptar' }]
+          this.translate.instant('THREAD_DETAIL.ERROR_DELETE_COMMENT'),
+          [{ text: this.translate.instant('COMMON.ACCEPT') }]
         );
 
       }
@@ -432,10 +444,16 @@ export class ThreadDetailComponent implements OnInit {
 
       this.modalService.showAlert(
         'error',
-        'Se ha producido un error al borrar el comentario',
-        [{ text: 'Aceptar' }]
+        this.translate.instant('THREAD_DETAIL.ERROR_DELETE_COMMENT'),
+        [{ text: this.translate.instant('COMMON.ACCEPT') }]
       );
 
+    }
+  }
+
+  ngOnDestroy(): void {
+    if (this.error$) {
+      this.error$.unsubscribe();
     }
   }
 
