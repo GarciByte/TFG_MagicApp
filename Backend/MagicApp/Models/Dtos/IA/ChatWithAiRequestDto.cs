@@ -9,7 +9,4 @@ public class ChatWithAiRequestDto
 
     [JsonPropertyName("prompt")]
     public string Prompt { get; set; }
-
-    [JsonPropertyName("lang")]
-    public string Lang { get; set; }
 }

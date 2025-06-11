@@ -391,12 +391,12 @@ public class WebSocketNetwork : IWebSocketMessageSender
 
             if (requestDto != null)
             {
-                _logger.LogInformation("El usuario {handler.User.Nickname} le ha escrito un mensaje a la IA: '{requestDto.Prompt}', se usará el idioma: " +
-                    "{requestDto.Lang}", handler.User.Nickname, requestDto.Prompt, requestDto.Lang);
+                _logger.LogInformation("El usuario {handler.User.Nickname} le ha escrito un mensaje a la IA: " +
+                    "{requestDto.Prompt}", handler.User.Nickname, requestDto.Prompt);
 
                 handler.StartAiRequest();
 
-                string iaResponse = await ProcessUserPromptAsync(requestDto.UserId, requestDto.Prompt, requestDto.Lang, handler.CurrentAiToken);
+                string iaResponse = await ProcessUserPromptAsync(requestDto.UserId, requestDto.Prompt, handler.CurrentAiToken);
 
                 _logger.LogInformation("La IA le ha respondido a {handler.User.Nickname} con: " +
                     "{@iaResponse}", handler.User.Nickname, iaResponse);
@@ -443,11 +443,11 @@ public class WebSocketNetwork : IWebSocketMessageSender
     }
 
     // Obtiene el mensaje de respuesta de la IA (chat)
-    private async Task<string> ProcessUserPromptAsync(int userId, string prompt, string lang, CancellationToken cancellationToken)
+    private async Task<string> ProcessUserPromptAsync(int userId, string prompt, CancellationToken cancellationToken)
     {
         using var scope = _serviceProvider.CreateScope();
         var chatService = scope.ServiceProvider.GetRequiredService<ChatWithAiService>();
-        return await chatService.ProcessPromptAsync(userId, prompt, lang, cancellationToken);
+        return await chatService.ProcessPromptAsync(userId, prompt, cancellationToken);
     }
 
     // Comentar una carta con la IA
@@ -462,18 +462,16 @@ public class WebSocketNetwork : IWebSocketMessageSender
             };
 
             string jsonContent = message.Content.ToString();
-            var content = JsonSerializer.Deserialize<AnalyzeCardWithAiRequestDto>(jsonContent, options);
-            CardDetailDto cardDto = content.Card;
-            string lang = content.Lang;
+            CardDetailDto cardDto = JsonSerializer.Deserialize<CardDetailDto>(jsonContent, options);
 
             if (cardDto != null)
             {
-                _logger.LogInformation("El usuario {handler.User.Nickname} quiere que la IA comente la carta {cardDto.Name} en idioma {lang}",
-                    handler.User.Nickname, cardDto.Name, lang);
+                _logger.LogInformation("El usuario {handler.User.Nickname} quiere que la IA comente la carta: {cardDto.Name}",
+                    handler.User.Nickname, cardDto.Name);
 
                 handler.StartAiRequest();
 
-                string iaResponse = await ProcessCardDetailPromptAsync(handler.User.UserId, cardDto, lang, handler.CurrentAiToken);
+                string iaResponse = await ProcessCardDetailPromptAsync(handler.User.UserId, cardDto, handler.CurrentAiToken);
 
                 _logger.LogInformation("La IA le ha respondido a {handler.User.Nickname} con: {@iaResponse}",
                     handler.User.Nickname, iaResponse);
@@ -520,11 +518,11 @@ public class WebSocketNetwork : IWebSocketMessageSender
     }
 
     // Obtiene el mensaje de respuesta de la IA (detalles de una carta)
-    private async Task<string> ProcessCardDetailPromptAsync(int userId, CardDetailDto cardDto, string lang, CancellationToken cancellationToken)
+    private async Task<string> ProcessCardDetailPromptAsync(int userId, CardDetailDto cardDto, CancellationToken cancellationToken)
     {
         using var scope = _serviceProvider.CreateScope();
         var chatService = scope.ServiceProvider.GetRequiredService<ChatWithAiService>();
-        return await chatService.CommentCardAsync(userId, cardDto, lang, cancellationToken);
+        return await chatService.CommentCardAsync(userId, cardDto, cancellationToken);
     }
 
 }

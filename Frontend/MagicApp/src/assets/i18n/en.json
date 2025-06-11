@@ -367,6 +367,12 @@
         "DEFEATS": "Defeats",
         "VICTORY_RATE": "Victory Rate"
     },
+    "RARITY": {
+        "COMMON": "Common",
+        "UNCOMMON": "Uncommon",
+        "RARE": "Rare",
+        "MYTHIC": "Mythic"
+    },
     "COLOR": {
         "WHITE": "White",
         "BLUE": "Blue",
@@ -393,19 +399,6 @@
         "PREVIOUS": "Previous",
         "NEXT": "Next"
     },
-    "RARITY": {
-        "COMMON": "Common",
-        "UNCOMMON": "Uncommon",
-        "RARE": "Rare",
-        "MYTHIC": "Mythic"
-    },
-    "SUPERTYPE": {
-        "BASIC": "Basic",
-        "LEGENDARY": "Legendary",
-        "SNOW": "Snow",
-        "WORLD": "World",
-        "ONGOING": "Ongoing"
-    },
     "CARD_TYPE": {
         "CREATURE": "Creature",
         "INSTANT": "Instant",
@@ -413,7 +406,6 @@
         "ENCHANTMENT": "Enchantment",
         "ARTIFACT": "Artifact",
         "LAND": "Land",
-        "PLANESWALKER": "Planeswalker",
-        "TRIBAL": "Tribal"
+        "PLANESWALKER": "Planeswalker"
     }
 }

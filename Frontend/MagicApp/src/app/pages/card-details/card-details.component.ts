@@ -12,12 +12,10 @@ import { Subscription } from 'rxjs';
 import { WebsocketService } from 'src/app/services/websocket.service';
 import { TranslateService, TranslateModule } from '@ngx-translate/core';
 import { SidebarComponent } from "../../components/sidebar/sidebar.component";
-import { ConfigService } from 'src/app/services/config.service';
-import { TranslateEnumPipe } from 'src/app/pipes/translate-enum.pipe';
 
 @Component({
   selector: 'app-card-details',
-  imports: [IonicModule, CommonModule, SidebarComponent, TranslateModule, TranslateEnumPipe],
+  imports: [IonicModule, CommonModule, SidebarComponent, TranslateModule],
   templateUrl: './card-details.component.html',
   styleUrls: ['./card-details.component.css'],
   standalone: true,
@@ -28,7 +26,6 @@ export class CardDetailsComponent implements OnInit, OnDestroy {
   cardId: string;
   card: CardDetail;
   safeOracleHtml: SafeHtml;
-  lang: string;
 
   constructor(
     public navCtrl: NavController,
@@ -39,8 +36,7 @@ export class CardDetailsComponent implements OnInit, OnDestroy {
     private sanitizer: DomSanitizer,
     private modalCtrl: ModalController,
     private webSocketService: WebsocketService,
-    public translate: TranslateService,
-    private cfg: ConfigService
+    public translate: TranslateService
   ) { }
 
   async ngOnInit(): Promise<void> {
@@ -54,7 +50,6 @@ export class CardDetailsComponent implements OnInit, OnDestroy {
       this.navCtrl.navigateRoot(['/']);
     });
 
-    this.lang = this.cfg.config.lang;
     this.cardId = this.route.snapshot.queryParamMap.get('cardId');
 
     if (this.cardId) {
@@ -108,7 +103,7 @@ export class CardDetailsComponent implements OnInit, OnDestroy {
     const modal = await this.modalCtrl.create({
       component: AiCommentModalComponent,
       backdropDismiss: true,
-      componentProps: { card: this.card, lang: this.lang },
+      componentProps: { card: this.card },
       cssClass: 'ai-comment-modal',
       showBackdrop: true,
       keyboardClose: true,

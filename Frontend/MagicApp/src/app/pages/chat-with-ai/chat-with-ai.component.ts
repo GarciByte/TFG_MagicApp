@@ -19,7 +19,6 @@ import { Capacitor } from '@capacitor/core';
 import { Browser } from '@capacitor/browser';
 import { TranslateService, TranslateModule } from '@ngx-translate/core';
 import { SidebarComponent } from "../../components/sidebar/sidebar.component";
-import { ConfigService } from 'src/app/services/config.service';
 
 @Component({
   selector: 'app-chat-with-ai',
@@ -32,14 +31,13 @@ export class ChatWithAiComponent implements OnInit, OnDestroy {
 
   @ViewChild('messagesContainer', { static: true, read: ElementRef }) private messagesContainer: ElementRef;
   error$: Subscription;
-  chatSubscription: Subscription;
 
+  chatSubscription: Subscription;
   chatMessages: ChatWithAiMessage[] = [];
   chatInput: string = '';
 
   user: User;
   waitingResponse: boolean = false;
-  lang: string;
 
   constructor(
     public navCtrl: NavController,
@@ -49,8 +47,7 @@ export class ChatWithAiComponent implements OnInit, OnDestroy {
     private webSocketService: WebsocketService,
     private sanitizer: DomSanitizer,
     private cdr: ChangeDetectorRef,
-    public translate: TranslateService,
-    private cfg: ConfigService
+    public translate: TranslateService
   ) { }
 
   async ngOnInit(): Promise<void> {
@@ -65,7 +62,6 @@ export class ChatWithAiComponent implements OnInit, OnDestroy {
     });
 
     this.user = await this.authService.getUser();
-    this.lang = this.cfg.config.lang;
 
     // Cargar historial de mensajes
     await this.getAllMessages();
@@ -133,8 +129,7 @@ export class ChatWithAiComponent implements OnInit, OnDestroy {
 
     const chatRequest: ChatWithAiRequest = {
       userId: this.user.userId,
-      prompt: this.chatInput.trim(),
-      lang: this.lang
+      prompt: this.chatInput.trim()
     };
 
     const wsMessage: WebSocketMessage = {

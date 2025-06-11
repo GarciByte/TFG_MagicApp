@@ -39,10 +39,10 @@
 
           <!-- Tipo de carta -->
           <div class="info-item" *ngIf="card.typeLine">
-            <span class="label">{{ 'DETAIL.TYPE' | translate }}</span>
-            <span class="value">
-              {{ card.typeLine | translateEnum:'CARD_TYPE' }}
+            <span class="label">
+              {{ 'DETAIL.TYPE' | translate }}
             </span>
+            <span class="value">{{ card.typeLine }}</span>
           </div>
 
           <!-- Texto de la carta -->
@@ -74,10 +74,10 @@
 
           <!-- Rareza -->
           <div class="info-item" *ngIf="card.rarity">
-            <span class="label">{{ 'DETAIL.RARITY' | translate }}</span>
-            <span class="value">
-              {{ card.rarity | translateEnum:'RARITY' }}
+            <span class="label">
+              {{ 'DETAIL.RARITY' | translate }}
             </span>
+            <span class="value">{{ card.rarity }}</span>
           </div>
 
           <!-- Precio -->
@@ -105,6 +105,6 @@
 
     </div>
   </div>
-
+  
   <app-sidebar></app-sidebar>
 </ion-content>

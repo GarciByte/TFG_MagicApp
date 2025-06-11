@@ -109,14 +109,7 @@ namespace MagicApp
                 var orService = sp.GetRequiredService<OpenRouterGenerator>();
                 var historySvc = sp.GetRequiredService<ChatWithAiMessageService>();
                 var orSettings = sp.GetRequiredService<IOptions<OpenRouterSettings>>().Value;
-
-                return new ChatWithAiService(
-                    orService, 
-                    historySvc, 
-                    orSettings.SystemPrompt,
-                    orSettings.SystemPromptEnglish,
-                    orSettings.SystemPromptCardDetail,
-                    orSettings.SystemPromptCardDetailEnglish);
+                return new ChatWithAiService(orService, historySvc, orSettings.SystemPrompt, orSettings.SystemPromptCardDetail);
             });
 
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
