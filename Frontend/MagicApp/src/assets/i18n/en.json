@@ -39,5 +39,10 @@
             "PASSWORD_MIN": "Minimum 6 characters.",
             "PASSWORD_MISMATCH": "Passwords must match."
         }
+    },
+    "SETTINGS": {
+        "TITLE": "Settings",
+        "THEME": "Dark theme",
+        "LANGUAGE": "Language"
     }
 }

@@ -132,6 +132,11 @@ export const routes: Routes = [
     pathMatch: "full",
   },
   {
+    path: "settings", // Ruta de ajustes de la aplicación
+    loadComponent: () => import("./pages/settings/settings.component").then((m) => m.SettingsComponent),
+    pathMatch: "full",
+  },
+  {
     path: '**',
     redirectTo: '',
     pathMatch: 'full'

@@ -15,12 +15,16 @@ export class SidebarComponent implements OnInit {
   constructor(
     public navCtrl: NavController,
     private authService: AuthService,
-     private modalService: ModalService
+    private modalService: ModalService
   ) { }
 
   ngOnInit() { }
 
-    async logout(): Promise<void> {
+  async settings(){
+    this.navCtrl.navigateRoot(['/settings']);
+  }
+
+  async logout(): Promise<void> {
     await this.authService.logout();
     this.modalService.showToast("Has cerrado sesión con éxito", "success");
     this.navCtrl.navigateRoot(['/login']);

@@ -1,3 +1,33 @@
-<p>
-  settings works!
-</p>
+<ion-content class="ion-padding">
+  <ion-header collapse="condense">
+    <ion-toolbar>
+      <ion-title size="large">{{ 'SETTINGS.TITLE' | translate }}</ion-title>
+    </ion-toolbar>
+  </ion-header>
+
+  <ion-list lines="inset">
+
+    <!-- Tema -->
+    <ion-item>
+      <ion-label>{{ 'SETTINGS.THEME' | translate }}</ion-label>
+      <ion-toggle
+        slot="end"
+        [checked]="config.theme === 'dark'"
+        (ionChange)="toggleTheme($event.detail.checked)">
+      </ion-toggle>
+    </ion-item>
+
+    <!-- Idioma -->
+    <ion-item>
+      <ion-label>{{ 'SETTINGS.LANGUAGE' | translate }}</ion-label>
+      <ion-select
+        interface="popover"
+        [value]="config.lang"
+        (ionChange)="changeLanguage($event.detail.value)">
+        <ion-select-option value="es">Español</ion-select-option>
+        <ion-select-option value="en">English</ion-select-option>
+      </ion-select>
+    </ion-item>
+
+  </ion-list>
+</ion-content>

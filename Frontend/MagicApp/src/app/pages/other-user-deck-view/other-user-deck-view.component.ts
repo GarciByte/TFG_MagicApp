@@ -13,7 +13,7 @@ import { SidebarComponent } from "../../components/sidebar/sidebar.component";
 
 @Component({
   selector: 'app-other-user-deck-view',
-   imports: [IonButton, IonIcon, CommonModule, FormsModule, IonContent, SidebarComponent],
+   imports: [IonIcon, CommonModule, FormsModule, IonContent, SidebarComponent],
   templateUrl: './other-user-deck-view.component.html',
   styleUrls: ['./other-user-deck-view.component.css'],
   standalone: true,

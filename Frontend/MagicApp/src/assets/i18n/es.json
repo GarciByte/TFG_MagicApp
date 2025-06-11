@@ -39,5 +39,10 @@
             "PASSWORD_MIN": "Mínimo 6 caracteres.",
             "PASSWORD_MISMATCH": "Las contraseñas deben coincidir."
         }
+    },
+    "SETTINGS": {
+        "TITLE": "Ajustes",
+        "THEME": "Tema oscuro",
+        "LANGUAGE": "Idioma"
     }
 }
