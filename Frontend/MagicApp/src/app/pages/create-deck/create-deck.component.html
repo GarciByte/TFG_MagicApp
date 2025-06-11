@@ -1,80 +1,65 @@
-<ion-content [fullscreen]="true" class="ion-padding">
-  <form #deckForm="ngForm" (ngSubmit)="createDeck(deckForm)">
-    <div class="header-container">
-      <ion-icon name="arrow-back-outline" class="back-icon" (click)="navCtrl.back()"></ion-icon>
-      <h1 class="page-title">{{ 'DECK.TITLE' | translate }}</h1>
-    </div>
+<ion-content>
+  <div class="header-container">
+    <ion-icon name="arrow-back-outline" class="back-icon" (click)="navCtrl.back()"></ion-icon>
+    <h1 class="page-title">Crear Mazo</h1>
+  </div>
 
-    <div class="content-container">
-      <div class="create-deck-title">{{ 'DECK.TITLE_UPPER' | translate }}</div>
+  <div class="content-container">
+    <div class="create-deck-title">CREAR MAZO</div>
 
-      <div class="form-container">
-
-        <!-- Deck Icon -->
-        <div class="deck-icon-container">
-          <div class="deck-icon icon-sun"></div>
-        </div>
-
-        <!-- Nombre -->
-        <div class="form-group">
-          <label class="form-label">{{ 'DECK.FORM.LABEL_NAME' | translate }}</label>
-          <input name="deckName" type="text" class="form-input" required minlength="4" [(ngModel)]="deckName"
-            #name="ngModel" placeholder="{{ 'DECK.PLACEHOLDER.NAME' | translate }}" />
-          <div class="warning-message" *ngIf="name.touched && name.invalid">
-            <small *ngIf="name.errors?.['required']">
-              {{ 'DECK.FORM.LABEL_NAME' | translate }}
-            </small>
-            <small *ngIf="name.errors?.['minlength']">
-              {{ 'DECK.ERROR_NAME_LENGTH' | translate }}
-            </small>
-          </div>
-        </div>
-
-        <!-- Descripción -->
-        <div class="form-group">
-          <label class="form-label">{{ 'DECK.FORM.LABEL_DESCRIPTION' | translate }}</label>
-          <input name="deckDescription" type="text" class="form-input" required minlength="4"
-            [(ngModel)]="deckDescription" #desc="ngModel"
-            placeholder="{{ 'DECK.PLACEHOLDER.DESCRIPTION' | translate }}" />
-          <div class="warning-message" *ngIf="desc.touched && desc.invalid">
-            <small *ngIf="desc.errors?.['required']">
-              {{ 'DECK.FORM.LABEL_DESCRIPTION' | translate }}
-            </small>
-            <small *ngIf="desc.errors?.['minlength']">
-              {{ 'DECK.ERROR_DESC_LENGTH' | translate }}
-            </small>
-          </div>
-        </div>
-
-        <!-- Contador de cartas -->
-        <div class="card-counter">
-          <p class="counter-text">
-            {{ 'DECK.CARD_COUNTER' | translate:{ count: deckCards.length } }}
-          </p>
-        </div>
-
-        <!-- Botones de acción -->
-        <div class="action-buttons">
-          <button type="button" class="action-button" (click)="addCard()" [disabled]="deckCards.length >= 150">
-            {{ 'DECK.ACTION.ADD_CARDS' | translate }}
-          </button>
-          <button type="button" class="action-button" (click)="cardDetails()">
-            {{ 'DECK.ACTION.VIEW_CARDS' | translate }}
-          </button>
-        </div>
-
-        <div *ngIf="deckCards.length >= 150" class="warning-message">
-          {{ 'DECK.WARNING.MAX_CARDS' | translate }}
-        </div>
-
-        <!-- Botón Crear -->
-        <button type="submit" class="create-button" [disabled]="deckForm.invalid || deckCards.length === 0">
-          {{ 'DECK.CREATE_BUTTON' | translate }}
-        </button>
-
+    <div class="form-container">
+      <!-- Deck Icon -->
+      <div class="deck-icon-container">
+        <div class="deck-icon icon-sun"></div>
       </div>
-    </div>
-  </form>
 
+      <!-- Form -->
+      <div class="form-group">
+        <label class="form-label">Nombre del mazo</label>
+        <input
+          type="text"
+          class="form-input"
+          [(ngModel)]="deckName"
+          (ngModelChange)="setDeckName($event)"
+          placeholder="nombre"
+        />
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Descripción del mazo</label>
+        <input
+          type="text"
+          class="form-input"
+          [(ngModel)]="deckDescription"
+          (ngModelChange)="setDeckDescription($event)"
+          placeholder="descripción"
+        />
+      </div>
+
+      <!-- Contador de cartas -->
+      <div class="card-counter">
+        <p class="counter-text">Cartas en el mazo: {{ deckCards.length }}/150</p>
+      </div>
+
+      <!-- Action Buttons -->
+      <div class="action-buttons">
+        <button class="action-button" (click)="addCard()" [disabled]="deckCards.length >= 150">
+          Añadir cartas
+        </button>
+        <button class="action-button" (click)="cardDetails()">Ver cartas</button>
+      </div>
+
+      <div *ngIf="deckCards.length >= 150" class="warning-message">
+        Has alcanzado el límite máximo de 150 cartas.
+      </div>
+
+      <!-- Create Button -->
+      <button class="create-button" (click)="createDeck()">Crear</button>
+    </div>
+  </div>
+
+  <div class="footer-logo">
+    <img src="assets/images/logo.png" alt="MagicHub Logo" />
+  </div>
   <app-sidebar></app-sidebar>
 </ion-content>

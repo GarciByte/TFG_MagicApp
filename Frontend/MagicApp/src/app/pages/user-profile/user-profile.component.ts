@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { NavController } from '@ionic/angular';
@@ -8,21 +8,18 @@ import { AuthService } from 'src/app/services/auth.service';
 import { ModalService } from 'src/app/services/modal.service';
 import { UserService } from 'src/app/services/user.service';
 import { IonButton, IonCard, IonCardContent, IonInput, IonItem, IonSelect, IonSelectOption, IonCardHeader, IonCardTitle, IonContent, IonIcon } from "@ionic/angular/standalone";
-import { Subscription } from 'rxjs';
-import { WebsocketService } from 'src/app/services/websocket.service';
-import { TranslateService, TranslateModule } from '@ngx-translate/core';
 import { SidebarComponent } from "../../components/sidebar/sidebar.component";
 
 @Component({
   selector: 'app-user-profile',
   imports: [IonIcon, IonContent, IonCardTitle, IonCardHeader, IonButton, IonInput, IonItem, IonCardContent, IonCard,
-    CommonModule, RouterModule, ReactiveFormsModule, IonSelect, IonSelectOption, SidebarComponent, TranslateModule],
+    CommonModule, RouterModule, ReactiveFormsModule, IonSelect, IonSelectOption, SidebarComponent],
   templateUrl: './user-profile.component.html',
   styleUrls: ['./user-profile.component.css'],
   standalone: true,
 })
-export class UserProfileComponent implements OnInit, OnDestroy {
-  error$: Subscription;
+export class UserProfileComponent implements OnInit {
+
   user: User = null;
   userProfileForm: FormGroup; // Modificar datos del usuario
   passwordForm: FormGroup; // Modificar contraseña
@@ -41,9 +38,7 @@ export class UserProfileComponent implements OnInit, OnDestroy {
     private authService: AuthService,
     private userService: UserService,
     private modalService: ModalService,
-    private formBuilder: FormBuilder,
-    private webSocketService: WebsocketService,
-    public translate: TranslateService
+    private formBuilder: FormBuilder
   ) {
     // Formulario para cambiar los datos del usuario
     this.userProfileForm = this.formBuilder.group({
@@ -72,16 +67,9 @@ export class UserProfileComponent implements OnInit, OnDestroy {
   }
 
   async ngOnInit(): Promise<void> {
-    if (!(await this.authService.isAuthenticated())) {
+    if (!await this.authService.isAuthenticated()) {
       this.navCtrl.navigateRoot(['/']);
-      return;
     }
-
-    this.error$ = this.webSocketService.error.subscribe(async () => {
-      await this.authService.logout();
-      this.navCtrl.navigateRoot(['/']);
-    });
-
     await this.loadUser();
   }
 
@@ -99,13 +87,11 @@ export class UserProfileComponent implements OnInit, OnDestroy {
   // Enviar formulario
   async onSubmitProfile(): Promise<void> {
     if (this.userProfileForm.invalid) {
-
       this.modalService.showAlert(
         'warning',
-        this.translate.instant('USER_PROFILE.FILL_ALL_FIELDS'),
-        [{ text: this.translate.instant('COMMON.ACCEPT') }]
+        'Tienes que rellenar todos los campos correctamente',
+        [{ text: 'Aceptar' }]
       );
-
       return;
     }
 
@@ -119,7 +105,7 @@ export class UserProfileComponent implements OnInit, OnDestroy {
       const result = await this.userService.updateUserProfile(formData);
 
       if (result.success) {
-        this.modalService.showToast(this.translate.instant('USER_PROFILE.SUCCESS_UPDATE'), 'success');
+        this.modalService.showToast("Datos actualizados con éxito", "success");
         await this.authService.updateUser(this.user.userId);
         await this.loadUser();
 
@@ -128,8 +114,8 @@ export class UserProfileComponent implements OnInit, OnDestroy {
 
         this.modalService.showAlert(
           'error',
-          this.translate.instant('USER_PROFILE.ERROR_UPDATE'),
-          [{ text: this.translate.instant('COMMON.ACCEPT') }]
+          'Se ha producido un error al actualizar los datos',
+          [{ text: 'Aceptar' }]
         );
 
       }
@@ -139,8 +125,8 @@ export class UserProfileComponent implements OnInit, OnDestroy {
 
       this.modalService.showAlert(
         'error',
-        this.translate.instant('USER_PROFILE.ERROR_UPDATE'),
-        [{ text: this.translate.instant('COMMON.ACCEPT') }]
+        'Se ha producido un error al actualizar los datos',
+        [{ text: 'Aceptar' }]
       );
 
     }
@@ -149,13 +135,11 @@ export class UserProfileComponent implements OnInit, OnDestroy {
   // Enviar formulario de la contraseña
   async onSubmitPassword(): Promise<void> {
     if (this.passwordForm.invalid) {
-
       this.modalService.showAlert(
         'warning',
-        this.translate.instant('USER_PROFILE.FILL_PASSWORD'),
-        [{ text: this.translate.instant('COMMON.ACCEPT') }]
+        'Tienes que rellenar la contraseña correctamente',
+        [{ text: 'Aceptar' }]
       );
-
       return;
     }
 
@@ -168,10 +152,9 @@ export class UserProfileComponent implements OnInit, OnDestroy {
 
         await this.modalService.showAlert(
           'success',
-          this.translate.instant('USER_PROFILE.SUCCESS_PASSWORD'),
-          [{ text: this.translate.instant('COMMON.ACCEPT') }]
+          'Contraseña actualizada correctamente, tienes que volver a iniciar sesión',
+          [{ text: 'Aceptar' }]
         );
-
         await this.authService.logout();
         this.navCtrl.navigateRoot(['/login']);
 
@@ -180,8 +163,8 @@ export class UserProfileComponent implements OnInit, OnDestroy {
 
         this.modalService.showAlert(
           'error',
-          this.translate.instant('USER_PROFILE.ERROR_PASSWORD'),
-          [{ text: this.translate.instant('COMMON.ACCEPT') }]
+          'Se ha producido un error al actualizar la contraseña',
+          [{ text: 'Aceptar' }]
         );
 
       }
@@ -191,8 +174,8 @@ export class UserProfileComponent implements OnInit, OnDestroy {
 
       this.modalService.showAlert(
         'error',
-        this.translate.instant('USER_PROFILE.ERROR_PASSWORD'),
-        [{ text: this.translate.instant('COMMON.ACCEPT') }]
+        'Se ha producido un error al actualizar la contraseña',
+        [{ text: 'Aceptar' }]
       );
 
     }
@@ -200,13 +183,7 @@ export class UserProfileComponent implements OnInit, OnDestroy {
 
   // Ver mazos del usuario
   viewDecks(): void {
-    this.navCtrl.navigateRoot(['/decks']);
-  }
-
-  ngOnDestroy(): void {
-    if (this.error$) {
-      this.error$.unsubscribe();
-    }
+    console.log('Ver mazos de', this.user.userId);
   }
 
 }

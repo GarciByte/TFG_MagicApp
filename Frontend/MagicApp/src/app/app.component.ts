@@ -4,7 +4,7 @@ import { IonApp, IonRouterOutlet, Platform } from "@ionic/angular/standalone";
 import { WebsocketService } from './services/websocket.service';
 import { addIcons } from 'ionicons';
 import * as icons from 'ionicons/icons';
-import { Capacitor } from '@capacitor/core';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-root',
@@ -39,21 +39,20 @@ export class AppComponent implements OnInit, OnDestroy {
       'lock-closed-outline': icons.lockClosedOutline,
       'lock-open-outline': icons.lockOpenOutline,
       'log-in-outline': icons.logInOutline,
-      'arrowBackOutline': icons.arrowBackOutline,
-      'sparkles': icons.sparkles,
-      'filterOutline': icons.filterOutline,
-      'addCircleOutline': icons.addCircleOutline
+      'sparkles': icons.sparkles
     });
   }
 
   async ngOnInit() {
     await this.platform.ready();
 
-    if (Capacitor.getPlatform() === 'android') {
+    if (this.platform.is('android')) {
       await StatusBar.setOverlaysWebView({ overlay: false });
       await StatusBar.setBackgroundColor({ color: '#3f51b5' });
       await StatusBar.setStyle({ style: Style.Dark });
     }
+
+    console.log('ENVIRONMENT:', environment);
   }
 
   ngOnDestroy(): void {

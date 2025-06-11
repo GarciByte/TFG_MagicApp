@@ -17,6 +17,24 @@ public class DeckRepository : Repository<Deck, int>
             .FirstOrDefaultAsync(deck => deck.Id == id);
     }
 
+    //Obtener todos los decks
+    public async Task<List<Deck>> GetAllDecks(string query)
+    {
+
+        if (!string.IsNullOrWhiteSpace(query))
+        {
+            return await GetQueryable()
+                .Where(deck => deck.Name.ToLower().Contains(query.ToLower()))
+                .Include(deck => deck.DeckCards)
+                .ToListAsync();
+
+        }
+        return await GetQueryable()
+            .Include(deck => deck.DeckCards)
+            .ToListAsync();
+    }
+
+
 
     //Obtener todas las deck de un usuario
     public async Task<List<Deck>> GetAllUserDecksAsync(int Id)

@@ -1,9 +1,9 @@
-<ion-content [fullscreen]="true" class="chat-page ion-padding">
+<ion-content class="chat-page">
 
   <!-- Botón para volver a la lista de chats-->
   <div class="header-container">
     <ion-icon name="arrow-back-outline" class="back-icon" (click)="navCtrl.back()"></ion-icon>
-    <h1 class="page-title">{{ 'PRIVATE_CHAT.TITLE' | translate }}</h1>
+    <h1 class="page-title">Chats Privado</h1>
   </div>
 
   <!-- Chat -->
@@ -40,9 +40,8 @@
         <form (ngSubmit)="sendMessage()">
           <ion-item lines="none" class="input-container">
 
-            <ion-input [(ngModel)]="chatInput" name="chatInput"
-              [placeholder]="'PRIVATE_CHAT.PLACEHOLDER_MESSAGE' | translate" clearInput required autocomplete="off"
-              class="chat-input">
+            <ion-input [(ngModel)]="chatInput" name="chatInput" placeholder="Escribe un mensaje..." clearInput required
+              autocomplete="off" class="chat-input">
             </ion-input>
 
             <ion-button slot="end" type="submit" fill="clear" [disabled]="!chatInput.trim()" class="send-button">
@@ -55,6 +54,5 @@
     </ion-card>
 
   </div>
-  
   <app-sidebar></app-sidebar>
 </ion-content>

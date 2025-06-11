@@ -59,6 +59,7 @@ ion-content {
   background-repeat: no-repeat;
 }
 
+/* Icon style for the sun */
 .icon-sun {
   background-image: url("data:image/svg+xml,...");
   background-color: #fff2b2;
@@ -174,3 +175,4 @@ ion-content {
   margin-top: 8px;
   font-weight: bold;
 }
+

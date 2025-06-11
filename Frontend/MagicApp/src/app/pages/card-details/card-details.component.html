@@ -1,8 +1,7 @@
-<ion-content *ngIf="card" [fullscreen]="true" class="ion-padding">
+<ion-content *ngIf="card">
   <div class="header-container">
-    <ion-icon name="arrow-back-outline" class="back-icon" (click)="navCtrl.back()">
-    </ion-icon>
-    <h1 class="page-title">{{ 'DETAIL.TITLE' | translate }}</h1>
+    <ion-icon name="arrow-back-outline" class="back-icon" (click)="navCtrl.back()"></ion-icon>
+    <h1 class="page-title">Detalles</h1>
   </div>
 
   <div class="detail-container">
@@ -12,16 +11,6 @@
       <div class="detail-left">
         <h1 class="card-title">{{ card.name }}</h1>
         <img class="card-image" [src]="card.imageUrl" [alt]="card.name" />
-
-        <!-- Botón de análisis IA -->
-        <div class="ai-button-container">
-          <ion-button class="ai-analysis-button" expand="block" fill="solid" (click)="openAiCommentModal()">
-            <ion-icon slot="start" name="sparkles"></ion-icon>
-            <span class="button-text">
-              {{ 'DETAIL.ANALYZE' | translate }}
-            </span>
-          </ion-button>
-        </div>
       </div>
 
       <div class="detail-right">
@@ -29,9 +18,7 @@
 
           <!-- Coste de maná -->
           <div class="info-item" *ngIf="card.manaSymbolUrls.length">
-            <span class="label">
-              {{ 'DETAIL.MANA_COST' | translate }}
-            </span>
+            <span class="label">Coste de maná:</span>
             <span class="value">
               <img *ngFor="let url of card.manaSymbolUrls" class="mana-symbol" [src]="url" loading="lazy" />
             </span>
@@ -39,64 +26,45 @@
 
           <!-- Tipo de carta -->
           <div class="info-item" *ngIf="card.typeLine">
-            <span class="label">
-              {{ 'DETAIL.TYPE' | translate }}
-            </span>
+            <span class="label">Tipo:</span>
             <span class="value">{{ card.typeLine }}</span>
           </div>
 
           <!-- Texto de la carta -->
-          <div class="info-item full-width" *ngIf="card.oracleTextHtml">
-            <span class="label">
-              {{ 'DETAIL.TEXT' | translate }}
-            </span>
-            <div class="value oracle-text" [innerHTML]="safeOracleHtml">
-            </div>
+          <div class="info-item full-width" *ngIf="card.oracleText">
+            <span class="label">Texto:</span>
+            <div class="value oracle-text" [innerHTML]="safeOracleHtml"></div>
           </div>
 
           <!-- Fuerza/Resistencia -->
           <div class="info-item" *ngIf="card.power">
-            <span class="label">
-              {{ 'DETAIL.POWER_TOUGHNESS' | translate }}
-            </span>
-            <span class="value">
-              {{ card.power }}/{{ card.toughness }}
-            </span>
+            <span class="label">Fuerza/Resistencia:</span>
+            <span class="value">{{ card.power }}/{{ card.toughness }}</span>
           </div>
 
           <!-- Colección -->
           <div class="info-item" *ngIf="card.setName">
-            <span class="label">
-              {{ 'DETAIL.SET' | translate }}
-            </span>
+            <span class="label">Colección:</span>
             <span class="value">{{ card.setName }}</span>
           </div>
 
           <!-- Rareza -->
           <div class="info-item" *ngIf="card.rarity">
-            <span class="label">
-              {{ 'DETAIL.RARITY' | translate }}
-            </span>
+            <span class="label">Rareza:</span>
             <span class="value">{{ card.rarity }}</span>
           </div>
 
           <!-- Precio -->
           <div class="info-item" *ngIf="card.priceEur">
-            <span class="label">
-              {{ 'DETAIL.PRICE' | translate }}
-            </span>
-            <span class="value">
-              {{ card.priceEur }} €
-            </span>
+            <span class="label">Precio:</span>
+            <span class="value">{{ card.priceEur }} €</span>
           </div>
 
           <!-- Enlace de compra -->
           <div class="info-item" *ngIf="card.purchaseCardmarket">
-            <span class="label">
-              {{ 'DETAIL.BUY' | translate }}
-            </span>
+            <span class="label">Comprar:</span>
             <a class="value link" [href]="card.purchaseCardmarket" target="_blank">
-              {{ 'DETAIL.LINK_TEXT' | translate }}
+              Cardmarket
             </a>
           </div>
 
@@ -105,6 +73,5 @@
 
     </div>
   </div>
-  
   <app-sidebar></app-sidebar>
 </ion-content>

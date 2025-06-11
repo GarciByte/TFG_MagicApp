@@ -2,7 +2,7 @@ ion-fab {
   margin-bottom: var(--ion-safe-area-bottom, 0);
 }
 
-ion-fab>ion-fab-button {
+ion-fab > ion-fab-button {
   --background: rgba(0, 0, 0, 0.3);
   color: white;
   transition: background 0.3s ease;

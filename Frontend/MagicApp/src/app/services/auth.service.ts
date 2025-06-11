@@ -48,6 +48,7 @@ export class AuthService {
         }
 
       } else {
+        console.warn("No se han podido refrescar los tokens");
         await this.logout();
       }
 
@@ -166,7 +167,7 @@ export class AuthService {
       } else {
         console.error("No se han podido actualizar los datos del usuario.");
       }
-
+      
     } catch (error) {
       console.error("No se han podido actualizar los datos del usuario.");
     }
@@ -209,7 +210,7 @@ export class AuthService {
         }
 
         this.api.accessToken = response.data.accessToken;
-        //console.log("Tokens refrescados con éxito.");
+        console.log("Tokens refrescados con éxito.");
         return true;
       }
 

@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, ParamMap } from '@angular/router';
 import { NavController } from '@ionic/angular';
 import { Subscription } from 'rxjs';
@@ -14,18 +14,17 @@ import { WebsocketService } from 'src/app/services/websocket.service';
 import { CommonModule, Location } from '@angular/common';
 import { IonContent, IonButton, IonCard, IonCardContent, IonFooter, IonInput, IonIcon, IonItem, IonLabel, IonAvatar, IonList } from "@ionic/angular/standalone";
 import { FormsModule } from '@angular/forms';
-import { TranslateService, TranslateModule } from '@ngx-translate/core';
 import { SidebarComponent } from "../../components/sidebar/sidebar.component";
 
 @Component({
   selector: 'app-private-chat',
-  imports: [IonList, IonAvatar, IonLabel, IonItem, IonIcon, IonInput, IonFooter, IonCardContent, IonCard, IonButton, IonContent, CommonModule, FormsModule, SidebarComponent, TranslateModule],
+  imports: [IonList, IonAvatar, IonLabel, IonItem, IonIcon, IonInput, IonFooter, IonCardContent, IonCard, IonButton, IonContent, CommonModule, FormsModule, SidebarComponent],
   templateUrl: './private-chat.component.html',
   styleUrls: ['./private-chat.component.css'],
   standalone: true,
 })
-export class PrivateChatComponent implements OnInit, OnDestroy {
-  error$: Subscription;
+export class PrivateChatComponent implements OnInit {
+
   chatSubscription: Subscription;
   chatMessages: any[] = [];
   chatInput: string = "";
@@ -41,20 +40,13 @@ export class PrivateChatComponent implements OnInit, OnDestroy {
     private chatMessageService: ChatMessageService,
     private modalService: ModalService,
     private route: ActivatedRoute,
-    private location: Location,
-    public translate: TranslateService
+    private location: Location
   ) { }
 
   async ngOnInit(): Promise<void> {
-    if (!(await this.authService.isAuthenticated())) {
+    if (!await this.authService.isAuthenticated()) {
       this.navCtrl.navigateRoot(['/']);
-      return;
     }
-
-    this.error$ = this.webSocketService.error.subscribe(async () => {
-      await this.authService.logout();
-      this.navCtrl.navigateRoot(['/']);
-    });
 
     this.user = await this.authService.getUser();
 
@@ -97,6 +89,8 @@ export class PrivateChatComponent implements OnInit, OnDestroy {
     // Obtener todos los mensajes
     await this.getAllMessages();
 
+    console.log(this.chatMessages);
+
     // Borra el parámetro de ruta
     const currentUrl = this.location.path();
     const baseUrl = currentUrl.split('?')[0];
@@ -105,17 +99,13 @@ export class PrivateChatComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.webSocketService.activePrivateChatUserId = null;
-
+    
     if (this.chatSubscription) {
       this.chatSubscription.unsubscribe();
     }
 
     if (this.routeQueryMap$) {
       this.routeQueryMap$.unsubscribe();
-    }
-
-    if (this.error$) {
-      this.error$.unsubscribe();
     }
   }
 
@@ -169,10 +159,9 @@ export class PrivateChatComponent implements OnInit, OnDestroy {
 
         this.modalService.showAlert(
           'error',
-          this.translate.instant('PRIVATE_CHAT.ERROR_USER_DATA'),
-          [{ text: this.translate.instant('COMMON.ACCEPT') }]
+          'Se ha producido un error al obtener los datos del usuario',
+          [{ text: 'Aceptar' }]
         );
-
       }
 
     } catch (error) {
@@ -180,16 +169,16 @@ export class PrivateChatComponent implements OnInit, OnDestroy {
 
       this.modalService.showAlert(
         'error',
-        this.translate.instant('PRIVATE_CHAT.ERROR_USER_DATA'),
-        [{ text: this.translate.instant('COMMON.ACCEPT') }]
+        'Se ha producido un error al obtener los datos del usuario',
+        [{ text: 'Aceptar' }]
       );
-
     }
   }
 
   // Obtener todos los mensajes
   async getAllMessages(): Promise<void> {
     try {
+
       const conversationRequest: ConversationRequest = {
         OtherUserId: this.otherUser.userId,
         OtherUserNickname: this.otherUser.nickname
@@ -218,8 +207,8 @@ export class PrivateChatComponent implements OnInit, OnDestroy {
 
         this.modalService.showAlert(
           'error',
-          this.translate.instant('PRIVATE_CHAT.ERROR_MESSAGES'),
-          [{ text: this.translate.instant('COMMON.ACCEPT') }]
+          'Se ha producido un error al obtener todos los mensajes',
+          [{ text: 'Aceptar' }]
         );
 
       }
@@ -229,8 +218,8 @@ export class PrivateChatComponent implements OnInit, OnDestroy {
 
       this.modalService.showAlert(
         'error',
-        this.translate.instant('PRIVATE_CHAT.ERROR_MESSAGES'),
-        [{ text: this.translate.instant('COMMON.ACCEPT') }]
+        'Se ha producido un error al obtener todos los mensajes',
+        [{ text: 'Aceptar' }]
       );
 
     }

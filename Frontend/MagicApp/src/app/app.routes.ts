@@ -127,6 +127,11 @@ export const routes: Routes = [
     pathMatch: "full",
   },
   {
+    path: "all-decks", // Ruta de Ver todos los mazos de la aplicación
+    loadComponent: () => import("./pages/all-decks/all-decks.component").then((m) => m.AllDecksComponent),
+    pathMatch: "full",
+  },
+  {
     path: '**',
     redirectTo: '',
     pathMatch: 'full'

@@ -1,112 +1,100 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
-import { AlertController, NavController } from '@ionic/angular';
+import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
+import { NavController } from '@ionic/angular';
 import { DeckRequest } from 'src/app/models/deck-request';
 import { DeckResponse } from 'src/app/models/deck-response';
 import { AuthService } from 'src/app/services/auth.service';
 import { DeckServiceService } from 'src/app/services/deck-service.service';
 import { IonContent, IonIcon } from "@ionic/angular/standalone";
 import { CommonModule } from '@angular/common';
-import { FormsModule, NgForm, ReactiveFormsModule } from '@angular/forms';
+import { FormsModule } from '@angular/forms';
 import { DeckCardsService } from 'src/app/services/deck-cards.service';
-import { Subscription } from 'rxjs';
-import { WebsocketService } from 'src/app/services/websocket.service';
-import { TranslateModule, TranslateService } from '@ngx-translate/core';
+import { CardDetail } from 'src/app/models/card-detail';
 import { SidebarComponent } from "../../components/sidebar/sidebar.component";
 
 @Component({
   selector: 'app-deck-view',
-  imports: [IonIcon, CommonModule, FormsModule, IonContent, SidebarComponent, TranslateModule, ReactiveFormsModule, FormsModule],
+  imports: [IonIcon, CommonModule, FormsModule, IonContent, SidebarComponent],
   templateUrl: './deck-view.component.html',
   styleUrls: ['./deck-view.component.css'],
   standalone: true,
 })
-export class DeckViewComponent implements OnInit, OnDestroy {
-  error$: Subscription;
+export class DeckViewComponent implements OnInit {
   deckId: number;
+
   deck: DeckResponse;
 
   constructor(
     public navCtrl: NavController,
     private authService: AuthService,
     private deckService: DeckServiceService,
+    private router: Router,
     private route: ActivatedRoute,
-    private alertController: AlertController,
-    public deckCardsService: DeckCardsService,
-    private webSocketService: WebsocketService,
-    public translate: TranslateService
+    public deckCardsService: DeckCardsService
   ) { }
 
-  async ngOnInit(): Promise<void> {
-    if (!(await this.authService.isAuthenticated())) {
-      this.navCtrl.navigateRoot(['/']);
-      return;
-    }
-
-    this.error$ = this.webSocketService.error.subscribe(async () => {
-      await this.authService.logout();
-      this.navCtrl.navigateRoot(['/']);
-    });
-
-    this.deckId = Number(this.route.snapshot.queryParamMap.get('deckId'));
-
-    if (!this.deckCardsService.deckId) {
-      this.deck = (await this.deckService.GetDeckById(this.deckId)).data;
-
-      this.deckCardsService.deckcards = this.deck.deckCards;
-      this.deckCardsService.name = this.deck.name;
-      this.deckCardsService.description = this.deck.description;
-      this.deckCardsService.userId = this.deck.userId;
-      this.deckCardsService.deckId = this.deck.id;
-      this.deckCardsService.victories = this.deck.victories;
-      this.deckCardsService.defeats = this.deck.defeats;
-    }
-
-    const navigation = history.state;
-    if (navigation?.selectCard) {
-      this.deckCardsService.addCard(navigation.selectCard);
-    }
+async ngOnInit(): Promise<void> {
+  if (!await this.authService.isAuthenticated()) {
+    this.navCtrl.navigateRoot(['/']);
+    return;
   }
 
+  this.deckId = Number(this.route.snapshot.queryParamMap.get('deckId'));
+
+  // Solo inicializa si aún no lo está (no sobreescribe ediciones locales)
+  if (!this.deckCardsService.deckId) {
+    this.deck = (await this.deckService.GetDeckById(this.deckId)).data;
+
+    this.deckCardsService.deckcards = this.deck.deckCards;
+    this.deckCardsService.name = this.deck.name;
+    this.deckCardsService.description = this.deck.description;
+    this.deckCardsService.userId = this.deck.userId;
+    this.deckCardsService.deckId = this.deck.id;
+    this.deckCardsService.victories = this.deck.victories;
+    this.deckCardsService.defeats = this.deck.defeats;
+  }
+
+  const navigation = history.state;
+  if (navigation?.selectCard) {
+    this.deckCardsService.addCard(navigation.selectCard);
+  }
+}
+
+
+
   addCard() {
-    this.navCtrl.navigateRoot("/add-cards-deck");
+    this.navCtrl.navigateRoot("/add-cards-deck")
   }
 
   cardDetails() {
-    this.navCtrl.navigateRoot("/deck-cards-views");
+    console.log("View deck cards")
+    this.navCtrl.navigateRoot("/deck-cards-views")
   }
 
-  async updateDeck(form: NgForm) {
-    if (form.invalid) {
-      await this.presentAlert(
-        this.translate.instant('DECK_VIEW.ERROR_REQUIRED'),
-        this.translate.instant('DECK_VIEW.ERROR_NAME_LENGTH')
-      );
-      return;
-    }
-
+  async updateDeck() {
     const deckData: DeckRequest = {
       Name: this.deckCardsService.name,
       Description: this.deckCardsService.description,
       UserId: this.deckCardsService.userId,
       DeckCards: this.deckCardsService.deckCards,
       Victories: this.deckCardsService.victories,
-      Defeats: this.deckCardsService.defeats
-    };
+      Defeats: this.deckCardsService.defeats 
+    }
 
     // Save the deck
-    await this.deckService.UpdateDeck(deckData, this.deckCardsService.deckId);
-    this.deckCardsService.clear();
-    this.navCtrl.navigateRoot("/decks");
+    const response = await this.deckService.UpdateDeck(deckData, this.deckCardsService.deckId)
+    this.deckCardsService.clear()
+    this.navCtrl.navigateRoot("/decks")
+
   }
 
   async deleteDeck() {
-    await this.deckService.DeleteDeck(this.deckId);
-    this.navCtrl.navigateRoot("/decks");
+    const response = await this.deckService.DeleteDeck(this.deckId)
+    this.navCtrl.navigateRoot("/decks")
   }
 
   deckSize(): number {
-    return this.deckCardsService.deckCards.length;
+    return this.deckCardsService.deckCards.length
   }
 
   incrementVictories() {
@@ -126,32 +114,17 @@ export class DeckViewComponent implements OnInit, OnDestroy {
   }
 
   getVictoryRate(): string {
-    const victories = this.deckCardsService.victories || 0;
-    const defeats = this.deckCardsService.defeats || 0;
-    const totalGames = victories + defeats;
+  const victories = this.deckCardsService.victories || 0;
+  const defeats = this.deckCardsService.defeats || 0;
+  const totalGames = victories + defeats;
 
-    if (totalGames === 0) {
-      return '0%';
-    }
-
-    const rate = (victories / totalGames) * 100;
-    return rate.toFixed(1) + '%';
+  if (totalGames === 0) {
+    return '0%';
   }
 
-  async presentAlert(header: string, message: string) {
-    const alert = await this.alertController.create({
-      header,
-      message,
-      buttons: [this.translate.instant('COMMON.ACCEPT')]
-    });
+  const rate = (victories / totalGames) * 100;
+  return rate.toFixed(1) + '%';
+}
 
-    await alert.present();
-  }
-
-  ngOnDestroy(): void {
-    if (this.error$) {
-      this.error$.unsubscribe();
-    }
-  }
 
 }

@@ -18,6 +18,7 @@ export class CardTypeService {
       this.types.splice(index, 1);
     }
 
+    console.log(this.types);
     return this.types;
   }
 }

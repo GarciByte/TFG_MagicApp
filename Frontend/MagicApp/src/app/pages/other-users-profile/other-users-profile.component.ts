@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, ParamMap } from '@angular/router';
 import { NavController } from '@ionic/angular';
@@ -12,19 +12,17 @@ import { environment } from 'src/environments/environment';
 import { IonContent, IonButton, IonCard, IonAvatar, IonIcon } from "@ionic/angular/standalone";
 import { ReportService } from 'src/app/services/report.service';
 import { NewReport } from 'src/app/models/new-report';
-import { WebsocketService } from 'src/app/services/websocket.service';
-import { TranslateService, TranslateModule } from '@ngx-translate/core';
 import { SidebarComponent } from "../../components/sidebar/sidebar.component";
 
 @Component({
   selector: 'app-other-users-profile',
-  imports: [IonIcon, IonAvatar, IonCard, IonButton, IonContent, CommonModule, FormsModule, SidebarComponent, TranslateModule],
+  imports: [IonIcon, IonAvatar, IonCard, IonButton, IonContent, CommonModule, FormsModule, SidebarComponent],
   templateUrl: './other-users-profile.component.html',
   styleUrls: ['./other-users-profile.component.css'],
   standalone: true,
 })
-export class OtherUsersProfileComponent implements OnInit, OnDestroy {
-  error$: Subscription;
+export class OtherUsersProfileComponent implements OnInit {
+
   user: User = null;
   currentUser: User = null;
   avatarUrl: string = "";
@@ -36,21 +34,13 @@ export class OtherUsersProfileComponent implements OnInit, OnDestroy {
     private route: ActivatedRoute,
     private userService: UserService,
     private modalService: ModalService,
-    private reportService: ReportService,
-    private webSocketService: WebsocketService,
-    public translate: TranslateService
+    private reportService: ReportService
   ) { }
 
   async ngOnInit(): Promise<void> {
-    if (!(await this.authService.isAuthenticated())) {
+    if (!await this.authService.isAuthenticated()) {
       this.navCtrl.navigateRoot(['/']);
-      return;
     }
-
-    this.error$ = this.webSocketService.error.subscribe(async () => {
-      await this.authService.logout();
-      this.navCtrl.navigateRoot(['/']);
-    });
 
     this.currentUser = await this.authService.getUser();
     this.routeQueryMap$ = this.route.queryParamMap.subscribe(queryMap => this.init(queryMap));
@@ -59,10 +49,6 @@ export class OtherUsersProfileComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     if (this.routeQueryMap$) {
       this.routeQueryMap$.unsubscribe();
-    }
-
-    if (this.error$) {
-      this.error$.unsubscribe();
     }
   }
 
@@ -96,10 +82,9 @@ export class OtherUsersProfileComponent implements OnInit, OnDestroy {
 
         this.modalService.showAlert(
           'error',
-          this.translate.instant('OTHER_USERS_PROFILE.ERROR_GET_USER_DATA'),
-          [{ text: this.translate.instant('COMMON.ACCEPT') }]
+          'Se ha producido un error al obtener los datos del usuario',
+          [{ text: 'Aceptar' }]
         );
-
       }
 
     } catch (error) {
@@ -107,10 +92,9 @@ export class OtherUsersProfileComponent implements OnInit, OnDestroy {
 
       this.modalService.showAlert(
         'error',
-        this.translate.instant('OTHER_USERS_PROFILE.ERROR_GET_USER_DATA'),
-        [{ text: this.translate.instant('COMMON.ACCEPT') }]
+        'Se ha producido un error al obtener los datos del usuario',
+        [{ text: 'Aceptar' }]
       );
-
     }
   }
 
@@ -124,6 +108,7 @@ export class OtherUsersProfileComponent implements OnInit, OnDestroy {
 
   // Ver mazos del usuario
   viewDecks(): void {
+    console.log('Ver mazos de', this.user.userId);
     this.navCtrl.navigateRoot(
       ['/other-user-deck'],
       { queryParams: { id: this.user.userId } }
@@ -135,12 +120,7 @@ export class OtherUsersProfileComponent implements OnInit, OnDestroy {
     const reason = await this.modalService.promptReportReason(this.user.nickname);
 
     if (!reason) {
-
-      this.modalService.showToast(
-        this.translate.instant('OTHER_USERS_PROFILE.REPORT_CANCELLED'),
-        'warning'
-      );
-
+      this.modalService.showToast('Reporte cancelado', 'warning');
       return;
     }
 
@@ -153,11 +133,7 @@ export class OtherUsersProfileComponent implements OnInit, OnDestroy {
       const result = await this.reportService.createReport(newReport);
 
       if (result.success) {
-
-        this.modalService.showToast(
-          this.translate.instant('OTHER_USERS_PROFILE.REPORT_SUCCESS', { nickname: this.user.nickname }),
-          'success'
-        );
+        this.modalService.showToast(`Has reportado a ${this.user.nickname} con éxito`, "success");
 
       } else {
 
@@ -165,8 +141,8 @@ export class OtherUsersProfileComponent implements OnInit, OnDestroy {
 
           this.modalService.showAlert(
             'warning',
-            this.translate.instant('OTHER_USERS_PROFILE.ALREADY_REPORTED'),
-            [{ text: this.translate.instant('COMMON.ACCEPT') }]
+            'Ya has reportado a este usuario',
+            [{ text: 'Aceptar' }]
           );
 
         } else {
@@ -174,8 +150,8 @@ export class OtherUsersProfileComponent implements OnInit, OnDestroy {
 
           this.modalService.showAlert(
             'error',
-            this.translate.instant('OTHER_USERS_PROFILE.ERROR_SEND_REPORT'),
-            [{ text: this.translate.instant('COMMON.ACCEPT') }]
+            'Se ha producido un error al enviar el reporte',
+            [{ text: 'Aceptar' }]
           );
 
         }
@@ -186,8 +162,8 @@ export class OtherUsersProfileComponent implements OnInit, OnDestroy {
 
       this.modalService.showAlert(
         'error',
-        this.translate.instant('OTHER_USERS_PROFILE.ERROR_SEND_REPORT'),
-        [{ text: this.translate.instant('COMMON.ACCEPT') }]
+        'Se ha producido un error al enviar el reporte',
+        [{ text: 'Aceptar' }]
       );
 
     }

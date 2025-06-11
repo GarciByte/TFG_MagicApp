@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { NavController } from '@ionic/angular';
 import { User } from 'src/app/models/user';
 import { AuthService } from 'src/app/services/auth.service';
@@ -8,21 +8,17 @@ import { UserService } from 'src/app/services/user.service';
 import { IonContent, IonButton, IonSearchbar, IonCard, IonAvatar, IonCardTitle, IonIcon } from "@ionic/angular/standalone";
 import { FormsModule } from '@angular/forms';
 import { environment } from 'src/environments/environment';
-import { Subscription } from 'rxjs';
-import { WebsocketService } from 'src/app/services/websocket.service';
-import { TranslateService, TranslateModule } from '@ngx-translate/core';
 import { SidebarComponent } from "../../components/sidebar/sidebar.component";
 
 @Component({
   selector: 'app-user-search',
-  imports: [IonIcon, IonCardTitle, IonAvatar, IonCard, IonSearchbar, IonButton, IonContent, CommonModule,
-    FormsModule, SidebarComponent, TranslateModule],
+  imports: [IonIcon, IonCardTitle, IonAvatar, IonCard, IonSearchbar, IonButton, IonContent, CommonModule, FormsModule, SidebarComponent],
   templateUrl: './user-search.component.html',
   styleUrls: ['./user-search.component.css'],
   standalone: true,
 })
-export class UserSearchComponent implements OnInit, OnDestroy {
-  error$: Subscription;
+export class UserSearchComponent implements OnInit {
+
   searchTerm = '';
   filteredUsers: User[] = [];
   hasSearched = false;
@@ -33,21 +29,13 @@ export class UserSearchComponent implements OnInit, OnDestroy {
     public navCtrl: NavController,
     private authService: AuthService,
     private userService: UserService,
-    private modalService: ModalService,
-    private webSocketService: WebsocketService,
-    public translate: TranslateService
+    private modalService: ModalService
   ) { }
 
   async ngOnInit(): Promise<void> {
-    if (!(await this.authService.isAuthenticated())) {
+    if (!await this.authService.isAuthenticated()) {
       this.navCtrl.navigateRoot(['/']);
-      return;
     }
-
-    this.error$ = this.webSocketService.error.subscribe(async () => {
-      await this.authService.logout();
-      this.navCtrl.navigateRoot(['/']);
-    });
 
     this.user = await this.authService.getUser();
   }
@@ -75,8 +63,8 @@ export class UserSearchComponent implements OnInit, OnDestroy {
 
         this.modalService.showAlert(
           'error',
-          this.translate.instant('USER_SEARCH.ERROR_LOADING_USERS'),
-          [{ text: this.translate.instant('COMMON.ACCEPT') }]
+          'Se ha producido un error obteniendo los usuarios',
+          [{ text: 'Aceptar' }]
         );
 
         this.filteredUsers = [];
@@ -87,8 +75,8 @@ export class UserSearchComponent implements OnInit, OnDestroy {
 
       this.modalService.showAlert(
         'error',
-        this.translate.instant('USER_SEARCH.ERROR_LOADING_USERS'),
-        [{ text: this.translate.instant('COMMON.ACCEPT') }]
+        'Se ha producido un error obteniendo los usuarios',
+        [{ text: 'Aceptar' }]
       );
 
       this.filteredUsers = [];
@@ -116,12 +104,6 @@ export class UserSearchComponent implements OnInit, OnDestroy {
       ['/other-users-profile'],
       { queryParams: { id: userId } }
     );
-  }
-
-  ngOnDestroy(): void {
-    if (this.error$) {
-      this.error$.unsubscribe();
-    }
   }
 
 }

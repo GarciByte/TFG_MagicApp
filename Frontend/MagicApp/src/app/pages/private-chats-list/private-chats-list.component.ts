@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { User } from 'src/app/models/user';
 import { NavController } from '@ionic/angular';
@@ -10,18 +10,17 @@ import { UserService } from 'src/app/services/user.service';
 import { WebsocketService } from 'src/app/services/websocket.service';
 import { ChatList } from 'src/app/models/chat-list';
 import { IonCardContent, IonCardHeader, IonAvatar, IonCardTitle, IonCard, IonContent, IonButton, IonIcon } from "@ionic/angular/standalone";
-import { TranslateService, TranslateModule } from '@ngx-translate/core';
 import { SidebarComponent } from "../../components/sidebar/sidebar.component";
 
 @Component({
   selector: 'app-private-chats-list',
-  imports: [IonIcon, IonButton, IonContent, IonCard, IonCardTitle, IonAvatar, IonCardHeader, IonCardContent, CommonModule, SidebarComponent, TranslateModule],
+  imports: [IonIcon, IonButton, IonContent, IonCard, IonCardTitle, IonAvatar, IonCardHeader, IonCardContent, CommonModule, SidebarComponent],
   templateUrl: './private-chats-list.component.html',
   styleUrls: ['./private-chats-list.component.css'],
   standalone: true,
 })
-export class PrivateChatsListComponent implements OnInit, OnDestroy {
-  error$: Subscription;
+export class PrivateChatsListComponent implements OnInit {
+
   chatSubscription: Subscription;
   chatList: ChatList[] = [];
   user: User;
@@ -32,20 +31,13 @@ export class PrivateChatsListComponent implements OnInit, OnDestroy {
     private webSocketService: WebsocketService,
     private userService: UserService,
     private chatMessageService: ChatMessageService,
-    private modalService: ModalService,
-    public translate: TranslateService
+    private modalService: ModalService
   ) { }
 
   async ngOnInit(): Promise<void> {
-    if (!(await this.authService.isAuthenticated())) {
+    if (!await this.authService.isAuthenticated()) {
       this.navCtrl.navigateRoot(['/']);
-      return;
     }
-
-    this.error$ = this.webSocketService.error.subscribe(async () => {
-      await this.authService.logout();
-      this.navCtrl.navigateRoot(['/']);
-    });
 
     this.user = await this.authService.getUser();
 
@@ -55,16 +47,15 @@ export class PrivateChatsListComponent implements OnInit, OnDestroy {
     // Nuevos mensajes en el chat
     this.chatSubscription = this.webSocketService.chatSubject.subscribe(async () => {
       await this.getChatsList();
+      console.log("Actualización de chats:", this.chatList);
     });
+
+    console.log(this.chatList);
   }
 
   ngOnDestroy(): void {
     if (this.chatSubscription) {
       this.chatSubscription.unsubscribe();
-    }
-
-    if (this.error$) {
-      this.error$.unsubscribe();
     }
   }
 
@@ -94,8 +85,8 @@ export class PrivateChatsListComponent implements OnInit, OnDestroy {
 
         this.modalService.showAlert(
           'error',
-          this.translate.instant('PRIVATE_CHATS_LIST.ERROR_GET_LIST'),
-          [{ text: this.translate.instant('COMMON.ACCEPT') }]
+          'Se ha producido un error al obtener la lista de chats del usuario',
+          [{ text: 'Aceptar' }]
         );
 
       }
@@ -105,8 +96,8 @@ export class PrivateChatsListComponent implements OnInit, OnDestroy {
 
       this.modalService.showAlert(
         'error',
-        this.translate.instant('PRIVATE_CHATS_LIST.ERROR_GET_LIST'),
-        [{ text: this.translate.instant('COMMON.ACCEPT') }]
+        'Se ha producido un error al obtener la lista de chats del usuario',
+        [{ text: 'Aceptar' }]
       );
 
     }
@@ -126,15 +117,15 @@ export class PrivateChatsListComponent implements OnInit, OnDestroy {
 
     await this.modalService.showAlert(
       'warning',
-      this.translate.instant('PRIVATE_CHATS_LIST.CONFIRM_DELETE_TITLE'),
+      '¿Estás seguro de que quieres eliminar esta conversación?',
       [
         {
-          text: this.translate.instant('PRIVATE_CHATS_LIST.DELETE'),
+          text: 'Borrar',
           handler: async () => {
             await this.deleteChat(otherUserId);
           }
         },
-        { text: this.translate.instant('PRIVATE_CHATS_LIST.CANCEL') }
+        { text: 'Cancelar' }
       ]
     );
   }
@@ -146,21 +137,16 @@ export class PrivateChatsListComponent implements OnInit, OnDestroy {
 
       if (result.success) {
         await this.getChatsList();
-
-        this.modalService.showToast(
-          this.translate.instant('PRIVATE_CHATS_LIST.TOAST_DELETED'),
-          'success'
-        );
+        this.modalService.showToast("La conversación ha sido borrada", "success");
 
       } else {
         console.error("Error al borrar la conversación:", result.error);
 
         this.modalService.showAlert(
           'error',
-          this.translate.instant('PRIVATE_CHATS_LIST.ERROR_DELETE'),
-          [{ text: this.translate.instant('COMMON.ACCEPT') }]
+          'Se ha producido un error al borrar la conversación',
+          [{ text: 'Aceptar' }]
         );
-
       }
 
     } catch (error) {
@@ -168,8 +154,8 @@ export class PrivateChatsListComponent implements OnInit, OnDestroy {
 
       this.modalService.showAlert(
         'error',
-        this.translate.instant('PRIVATE_CHATS_LIST.ERROR_DELETE'),
-        [{ text: this.translate.instant('COMMON.ACCEPT') }]
+        'Se ha producido un error al borrar la conversación',
+        [{ text: 'Aceptar' }]
       );
 
     }

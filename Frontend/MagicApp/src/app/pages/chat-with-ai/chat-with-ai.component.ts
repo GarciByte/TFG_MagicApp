@@ -17,12 +17,11 @@ import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 import { marked } from 'marked';
 import { Capacitor } from '@capacitor/core';
 import { Browser } from '@capacitor/browser';
-import { TranslateService, TranslateModule } from '@ngx-translate/core';
 import { SidebarComponent } from "../../components/sidebar/sidebar.component";
 
 @Component({
   selector: 'app-chat-with-ai',
-  imports: [IonItem, IonIcon, IonCardContent, IonCard, IonButton, CommonModule, FormsModule, IonContent, IonFooter, IonSpinner, SidebarComponent, TranslateModule],
+  imports: [IonItem, IonIcon, IonCardContent, IonCard, IonButton, CommonModule, FormsModule, IonContent, IonFooter, IonSpinner, SidebarComponent],
   templateUrl: './chat-with-ai.component.html',
   styleUrls: ['./chat-with-ai.component.css'],
   standalone: true,
@@ -30,7 +29,6 @@ import { SidebarComponent } from "../../components/sidebar/sidebar.component";
 export class ChatWithAiComponent implements OnInit, OnDestroy {
 
   @ViewChild('messagesContainer', { static: true, read: ElementRef }) private messagesContainer: ElementRef;
-  error$: Subscription;
 
   chatSubscription: Subscription;
   chatMessages: ChatWithAiMessage[] = [];
@@ -46,8 +44,7 @@ export class ChatWithAiComponent implements OnInit, OnDestroy {
     private chatWithAiService: ChatWithAiService,
     private webSocketService: WebsocketService,
     private sanitizer: DomSanitizer,
-    private cdr: ChangeDetectorRef,
-    public translate: TranslateService
+    private cdr: ChangeDetectorRef
   ) { }
 
   async ngOnInit(): Promise<void> {
@@ -55,11 +52,6 @@ export class ChatWithAiComponent implements OnInit, OnDestroy {
       this.navCtrl.navigateRoot(['/']);
       return;
     }
-
-    this.error$ = this.webSocketService.error.subscribe(async () => {
-      await this.authService.logout();
-      this.navCtrl.navigateRoot(['/']);
-    });
 
     this.user = await this.authService.getUser();
 
@@ -91,8 +83,8 @@ export class ChatWithAiComponent implements OnInit, OnDestroy {
 
         this.modalService.showAlert(
           'error',
-          this.translate.instant('MODALS.FETCH_CHAT_ERROR'),
-          [{ text: this.translate.instant('COMMON.ACCEPT') }]
+          'Se ha producido un error al obtener todos los mensajes',
+          [{ text: 'Aceptar' }]
         );
 
       }
@@ -102,8 +94,8 @@ export class ChatWithAiComponent implements OnInit, OnDestroy {
 
       this.modalService.showAlert(
         'error',
-        this.translate.instant('MODALS.FETCH_CHAT_ERROR'),
-        [{ text: this.translate.instant('COMMON.ACCEPT') }]
+        'Se ha producido un error al obtener todos los mensajes',
+        [{ text: 'Aceptar' }]
       );
 
     }
@@ -180,21 +172,6 @@ export class ChatWithAiComponent implements OnInit, OnDestroy {
     if (this.chatSubscription) {
       this.chatSubscription.unsubscribe();
     }
-
-    if (this.error$) {
-      this.error$.unsubscribe();
-    }
-
-    this.CancelAiRequest();
-  }
-
-  // Cancela la petición de IA en curso
-  async CancelAiRequest() {
-    const wsMessage = {
-      Type: MsgType.CancelAIMessage,
-      Content: 'CancelAIMessage'
-    };
-    this.webSocketService.sendRxjs(wsMessage);
   }
 
   // Animación de escritura para la IA

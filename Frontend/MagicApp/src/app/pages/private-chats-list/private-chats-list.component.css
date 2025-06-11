@@ -3,7 +3,7 @@
     align-items: center;
     gap: 12px;
     padding: 16px;
-    --background: var(--ion-background-color);
+    background-color: var(--ion-background-color);
 }
 
 .back-icon {
@@ -23,7 +23,6 @@
     color: var(--ion-text-color);
     font-weight: bold;
 }
-
 .cards-container {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));

@@ -3,7 +3,7 @@
   <!-- Botón para volver al menú principal -->
   <div class="header-container">
     <ion-icon name="arrow-back-outline" class="back-icon" (click)="navCtrl.navigateRoot(['/menu'])"></ion-icon>
-    <h1 class="page-title">{{ 'PRIVATE_CHATS_LIST.TITLE' | translate }}</h1>
+    <h1 class="page-title">Chats Privado</h1>
   </div>
 
   <ng-container *ngIf="chatList.length; else noChats">
@@ -15,8 +15,7 @@
         <!-- Avatar y Nickname -->
         <ion-card-header class="chat-card-header">
           <ion-avatar class="chat-avatar">
-            <img [src]="chat.AvatarUrl"
-              alt="{{ 'PRIVATE_CHATS_LIST.TITLE' | translate }} - {{ chat.ReceiverNickname }}">
+            <img [src]="chat.AvatarUrl" alt="Avatar de {{ chat.ReceiverNickname }}">
           </ion-avatar>
           <div class="chat-header-text">
             <ion-card-title>{{ chat.ReceiverNickname }}</ion-card-title>
@@ -46,9 +45,8 @@
 
   <ng-template #noChats>
     <div class="no-chats-message">
-      {{ 'PRIVATE_CHATS_LIST.NO_CHATS' | translate }}
+      No tienes ningún chat disponible.
     </div>
   </ng-template>
-
-  <app-sidebar></app-sidebar>
+<app-sidebar></app-sidebar>
 </ion-content>

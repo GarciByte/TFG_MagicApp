@@ -14,5 +14,5 @@ export class ChatWithAiService {
   async GetAllMessages(userId: number): Promise<Result<ChatWithAiMessage[]>> {
     return this.api.get<ChatWithAiMessage[]>(`ChatWithAi/${userId}`);
   }
-
+  
 }

@@ -3,7 +3,7 @@
   <!-- Botón para volver al buscador de usuarios -->
   <div class="header-container">
     <ion-icon name="arrow-back-outline" class="back-icon" (click)="navCtrl.back()"></ion-icon>
-    <h1 class="page-title">{{ 'OTHER_USERS_PROFILE.TITLE' | translate }}</h1>
+    <h1 class="page-title">Perfil de Usuario</h1>
   </div>
 
   <!-- Card del usuario -->
@@ -17,7 +17,7 @@
           <!-- Información del usuario -->
           <div class="user-info">
             <ion-avatar class="user-avatar">
-              <img [src]="avatarUrl" alt="{{ 'OTHER_USERS_PROFILE.TITLE' | translate }} {{ user.nickname }}">
+              <img [src]="avatarUrl" alt="Avatar de {{ user.nickname }}">
             </ion-avatar>
             <div class="user-details">
               <h2>{{ user.nickname }}</h2>
@@ -29,17 +29,17 @@
 
             <!-- Botón para reportar al usuario -->
             <ion-button fill="solid" (click)="reportUser()">
-              {{ 'OTHER_USERS_PROFILE.REPORT_USER' | translate }}
+              Reportar usuario
             </ion-button>
 
             <!-- Botón para ver los mazos creados del usuario -->
             <ion-button fill="solid" (click)="viewDecks()">
-              {{ 'OTHER_USERS_PROFILE.VIEW_DECKS' | translate }}
+              Ver mazos
             </ion-button>
 
             <!-- Botón para enviar un mensaje privado -->
             <ion-button fill="solid" (click)="sendMessage()">
-              {{ 'OTHER_USERS_PROFILE.PRIVATE_MESSAGE' | translate }}
+              Mensaje privado
             </ion-button>
           </div>
 
@@ -48,6 +48,5 @@
     </div>
 
   </ng-container>
-
   <app-sidebar></app-sidebar>
 </ion-content>

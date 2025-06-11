@@ -3,11 +3,11 @@
     <ion-title class="modal-title">
       <div class="title-content">
         <ion-icon name="sparkles" class="header-ai-icon"></ion-icon>
-        <span>{{ 'AI_MODAL.TITLE' | translate }}</span>
+        <span>Análisis con la IA</span>
       </div>
     </ion-title>
     <ion-buttons slot="end">
-      <ion-button fill="clear" (click)="close()" class="close-button" [attr.aria-label]=" 'COMMON.CLOSE' | translate ">
+      <ion-button fill="clear" (click)="close()" class="close-button">
         <ion-icon slot="icon-only" name="close" class="close-icon"></ion-icon>
       </ion-button>
     </ion-buttons>
@@ -34,16 +34,18 @@
             <ion-icon name="sparkles" class="avatar-icon"></ion-icon>
           </div>
           <div class="sender-info">
-            <span class="sender-name">{{ 'AI_MODAL.ASSISTANT_NAME' | translate }}</span>
-            <span class="message-status">{{ 'AI_MODAL.ANALYZING' | translate }}</span>
+            <span class="sender-name">Asistente IA</span>
+            <span class="message-status">Analizando carta...</span>
           </div>
         </div>
         <div class="message-content loading-message">
           <div class="typing-indicator">
             <div class="typing-dots">
-              <span></span><span></span><span></span>
+              <span></span>
+              <span></span>
+              <span></span>
             </div>
-            <span class="loading-text">{{ 'AI_MODAL.GENERATING' | translate }}</span>
+            <span class="loading-text">Generando análisis</span>
           </div>
         </div>
       </div>
@@ -55,10 +57,8 @@
             <ion-icon name="sparkles" class="avatar-icon"></ion-icon>
           </div>
           <div class="sender-info">
-            <span class="sender-name">{{ 'AI_MODAL.ASSISTANT_NAME' | translate }}</span>
-            <span class="message-time">
-              {{ commentMsg.timestamp | date: 'short' }}
-            </span>
+            <span class="sender-name">Asistente IA</span>
+            <span class="message-time">{{ commentMsg.timestamp | date: 'short' }}</span>
           </div>
         </div>
         <div class="message-content ai-response">

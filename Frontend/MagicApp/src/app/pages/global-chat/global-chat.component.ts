@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { NavController } from '@ionic/angular';
 import { Subscription } from 'rxjs';
 import { AuthService } from 'src/app/services/auth.service';
@@ -12,19 +12,17 @@ import { User } from 'src/app/models/user';
 import { UserService } from 'src/app/services/user.service';
 import { ChatMessageService } from 'src/app/services/chat-message.service';
 import { ModalService } from 'src/app/services/modal.service';
-import { TranslateService, TranslateModule } from '@ngx-translate/core';
 import { SidebarComponent } from "../../components/sidebar/sidebar.component";
 
 @Component({
   selector: 'app-global-chat',
-  imports: [IonCardContent, IonCard, IonAvatar, IonFooter, IonLabel, IonList, IonIcon, IonButton, IonItem, IonInput, IonContent,
-    FormsModule, CommonModule, TranslateModule, SidebarComponent],
+  imports: [IonCardContent, IonCard, IonAvatar, IonFooter, IonLabel, IonList, IonIcon, IonButton, IonItem, IonInput, IonContent, FormsModule, CommonModule, SidebarComponent],
   templateUrl: './global-chat.component.html',
   styleUrls: ['./global-chat.component.css'],
   standalone: true,
 })
-export class GlobalChatComponent implements OnInit, OnDestroy {
-  error$: Subscription;
+export class GlobalChatComponent implements OnInit {
+
   chatSubscription: Subscription;
   chatMessages: any[] = [];
   chatInput: string = "";
@@ -36,20 +34,13 @@ export class GlobalChatComponent implements OnInit, OnDestroy {
     private webSocketService: WebsocketService,
     private userService: UserService,
     private chatMessageService: ChatMessageService,
-    private modalService: ModalService,
-    public translate: TranslateService
+    private modalService: ModalService
   ) { }
 
   async ngOnInit(): Promise<void> {
-    if (!(await this.authService.isAuthenticated())) {
+    if (!await this.authService.isAuthenticated()) {
       this.navCtrl.navigateRoot(['/']);
-      return;
     }
-
-    this.error$ = this.webSocketService.error.subscribe(async () => {
-      await this.authService.logout();
-      this.navCtrl.navigateRoot(['/']);
-    });
 
     this.user = await this.authService.getUser();
 
@@ -73,10 +64,6 @@ export class GlobalChatComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     if (this.chatSubscription) {
       this.chatSubscription.unsubscribe();
-    }
-
-    if (this.error$) {
-      this.error$.unsubscribe();
     }
   }
 
@@ -123,8 +110,8 @@ export class GlobalChatComponent implements OnInit, OnDestroy {
 
         this.modalService.showAlert(
           'error',
-          this.translate.instant('GLOBAL_CHAT.FETCH_MESSAGES'),
-          [{ text: this.translate.instant('COMMON.ACCEPT') }]
+          'Se ha producido un error al obtener todos los mensajes',
+          [{ text: 'Aceptar' }]
         );
 
       }
@@ -134,8 +121,8 @@ export class GlobalChatComponent implements OnInit, OnDestroy {
 
       this.modalService.showAlert(
         'error',
-        this.translate.instant('GLOBAL_CHAT.FETCH_MESSAGES'),
-        [{ text: this.translate.instant('COMMON.ACCEPT') }]
+        'Se ha producido un error al obtener todos los mensajes',
+        [{ text: 'Aceptar' }]
       );
 
     }
