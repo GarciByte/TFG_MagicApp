@@ -5,10 +5,11 @@ import { IonContent, IonHeader, IonToolbar, IonTitle, IonList, IonItem, IonLabel
 import { TranslateModule } from '@ngx-translate/core';
 import { AppConfig } from 'src/app/models/app-config';
 import { ConfigService } from 'src/app/services/config.service';
+import { SidebarComponent } from "../../components/sidebar/sidebar.component";
 
 @Component({
   selector: 'app-settings',
-  imports: [IonIcon, IonToggle, IonLabel, IonItem, IonList, IonTitle, IonToolbar, IonHeader, IonContent, FormsModule, IonSelectOption, IonSelect, TranslateModule, CommonModule],
+  imports: [IonIcon, IonToggle, IonLabel, IonItem, IonList, IonTitle, IonToolbar, IonHeader, IonContent, FormsModule, IonSelectOption, IonSelect, TranslateModule, CommonModule, SidebarComponent],
   templateUrl: './settings.component.html',
   styleUrls: ['./settings.component.css'],
   standalone: true,
