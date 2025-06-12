@@ -11,13 +11,13 @@ ion-content {
 }
 
 .menu-title {
-  color: var(--ion-color-primary);
   font-size: 1.5rem;
   font-weight: 500;
   margin-top: 16px;
   margin-bottom: 24px;
   letter-spacing: 1px;
   text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+  border-bottom: 1px solid var(--ion-input-border-color);
 }
 
 .profile-section {
@@ -32,7 +32,7 @@ ion-content {
   width: 150px;
   height: 150px;
   border-radius: 50%;
-  background-color: rgba(230, 225, 250, 0.1);
+  background-color: rgba(162, 89, 255, 0.1);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -41,6 +41,11 @@ ion-content {
   position: relative;
   border: 2px solid var(--ion-color-primary);
   box-shadow: 0 0 20px rgba(209, 44, 30, 0.3);
+  transition: box-shadow 0.3s ease;
+}
+
+.avatar-container:hover {
+  box-shadow: 0 0 30px rgba(209, 44, 30, 0.5);
 }
 
 .avatar-glow {
@@ -95,11 +100,11 @@ ion-content {
 }
 
 .menu-button {
-  --background: var(--ion-color-secondary);
-  --background-activated: rgba(252, 163, 17, 0.8);
-  --background-hover: rgba(252, 163, 17, 0.9);
+  --background: var(--ion-button-secondary-background);
+  --background-activated: var(--ion-button-secondary-background);
+  --background-hover: var(--ion-button-secondary-background);
   --border-radius: 12px;
-  --box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  --box-shadow: 0 4px 8px rgba(71, 168, 247, 0.3);
   --padding-top: 20px;
   --padding-bottom: 20px;
   --padding-start: 16px;
@@ -108,6 +113,18 @@ ion-content {
   height: auto;
   overflow: hidden;
   position: relative;
+  color: #fff;
+  font-weight: 600;
+  transition: box-shadow 0.3s ease, transform 0.2s ease;
+}
+
+.menu-button:hover {
+  box-shadow: 0 6px 12px rgba(71, 168, 247, 0.5);
+  transform: translateY(-2px);
+}
+
+.menu-button:active::before {
+  transform: translateX(100%) rotate(45deg);
 }
 
 .menu-button::before {
@@ -123,10 +140,9 @@ ion-content {
       rgba(255, 255, 255, 0) 100%);
   transform: translateX(-100%) rotate(45deg);
   transition: transform 0.6s;
-}
-
-.menu-button:active::before {
-  transform: translateX(100%) rotate(45deg);
+  pointer-events: none;
+  border-radius: var(--border-radius);
+  z-index: 0;
 }
 
 .button-content {
@@ -143,7 +159,7 @@ ion-content {
   background-size: contain;
   background-repeat: no-repeat;
   background-position: center;
-  filter: drop-shadow(0 1px 1px rgba(0, 0, 0, 0.3));
+  filter: drop-shadow(0 1px 1px rgba(0, 0, 0, 0.15));
 }
 
 .search-icon {
@@ -194,7 +210,7 @@ ion-content {
   position: absolute;
   bottom: 16px;
   right: 16px;
-  filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.2));
+  filter: drop-shadow(0 1px 2px var(--ion-input-box-shadow));
   opacity: 0.8;
   transition: opacity 0.3s, transform 0.3s;
 }
@@ -206,37 +222,5 @@ ion-content {
 
 .footer-logo img {
   width: 40px;
-  height: 40px;
-}
-
-@media (max-width: 360px) {
-  .avatar-container {
-    width: 120px;
-    height: 120px;
-  }
-
-  .button-row {
-    height: 150px;
-  }
-
-  .menu-button {
-    --padding-top: 12px;
-    --padding-bottom: 12px;
-  }
-}
-
-:root.dark .avatar-container {
-  box-shadow: 0 0 20px rgba(209, 44, 30, 0.5);
-}
-
-:root.dark .menu-title {
-  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
-}
-
-:root.dark .username {
-  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
-}
-
-:root.dark .menu-button {
-  --box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4);
+  height: auto;
 }
