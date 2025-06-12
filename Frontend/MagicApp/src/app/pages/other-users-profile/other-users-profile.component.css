@@ -4,36 +4,37 @@ ion-content {
 }
 
 .header-container {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    padding: 16px;
-    background-color: var(--ion-background-color);
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 16px;
+ border-bottom: 1px solid var(--ion-input-border-color); 
+ background-color: var(--ion-surface-color);
+  
 }
 
 .back-icon {
-    font-size: 24px;
-    color: var(--ion-color-primary);
-    cursor: pointer;
-    transition: transform 0.2s ease;
+  font-size: 24px;
+  color: var(--ion-color-primary);
+  cursor: pointer;
+  transition: transform 0.2s ease;
 }
 
 .back-icon:hover {
-    transform: scale(1.1);
+  transform: scale(1.1);
 }
 
 .page-title {
-    font-size: 1.5rem;
-    margin: 0;
-    color: var(--ion-text-color);
-    font-weight: bold;
+  font-size: 1.5rem;
+  margin: 0;
+  color: var(--ion-heading-color);
+  font-weight: bold;
 }
 
 .button-container {
     display: flex;
     justify-content: center;
-    margin: 16px 0;
-    margin-bottom: 32px;
+    margin: 16px 0 32px 0;
 }
 
 .users-container {
@@ -44,10 +45,14 @@ ion-content {
 
 .user-card {
     --background: var(--ion-card-background);
+    background-color: var(--ion-card-background);
+    color: var(--ion-card-color);
     padding: 1.2rem;
     max-width: 600px;
     width: 100%;
     margin: auto;
+    border-radius: 12px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.05);
 }
 
 .card-inner {
@@ -67,6 +72,9 @@ ion-content {
 .user-avatar {
     width: 100px;
     height: 100px;
+    border-radius: 50%;
+    overflow: hidden;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
 }
 
 .user-avatar img {
@@ -78,18 +86,20 @@ ion-content {
 .user-details {
     margin-left: 16px;
     text-align: left;
+    color: var(--ion-text-color);
 }
 
 .user-details h2 {
-    margin: 0;
-    margin-bottom: 5px;
+    margin: 0 0 5px 0;
     font-size: 1.5rem;
+    font-weight: 600;
+    color: var(--ion-heading-color);
 }
 
 .user-email {
     margin: 0;
     font-size: 1rem;
-    color: var(--ion-color-medium);
+    color: var(--ion-text-color-muted);
 }
 
 .action-buttons {

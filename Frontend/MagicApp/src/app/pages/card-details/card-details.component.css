@@ -6,32 +6,31 @@ ion-content {
 }
 
 .header-container {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    padding: 16px;
-    background-color: var(--ion-background-color);
-    position: sticky;
-    top: 0;
-    z-index: 10;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 16px;
+ border-bottom: 1px solid var(--ion-input-border-color); 
+ background-color: var(--ion-surface-color);
+  
 }
 
 .back-icon {
-    font-size: 24px;
-    color: var(--ion-color-primary);
-    cursor: pointer;
-    transition: transform 0.2s ease, color 0.2s ease;
+  font-size: 24px;
+  color: var(--ion-color-primary);
+  cursor: pointer;
+  transition: transform 0.2s ease;
 }
 
 .back-icon:hover {
-    transform: scale(1.1);
+  transform: scale(1.1);
 }
 
 .page-title {
-    font-size: 1.5rem;
-    margin: 0;
-    color: var(--ion-text-color);
-    font-weight: bold;
+  font-size: 1.5rem;
+  margin: 0;
+  color: var(--ion-heading-color);
+  font-weight: bold;
 }
 
 .detail-container {
@@ -43,12 +42,29 @@ ion-content {
     margin: 32px auto;
     border-radius: 12px;
     padding: 32px;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 4px 20px var(--ion-input-box-shadow);
     transition: box-shadow 0.3s ease;
+    animation: fadeInUp 0.6s ease-out;
+    overflow-y: auto; 
+    scrollbar-width: thin;
+    scrollbar-color: rgba(var(--ion-color-primary-rgb), 0.4) transparent;
+}
+
+.detail-container::-webkit-scrollbar {
+    width: 6px;
+}
+
+.detail-container::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.detail-container::-webkit-scrollbar-thumb {
+    background-color: rgba(var(--ion-color-primary-rgb), 0.4);
+    border-radius: 3px;
 }
 
 .detail-container:hover {
-    box-shadow: 0 6px 25px rgba(0, 0, 0, 0.15);
+    box-shadow: 0 6px 25px var(--ion-input-box-shadow);
 }
 
 .detail-main {
@@ -69,12 +85,12 @@ ion-content {
     width: 100%;
     max-width: 350px;
     border-radius: 8px;
-    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 4px 16px var(--ion-input-box-shadow);
     transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
 .card-image:hover {
-    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+    box-shadow: 0 8px 24px var(--ion-input-box-shadow);
 }
 
 .card-title {
@@ -102,6 +118,8 @@ ion-content {
     border-radius: 8px;
     background: rgba(var(--ion-color-primary-rgb), 0.05);
     transition: background-color 0.3s ease;
+    animation: fadeInUp 0.6s ease-out;
+    animation-fill-mode: both;
 }
 
 .info-item:hover {
@@ -110,6 +128,38 @@ ion-content {
 
 .info-item.full-width {
     grid-column: 1 / -1;
+}
+
+.info-item:nth-child(1) {
+    animation-delay: 0.1s;
+}
+
+.info-item:nth-child(2) {
+    animation-delay: 0.2s;
+}
+
+.info-item:nth-child(3) {
+    animation-delay: 0.3s;
+}
+
+.info-item:nth-child(4) {
+    animation-delay: 0.4s;
+}
+
+.info-item:nth-child(5) {
+    animation-delay: 0.5s;
+}
+
+.info-item:nth-child(6) {
+    animation-delay: 0.6s;
+}
+
+.info-item:nth-child(7) {
+    animation-delay: 0.7s;
+}
+
+.info-item:nth-child(8) {
+    animation-delay: 0.8s;
 }
 
 .mana-symbol {
@@ -172,10 +222,15 @@ ion-content {
     transition: all 0.3s ease;
     position: relative;
     overflow: hidden;
+    outline-offset: 2px;
 }
 
 .ai-analysis-button:hover {
     box-shadow: 0 6px 20px rgba(var(--ion-color-primary-rgb), 0.3);
+}
+
+.ai-analysis-button:focus {
+    outline: 2px solid var(--ion-color-primary);
 }
 
 .ai-analysis-button::before {
@@ -293,6 +348,15 @@ ion-content {
     }
 }
 
+@media (max-width: 360px) {
+    .detail-container {
+        padding: 12px 8px;
+    }
+    .card-title {
+        font-size: 1.2rem;
+    }
+}
+
 @keyframes fadeInUp {
     from {
         opacity: 0;
@@ -303,45 +367,4 @@ ion-content {
         opacity: 1;
         transform: translateY(0);
     }
-}
-
-.detail-container {
-    animation: fadeInUp 0.6s ease-out;
-}
-
-.info-item {
-    animation: fadeInUp 0.6s ease-out;
-    animation-fill-mode: both;
-}
-
-.info-item:nth-child(1) {
-    animation-delay: 0.1s;
-}
-
-.info-item:nth-child(2) {
-    animation-delay: 0.2s;
-}
-
-.info-item:nth-child(3) {
-    animation-delay: 0.3s;
-}
-
-.info-item:nth-child(4) {
-    animation-delay: 0.4s;
-}
-
-.info-item:nth-child(5) {
-    animation-delay: 0.5s;
-}
-
-.info-item:nth-child(6) {
-    animation-delay: 0.6s;
-}
-
-.info-item:nth-child(7) {
-    animation-delay: 0.7s;
-}
-
-.info-item:nth-child(8) {
-    animation-delay: 0.8s;
 }

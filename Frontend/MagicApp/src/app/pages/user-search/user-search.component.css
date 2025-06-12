@@ -4,29 +4,31 @@ ion-content {
 }
 
 .header-container {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    padding: 16px;
-    background-color: var(--ion-background-color);
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 16px;
+ border-bottom: 1px solid var(--ion-input-border-color); 
+ background-color: var(--ion-surface-color);
+  
 }
 
 .back-icon {
-    font-size: 24px;
-    color: var(--ion-color-primary);
-    cursor: pointer;
-    transition: transform 0.2s ease;
+  font-size: 24px;
+  color: var(--ion-color-primary);
+  cursor: pointer;
+  transition: transform 0.2s ease;
 }
 
 .back-icon:hover {
-    transform: scale(1.1);
+  transform: scale(1.1);
 }
 
 .page-title {
-    font-size: 1.5rem;
-    margin: 0;
-    color: var(--ion-text-color);
-    font-weight: bold;
+  font-size: 1.5rem;
+  margin: 0;
+  color: var(--ion-heading-color);
+  font-weight: bold;
 }
 
 .button-container {
@@ -41,6 +43,17 @@ ion-content {
     --padding-bottom: 4px;
     --padding-start: 12px;
     --padding-end: 12px;
+    --background: var(--ion-button-secondary-background);
+    --color: var(--ion-button-color);
+    font-weight: 600;
+    border-radius: 8px;
+    box-shadow: 0 3px 6px rgba(255, 255, 255, 0.15);
+    transition: background-color 0.2s ease, transform 0.2s ease;
+}
+
+.button-container ion-button:hover {
+    --background: var(--ion-color-tertiary);
+    transform: scale(1.02);
 }
 
 .search-container {
@@ -52,11 +65,23 @@ ion-content {
 
 .search-container ion-searchbar {
     width: 50%;
+    --background: var(--ion-input-background);
+    --color: var(--ion-input-color);
+    --box-shadow: 0 0 6px rgba(0, 0, 0, 0.05);
+    border-radius: 10px;
 }
 
 .search-container ion-button {
     margin-left: 8px;
     flex-shrink: 0;
+    --background: var(--ion-color-primary);
+    --color: var(--ion-button-color);
+    font-weight: 600;
+    border-radius: 6px;
+}
+
+.search-container ion-button:hover {
+    --background: var(--ion-color-tertiary);
 }
 
 .message {
@@ -83,11 +108,14 @@ ion-content {
     flex-direction: column;
     align-items: center;
     max-width: 260px;
+    border-radius: 12px;
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.08);
+    color: var(--ion-card-color);
 }
 
 .user-card:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    transform: translateY(-3px);
+    box-shadow: 0 6px 14px rgba(30, 41, 59, 0.15); /* azul oscuro translúcido */
 }
 
 .user-header {
@@ -110,7 +138,7 @@ ion-card-title {
     color: var(--ion-color-primary);
     margin: 0;
     padding: 0;
-    line-height: 1;
+    line-height: 1.1;
 }
 
 @media (max-width: 600px) {
