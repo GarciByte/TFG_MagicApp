@@ -31,8 +31,7 @@ export class ConfigService {
   async init(): Promise<void> {
     const saved = await this.storage.getObject<AppConfig>(CONFIG_KEY);
     const cfg = saved ?? await this.detectNativeConfig();
-    await this.storage.saveObject(CONFIG_KEY, cfg);
-    this.applyConfig(cfg);
+    await this.updateConfig(cfg);
   }
 
   // Cambiar el idioma

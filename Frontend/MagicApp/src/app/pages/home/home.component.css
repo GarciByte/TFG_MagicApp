@@ -2,7 +2,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  --background: var(--ion-background-color);
+  background: var(--ion-background-color);
 }
 
 .home-wrapper {
@@ -11,7 +11,7 @@
 }
 
 .home-card {
-  --background: transparent;
+  background: transparent;
   box-shadow: none;
   margin: 0;
   border-radius: 0;
@@ -23,7 +23,7 @@
   align-items: center;
   text-align: center;
   gap: 20px;
-  padding: 32px 0px;
+  padding: 32px 0;
 }
 
 .logo-section {
@@ -56,6 +56,7 @@
   letter-spacing: -0.02em;
   line-height: 1.1;
   color: var(--ion-color-primary);
+  text-shadow: 0 1px 2px rgba(209, 44, 30, 0.4);
 }
 
 .subtitle {
@@ -64,14 +65,14 @@
   font-style: italic;
   opacity: 0.9;
   line-height: 1.4;
-  color: var(--ion-text-color);
+  color: var(--ion-text-color-muted);
 }
 
 .features-list {
   display: flex;
   flex-direction: column;
   align-items: center;
-  --background: transparent;
+  background: transparent;
   box-shadow: none;
   width: 100%;
   max-width: 380px;
@@ -82,21 +83,20 @@
 }
 
 .feature-item {
-  --background: var(--ion-card-background);
-  --color: var(--ion-text-color);
-  --padding-top: 8px;
-  --padding-bottom: 8px;
-  --padding-start: 20px;
-  --padding-end: 20px;
-  --border-color: var(--ion-color-light-shade);
-  border-bottom: 1px solid var(--ion-color-light-shade);
+  background: var(--ion-card-background);
+  color: var(--ion-text-color);
+  padding: 8px 20px;
+  border-bottom: 1px solid rgba(209, 44, 30, 0.1);
   width: 100%;
   max-width: 380px;
   display: flex;
   align-items: center;
   justify-content: flex-start;
-  background: var(--ion-card-background);
-  color: var(--ion-text-color);
+  transition: background-color 0.2s ease;
+}
+
+.feature-item:hover {
+  background-color: rgba(209, 44, 30, 0.05);
 }
 
 .feature-item ion-icon {
@@ -126,12 +126,11 @@
 }
 
 .login-button {
-  --background: var(--ion-color-primary);
-  --color: white;
-  --border-radius: 24px;
-  --padding-top: 16px;
-  --padding-bottom: 16px;
-  --box-shadow: 0 6px 18px rgba(209, 44, 30, 0.25);
+  background: var(--ion-button-background);
+  color: var(--ion-button-color);
+  border-radius: 24px;
+  padding: 16px 0;
+  box-shadow: 0 6px 18px rgba(209, 44, 30, 0.25);
   width: 60%;
   max-width: 260px;
   font-size: 1.2rem;
@@ -141,7 +140,7 @@
 }
 
 .login-button:hover {
-  --box-shadow: 0 8px 24px rgba(209, 44, 30, 0.35);
+  box-shadow: 0 8px 24px rgba(209, 44, 30, 0.35);
   transform: translateY(-1px);
 }
 
@@ -155,21 +154,19 @@
 }
 
 .home-container ion-text[color="medium"] {
-  --color: var(--ion-text-color);
+  color: var(--ion-text-color-muted);
   opacity: 0.7;
 }
 
 .home-container ion-item {
-  --background: var(--ion-card-background);
-  --color: var(--ion-text-color);
-  --border-color: transparent;
+  background: var(--ion-card-background);
+  color: var(--ion-text-color);
+  border-color: transparent;
 }
 
 .home-container ion-item,
 .home-container ion-list {
-  --background: transparent !important;
   background: transparent !important;
-  background-color: transparent !important;
   box-shadow: none !important;
 }
 
@@ -198,10 +195,7 @@
   }
 
   .feature-item {
-    --padding-top: 12px;
-    --padding-bottom: 12px;
-    --padding-start: 16px;
-    --padding-end: 16px;
+    padding: 12px 16px;
     border-bottom-width: 1px;
   }
 
@@ -217,8 +211,7 @@
   .login-button {
     width: 80%;
     font-size: 1.1rem;
-    --padding-top: 14px;
-    --padding-bottom: 14px;
+    padding: 14px 0;
   }
 
   .login-button ion-icon {

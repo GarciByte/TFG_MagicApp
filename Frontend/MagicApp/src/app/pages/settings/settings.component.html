@@ -1,3 +1,27 @@
-<p>
-  settings works!
-</p>
+<ion-content [fullscreen]="true" class="ion-padding">
+  <div class="header-container">
+    <ion-icon name="arrow-back-outline" class="back-icon" (click)="navCtrl.navigateRoot(['/menu'])"></ion-icon>
+    <h1 class="page-title">{{ 'SETTINGS.TITLE' | translate }}</h1>
+  </div>
+
+  <ion-list lines="inset">
+
+    <!-- Tema -->
+    <ion-item>
+      <ion-label>{{ 'SETTINGS.THEME' | translate }}</ion-label>
+      <ion-toggle slot="end" [checked]="config.theme === 'dark'" (ionChange)="toggleTheme($event.detail.checked)">
+      </ion-toggle>
+    </ion-item>
+
+    <!-- Idioma -->
+    <ion-item>
+      <ion-label>{{ 'SETTINGS.LANGUAGE' | translate }}</ion-label>
+      <ion-select interface="popover" [value]="config.lang" (ionChange)="changeLanguage($event.detail.value)">
+        <ion-select-option value="es">Español</ion-select-option>
+        <ion-select-option value="en">English</ion-select-option>
+      </ion-select>
+    </ion-item>
+
+  </ion-list>
+</ion-content>
+<app-sidebar></app-sidebar>

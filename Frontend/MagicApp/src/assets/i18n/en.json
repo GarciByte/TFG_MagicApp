@@ -49,6 +49,11 @@
             "PASSWORD_MISMATCH": "Passwords must match."
         }
     },
+    "SETTINGS": {
+        "TITLE": "Settings",
+        "THEME": "Dark theme",
+        "LANGUAGE": "Language"
+    },
     "REPORT": {
         "ALERT_TITLE": "Report {{nickname}}",
         "MESSAGE": "Write the reason for your report",
@@ -90,7 +95,12 @@
         "ADMIN_PROFILE": "ADMIN PROFILE",
         "LOGOUT": "LOGOUT",
         "RENEW_TOKEN": "Unable to renew user token",
-        "LOGOUT_SUCCESS": "You have successfully logged out"
+        "LOGOUT_SUCCESS": "You have successfully logged out",
+        "SEARCH_DECKS": "Search for decks"
+    },
+    "SIDEBAR": {
+        "SETTINGS": "Settings",
+        "LOGOUT": "Log out"
     },
     "COMMON": {
         "ACCEPT": "Accept",
@@ -299,7 +309,9 @@
     "DECKS": {
         "TITLE": "Decks",
         "PAGE_TITLE": "Decks",
-        "CARD_COUNT": "{{count}} cards"
+        "CARD_COUNT": "{{count}} cards",
+        "SEARCH_PLACEHOLDER": "Type a name...",
+        "CARDS": "cards"
     },
     "DECK_CARDS": {
         "PAGE_TITLE": "Deck Cards",
@@ -367,12 +379,6 @@
         "DEFEATS": "Defeats",
         "VICTORY_RATE": "Victory Rate"
     },
-    "RARITY": {
-        "COMMON": "Common",
-        "UNCOMMON": "Uncommon",
-        "RARE": "Rare",
-        "MYTHIC": "Mythic"
-    },
     "COLOR": {
         "WHITE": "White",
         "BLUE": "Blue",
@@ -399,6 +405,19 @@
         "PREVIOUS": "Previous",
         "NEXT": "Next"
     },
+    "RARITY": {
+        "COMMON": "Common",
+        "UNCOMMON": "Uncommon",
+        "RARE": "Rare",
+        "MYTHIC": "Mythic"
+    },
+    "SUPERTYPE": {
+        "BASIC": "Basic",
+        "LEGENDARY": "Legendary",
+        "SNOW": "Snow",
+        "WORLD": "World",
+        "ONGOING": "Ongoing"
+    },
     "CARD_TYPE": {
         "CREATURE": "Creature",
         "INSTANT": "Instant",
@@ -406,6 +425,7 @@
         "ENCHANTMENT": "Enchantment",
         "ARTIFACT": "Artifact",
         "LAND": "Land",
-        "PLANESWALKER": "Planeswalker"
+        "PLANESWALKER": "Planeswalker",
+        "TRIBAL": "Tribal"
     }
 }

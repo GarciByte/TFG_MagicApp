@@ -78,6 +78,14 @@
         </div>
       </ion-button>
 
+      <!-- Buscador para ver todos los mazos -->
+      <ion-button class="menu-button full-width" (click)="navCtrl.navigateRoot(['/all-decks'])">
+        <div class="button-content">
+          <div class="magic-icon"></div>
+          <span>{{ 'MENU.SEARCH_DECKS' | translate }}</span>
+        </div>
+      </ion-button>
+
       <!-- Perfil del usuario -->
       <ion-button class="menu-button full-width" (click)="navCtrl.navigateRoot(['/user-profile'])">
         <div class="button-content">
@@ -87,15 +95,16 @@
       </ion-button>
 
       <!-- Perfil admin -->
+      @if (isAdmin()) {
       <ion-button class="menu-button full-width" (click)="navCtrl.navigateRoot(['/admin-profile'])">
         <div class="button-content">
           <div class="magic-icon"></div>
           <span>{{ 'MENU.ADMIN_PROFILE' | translate }}</span>
         </div>
       </ion-button>
+      }
 
     </div>
   </div>
-
-  <app-sidebar></app-sidebar>
 </ion-content>
+<app-sidebar></app-sidebar>

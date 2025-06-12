@@ -18,6 +18,12 @@ export class DeckServiceService {
     return response;
   }
 
+  // Obtener todos los decks
+  async GetAllDecks(query: string): Promise<Result<DeckResponse[]>> {
+    const response = await this.api.get<DeckResponse[]>(`Deck/GetAllDecks?query=${query}`);
+    return response;
+  }
+
   // Obtener todos los decks de un usuario
   async GetAllUserDecks(userId: number): Promise<Result<DeckResponse[]>> {
     const response = await this.api.get<DeckResponse[]>(`Deck/GetAllUserDecks?userId=${userId}`);
@@ -72,7 +78,7 @@ export class DeckServiceService {
 
   // Check deck size
   deckSize(deckCards: CardDetail[]): Boolean {
-    if (/* deckCards.length >= 60 &&  */deckCards.length <= 150) {
+    if (deckCards.length >= 1 && deckCards.length <= 150) {
       return true
     } else {
       return false

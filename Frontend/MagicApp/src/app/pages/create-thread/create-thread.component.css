@@ -8,8 +8,9 @@ ion-content {
     align-items: center;
     gap: 12px;
     padding: 16px;
-    background-color: var(--ion-background-color);
-    margin-bottom: 10px;
+    background-color: var(--ion-surface-color);
+    border-bottom: 1px solid var(--ion-input-border-color);
+    margin-bottom: 5px;
 }
 
 .back-icon {
@@ -29,7 +30,7 @@ ion-content {
     justify-content: center;
     font-size: 1.5rem;
     margin: 0;
-    color: var(--ion-text-color);
+    color: var(--ion-heading-color);
     font-weight: bold;
 }
 
@@ -52,16 +53,22 @@ ion-content {
     margin: 0 auto 2.5rem;
     padding: 2rem 1.5rem;
     border-radius: 12px;
-    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 8px 24px var(--ion-input-box-shadow);
+    color: var(--ion-card-color);
 }
 
 .page-icon {
     margin-right: 7px;
     font-size: 1.8rem;
+    color: var(--ion-color-primary);
 }
 
 .page-title :last-child {
     margin-bottom: 25px;
+}
+
+.title-label {
+    margin-bottom: 0.8rem;
 }
 
 .input-item {
@@ -70,14 +77,15 @@ ion-content {
     --inner-padding-start: 0.75rem;
     --inner-padding-end: 0.75rem;
     margin-bottom: 1.5rem;
-    --background: #f6f4f4;
+    --background: var(--ion-input-background);
     --border-radius: 12px;
-    --highlight-color-focused: #d12c1e;
-    --border-color: #666;
+    --highlight-color-focused: var(--ion-color-danger);
+    --border-color: var(--ion-input-border-color);
+    color: var(--ion-input-color);
 }
 
 .input-item.ion-focused {
-    box-shadow: 0 0 0 2px #d12c1e;
+    box-shadow: 0 0 0 2px var(--ion-color-danger);
     border-radius: 4px;
 }
 
@@ -100,10 +108,16 @@ ion-content {
     --padding-bottom: 6px;
     --padding-start: 16px;
     --padding-end: 16px;
-    --background: var(--ion-color-secondary);
-    --color: #ffffff;
+    --background: var(--ion-button-secondary-background);
+    --color: var(--ion-button-color);
     font-weight: 500;
     border-radius: 8px;
+    transition: background-color 0.3s ease;
+}
+
+.submit-container ion-button:hover {
+    --background: var(--ion-color-primary);
+    --color: var(--ion-button-color);
 }
 
 @media (max-width: 480px) {

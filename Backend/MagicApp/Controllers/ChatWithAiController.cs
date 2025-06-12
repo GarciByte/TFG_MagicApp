@@ -1,5 +1,4 @@
-﻿using MagicApp.Models.Dtos.IA;
-using MagicApp.Services.IA;
+﻿using MagicApp.Services.IA;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -11,14 +10,12 @@ namespace MagicApp.Controllers;
 public class ChatWithAiController : ControllerBase
 {
     private readonly ChatWithAiMessageService _chatService;
-    private readonly ChatWithAiService _chatWithAiService;
     private readonly ILogger<ChatWithAiController> _logger;
 
-    public ChatWithAiController(ChatWithAiMessageService chatService, ILogger<ChatWithAiController> logger, ChatWithAiService chatWithAiService)
+    public ChatWithAiController(ChatWithAiMessageService chatService, ILogger<ChatWithAiController> logger)
     {
         _chatService = chatService;
         _logger = logger;
-        _chatWithAiService = chatWithAiService;
     }
 
     // Obtener todos los mensajes del chat

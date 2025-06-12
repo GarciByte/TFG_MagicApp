@@ -1,33 +1,35 @@
 .header-container {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    padding: 16px;
-    --background: var(--ion-background-color);
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 16px;
+ border-bottom: 1px solid var(--ion-input-border-color); 
+ background-color: var(--ion-surface-color);
+  
 }
 
 .back-icon {
-    font-size: 24px;
-    color: var(--ion-color-primary);
-    cursor: pointer;
-    transition: transform 0.2s ease;
+  font-size: 24px;
+  color: var(--ion-color-primary);
+  cursor: pointer;
+  transition: transform 0.2s ease;
 }
 
 .back-icon:hover {
-    transform: scale(1.1);
+  transform: scale(1.1);
 }
 
 .page-title {
-    font-size: 1.5rem;
-    margin: 0;
-    color: var(--ion-text-color);
-    font-weight: bold;
+  font-size: 1.5rem;
+  margin: 0;
+  color: var(--ion-heading-color);
+  font-weight: bold;
 }
 
 .cards-container {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-    grid-gap: 1.5rem;
+    gap: 1.5rem;
     padding: 1.5rem;
 }
 
@@ -43,21 +45,32 @@
     --padding-bottom: 4px;
     --padding-start: 12px;
     --padding-end: 12px;
+    --background: var(--ion-button-background);
+    --color: var(--ion-button-color);
+    border-radius: 8px;
+    transition: background-color 0.3s ease;
+}
+
+.button-container ion-button:hover {
+    --background: var(--ion-color-secondary);
+    --color: var(--ion-button-color);
 }
 
 .chat-card {
-    --background: var(--ion-card-background);
+    background-color: var(--ion-card-background);
     padding: 1.2rem;
     cursor: pointer;
     transition: transform 0.12s ease-in-out, box-shadow 0.12s ease-in-out;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
+    border-radius: 12px;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.05);
 }
 
 .chat-card:hover {
     transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 4px 12px var(--ion-input-box-shadow);
 }
 
 .chat-card-header {
@@ -68,14 +81,17 @@
 }
 
 .chat-card-header ion-avatar {
-    margin-right: 0px;
-    margin-inline-end: 0px;
+    margin-right: 0;
+    margin-inline-end: 0;
     margin-bottom: 24px;
+    border-radius: 50%;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
 }
 
 .chat-header-text {
     display: flex;
     align-items: center;
+    gap: 12px;
 }
 
 .chat-avatar {
@@ -86,10 +102,7 @@
     position: absolute;
     top: 0.5rem;
     right: 0.5rem;
-    --padding-start: 0;
-    --padding-end: 0;
-    --padding-top: 0;
-    --padding-bottom: 0;
+    --padding: 0;
 }
 
 ion-card-title {
@@ -122,10 +135,8 @@ ion-card-title {
     padding: 0;
     width: 100%;
     text-align: center;
-    display: block;
     display: -webkit-box;
     -webkit-box-orient: vertical;
-    line-clamp: 2;
     -webkit-line-clamp: 2;
     overflow: hidden;
     text-overflow: ellipsis;

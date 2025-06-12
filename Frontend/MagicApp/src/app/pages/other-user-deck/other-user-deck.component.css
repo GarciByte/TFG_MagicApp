@@ -7,7 +7,9 @@ ion-content {
   align-items: center;
   gap: 12px;
   padding: 16px;
-  background-color: var(--ion-background-color);
+ border-bottom: 1px solid var(--ion-input-border-color); 
+ background-color: var(--ion-surface-color);
+  
 }
 
 .back-icon {
@@ -24,16 +26,18 @@ ion-content {
 .page-title {
   font-size: 1.5rem;
   margin: 0;
-  color: var(--ion-text-color);
+  color: var(--ion-heading-color);
   font-weight: bold;
 }
 
 .content-container {
   padding: 16px;
+  background-color: var(--ion-background-color);
+  color: var(--ion-text-color);
 }
 
 .deck-title {
-  color: #9e9e9e;
+  color: var(--ion-text-color);
   font-size: 0.9rem;
   font-weight: 500;
   margin-bottom: 16px;
@@ -53,13 +57,15 @@ ion-content {
   padding: 16px;
   margin-bottom: 24px;
   position: relative;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  background-color: var(--ion-card-background);
+  color: var(--ion-text-color);
   cursor: pointer;
-  transition: transform 0.2s ease;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
 .deck-card:hover {
   transform: scale(1.03);
+  box-shadow: 0 4px 12px rgba(209, 44, 30, 0.3);
 }
 
 ion-col {
@@ -67,7 +73,7 @@ ion-col {
 }
 
 .add-card {
-  background-color: #e0e0e0;
+  background-color: var(--ion-card-background);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -83,12 +89,12 @@ ion-col {
 
 .add-icon ion-icon {
   font-size: 50px;
-  color: #9e9e9e;
+  color: var(--ion-text-color);
 }
 
 .deck-icon {
   font-size: 2.5rem;
-  color: #3880ff;
+  color: var(--ion-color-primary);
   margin-bottom: 12px;
 }
 
@@ -97,12 +103,12 @@ ion-col {
   font-weight: 500;
   text-align: center;
   margin-bottom: 6px;
-  color: #1a1a1a;
+  color: var(--ion-text-color);
 }
 
 .deck-cards {
   font-size: 0.9rem;
-  color: #666666;
+  color: var(--ion-text-color-muted);
   text-align: center;
   display: flex;
   align-items: center;
@@ -112,24 +118,5 @@ ion-col {
 .deck-cards ion-icon {
   font-size: 1.1rem;
   vertical-align: middle;
-  color: #9e9e9e;
-}
-
-.footer-logo {
-  position: absolute;
-  bottom: 16px;
-  right: 16px;
-}
-
-.footer-logo img {
-  width: 32px;
-  height: 32px;
-}
-
-.no-decks-message {
-  text-align: center;
-  font-size: 1.1rem;
-  color: #777;
-  margin-top: 2rem;
-  font-style: italic;
+  color: var(--ion-color-secondary);
 }

@@ -115,8 +115,9 @@ En el cliente se empleará una persistencia de datos para almacenar opciones de 
 - **8/06/2025**: Flechas de navegación entre vistas.
 - **9/06/2025**: Vistas para ver mazos de otros usuarios.
 - **10/06/2025**: Menu desplegable completado + eliminar cartas de un mazo.
-- **11/06/2025**: Vista de ajuste + otros cambios.
+- **11/06/2025**: Vista de ajustes y vista de ver todos los mazos + ajustes estéticos
 - **12/06/2025**: Cambios en los estilos de la aplicación(CSS) + creación del informe de la aplicación.
+
 ---
 
 ## Bibliografía

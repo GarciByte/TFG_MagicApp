@@ -3,7 +3,9 @@
     align-items: center;
     gap: 12px;
     padding: 16px;
-    --background: var(--ion-background-color);
+    border-bottom: 1px solid var(--ion-input-border-color);
+    background-color: var(--ion-surface-color);
+    margin-bottom: 15px;
 }
 
 .back-icon {
@@ -20,13 +22,14 @@
 .page-title {
     font-size: 1.5rem;
     margin: 0;
-    color: var(--ion-text-color);
+    color: var(--ion-heading-color);
     font-weight: bold;
 }
 
 ion-content {
     --background: var(--ion-background-color);
     padding: 32px 16px;
+    color: var(--ion-text-color);
 }
 
 .button-container {
@@ -50,7 +53,9 @@ ion-content {
     margin: 0 auto 2.5rem;
     padding: 2rem 1.5rem;
     border-radius: 12px;
-    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
+    box-shadow: 0 8px 24px var(--ion-input-box-shadow);
+    color: var(--ion-text-color);
+    background-color: var(--ion-card-background);
 }
 
 .card-users ion-card-subtitle,
@@ -72,6 +77,33 @@ ion-content {
 .filter-pagination-row ion-searchbar {
     flex: 1;
     margin: 0;
+    --placeholder-color: var(--placeholder-color);
+    color: var(--ion-text-color);
+    --background: var(--ion-background-color);
+    border: 1px solid var(--ion-color-medium);
+    border-radius: 8px;
+}
+
+input::placeholder,
+textarea::placeholder {
+    color: var(--placeholder-color);
+    opacity: 1;
+}
+
+.filter-pagination-row ion-searchbar::part(input)::-webkit-input-placeholder {
+    color: var(--placeholder-color);
+}
+
+.filter-pagination-row ion-searchbar::part(input):-moz-placeholder {
+    color: var(--placeholder-color);
+}
+
+.filter-pagination-row ion-searchbar::part(input)::-moz-placeholder {
+    color: var(--placeholder-color);
+}
+
+.filter-pagination-row ion-searchbar::part(input):-ms-input-placeholder {
+    color: var(--placeholder-color);
 }
 
 .pagination-select-container {
@@ -82,11 +114,14 @@ ion-content {
     --placeholder-color: var(--ion-color-medium);
     --color: var(--ion-color-dark);
     cursor: pointer;
+    color: var(--ion-color-dark);
+    background-color: var(--ion-background-color);
 }
 
 .custom-select::part(container),
 .custom-select::part(icon) {
     cursor: pointer;
+    color: var(--ion-color-dark);
 }
 
 .table-container {
@@ -102,13 +137,14 @@ ion-content {
     max-width: 100%;
     font-size: 1rem;
     table-layout: fixed;
+    color: var(--ion-text-color);
 }
 
 .user-table th,
 .user-table td,
 .report-table th,
 .report-table td {
-    border: 2px solid #817f7f;
+    border: 2px solid var(--ion-color-medium);
     padding: 1rem;
     text-align: center;
     white-space: nowrap;
@@ -117,8 +153,9 @@ ion-content {
 
 .user-table thead th,
 .report-table thead th {
-    background-color: #f0f0f0;
+    background-color: var(--ion-background-color);
     font-weight: 600;
+    color: var(--ion-text-color);
 }
 
 .report-table th.reporter,
@@ -142,6 +179,7 @@ ion-content {
     overflow-y: auto;
     padding-right: 0.5rem;
     box-sizing: border-box;
+    color: var(--ion-text-color);
 }
 
 .reason-content::-webkit-scrollbar {
@@ -175,19 +213,20 @@ ion-content {
 }
 
 .report-table .actions ion-button:first-child {
-    --background: #007bff;
+    --background: var(--ion-color-primary);
+    color: var(--ion-text-color);
 }
 
 .report-table .actions ion-button:first-child:hover {
-    --background: #0069d9;
+    --background: var(--ion-color-primary-shade);
 }
 
 .role-button {
-    --background: #28a745;
+    --background: var(--ion-color-success);
 }
 
 .role-button:hover {
-    --background: #218838;
+    --background: var(--ion-color-success-shade);
 }
 
 .ban-button {
@@ -195,7 +234,7 @@ ion-content {
 }
 
 .ban-button:hover {
-    --background: #c82333;
+    --background: var(--ion-color-danger-shade);
 }
 
 ion-button[disabled] {
@@ -204,13 +243,13 @@ ion-button[disabled] {
 }
 
 .report-table td.status.InReview {
-    background-color: #fff3cd;
-    color: #856404;
+    background-color: var(--ion-background-color);
+    color: var(--ion-color-warning);
 }
 
 .report-table td.status.Completed {
-    background-color: #d4edda;
-    color: #155724;
+    background-color: var(--ion-background-color);
+    color: var(--ion-color-success);
 }
 
 .pagination-container {
@@ -228,7 +267,7 @@ ion-button[disabled] {
     --padding-start: 8px;
     --padding-end: 8px;
     width: 46px;
-    height: 46;
+    height: 46px;
     cursor: pointer;
     transition: all 0.2s ease;
     font-size: 2rem;
@@ -279,6 +318,7 @@ ion-button[disabled] {
 }
 
 @media (max-width: 480px) {
+
     .user-table th,
     .user-table td,
     .report-table th,
@@ -314,5 +354,20 @@ ion-button[disabled] {
     .page-info {
         font-size: 0.75rem;
         min-width: 90px;
+    }
+}
+
+:host-context(.dark) {
+
+    ion-select.custom-select::part(text) {
+        color: var(--ion-text-color) !important;
+    }
+
+    ion-select-option::part(text) {
+        color: #ffffff !important;
+    }
+
+    .page-info {
+        color: #cccccc !important;
     }
 }

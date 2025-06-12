@@ -1,6 +1,7 @@
 ion-content {
     --background: var(--ion-background-color);
     padding: 32px 16px;
+    color: var(--ion-text-color);
 }
 
 .header-container {
@@ -8,7 +9,9 @@ ion-content {
     align-items: center;
     gap: 12px;
     padding: 16px;
-    background-color: var(--ion-background-color);
+    border-bottom: 1px solid var(--ion-input-border-color);
+    background-color: var(--ion-surface-color);
+    margin-bottom: 15px;
 }
 
 .back-icon {
@@ -25,21 +28,19 @@ ion-content {
 .page-title {
     font-size: 1.5rem;
     margin: 0;
-    color: var(--ion-text-color);
+    color: var(--ion-heading-color);
     font-weight: bold;
 }
 
 .button-container {
     display: flex;
     justify-content: center;
-    margin: 16px 0;
-    margin-bottom: 32px;
+    margin: 16px 0 32px;
 }
 
 .users-container {
     display: flex;
     flex-direction: column;
-    justify-content: center;
     align-items: center;
     padding: 0 1.5rem;
 }
@@ -48,11 +49,13 @@ ion-content {
 .card-password {
     --background: var(--ion-card-background);
     width: 100%;
-    max-width: 600px;
+    max-width: 750px;
     margin: 0 auto 2.5rem;
     padding: 2rem 1.5rem;
     border-radius: 12px;
-    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
+    box-shadow: 0 8px 24px var(--ion-input-box-shadow);
+    color: var(--ion-text-color);
+    background-color: var(--ion-card-background);
 }
 
 .card-profile ion-card-title,
