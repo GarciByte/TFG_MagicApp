@@ -115,7 +115,7 @@ ion-content {
 
 .user-card:hover {
     transform: translateY(-3px);
-    box-shadow: 0 6px 14px rgba(30, 41, 59, 0.15); /* azul oscuro translúcido */
+    box-shadow: 0 6px 14px rgba(30, 41, 59, 0.15);
 }
 
 .user-header {

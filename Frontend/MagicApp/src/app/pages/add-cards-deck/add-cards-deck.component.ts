@@ -123,7 +123,7 @@ export class AddCardsDeckComponent implements OnInit, OnDestroy {
 
     this.debounceTimeout = setTimeout(() => {
       this.search();
-    }, 300); // Espera 3 segundos
+    }, 300); // 3 segundos
   }
 
   // Buscar cartas por nombre

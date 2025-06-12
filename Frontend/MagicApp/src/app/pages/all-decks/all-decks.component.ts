@@ -67,7 +67,7 @@ export class AllDecksComponent implements OnInit, OnDestroy {
 
     this.debounceTimeout = setTimeout(() => {
       this.getAllDecks();
-    }, 300); // Espera 3 segundos
+    }, 300); // 3 segundos
   }
 
   viewDeck(id: number) {
