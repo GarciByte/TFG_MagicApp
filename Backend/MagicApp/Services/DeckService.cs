@@ -61,14 +61,14 @@ public class DeckService
         updatedDeck.Name = model.Name;
         updatedDeck.Description = model.Description;
 
-        // Limpiar todas las cartas actuales del mazo para después agregar las nuevas (evita confusión con duplicados)
+        // Limpiar todas las cartas actuales del mazo para después agregar las nuevas
         foreach (var card in updatedDeck.DeckCards.ToList())
         {
             updatedDeck.DeckCards.Remove(card);
             _unitOfWork.DeckRepository.DeleteCard(card);
         }
 
-        // Añadir todas las cartas que vienen en el modelo, sin filtrar duplicados
+        // Añadir todas las cartas que vienen en el modelo
         foreach (var newCard in model.DeckCards)
         {
             updatedDeck.DeckCards.Add(newCard);

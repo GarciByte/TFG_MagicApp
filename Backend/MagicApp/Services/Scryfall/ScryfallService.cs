@@ -220,7 +220,7 @@ public class ScryfallService
     {
         var parts = new List<string>();
 
-        // Nombre o texto libre
+        // Nombre
         if (!string.IsNullOrWhiteSpace(name))
         {
             parts.Add(name);
@@ -261,7 +261,6 @@ public class ScryfallService
             parts.Add(typesStr);
         }
 
-        // ! para obtener todas las cartas
         if (parts.Count == 0)
             return "!";
 
