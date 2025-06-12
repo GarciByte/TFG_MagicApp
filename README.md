@@ -85,6 +85,8 @@ En el cliente se empleará una persistencia de datos para almacenar opciones de 
 
 ## Presentación (PDF)
 
+[Ver presentación del proyecto (PDF)](./MagicHub.pdf)
+
 ---
 
 ## Bitácora de Tareas
