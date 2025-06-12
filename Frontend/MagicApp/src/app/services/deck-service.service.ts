@@ -78,7 +78,7 @@ export class DeckServiceService {
 
   // Check deck size
   deckSize(deckCards: CardDetail[]): Boolean {
-    if (/* deckCards.length >= 60 &&  */deckCards.length <= 150) {
+    if (deckCards.length >= 1 && deckCards.length <= 150) {
       return true
     } else {
       return false
