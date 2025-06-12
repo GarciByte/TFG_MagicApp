@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Text.Json.Serialization;
+﻿using System.Text.Json.Serialization;
 
 namespace MagicApp.Services.Scryfall
 {
@@ -17,7 +16,6 @@ namespace MagicApp.Services.Scryfall
         [JsonPropertyName("card_faces")]
         public List<CardFace> CardFaces { get; set; }
 
-        // Nuevas propiedades añadidas para filtros
         [JsonPropertyName("colors")]
         public List<string> Colors { get; set; }
 

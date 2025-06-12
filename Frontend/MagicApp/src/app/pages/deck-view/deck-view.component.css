@@ -7,9 +7,9 @@ ion-content {
   align-items: center;
   gap: 12px;
   padding: 16px;
- border-bottom: 1px solid var(--ion-input-border-color); 
- background-color: var(--ion-surface-color);
-  
+  border-bottom: 1px solid var(--ion-input-border-color);
+  background-color: var(--ion-surface-color);
+
 }
 
 .back-icon {
@@ -61,9 +61,10 @@ ion-content {
 }
 
 .form-label {
+  text-align: center;
   display: block;
   font-size: 1rem;
-  margin-bottom: 8px;
+  margin-bottom: 12px;
   color: var(--ion-text-color);
 }
 
@@ -135,6 +136,7 @@ ion-content {
   margin-top: 8px;
   background-color: var(--ion-button-secondary-background);
 }
+
 .delete-button {
   width: 100%;
   padding: 16px;
@@ -203,4 +205,58 @@ ion-content {
   color: var(--ion-color-danger);
   margin-top: 8px;
   font-weight: bold;
+}
+
+.win-loss-summary {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: 2rem;
+  margin: 2rem 0;
+}
+
+.win-loss-summary .counter-box,
+.win-loss-summary .victory-rate-box {
+  flex: 1 1 150px;
+  text-align: center;
+}
+
+.counter-controls {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1.5rem;
+  margin-top: 0.75rem;
+}
+
+.victory-rate-box .victory-rate {
+  font-size: 1.4rem;
+  font-weight: bold;
+  color: var(--ion-color-success);
+}
+
+@media (max-width: 600px) {
+  .win-loss-summary {
+    flex-direction: column;
+    gap: 1.5rem;
+    margin: 1.5rem 0;
+  }
+
+  .win-loss-summary .counter-box,
+  .win-loss-summary .victory-rate-box {
+    flex: none;
+    width: 100%;
+  }
+
+  .counter-controls {
+    gap: 0.5rem;
+    margin-top: 0.5rem;
+  }
+
+  .counter-button,
+  .counter-value {
+    padding: 8px;
+    font-size: 1rem;
+  }
 }

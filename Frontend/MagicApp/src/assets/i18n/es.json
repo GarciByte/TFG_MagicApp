@@ -430,10 +430,11 @@
     },
     "SUBTYPE": {
         "ELF": "Elfo",
-        "GOBLIN": "Duende",
+        "GOBLIN": "Trasgo",
         "ZOMBIE": "Zombie",
         "DRAGON": "Dragón",
         "HUMAN": "Humano",
+        "WARRIOR": "Guerrero",
         "EQUIPMENT": "Equipo",
         "VEHICLE": "Vehículo",
         "CLUE": "Pista",

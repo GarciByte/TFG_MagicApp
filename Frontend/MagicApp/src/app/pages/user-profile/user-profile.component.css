@@ -1,356 +1,193 @@
 ion-content {
     --background: var(--ion-background-color);
     padding: 32px 16px;
+    color: var(--ion-text-color);
 }
 
 .header-container {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  padding: 16px;
- border-bottom: 1px solid var(--ion-input-border-color); 
- background-color: var(--ion-surface-color);
-  
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 16px;
+    border-bottom: 1px solid var(--ion-input-border-color);
+    background-color: var(--ion-surface-color);
+    margin-bottom: 15px;
 }
 
 .back-icon {
-  font-size: 24px;
-  color: var(--ion-color-primary);
-  cursor: pointer;
-  transition: transform 0.2s ease;
+    font-size: 24px;
+    color: var(--ion-color-primary);
+    cursor: pointer;
+    transition: transform 0.2s ease;
 }
 
 .back-icon:hover {
-  transform: scale(1.1);
-}
-
-.page-title {
-  font-size: 1.5rem;
-  margin: 0;
-  color: var(--ion-heading-color);
-  font-weight: bold;
-}
-
-.back-button-container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 1rem;
-    margin: 16px 0 32px 0;
-}
-
-.threadDetail-container {
-    padding: 0 1.5rem;
-    margin-bottom: 32px;
-}
-
-.thread-card {
-    --background: var(--ion-card-background);
-    width: 100%;
-    max-width: 800px;
-    margin: 0 auto 16px;
-    border-radius: 12px;
-    box-shadow: 0 8px 24px rgba(209, 44, 30, 0.12);
-    position: relative;
-    color: var(--ion-card-color);
-}
-
-.thread-header {
-    display: flex;
-    flex-direction: column;
-    padding: 1.25rem 1.75rem;
-    gap: 0.75rem;
-    position: relative;
-}
-
-.thread-info {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    padding-right: 4rem;
-}
-
-.thread-title {
-    font-size: 1.4rem;
-    font-weight: 600;
-    margin: 0;
-    color: var(--ion-text-color);
-    white-space: normal;
-    overflow-wrap: anywhere;
-    overflow: visible;
-    flex: 1;
-}
-
-.thread-meta-admin {
-    display: flex;
-    align-items: center;
-    margin-top: 1rem;
-}
-
-.thread-avatar {
-    --size: 40px;
-    margin-right: 0.75rem;
-    flex-shrink: 0;
-}
-
-.thread-author-date {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    gap: 1rem;
-    margin-right: auto;
-}
-
-.thread-author {
-    font-size: 1rem;
-    font-weight: 500;
-    color: var(--ion-color-primary);
-}
-
-.thread-date {
-    font-size: 0.85rem;
-    color: var(--ion-color-secondary);
-}
-
-.thread-actions {
-    position: absolute;
-    top: 1.25rem;
-    right: 1.75rem;
-    display: flex;
-    align-items: center;
-    gap: 0.75rem;
-}
-
-.subscribe-btn,
-.close-btn,
-.open-btn {
-    --padding-start: 0;
-    --padding-end: 0;
-    --padding-top: 0;
-    --padding-bottom: 0;
-    color: var(--ion-color-primary);
-    transition: color 0.2s ease;
-}
-
-.subscribe-btn:hover,
-.close-btn:hover,
-.open-btn:hover {
-    color: var(--ion-color-tertiary);
-}
-
-.lock-icon {
-    flex-shrink: 0;
-    font-size: 1.1rem;
-    color: var(--ion-color-danger);
-}
-
-.thread-description {
-    padding: 0 1.5rem 1.25rem 1.5rem;
-    font-size: 1rem;
-    color: var(--ion-text-color);
-    line-height: 1.5;
-    white-space: normal;
-    overflow-wrap: anywhere;
-    overflow: visible;
-    flex: 1;
-}
-
-.comments-section {
-    max-width: 800px;
-    margin: 0 auto 24px;
-    padding: 0 1rem;
-}
-
-.comments-title {
-    font-size: 1.2rem;
-    font-weight: 600;
-    color: var(--ion-color-primary);
-    margin-bottom: 1.5rem;
-}
-
-.no-comments-message {
-    text-align: center;
-    color: var(--ion-text-color-muted);
-    font-size: 1rem;
-    margin: 3rem;
-}
-
-.comment-card {
-    --background: var(--ion-card-background);
-    margin-bottom: 1.5rem;
-    border-radius: 8px;
-    box-shadow: 0 4px 12px rgba(209, 44, 30, 0.08);
-    position: relative;
-    padding-bottom: 1rem;
-    color: var(--ion-card-color);
-}
-
-.comment-header {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    padding: 1.25rem 1.75rem;
-    position: relative;
-}
-
-.comment-avatar {
-    --size: 32px;
-    margin-right: 0.75rem;
-    flex-shrink: 0;
-}
-
-.comment-info {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    gap: 1rem;
-    margin-right: auto;
-}
-
-.comment-author {
-    font-size: 0.95rem;
-    font-weight: 500;
-    color: var(--ion-color-primary);
-}
-
-.comment-date {
-    font-size: 0.8rem;
-    color: var(--ion-color-secondary);
-}
-
-.delete-comment-btn {
-    position: absolute;
-    top: 1.25rem;
-    right: 1.75rem;
-    --padding-start: 0;
-    --padding-end: 0;
-    --padding-top: 0;
-    --padding-bottom: 0;
-    color: var(--ion-color-danger);
-    transition: color 0.2s ease;
-}
-
-.delete-comment-btn:hover {
-    color: #b71c1c;
-}
-
-.comment-content {
-    font-size: 1rem;
-    color: var(--ion-text-color);
-    padding: 0 1rem 1rem 1rem;
-    line-height: 1.5;
-    white-space: normal;
-    overflow-wrap: anywhere;
-    overflow: visible;
-    flex: 1;
-}
-
-.pagination-container {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 1rem;
-    margin-top: 1rem;
-    margin-bottom: 24px;
-}
-
-.pagination-btn {
-    --background: transparent;
-    --color: var(--ion-color-primary);
-    --border-radius: 50%;
-    --padding-start: 8px;
-    --padding-end: 8px;
-    width: 40px;
-    height: 40px;
-    cursor: pointer;
-    transition: all 0.2s ease;
-    font-size: 1.2rem;
-    border: 1px solid var(--ion-color-primary);
-}
-
-.pagination-btn:hover:not([disabled]) {
-    --background: rgba(209, 44, 30, 0.1);
     transform: scale(1.1);
 }
 
-.pagination-btn[disabled] {
-    --color: var(--ion-text-color-muted);
-    cursor: not-allowed;
-    opacity: 0.5;
-    border-color: var(--ion-text-color-muted);
+.page-title {
+    font-size: 1.5rem;
+    margin: 0;
+    color: var(--ion-heading-color);
+    font-weight: bold;
 }
 
-.page-info {
-    font-size: 0.9rem;
-    color: var(--ion-text-color-muted);
-    font-weight: 500;
-    min-width: 120px;
-    text-align: center;
-}
-
-.new-comment-container {
-    max-width: 800px;
-    margin: 0 auto 24px;
-    padding: 0 1rem;
-}
-
-.input-item {
-    --inner-padding-top: 0.5rem;
-    --inner-padding-bottom: 0.5rem;
-    --inner-padding-start: 0.75rem;
-    --inner-padding-end: 0.75rem;
-    margin-bottom: 0.75rem;
-    border-radius: var(--ion-input-border-radius);
-    background: var(--ion-input-background);
-    --background: var(--ion-input-background);
-    color: var(--ion-input-color);
-}
-
-.input-item ion-textarea {
-    padding: 0.5rem 0.75rem;
-}
-
-.submit-container {
+.button-container {
     display: flex;
     justify-content: center;
-    margin-top: 1rem;
+    margin: 16px 0 32px;
 }
 
-.submit-container ion-button {
-    --padding-top: 6px;
-    --padding-bottom: 6px;
-    --padding-start: 16px;
-    --padding-end: 16px;
-    --background: var(--ion-button-secondary-background);
-    --color: var(--ion-button-color);
-    font-weight: 600;
-    border-radius: 8px;
-    box-shadow: 0 3px 8px rgba(71, 168, 247, 0.35);
-    transition: background-color 0.3s ease;
+.users-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 0 1.5rem;
 }
 
-.submit-container ion-button:hover {
-    --background: var(--ion-color-tertiary);
-    box-shadow: 0 4px 12px rgba(162, 89, 255, 0.45);
+.card-profile,
+.card-password {
+    --background: var(--ion-card-background);
+    width: 100%;
+    max-width: 750px;
+    margin: 0 auto 2.5rem;
+    padding: 2rem 1.5rem;
+    border-radius: 12px;
+    box-shadow: 0 8px 24px var(--ion-input-box-shadow);
+    color: var(--ion-text-color);
+    background-color: var(--ion-card-background);
 }
 
-.loading-message {
+.card-profile ion-card-title,
+.card-password ion-card-title {
     text-align: center;
-    font-size: 1rem;
-    color: var(--ion-text-color-muted);
-    margin-top: 2rem;
+    font-size: 1.6rem;
+    font-weight: 600;
+    color: var(--ion-color-primary);
+    margin-bottom: 1.5rem;
 }
 
-@media (max-width: 480px) {
-    .header-container {
-        padding: 12px 8px;
+ion-card-content {
+    display: flex;
+    flex-direction: column;
+    gap: 1.8rem;
+}
+
+.avatar-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+}
+
+.avatar-preview {
+    margin-top: 0.5rem;
+    margin-bottom: 0.3rem;
+}
+
+.avatar-preview img {
+    width: 140px;
+    height: 140px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 3px solid var(--ion-color-primary-shade);
+    transition: transform 0.2s ease-in-out;
+}
+
+.avatar-preview img:hover {
+    transform: scale(1.05);
+}
+
+.form-item {
+    margin-bottom: 0;
+}
+
+.form-item .ion-focused {
+    box-shadow: 0 0 0 3px var(--ion-color-primary-tint);
+}
+
+ion-item.form-item {
+    --highlight-color-focused: var(--ion-color-primary);
+    --border-color: var(--ion-color-medium-tint);
+    --border-radius: 6px;
+    --inner-padding-start: 0.75rem;
+    --inner-padding-end: 0.75rem;
+    padding: 0.4rem 0;
+}
+
+ion-label[position="floating"] {
+    font-weight: 500;
+    color: var(--ion-color-dark);
+    top: -0.4rem;
+}
+
+ion-input,
+ion-select {
+    font-size: 1.1rem;
+    padding: 0.6rem 0;
+}
+
+.action-buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    margin-top: 0.5rem;
+}
+
+.action-buttons ion-button {
+    --border-radius: 8px;
+    font-weight: 600;
+    padding: 0.8rem 0;
+}
+
+.action-buttons ion-button[fill="outline"] {
+    --border-color: var(--ion-color-primary);
+    --color: var(--ion-color-primary);
+}
+
+.password-fields {
+    display: flex;
+    flex-direction: column;
+    gap: 1.2rem;
+}
+
+.password-fields ion-button {
+    --border-radius: 8px;
+    font-weight: 600;
+    padding: 0.8rem 0;
+    --background: #d12c1e;
+    --background-hover: #f04a2a;
+}
+
+@media (max-width: 600px) {
+
+    .card-profile,
+    .card-password {
+        padding: 1.5rem 1rem;
     }
 
-    .page-title {
-        font-size: 1.2rem;
+    .avatar-preview img {
+        width: 120px;
+        height: 120px;
     }
 
-    .thread-card {
-        margin: 0 8px 16px;
+    .action-buttons,
+    .password-fields {
+        gap: 0.8rem;
+    }
+
+    ion-label[position="floating"] {
+        font-size: 0.9rem;
+    }
+
+    .card-profile ion-card-title,
+    .card-password ion-card-title {
+        font-size: 1.4rem;
+    }
+}
+
+@media (max-width: 400px) {
+    ion-card-content {
+        gap: 1rem;
     }
 }

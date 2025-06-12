@@ -34,7 +34,7 @@ public class AuthController : ControllerBase
     [HttpPost("login")]
     public async Task<ActionResult<LoginResult>> Login([FromBody] LoginRequest model)
     {
-        _logger.LogInformation("Un usuario quiere iniciar sesión: {@model}", model);
+        _logger.LogInformation("Un usuario quiere iniciar sesión: {model.Nickname}", model.Nickname);
 
         try
         {
@@ -44,7 +44,7 @@ public class AuthController : ControllerBase
             // Si el usuario es null, se devuelve Unauthorized
             if (user == null)
             {
-                _logger.LogError("Datos de inicio de sesión incorrectos: {@model}", model);
+                _logger.LogError("Datos de inicio de sesión incorrectos");
                 return Unauthorized("Datos de inicio de sesión incorrectos.");
             }
 
@@ -212,7 +212,7 @@ public class AuthController : ControllerBase
     [HttpPost("Signup")]
     public async Task<ActionResult<RegisterDto>> SignUp([FromForm] RegisterDto model)
     {
-        _logger.LogInformation("Un usuario quiere registrarse: {@model}", model);
+        _logger.LogInformation("Un usuario quiere registrarse: {model.Nickname}", model.Nickname);
 
         try
         {
