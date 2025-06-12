@@ -83,7 +83,7 @@ En el cliente se empleará una persistencia de datos para almacenar opciones de 
 
 ---
 
-## Presentación (PDF)
+## Presentación
 
 [Ver presentación del proyecto (PDF)](./MagicHub.pdf)
 
