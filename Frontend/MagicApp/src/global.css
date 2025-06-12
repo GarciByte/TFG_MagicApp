@@ -169,3 +169,15 @@ ion-modal.ai-comment-modal {
         --border-radius: 0;
     }
 }
+
+.input-item ion-textarea textarea:focus {
+    outline: none !important;
+    box-shadow: none !important;
+    border: none !important;
+}
+
+:root.dark {
+    ion-alert .alert-radio-label.sc-ion-alert-md {
+        color: #ffffff !important;
+    }
+}

@@ -7,15 +7,14 @@
   <div class="content-container">
     <div class="form-container">
 
-
       <!-- Form -->
-      <div class="form-group">
+      <div class="form-group centered">
         <label class="form-label">{{ 'OTHER_USER_DECK_VIEW.NAME_LABEL' | translate }}</label>
         <input type="text" class="text" [(ngModel)]="deckCardsService.name"
           [placeholder]="'OTHER_USER_DECK_VIEW.NAME_PLACEHOLDER' | translate" readonly>
       </div>
 
-      <div class="form-group">
+      <div class="form-group centered">
         <label class="form-label">{{ 'OTHER_USER_DECK_VIEW.DESCRIPTION_LABEL' | translate }}</label>
         <input type="text" class="text" [(ngModel)]="deckCardsService.description"
           [placeholder]="'OTHER_USER_DECK_VIEW.DESCRIPTION_PLACEHOLDER' | translate" readonly>
@@ -33,25 +32,38 @@
         </button>
       </div>
 
-      <!-- Victories -->
-      <div class="counter-box">
-        <label class="form-label">{{ 'OTHER_USER_DECK_VIEW.VICTORIES' | translate }}</label>
-        <div class="counter-controls">
-          <span class="counter-value">{{ deckCardsService.victories }}</span>
-        </div>
-      </div>
+      <div class="win-loss-summary">
 
-      <!-- Defeats -->
-      <div class="counter-box">
-        <label class="form-label">{{ 'OTHER_USER_DECK_VIEW.DEFEATS' | translate }}</label>
-        <div class="counter-controls">
-          <span class="counter-value">{{ deckCardsService.defeats }}</span>
+        <!-- Victories -->
+        <div class="counter-box">
+          <label class="form-label">
+            {{ 'OTHER_USER_DECK_VIEW.VICTORIES' | translate }}
+          </label>
+          <div class="counter-controls">
+            <span class="counter-value">{{ deckCardsService.victories }}</span>
+          </div>
         </div>
-      </div>
 
-      <div class="form-group">
-        <label class="form-label">{{ 'OTHER_USER_DECK_VIEW.VICTORY_RATE' | translate }}</label>
-        <div class="counter-value victory-rate">{{ getVictoryRate() }}</div>
+        <!-- Defeats -->
+        <div class="counter-box">
+          <label class="form-label">
+            {{ 'OTHER_USER_DECK_VIEW.DEFEATS' | translate }}
+          </label>
+          <div class="counter-controls">
+            <span class="counter-value">{{ deckCardsService.defeats }}</span>
+          </div>
+        </div>
+
+        <!-- Victory Rate -->
+        <div class="victory-rate-box">
+          <label class="form-label">
+            {{ 'OTHER_USER_DECK_VIEW.VICTORY_RATE' | translate }}
+          </label>
+          <div class="counter-value victory-rate">
+            {{ getVictoryRate() }}
+          </div>
+        </div>
+
       </div>
 
     </div>

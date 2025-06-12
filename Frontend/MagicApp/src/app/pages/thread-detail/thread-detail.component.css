@@ -297,6 +297,7 @@ ion-content {
   background: var(--ion-background-color);
   --background: var(--ion-background-color);
   --border-radius: 8px;
+  border: 1px solid var(--ion-color-medium);
 }
 
 .input-item ion-textarea {
@@ -329,6 +330,39 @@ ion-content {
   font-size: 1rem;
   color: var(--ion-color-medium);
   margin-top: 2rem;
+}
+
+.input-item ion-textarea {
+  padding: 0.4rem 0.5rem;
+}
+
+.submit-container ion-button {
+  --padding-start: 12px;
+  --padding-end: 12px;
+  font-size: 0.9rem;
+}
+
+.pagination-btn {
+  width: 32px;
+  height: 32px;
+  --padding-start: 6px;
+  --padding-end: 6px;
+}
+
+.pagination-btn ion-icon {
+  font-size: 1.5rem;
+}
+
+.page-info {
+  font-size: 0.75rem;
+  min-width: 90px;
+}
+
+:host-context(.dark) {
+
+  .page-info {
+    color: #cccccc !important;
+  }
 }
 
 @media (max-width: 480px) {
@@ -437,31 +471,5 @@ ion-content {
     --inner-padding-start: 0.5rem;
     --inner-padding-end: 0.5rem;
     margin-bottom: 0.6rem;
-  }
-
-  .input-item ion-textarea {
-    padding: 0.4rem 0.5rem;
-  }
-
-  .submit-container ion-button {
-    --padding-start: 12px;
-    --padding-end: 12px;
-    font-size: 0.9rem;
-  }
-
-  .pagination-btn {
-    width: 32px;
-    height: 32px;
-    --padding-start: 6px;
-    --padding-end: 6px;
-  }
-
-  .pagination-btn ion-icon {
-    font-size: 1.5rem;
-  }
-
-  .page-info {
-    font-size: 0.75rem;
-    min-width: 90px;
   }
 }

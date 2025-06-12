@@ -12,7 +12,8 @@ import { WebsocketService } from 'src/app/services/websocket.service';
 
 @Component({
   selector: 'app-settings',
-  imports: [IonIcon, IonToggle, IonLabel, IonItem, IonList, IonContent, FormsModule, IonSelectOption, IonSelect, TranslateModule, CommonModule, SidebarComponent],
+  imports: [IonIcon, IonToggle, IonLabel, IonItem, IonList, IonContent, FormsModule, IonSelectOption, IonSelect, TranslateModule, 
+    CommonModule, SidebarComponent],
   templateUrl: './settings.component.html',
   styleUrls: ['./settings.component.css'],
   standalone: true,
@@ -20,6 +21,7 @@ import { WebsocketService } from 'src/app/services/websocket.service';
 export class SettingsComponent implements OnInit, OnDestroy {
   config: AppConfig;
   error$: Subscription;
+  config$: Subscription;
 
   constructor(
     private configService: ConfigService,
@@ -35,7 +37,7 @@ export class SettingsComponent implements OnInit, OnDestroy {
       return;
     }
 
-    this.configService.config$.subscribe(cfg => {
+    this.config$ = this.configService.config$.subscribe(cfg => {
       this.config = cfg;
     });
 
@@ -48,6 +50,10 @@ export class SettingsComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     if (this.error$) {
       this.error$.unsubscribe();
+    }
+
+    if (this.config$) {
+      this.config$.unsubscribe();
     }
   }
 

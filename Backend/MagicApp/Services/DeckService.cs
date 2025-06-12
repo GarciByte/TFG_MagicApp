@@ -1,7 +1,6 @@
 ﻿using MagicApp.Models.Database;
 using MagicApp.Models.Database.Entities;
 using MagicApp.Models.Dtos;
-using Microsoft.AspNetCore.Http.HttpResults;
 
 namespace MagicApp.Services;
 
@@ -14,26 +13,25 @@ public class DeckService
         _unitOfWork = unitOfWork;
     }
 
-    //Obtener deck mediante Id
+    // Obtener deck mediante Id
     public async Task<Deck> GetDeckAsync(int id)
     {
         return await _unitOfWork.DeckRepository.GetDeckById(id);
     }
 
-    //Obtener todos los decks
+    // Obtener todos los decks
     public async Task<List<Deck>> GetAllDecksAsync(string query)
     {
         return await _unitOfWork.DeckRepository.GetAllDecks(query);
     }
 
-
-    //Obtener decks de un usuario
+    // Obtener decks de un usuario
     public async Task<List<Deck>> GetAllUserDecksAsync(int userId)
     {
         return await _unitOfWork.DeckRepository.GetAllUserDecksAsync(userId);
     }
 
-    //Crear deck
+    // Crear deck
     public async Task<Deck> CreateDeckAsync(DeckDto model)
     {
         var user = await _unitOfWork.UserRepository.GetUserById(model.UserId);
@@ -50,17 +48,13 @@ public class DeckService
             DeckCards = model.DeckCards
         };
 
-
-
         await _unitOfWork.DeckRepository.InsertDeckAsync(newDeck);
         await _unitOfWork.SaveAsync();
 
         return newDeck;
     }
 
-
-
-    //Editar deck
+    // Editar deck
     public async Task<Deck> UpdateDeckAsync(DeckDto model, int id)
     {
         var updatedDeck = await _unitOfWork.DeckRepository.GetDeckById(id);
@@ -89,9 +83,7 @@ public class DeckService
         return updatedDeck;
     }
 
-
-
-    //Eliminar deck
+    // Eliminar deck
     public async Task<Deck> DeleteDeckAsync(int id)
     {
         var deck = await _unitOfWork.DeckRepository.GetDeckById(id);
@@ -100,7 +92,5 @@ public class DeckService
         await _unitOfWork.SaveAsync();
 
         return deck;
-
     }
 }
-

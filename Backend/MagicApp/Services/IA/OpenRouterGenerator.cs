@@ -1,5 +1,4 @@
 ﻿using System.Text;
-using System.Text.Json;
 using Newtonsoft.Json;
 
 namespace MagicApp.Services.IA;

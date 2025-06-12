@@ -21,7 +21,6 @@ public class ScryfallService
     // Buscar cartas por nombre y filtros
     public async Task<List<CardImageDto>> SearchCardImagesAsync(string name, PaginationDto pagination)
     {
-
         var queryString = BuildScryfallQuery(name, pagination);
         var relativeUri = $"cards/search?q={Uri.EscapeDataString(queryString)}&page={pagination.Page}";
 
@@ -31,30 +30,21 @@ public class ScryfallService
 
             if (response.StatusCode == HttpStatusCode.NotFound)
             {
-                // return new PagedResult<CardImageDto> { Items = new List<CardImageDto>() };
                 return new List<CardImageDto>();
             }
 
             response.EnsureSuccessStatusCode();
 
             var body = await response.Content.ReadAsStringAsync();
-            var result = JsonSerializer.Deserialize<ScryfallSearchResponse>(body,
-                new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
-
+            var result = JsonSerializer.Deserialize<ScryfallSearchResponse>(body, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
             var list = ExtractCardImages(result);
-
             int totalCount = result.TotalCards;
 
-            /*           return new PagedResult<CardImageDto>
-                      {
-                          Items = list,
-                      }; */
             return list;
         }
         catch (Exception ex)
         {
-            _logger.LogError("Ha ocurrido un error: " + ex.Message);
-            // return new PagedResult<CardImageDto> { Items = new List<CardImageDto>() };
+            _logger.LogError("Ha ocurrido un error {ex}", ex);
             return new List<CardImageDto>();
         }
     }
@@ -75,8 +65,7 @@ public class ScryfallService
             resp.EnsureSuccessStatusCode();
 
             var json = await resp.Content.ReadAsStringAsync();
-            var src = JsonSerializer.Deserialize<CardDetailResponse>(json,
-                new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+            var src = JsonSerializer.Deserialize<CardDetailResponse>(json, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
 
             return new CardDetailDto
             {
@@ -104,7 +93,7 @@ public class ScryfallService
         }
         catch (Exception ex)
         {
-            _logger.LogError("Ha ocurrido un error: " + ex.Message);
+            _logger.LogError("Ha ocurrido un error {ex}", ex);
             return null;
         }
     }
@@ -113,12 +102,14 @@ public class ScryfallService
     {
         if (dict != null && dict.TryGetValue(key, out var value))
             return value;
+
         return null;
     }
 
     private static List<string> BuildManaSymbolUrls(string manaCost)
     {
         var urls = new List<string>();
+
         if (string.IsNullOrEmpty(manaCost))
             return urls;
 
@@ -129,6 +120,7 @@ public class ScryfallService
             var symbol = m.Groups[1].Value;
             urls.Add($"https://svgs.scryfall.io/card-symbols/{symbol}.svg");
         }
+
         return urls;
     }
 
@@ -220,7 +212,7 @@ public class ScryfallService
             });
         }
 
-        return list;//.Take(30).ToList();
+        return list;
     }
 
     // Query para Scryfall nombre + filtros
@@ -252,7 +244,7 @@ public class ScryfallService
 
             if (!string.IsNullOrEmpty(colorsCode))
             {
-                parts.Add($"color>={colorsCode}"); // o "colors=" según cómo quieras filtrar
+                parts.Add($"color>={colorsCode}");
             }
         }
 
@@ -267,10 +259,9 @@ public class ScryfallService
         {
             var typesStr = "(" + string.Join(" OR ", filter.Types.Select(t => $"type:{t.ToString().ToLower()}")) + ")";
             parts.Add(typesStr);
-
         }
 
-        // Si no hay nada devolver ! para obtener todas las cartas
+        // ! para obtener todas las cartas
         if (parts.Count == 0)
             return "!";
 

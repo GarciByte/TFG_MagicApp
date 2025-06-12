@@ -1,10 +1,12 @@
 ﻿using MagicApp.Models.Database.Entities;
 using MagicApp.Models.Dtos;
 using MagicApp.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace MagicApp.Controllers;
 
+[Authorize]
 [Route("api/[controller]")]
 [ApiController]
 public class DeckController : ControllerBase
@@ -16,30 +18,28 @@ public class DeckController : ControllerBase
         _deckService = deckService;
     }
 
-    //Obtener deck mediante Id
+    // Obtener deck mediante Id
     [HttpGet("GetDeckById")]
     public async Task<Deck> GetDeckById([FromQuery] int id)
     {
         return await _deckService.GetDeckAsync(id);
     }
 
-    //Obtener todos los decks 
+    // Obtener todos los decks 
     [HttpGet("GetAllDecks")]
     public async Task<List<Deck>> GetAllDecksAsync([FromQuery] string query)
     {
-
         return await _deckService.GetAllDecksAsync(query);
     }
 
-    //Obtener decks de un usuario
+    // Obtener decks de un usuario
     [HttpGet("GetAllUserDecks")]
     public async Task<List<Deck>> GetAllUserDecksAsync([FromQuery] int userId)
     {
-
         return await _deckService.GetAllUserDecksAsync(userId);
     }
 
-    //Crear deck
+    // Crear deck
     [HttpPost("CreateDeck")]
     public async Task<ActionResult<DeckDto>> CreateDeck([FromBody] DeckDto model)
     {
@@ -53,8 +53,7 @@ public class DeckController : ControllerBase
         return Ok(new { success = true, data = createdDeck });
     }
 
-
-    //Actualizar deck
+    // Actualizar deck
     [HttpPost("UpdateDeck")]
     public async Task<ActionResult<DeckDto>> UpdateDeck([FromBody] DeckDto model, [FromQuery] int id)
     {
@@ -63,7 +62,7 @@ public class DeckController : ControllerBase
         return Ok("Deck updated " + id);
     }
 
-    //Eliminar deck
+    // Eliminar deck
     [HttpGet("DeleteDeck")]
     public async Task<ActionResult<DeckDto>> DeleteDeck([FromQuery] int id)
     {

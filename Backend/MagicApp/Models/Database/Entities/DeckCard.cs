@@ -1,6 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
-using System.ComponentModel.DataAnnotations;
-using System.Globalization;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace MagicApp.Models.Database.Entities;
 
@@ -8,6 +6,7 @@ public class DeckCard
 {
     [Key]
     public int CardId { get; set; }
+
     public string Id { get; set; }
 
     public string Name { get; set; }
@@ -39,5 +38,6 @@ public class DeckCard
     public string PurchaseCardmarket { get; set; }
 
     public int DeckId { get; set; }
+
     public Deck Deck { get; set; }
 }
