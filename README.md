@@ -9,7 +9,7 @@
 - [Tutorial de Uso](#tutorial-de-uso)
 - [URLs de despliegue y descarga](#urls-de-despliegue-y-descarga)
 - [Diseño de la Aplicación](#diseño-de-la-aplicación)
-- [Presentación](#presentación-pdf)
+- [Presentación](#presentación)
 - [Bitácora de Tareas](#bitácora-de-tareas)
 - [Bibliografía](#bibliografía)
 - [Vídeos](#vídeos)
