@@ -135,7 +135,7 @@ ion-checkbox {
 
 .login-button:hover {
     opacity: 0.9;
-    background-color: #b32218; /* ligeramente más oscuro */
+    background-color: #b32218;
 }
 
 .login-button:disabled {
