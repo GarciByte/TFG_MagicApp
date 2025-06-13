@@ -176,6 +176,30 @@ ion-modal.ai-comment-modal {
     border: none !important;
 }
 
+.chat-textarea,
+.chat-textarea:hover,
+.chat-textarea:focus {
+    outline: none !important;
+    box-shadow: none !important;
+    border: none !important;
+}
+
+.chat-page ion-input.chat-input input,
+.chat-page ion-input.chat-input input:hover,
+.chat-page ion-input.chat-input input:focus {
+    outline: none !important;
+    box-shadow: none !important;
+    border: none !important;
+}
+
+.users-container ion-item.form-item ion-input.chat-input-fix input,
+.users-container ion-item.form-item ion-input.chat-input-fix input:hover,
+.users-container ion-item.form-item ion-input.chat-input-fix input:focus {
+    outline: none !important;
+    box-shadow: none !important;
+    border: none !important;
+}
+
 :root.dark {
     ion-alert .alert-radio-label.sc-ion-alert-md {
         color: #ffffff !important;

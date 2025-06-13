@@ -17,3 +17,28 @@
   transform: scale(1.1);
   color: var(--ion-color-secondary);
 }
+
+ion-list {
+  display: block;
+  max-width: 800px;
+  margin: 24px auto;
+}
+
+ion-item {
+  --inner-padding-start: 16px;
+  --inner-padding-end: 16px;
+  margin-block: 12px;
+  border: 1px solid var(--ion-text-color);
+  border-radius: 6px;
+}
+
+@media (max-width: 480px) {
+  ion-list {
+    width: 100%;
+    margin: 16px auto;
+  }
+
+  ion-item {
+    margin-block: 8px;
+  }
+}

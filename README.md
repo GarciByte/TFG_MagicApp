@@ -9,7 +9,7 @@
 - [Tutorial de Uso](#tutorial-de-uso)
 - [URLs de despliegue y descarga](#urls-de-despliegue-y-descarga)
 - [Diseño de la Aplicación](#diseño-de-la-aplicación)
-- [Presentación (PDF)](#presentación-pdf)
+- [Presentación](#presentación)
 - [Bitácora de Tareas](#bitácora-de-tareas)
 - [Bibliografía](#bibliografía)
 - [Vídeos](#vídeos)
@@ -64,6 +64,8 @@ En el cliente se empleará una persistencia de datos para almacenar opciones de 
 
 ## Tutorial de Uso
 
+[Ver manual de MagicHub (PDF)](./Manual.pdf)
+
 ---
 
 ## URLs de despliegue y descarga
@@ -83,7 +85,9 @@ En el cliente se empleará una persistencia de datos para almacenar opciones de 
 
 ---
 
-## Presentación (PDF)
+## Presentación
+
+[Ver presentación del proyecto (PDF)](./MagicHub.pdf)
 
 ---
 
@@ -101,6 +105,23 @@ En el cliente se empleará una persistencia de datos para almacenar opciones de 
 - **26/04/2025**: Refresco de token y registro en funcionamiento; despliegue del cliente.
 - **27/04/2025**: Búsqueda de cartas por nombre funcionando (servidor y cliente).
 - **29/04/2025**: Obtener datos de una carta por ID funcionando (servidor y cliente).
+- **11/05/2025**: Arreglos menores en el cliente.
+- **12/05/2025**: Chat global funcionando en el servidor y en el cliente.
+- **14/05/2025**: Implementación del historial de mensajes en el chat global.
+- **16/05/2025**: Chat privado funcionando en servidor y cliente.
+- **17/05/2025**: Buscador de usuarios, perfil del usuario y perfil de otro usuario en funcionamiento.
+- **18/05/2025**: Sistema de reportes de usuarios funcionando en el servidor y cliente.
+- **29/05/2025**: Perfil admin funcionando en el servidor y cliente.
+- **31/05/2025**: Foro funcionando en el servidor.
+- **01/06/2025**: Implementando la lógica del foro en el cliente.
+- **04/06/2025**: Foro en funcionamiento en el cliente con notificaciones.
+- **07/06/2025**: Chat de la IA funcionando en el servidor y cliente.
+- **08/06/2025**: Análisis de cartas con la IA en el servidor y cliente.
+- **09/06/2025**: Traduciendo componentes e implementando el modo oscuro.
+- **10/06/2025**: Todos los componentes traducidos.
+- **11/06/2025**: Compatibilidad con el idioma inglés para las funciones de la IA.
+- **12/06/2025**: Últimos ajustes estéticos y presentación del proyecto.
+
 
 
 ### Noe
@@ -130,10 +151,20 @@ En el cliente se empleará una persistencia de datos para almacenar opciones de 
 - [Simple magic Api demo](https://www.youtube.com/watch?v=l50izjxnJtE)
 - [HttpClient In .NET](https://www.youtube.com/watch?v=g-JGay_lnWI)
 - [Generar archivos APK](https://code.tutsplus.com/es/how-to-generate-apk-and-signed-apk-files-in-android-studio--cms-37927t)
+- [Documentación de la API de la IA](https://openrouter.ai/docs/quickstart)
+- [Modelo de IA](https://openrouter.ai/deepseek/deepseek-r1-0528:free)
+- [Guía de NGX-Translate por CodeAndWeb](https://www.codeandweb.com/babeledit/tutorials/how-to-translate-your-angular-app-with-ngx-translate)
+- [Guía de NGX-Translate por DigitalOcean](https://www.digitalocean.com/community/tutorials/angular-ngx-translate)
 
 ---
 
 ## Vídeos
+
+### Entrega del proyecto
+
+[Enlace]()
+
+---
 
 ### Revisión del proyecto
 

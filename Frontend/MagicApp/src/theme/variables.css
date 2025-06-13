@@ -1,13 +1,14 @@
 /* Tema claro */
 :root {
-  --ion-color-primary: #d12c1e; 
-  --ion-color-secondary: #47a8f7; 
+  --ion-color-primary: #d12c1e;
+  --ion-color-secondary: #47a8f7;
   --ion-color-tertiary: #a259ff;
   --ion-color-light: #ffffff;
   --ion-color-dark: #222831;
 
   --ion-background-color: #ffffff;
   --ion-surface-color: #f4f4f4;
+  --ion-surface-color-muted: #e1e8f1;
 
   --ion-text-color: #1a1a1a;
   --ion-text-color-muted: #555;
@@ -47,13 +48,14 @@
 :root.dark {
   --ion-background-color: #121212;
   --ion-surface-color: #1e1e1e;
+  --ion-surface-color-muted: #5f6464;
 
   --ion-text-color: #eaeaea;
   --ion-text-color-muted: #aaa;
   --ion-text-color-accent: var(--ion-color-secondary);
   --ion-heading-color: #ffffff;
 
-  --ion-card-background: #1f1f1f;
+  --ion-card-background: #272626;
   --ion-card-color: var(--ion-text-color);
 
   --ion-toolbar-background: var(--ion-color-primary);
@@ -73,7 +75,7 @@
   --ion-input-border-color-hover: #6b7280;
   --ion-input-box-shadow-focus: 0 0 0 3px rgba(71, 168, 247, 0.2);
 
-   --ion-placeholder-color: #aaa;
+  --ion-placeholder-color: #aaa;
 }
 
 .button-secondary {
@@ -92,7 +94,9 @@
   box-shadow: 0 2px 6px rgba(162, 89, 255, 0.3);
 }
 
-input, ion-input, textarea {
+input,
+ion-input,
+textarea {
   background: var(--ion-input-background);
   color: var(--ion-input-color);
   padding: var(--ion-input-padding);
@@ -101,7 +105,9 @@ input, ion-input, textarea {
   box-shadow: var(--ion-input-box-shadow);
 }
 
-input:focus, ion-input:focus, textarea:focus {
+input:focus,
+ion-input:focus,
+textarea:focus {
   border-color: var(--ion-input-border-color-focus);
   box-shadow: var(--ion-input-box-shadow-focus);
 }

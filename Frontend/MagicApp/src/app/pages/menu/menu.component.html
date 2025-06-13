@@ -54,51 +54,60 @@
         </div>
       </div>
 
-      <!-- Chat global -->
-      <ion-button class="menu-button full-width" (click)="navCtrl.navigateRoot(['/global-chat'])">
-        <div class="button-content">
-          <div class="magic-icon chat-icon"></div>
-          <span>{{ 'MENU.GLOBAL_CHAT' | translate }}</span>
-        </div>
-      </ion-button>
+      <div class="chat-row">
 
-      <!-- Chat privado -->
-      <ion-button class="menu-button full-width" (click)="navCtrl.navigateRoot(['/private-chat-list'])">
-        <div class="button-content">
-          <div class="magic-icon chat-icon"></div>
-          <span>{{ 'MENU.PRIVATE_CHAT' | translate }}</span>
-        </div>
-      </ion-button>
+        <!-- Chat global -->
+        <ion-button class="menu-button half-width-chat" (click)="navCtrl.navigateRoot(['/global-chat'])">
+          <div class="button-content">
+            <div class="magic-icon chat-icon"></div>
+            <span>{{ 'MENU.GLOBAL_CHAT' | translate }}</span>
+          </div>
+        </ion-button>
 
-      <!-- Buscador de usuarios -->
-      <ion-button class="menu-button full-width" (click)="navCtrl.navigateRoot(['/user-search'])">
-        <div class="button-content">
-          <div class="magic-icon"></div>
-          <span>{{ 'MENU.USER_SEARCH' | translate }}</span>
-        </div>
-      </ion-button>
+        <!-- Chat privado -->
+        <ion-button class="menu-button half-width-chat" (click)="navCtrl.navigateRoot(['/private-chat-list'])">
+          <div class="button-content">
+            <div class="magic-icon chat-icon"></div>
+            <span>{{ 'MENU.PRIVATE_CHAT' | translate }}</span>
+          </div>
+        </ion-button>
+      </div>
 
-      <!-- Buscador para ver todos los mazos -->
-      <ion-button class="menu-button full-width" (click)="navCtrl.navigateRoot(['/all-decks'])">
-        <div class="button-content">
-          <div class="magic-icon"></div>
-          <span>{{ 'MENU.SEARCH_DECKS' | translate }}</span>
-        </div>
-      </ion-button>
+      <div class="profile-search-row">
 
-      <!-- Perfil del usuario -->
-      <ion-button class="menu-button full-width" (click)="navCtrl.navigateRoot(['/user-profile'])">
-        <div class="button-content">
-          <div class="magic-icon"></div>
-          <span>{{ 'MENU.MY_PROFILE' | translate }}</span>
+        <!-- Perfil del usuario -->
+        <ion-button class="menu-button profile-button" (click)="navCtrl.navigateRoot(['/user-profile'])">
+          <div class="button-content">
+            <div class="magic-icon profile-icon"></div>
+            <span>{{ 'MENU.MY_PROFILE' | translate }}</span>
+          </div>
+        </ion-button>
+
+        <div class="right-buttons">
+
+          <!-- Buscador para ver todos los mazos -->
+          <ion-button class="menu-button search-decks-button" (click)="navCtrl.navigateRoot(['/all-decks'])">
+            <div class="button-content">
+              <div class="magic-icon search-icon"></div>
+              <span>{{ 'MENU.SEARCH_DECKS' | translate }}</span>
+            </div>
+          </ion-button>
+
+          <!-- Buscador de usuarios -->
+          <ion-button class="menu-button search-decks-button" (click)="navCtrl.navigateRoot(['/user-search'])">
+            <div class="button-content">
+              <div class="magic-icon search-icon"></div>
+              <span>{{ 'MENU.USER_SEARCH' | translate }}</span>
+            </div>
+          </ion-button>
         </div>
-      </ion-button>
+      </div>
 
       <!-- Perfil admin -->
       @if (isAdmin()) {
       <ion-button class="menu-button full-width" (click)="navCtrl.navigateRoot(['/admin-profile'])">
         <div class="button-content">
-          <div class="magic-icon"></div>
+          <div class="magic-icon admin-icon"></div>
           <span>{{ 'MENU.ADMIN_PROFILE' | translate }}</span>
         </div>
       </ion-button>

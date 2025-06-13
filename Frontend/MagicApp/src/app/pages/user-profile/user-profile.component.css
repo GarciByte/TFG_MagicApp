@@ -159,6 +159,33 @@ ion-select {
     --background-hover: #f04a2a;
 }
 
+ion-item.form-item {
+    --highlight-color-focused: var(--ion-color-primary);
+    --border-color: var(--ion-color-medium-tint);
+    --border-radius: 6px;
+    --inner-padding-start: 0;
+    --inner-padding-end: 0;
+    --padding-start: 0;
+    --padding-end: 0;
+    padding: 0.4rem 0;
+}
+
+ion-item.form-item ion-input,
+ion-item.form-item ion-select {
+    width: 100%;
+    --padding-start: 0.75rem;
+    --padding-end: 0.75rem;
+    font-size: 1.1rem;
+    padding: 0.6rem 0;
+}
+
+ion-item.form-item ion-label[position="floating"] {
+    font-weight: 500;
+    color: var(--ion-color-dark);
+    top: -0.4rem;
+    left: 0.75rem;
+}
+
 @media (max-width: 600px) {
 
     .card-profile,
