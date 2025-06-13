@@ -15,11 +15,6 @@
 
       <div class="form-container">
 
-        <!-- Deck Icon -->
-        <div class="deck-icon-container">
-          <div class="deck-icon icon-sun"></div>
-        </div>
-
         <!-- Nombre -->
         <div class="form-group">
           <label class="form-label">{{ 'DECK_VIEW.LABEL_NAME' | translate }}</label>
@@ -68,36 +63,39 @@
           </button>
         </div>
 
-        <!-- Victories -->
-        <div class="counter-box">
-          <label class="form-label">
-            {{ 'DECK_VIEW.LABEL_VICTORIES' | translate }}
-          </label>
-          <div class="counter-controls">
-            <button type="button" class="counter-button" (click)="decrementVictories()">-</button>
-            <span class="counter-value">{{ deckCardsService.victories }}</span>
-            <button type="button" class="counter-button" (click)="incrementVictories()">+</button>
+        <div class="win-loss-summary">
+          <!-- Victories -->
+          <div class="counter-box">
+            <label class="form-label">
+              {{ 'DECK_VIEW.LABEL_VICTORIES' | translate }}
+            </label>
+            <div class="counter-controls">
+              <button type="button" class="counter-button" (click)="decrementVictories()">-</button>
+              <span class="counter-value">{{ deckCardsService.victories }}</span>
+              <button type="button" class="counter-button" (click)="incrementVictories()">+</button>
+            </div>
           </div>
-        </div>
 
-        <!-- Defeats -->
-        <div class="counter-box">
-          <label class="form-label">
-            {{ 'DECK_VIEW.LABEL_DEFEATS' | translate }}
-          </label>
-          <div class="counter-controls">
-            <button type="button" class="counter-button" (click)="decrementDefeats()">-</button>
-            <span class="counter-value">{{ deckCardsService.defeats }}</span>
-            <button type="button" class="counter-button" (click)="incrementDefeats()">+</button>
+          <!-- Defeats -->
+          <div class="counter-box">
+            <label class="form-label">
+              {{ 'DECK_VIEW.LABEL_DEFEATS' | translate }}
+            </label>
+            <div class="counter-controls">
+              <button type="button" class="counter-button" (click)="decrementDefeats()">-</button>
+              <span class="counter-value">{{ deckCardsService.defeats }}</span>
+              <button type="button" class="counter-button" (click)="incrementDefeats()">+</button>
+            </div>
           </div>
-        </div>
 
-        <div class="form-group">
-          <label class="form-label">
-            {{ 'DECK_VIEW.LABEL_VICTORY_RATE' | translate }}
-          </label>
-          <div class="counter-value victory-rate">
-            {{ getVictoryRate() }}
+          <!-- Victory Rate -->
+          <div class="victory-rate-box">
+            <label class="form-label">
+              {{ 'DECK_VIEW.LABEL_VICTORY_RATE' | translate }}
+            </label>
+            <div class="counter-value victory-rate">
+              {{ getVictoryRate() }}
+            </div>
           </div>
         </div>
 
@@ -106,13 +104,12 @@
           {{ 'DECK_VIEW.BUTTON_SAVE' | translate }}
         </button>
 
-        <button type="button" class="create-button" (click)="deleteDeck()">
+        <button type="button" class="delete-button" (click)="deleteDeck()">
           {{ 'DECK_VIEW.BUTTON_DELETE' | translate }}
         </button>
 
       </div>
     </div>
   </form>
-
-  <app-sidebar></app-sidebar>
 </ion-content>
+<app-sidebar></app-sidebar>

@@ -34,8 +34,6 @@ public class ChatMessageController : Controller
 
         var messages = await _globalChatMessageService.GetAllGlobalMessagesAsync();
 
-        _logger.LogInformation("Mensajes: {@messages}", messages);
-
         return Ok(messages);
     }
 

@@ -109,6 +109,7 @@ export class DeckViewComponent implements OnInit, OnDestroy {
     return this.deckCardsService.deckCards.length;
   }
 
+  //VICTORIES
   incrementVictories() {
     this.deckCardsService.victories++;
   }
@@ -117,6 +118,7 @@ export class DeckViewComponent implements OnInit, OnDestroy {
     this.deckCardsService.victories = Math.max(0, this.deckCardsService.victories - 1);
   }
 
+  //DEFEATS
   incrementDefeats() {
     this.deckCardsService.defeats++;
   }

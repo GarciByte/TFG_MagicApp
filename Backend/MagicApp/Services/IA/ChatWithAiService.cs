@@ -9,7 +9,9 @@ public class ChatWithAiService
     private readonly OpenRouterGenerator _openRouter;
     private readonly ChatWithAiMessageService _historyService;
     private readonly string _systemPrompt;
+    private readonly string _systemPromptEnglish;
     private readonly string _systemPromptCardDetail;
+    private readonly string _systemPromptCardDetailEnglish;
 
     // Mensajes antiguos que se envían como contexto a la IA
     private const int ContextMessageCount = 5;
@@ -18,23 +20,27 @@ public class ChatWithAiService
         OpenRouterGenerator openRouter,
         ChatWithAiMessageService historyService,
         string systemPrompt,
-        string systemPromptCardDetail)
+        string systemPromptEnglish,
+        string systemPromptCardDetail,
+        string systemPromptCardDetailEnglish)
     {
         _openRouter = openRouter;
         _historyService = historyService;
         _systemPrompt = systemPrompt;
+        _systemPromptEnglish = systemPromptEnglish;
         _systemPromptCardDetail = systemPromptCardDetail;
+        _systemPromptCardDetailEnglish = systemPromptCardDetailEnglish;
     }
 
     // Procesa un prompt de chat
-    public async Task<string> ProcessPromptAsync(int userId, string prompt, CancellationToken cancellationToken = default)
+    public async Task<string> ProcessPromptAsync(int userId, string prompt, string lang, CancellationToken cancellationToken = default)
     {
-        var messages = await BuildContextualMessagesAsync(userId, prompt);
+        var messages = await BuildContextualMessagesAsync(userId, prompt, lang);
         return await GenerateFromMessagesAsync(messages, saveHistory: true, userId, cancellationToken);
     }
 
     // Genera un comentario explicativo de una carta
-    public async Task<string> CommentCardAsync(int userId, CardDetailDto card, CancellationToken cancellationToken = default)
+    public async Task<string> CommentCardAsync(int userId, CardDetailDto card, string lang, CancellationToken cancellationToken = default)
     {
         var messages = new List<Message>
         {
@@ -42,7 +48,7 @@ public class ChatWithAiService
             new Message
             {
                 Role    = "system",
-                Content = _systemPromptCardDetail
+                Content = string.Equals(lang, "es", StringComparison.OrdinalIgnoreCase) ? _systemPromptCardDetail : _systemPromptCardDetailEnglish
             },
             // Carta
             new Message
@@ -56,16 +62,15 @@ public class ChatWithAiService
     }
 
     // Construye la lista de mensajes
-    private async Task<List<Message>> BuildContextualMessagesAsync(int userId, string prompt)
+    private async Task<List<Message>> BuildContextualMessagesAsync(int userId, string prompt, string lang)
     {
         // Mensaje con instrucciones globales
         var messages = new List<Message>
         {
-            
             new Message
             {
                 Role    = "system",
-                Content = _systemPrompt
+                Content = string.Equals(lang, "es", StringComparison.OrdinalIgnoreCase) ? _systemPrompt : _systemPromptEnglish
             }
         };
 

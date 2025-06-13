@@ -1,7 +1,7 @@
 export enum Color {
-    W,  // Blanco (White)
-    U,  // Azul (Blue)
-    B,  // Negro (Black)
-    R,  // Rojo (Red)
-    G   // Verde (Green)
+    W,  // White
+    U,  // Blue
+    B,  // Black
+    R,  // Red
+    G   // Green
 }

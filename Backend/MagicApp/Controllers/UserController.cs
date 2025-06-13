@@ -59,8 +59,6 @@ public class UserController : ControllerBase
             .Where(user => Normalize(user.Nickname).Contains(normalizedNickname))
         .ToList();
 
-        _logger.LogInformation("Usuarios: {@filteredUsers}", filteredUsers);
-
         return Ok(filteredUsers);
     }
 

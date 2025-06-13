@@ -12,7 +12,9 @@ ion-content {
   align-items: center;
   gap: 12px;
   padding: 16px;
-  background-color: var(--ion-background-color);
+ border-bottom: 1px solid var(--ion-input-border-color); 
+ background-color: var(--ion-surface-color);
+  
 }
 
 .back-icon {
@@ -29,7 +31,7 @@ ion-content {
 .page-title {
   font-size: 1.5rem;
   margin: 0;
-  color: var(--ion-text-color);
+  color: var(--ion-heading-color);
   font-weight: bold;
 }
 
@@ -44,6 +46,11 @@ ion-content {
 ion-searchbar {
   flex-grow: 1;
   max-width: 600px;
+  --background: var(--ion-input-background);
+  --color: var(--ion-input-color);
+  --placeholder-color: var(--ion-input-placeholder-color);
+  --border-radius: var(--ion-input-border-radius);
+  --box-shadow: var(--ion-input-box-shadow);
 }
 
 .search-filter-container ion-searchbar {
@@ -62,23 +69,27 @@ ion-searchbar {
 
 .filter-dropdown {
   position: absolute;
-  top: 10wh;
+  top: 10vh;
   right: 16px;
-  background: var(--ion-background-color);
-  border: 1px solid #ccc;
+  background: var(--ion-surface-color);
+  border: 1px solid var(--ion-input-border-color);
   border-radius: 8px;
   padding: 16px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  box-shadow: var(--ion-input-box-shadow);
   z-index: 10;
   max-width: 320px;
+}
+
+.dark .filter-dropdown {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.6);
 }
 
 .filter-group {
   margin: 1rem 0;
   padding: 0.5rem;
-  border: 1px solid #ccc;
+  border: 1px solid var(--ion-input-border-color);
   border-radius: 6px;
-  background-color: #f9f9f9;
+  background: var(--ion-surface-color);
   max-width: 100%;
 }
 
@@ -87,7 +98,7 @@ ion-searchbar {
   display: block;
   margin-bottom: 0.5rem;
   font-size: 1.1rem;
-  color: #333;
+  color: var(--ion-text-color);
 }
 
 .filter-group .checkbox-item {
@@ -98,22 +109,23 @@ ion-searchbar {
 }
 
 .filter-group ion-checkbox {
-  --background: #e0e0e0;
+  --background: var(--ion-input-background);
   --border-radius: 4px;
-  --checked-background: #3880ff;
-  --checked-border-color: #3880ff;
+  --checked-background: var(--ion-color-primary);
+  --checked-border-color: var(--ion-color-primary);
   margin-right: 6px;
   flex-shrink: 0;
 }
 
 .filter-group .checkbox-item span {
   font-size: 1rem;
+  color: var(--ion-text-color);
   user-select: none;
 }
 
 .message {
   text-align: center;
-  color: var(--ion-text-color);
+  color: var(--ion-text-color-muted);
   margin: 24px 0;
   font-size: 1.1em;
   font-style: italic;
@@ -124,7 +136,6 @@ ion-searchbar {
   flex-wrap: wrap;
   gap: 16px;
   justify-content: flex-start;
-  padding: 0 16px 48px;
   max-width: 100%;
 }
 
@@ -133,9 +144,13 @@ ion-searchbar {
   height: auto;
   border-radius: 6px;
   background: var(--ion-card-background);
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.08);
   cursor: pointer;
   transition: transform 0.3s ease;
+}
+
+.dark .card-grid img {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
 }
 
 .card-grid img:hover {

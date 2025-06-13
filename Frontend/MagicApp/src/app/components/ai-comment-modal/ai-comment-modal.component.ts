@@ -24,6 +24,7 @@ export class AiCommentModalComponent implements OnInit {
 
   @ViewChild('chatContent', { static: false, read: IonContent }) private chatContent: IonContent;
   @Input() card!: CardDetail;
+  @Input() lang!: string;
 
   commentMsg: { role: 'assistant', content: string, timestamp: string };
   waitingResponse = true;
@@ -47,10 +48,17 @@ export class AiCommentModalComponent implements OnInit {
 
   // Solicitar comentario de la carta
   async sendAiRequest() {
+
+    const message = {
+      card: this.card,
+      lang: this.lang
+    }
+
     const wsMessage = {
       Type: MsgType.CardDetailsWithAI,
-      Content: this.card
+      Content: message
     };
+
     this.webSocketService.sendRxjs(wsMessage);
   }
 

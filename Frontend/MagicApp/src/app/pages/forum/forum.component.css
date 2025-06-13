@@ -8,7 +8,9 @@ ion-content {
     align-items: center;
     gap: 12px;
     padding: 16px;
-    background-color: var(--ion-background-color);
+    border-bottom: 1px solid var(--ion-input-border-color);
+    background-color: var(--ion-surface-color);
+
 }
 
 .back-icon {
@@ -25,7 +27,7 @@ ion-content {
 .page-title {
     font-size: 1.5rem;
     margin: 0;
-    color: var(--ion-text-color);
+    color: var(--ion-heading-color);
     font-weight: bold;
 }
 
@@ -48,8 +50,15 @@ ion-content {
     --padding-bottom: 4px;
     --padding-start: 12px;
     --padding-end: 12px;
+    --background: var(--ion-button-secondary-background);
+    --color: var(--ion-button-color);
+    border-radius: var(--ion-input-border-radius);
+    box-shadow: 0 2px 8px rgba(71, 168, 247, 0.3);
+    transition: background-color 0.3s ease;
+}
+
+.button-container ion-button:hover {
     --background: var(--ion-color-secondary);
-    --color: #ffffff;
 }
 
 .threads-container {
@@ -71,11 +80,14 @@ ion-content {
     border-radius: 12px;
     cursor: pointer;
     transition: transform 0.12s ease-in-out, box-shadow 0.12s ease-in-out;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
+    --border-radius: 12px;
+    border: 1px solid var(--ion-color-medium);
 }
 
 .thread-card:hover {
     transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 8px 20px rgba(209, 44, 30, 0.15);
 }
 
 .thread-card-header {
@@ -139,10 +151,21 @@ ion-content {
     --padding-top: 0;
     --padding-bottom: 0;
     color: var(--ion-color-primary);
+    transition: color 0.3s ease;
+}
+
+.subscribe-btn:hover,
+.close-btn:hover,
+.open-btn:hover {
+    color: var(--ion-color-tertiary);
 }
 
 .delete-btn {
     color: var(--ion-color-danger);
+}
+
+.delete-btn:hover {
+    color: #b71c1c;
 }
 
 .thread-meta {
@@ -155,7 +178,7 @@ ion-content {
 
 .thread-nickname {
     font-size: 0.9rem;
-    color: var(--ion-text-color);
+    color: var(--ion-text-color-muted);
 }
 
 .thread-date {
@@ -188,26 +211,33 @@ ion-content {
     cursor: pointer;
     transition: all 0.2s ease;
     font-size: 1.2rem;
+    border: 2px solid transparent;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .pagination-btn:hover:not([disabled]) {
-    --background: rgba(var(--ion-color-primary-rgb), 0.1);
+    --background: rgba(209, 44, 30, 0.1);
+    border-color: var(--ion-color-primary);
     transform: scale(1.1);
 }
 
 .pagination-btn[disabled] {
-    --color: var(--ion-color-medium);
+    --color: var(--ion-text-color-muted);
     cursor: not-allowed;
     opacity: 0.4;
+    border-color: transparent;
 }
 
 .pagination-btn ion-icon {
     font-size: 2rem;
+    line-height: 1;
 }
 
 .page-info {
     font-size: 0.9rem;
-    color: var(--ion-color-medium-shade);
+    color: var(--ion-text-color-muted);
     font-weight: 500;
     min-width: 120px;
     text-align: center;
@@ -269,5 +299,12 @@ ion-content {
     .page-info {
         font-size: 0.75rem;
         min-width: 90px;
+    }
+}
+
+:host-context(.dark) {
+
+    .page-info {
+        color: #cccccc !important;
     }
 }
