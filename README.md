@@ -138,6 +138,7 @@ En el cliente se empleará una persistencia de datos para almacenar opciones de 
 - **10/06/2025**: Menu desplegable completado + eliminar cartas de un mazo.
 - **11/06/2025**: Vista de ajustes y vista de ver todos los mazos + ajustes estéticos
 - **12/06/2025**: Cambios en los estilos de la aplicación(CSS) + creación del informe de la aplicación.
+- **13/06/2025**: Video presentación grabado.
 
 ---
 
@@ -162,7 +163,7 @@ En el cliente se empleará una persistencia de datos para almacenar opciones de 
 
 ### Entrega del proyecto
 
-[Enlace]()
+[Enlace](https://drive.google.com/file/d/10iHJsnBUd8bjUqkbfmZFeXzCVW7eXbHS/view?usp=sharing)
 
 ---
 
