@@ -64,6 +64,8 @@ En el cliente se empleará una persistencia de datos para almacenar opciones de 
 
 ## Tutorial de Uso
 
+[Ver manual de MagicHub (PDF)](./Manual.pdf)
+
 ---
 
 ## URLs de despliegue y descarga
