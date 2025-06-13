@@ -82,10 +82,12 @@ export class PrivateChatComponent implements OnInit, OnDestroy {
 
     if (!userId) {
       this.navCtrl.navigateRoot(['/menu']);
+      return;
     }
 
     if (this.user.userId === userId) {
       this.navCtrl.navigateRoot(['/menu']);
+      return;
     }
 
     // Obtener datos del otro usuario

@@ -12,7 +12,7 @@ import { WebsocketService } from 'src/app/services/websocket.service';
 
 @Component({
   selector: 'app-settings',
-  imports: [IonIcon, IonToggle, IonLabel, IonItem, IonList, IonContent, FormsModule, IonSelectOption, IonSelect, TranslateModule, 
+  imports: [IonIcon, IonToggle, IonLabel, IonItem, IonList, IonContent, FormsModule, IonSelectOption, IonSelect, TranslateModule,
     CommonModule, SidebarComponent],
   templateUrl: './settings.component.html',
   styleUrls: ['./settings.component.css'],

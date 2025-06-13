@@ -36,14 +36,14 @@
 
           <!-- Nickname -->
           <ion-item lines="full" class="form-item">
-            <ion-input [label]="'USER_PROFILE.NICKNAME' | translate" labelPlacement="floating"
+            <ion-input class="chat-input-fix" [label]="'USER_PROFILE.NICKNAME' | translate" labelPlacement="floating"
               formControlName="nickname" required autocomplete="nickname" enterkeyhint="next">
             </ion-input>
           </ion-item>
 
           <!-- Email -->
           <ion-item lines="full" class="form-item">
-            <ion-input [label]="'USER_PROFILE.EMAIL' | translate" labelPlacement="floating" type="email"
+            <ion-input class="chat-input-fix" [label]="'USER_PROFILE.EMAIL' | translate" labelPlacement="floating" type="email"
               formControlName="email" required autocomplete="email" enterkeyhint="next">
             </ion-input>
           </ion-item>
@@ -74,14 +74,14 @@
 
             <!-- Nueva contraseña -->
             <ion-item lines="full" class="form-item">
-              <ion-input [label]="'USER_PROFILE.PASSWORD' | translate" labelPlacement="floating" type="password"
+              <ion-input class="chat-input-fix" [label]="'USER_PROFILE.PASSWORD' | translate" labelPlacement="floating" type="password"
                 formControlName="newPassword" required autocomplete="new-password" enterkeyhint="next">
               </ion-input>
             </ion-item>
 
             <!-- Confirmar contraseña -->
             <ion-item lines="full" class="form-item">
-              <ion-input [label]="'USER_PROFILE.REPEAT_PASSWORD' | translate" labelPlacement="floating" type="password"
+              <ion-input class="chat-input-fix" [label]="'USER_PROFILE.REPEAT_PASSWORD' | translate" labelPlacement="floating" type="password"
                 formControlName="confirmPassword" required autocomplete="new-password" enterkeyhint="done">
               </ion-input>
             </ion-item>

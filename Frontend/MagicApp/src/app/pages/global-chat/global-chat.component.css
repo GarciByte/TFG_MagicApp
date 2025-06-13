@@ -5,7 +5,6 @@
     padding: 16px;
     border-bottom: 1px solid var(--ion-input-border-color);
     background-color: var(--ion-surface-color);
-
 }
 
 .back-icon {
@@ -75,7 +74,6 @@
     flex: 1;
     padding: 0;
     overflow-y: auto;
-    background: var(--ion-background-color);
     display: flex;
     flex-direction: column;
 }
@@ -97,7 +95,7 @@
 }
 
 .message-item.other .message-bubble {
-    background: var(--ion-surface-color);
+    background: var(--ion-surface-color-muted);
     color: var(--ion-text-color);
 }
 
@@ -153,7 +151,7 @@ ion-avatar {
 }
 
 .input-footer {
-    background: var(--ion-background-color);
+    background: var(--ion-card-background);
     padding: 16px;
     border-top: 1px solid var(--ion-input-border-color);
 }
@@ -161,7 +159,6 @@ ion-avatar {
 .input-container {
     background: var(--ion-input-background);
     border-radius: 24px;
-    padding-left: 16px;
     margin: 0 auto;
     width: 90%;
 }

@@ -16,7 +16,8 @@
     <!-- Idioma -->
     <ion-item>
       <ion-label>{{ 'SETTINGS.LANGUAGE' | translate }}</ion-label>
-      <ion-select interface="popover" [value]="config.lang" (ionChange)="changeLanguage($event.detail.value)">
+      <ion-select slot="end" interface="popover" [value]="config.lang"
+        (ionChange)="changeLanguage($event.detail.value)">
         <ion-select-option value="es">Español</ion-select-option>
         <ion-select-option value="en">English</ion-select-option>
       </ion-select>

@@ -27,7 +27,7 @@ public class Seeder
         new User {
             Nickname = "Admin",
             Email = "admin@gmail.com",
-            Password = PasswordHelper.Hash("123456"),
+            Password = PasswordHelper.Hash("magichub"),
             Role = "Admin",
             AvatarUrl = $"{IMAGES_FOLDER}Ajani.jpg",
             IsBanned = false,
