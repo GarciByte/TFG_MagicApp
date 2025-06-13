@@ -64,7 +64,7 @@ En el cliente se empleará una persistencia de datos para almacenar opciones de 
 
 ## Tutorial de Uso
 
-[Ver manual de MagicHub (PDF)](./Manual.pdf)
+[Ver manual de MagicHub](https://big-mercury-2f2.notion.site/Manual-de-MagicHub-21125e13808680f099bcc3633153f5c0?pvs=143)
 
 ---
 
@@ -121,9 +121,7 @@ En el cliente se empleará una persistencia de datos para almacenar opciones de 
 - **10/06/2025**: Todos los componentes traducidos.
 - **11/06/2025**: Compatibilidad con el idioma inglés para las funciones de la IA.
 - **12/06/2025**: Últimos ajustes estéticos y presentación del proyecto.
-
-
-
+- **13/06/2025**: Creación del manual de MagicHub.
 ### Noe
 - **23/04/2025**: Creación del figma y primeros pasos de maquetación
 - **24/04/2025**: Vistas de buscador de cartas, detalles de cartas, mazos, crear mazos completadas.
@@ -138,6 +136,7 @@ En el cliente se empleará una persistencia de datos para almacenar opciones de 
 - **10/06/2025**: Menu desplegable completado + eliminar cartas de un mazo.
 - **11/06/2025**: Vista de ajustes y vista de ver todos los mazos + ajustes estéticos
 - **12/06/2025**: Cambios en los estilos de la aplicación(CSS) + creación del informe de la aplicación.
+- **13/06/2025**: Video presentación grabado.
 
 ---
 
@@ -162,7 +161,7 @@ En el cliente se empleará una persistencia de datos para almacenar opciones de 
 
 ### Entrega del proyecto
 
-[Enlace]()
+[Enlace](https://drive.google.com/file/d/10iHJsnBUd8bjUqkbfmZFeXzCVW7eXbHS/view?usp=sharing)
 
 ---
 
